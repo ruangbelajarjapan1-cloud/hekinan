@@ -39,7 +39,6 @@
             <img src="logohekinan.jpeg" alt="Logo Masjid As-Sunnah Hekinan" class="h-10 w-auto">
             <span class="font-extrabold text-slate-900 text-lg">Masjid As-Sunnah Hekinan</span>
           </a>
-          <!-- Badge alamat (klik ke Google Maps) -->
           <a href="https://www.google.com/maps?q=1%20Chome-8%20Dojoyamamachi,%20Hekinan,%20Aichi%20447-0864"
              target="_blank" rel="noopener"
              class="hidden sm:inline-flex items-center gap-1 text-xs ml-3 px-2 py-1 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200">
@@ -234,21 +233,21 @@
           <div id="galeriTrack"
                class="flex transition-transform duration-500 ease-out overflow-hidden rounded-2xl border border-slate-200"
                data-index="0" data-autoplay="true" data-interval="4500">
-            <!-- Foto -->
+            <!-- Foto-foto: gunakan data-file="1|2|3|4" (resolver akan cari ekstensi yang cocok) -->
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img src="1.jpeg" alt="Kegiatan 1" class="w-full h-full object-cover" loading="lazy"
+              <img data-file="1" alt="Kegiatan 1" class="block w-full h-full object-cover"
                    onerror="this.closest('figure').style.display='none'">
             </figure>
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img src="2.jpeg" alt="Kegiatan 2" class="w-full h-full object-cover" loading="lazy"
+              <img data-file="2" alt="Kegiatan 2" class="block w-full h-full object-cover"
                    onerror="this.closest('figure').style.display='none'">
             </figure>
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img src="3.jpeg" alt="Kegiatan 3" class="w-full h-full object-cover" loading="lazy"
+              <img data-file="3" alt="Kegiatan 3" class="block w-full h-full object-cover"
                    onerror="this.closest('figure').style.display='none'">
             </figure>
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img src="4.jpeg" alt="Kegiatan 4" class="w-full h-full object-cover" loading="lazy"
+              <img data-file="4" alt="Kegiatan 4" class="block w-full h-full object-cover"
                    onerror="this.closest('figure').style.display='none'">
             </figure>
             <!-- Video (opsional) -->
@@ -417,8 +416,32 @@
           if (e.target.id === 'modal') document.getElementById('closeModal').click();
         });
       });
+    </script>
 
-      /* ====== Galeri Slider (foto + video) ====== */
+    <!-- ===== Resolver ekstensi gambar galeri: cari .jpeg/.jpg/.JPG/.png/.webp ===== -->
+    <script>
+      (function resolveGalleryImages(){
+        const exts = ['.jpeg', '.jpg', '.JPG', '.png', '.webp'];
+        const imgs = document.querySelectorAll('#galeriTrack img[data-file]');
+        imgs.forEach(img => {
+          const base = img.getAttribute('data-file'); // contoh: "2" -> coba 2.jpeg, 2.jpg, dst.
+          tryNext(0);
+          function tryNext(i){
+            if (i >= exts.length) { console.warn('Gambar tidak ditemukan untuk', base); return; }
+            const url = `${base}${exts[i]}`;
+            fetch(url, { method:'HEAD' })
+              .then(res => {
+                if (res.ok) { img.src = url; }
+                else { tryNext(i+1); }
+              })
+              .catch(() => tryNext(i+1));
+          }
+        });
+      })();
+    </script>
+
+    <!-- ===== Galeri Slider (foto + video) ===== -->
+    <script>
       (function(){
         const track = document.getElementById('galeriTrack');
         if (!track) return;
