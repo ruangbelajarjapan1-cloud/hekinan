@@ -55,7 +55,8 @@
     <!-- Hero -->
     <section id="home" class="relative overflow-hidden">
       <div class="absolute inset-0 -z-10">
-        <img src="https://images.unsplash.com/photo-1603796846097-bee99e4a601f?q=80&w=1600&auto=format&fit=crop" class="w-full h-full object-cover opacity-30" alt="">
+        <!-- Ganti background ke gambar masjid lokal -->
+        <img src="da5279f5-a7c8-4b96-8e68-9b938e2075c0.png" alt="Masjid As-Sunnah Hekinan" class="w-full h-full object-cover opacity-40">
       </div>
       <div class="container mx-auto px-4 py-24 md:py-32 text-center">
         <img src="logohekinan.jpeg" alt="Logo" class="mx-auto h-24 w-auto mb-6">
@@ -73,61 +74,100 @@
       </div>
     </section>
 
-    <!-- Progres -->
+    <!-- Tentang -->
+    <section id="tentang" class="container mx-auto px-4 py-16">
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <img src="https://images.unsplash.com/photo-1622126577887-bea6389c4d8e?q=80&w=1200&auto=format&fit=crop" alt="Ilustrasi pembangunan" class="rounded-2xl shadow-soft">
+        </div>
+        <div>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Tentang Program</h2>
+          <p class="mt-4 text-slate-700 leading-relaxed">
+            Kami sedang berikhtiar melunasi <span class="font-semibold">pembelian bangunan</span> yang akan digunakan sebagai Masjid As‑Sunnah Hekinan. Dana juga dialokasikan untuk renovasi dasar: area wudhu, area akhwat, perpustakaan, dan aksesibilitas.
+          </p>
+          <ul class="mt-6 space-y-3 text-slate-700">
+            <li class="flex gap-3"><span class="text-sky-600">✓</span> Lokasi strategis, parkir luas & ramah lingkungan</li>
+            <li class="flex gap-3"><span class="text-sky-600">✓</span> Menampung ±400 jamaah</li>
+            <li class="flex gap-3"><span class="text-sky-600">✓</span> Mendukung kajian, TPA, dan kegiatan sosial</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progres Donasi -->
     <section id="progres" class="bg-white border-y border-slate-200/70">
       <div class="container mx-auto px-4 py-16">
-        <div class="grid lg:grid-cols-3 gap-8">
+        <div class="grid lg:grid-cols-3 gap-8 items-start">
           <div class="lg:col-span-2">
             <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Progres Pelunasan</h2>
-            <div class="mt-6 p-6 rounded-2xl border bg-slate-50">
-              <div class="flex justify-between">
+            <p class="mt-2 text-slate-700">Target pelunasan dan nominal yang sudah terkumpul diperbarui berkala.</p>
+
+            <div class="mt-6 p-6 rounded-2xl border border-slate-200 bg-slate-50">
+              <div class="flex items-end justify-between gap-4">
                 <div>
                   <p class="text-sm text-slate-600">Terkumpul</p>
-                  <p class="text-2xl font-extrabold text-slate-900" id="terkumpulLabel">JPY 0</p>
+                  <p class="text-2xl md:text-3xl font-extrabold text-slate-900" id="terkumpulLabel">JPY 0</p>
                 </div>
                 <div class="text-right">
                   <p class="text-sm text-slate-600">Target</p>
-                  <p class="text-xl font-extrabold text-slate-900" id="targetLabel">JPY 0</p>
+                  <p class="text-xl md:text-2xl font-extrabold text-slate-900" id="targetLabel">JPY 0</p>
                 </div>
               </div>
-              <div class="mt-4 w-full bg-white rounded-full border overflow-hidden">
+
+              <div class="mt-4 w-full bg-white rounded-full border border-slate-200 overflow-hidden" aria-label="Progress bar">
                 <div id="progressBar" class="h-3 bg-sky-600" style="width:0%"></div>
               </div>
               <div class="mt-2 text-sm text-slate-600"><span id="percentLabel">0</span>% tercapai</div>
 
               <!-- Quick buttons -->
               <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
-                <button data-quick="5000" class="quick-btn rounded-xl border px-4 py-2">JPY 5.000</button>
-                <button data-quick="10000" class="quick-btn rounded-xl border px-4 py-2">JPY 10.000</button>
-                <button data-quick="20000" class="quick-btn rounded-xl border px-4 py-2">JPY 20.000</button>
-                <button data-quick="Unlimited" class="quick-btn rounded-xl border px-4 py-2">Unlimited</button>
+                <button data-quick="5000" class="quick-btn rounded-xl border border-slate-300 hover:border-sky-600 px-4 py-2">JPY 5.000</button>
+                <button data-quick="10000" class="quick-btn rounded-xl border border-slate-300 hover:border-sky-600 px-4 py-2">JPY 10.000</button>
+                <button data-quick="20000" class="quick-btn rounded-xl border border-slate-300 hover:border-sky-600 px-4 py-2">JPY 20.000</button>
+                <button data-quick="Unlimited" class="quick-btn rounded-xl border border-slate-300 hover:border-sky-600 px-4 py-2">Unlimited</button>
               </div>
 
               <!-- Form donasi -->
-              <form id="donasiForm" class="mt-4 flex gap-3" onsubmit="return false">
-                <input id="nominalInput" type="number" min="1000" step="10000" placeholder="Masukkan nominal (JPY)" class="flex-1 rounded-xl border px-4 py-3 focus:border-sky-600" />
+              <form id="donasiForm" class="mt-4 flex flex-col sm:flex-row gap-3" onsubmit="return false">
+                <label for="nominalInput" class="sr-only">Nominal Donasi</label>
+                <input id="nominalInput" type="number" min="10000" step="1000" placeholder="Masukkan nominal (JPY)" class="flex-1 rounded-xl border border-slate-300 px-4 py-3 focus:border-sky-600" />
                 <button id="donasiBtn" class="rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold px-6 py-3">Lanjut Donasi</button>
               </form>
-              <p class="mt-3 text-xs text-slate-500">* Donasi via transfer rekening Jepang atau Indonesia.</p>
+
+              <p class="mt-3 text-xs text-slate-500">* Donasi via transfer bank (Jepang/Indonesia). Setelah klik “Lanjut Donasi”, konfirmasi via WhatsApp.</p>
             </div>
           </div>
 
           <!-- Rekening -->
           <aside class="lg:col-span-1">
-            <div class="rounded-2xl border bg-white p-6">
+            <div class="rounded-2xl border border-slate-200 bg-white p-6">
               <h3 class="text-lg font-bold text-slate-900">Rekening Donasi</h3>
-              <ul class="mt-3 space-y-3 text-sm">
-                <li>
-                  <p class="font-semibold">Yucho Bank (Jepang)</p>
-                  <p class="text-slate-600">No. Rek: <span id="rekYucho">12160-00457031</span></p>
-                  <p class="text-slate-600">a.n. Yoshimine Adelfa</p>
-                </li>
-                <li>
-                  <p class="font-semibold">Bank Syariah Indonesia</p>
-                  <p class="text-slate-600">No. Rek: <span id="rekBsi">[isi nomor BSI]</span></p>
-                  <p class="text-slate-600">a.n. DKM Masjid As-Sunnah Hekinan</p>
-                </li>
-              </ul>
+
+              <!-- Jepang -->
+              <div class="mt-4 rounded-xl border border-slate-200 p-4">
+                <p class="text-sm font-semibold text-slate-900">🇯🇵 Jepang — Yucho Bank</p>
+                <ul class="mt-2 text-sm text-slate-700 space-y-1">
+                  <li>a.n. <span class="font-medium">Yoshimine Adelfa</span></li>
+                  <li>No. Rekening: <span class="font-medium" id="rekYucho">12160-00457031</span></li>
+                </ul>
+                <div class="mt-3">
+                  <button data-copy="#rekYucho" class="copy-btn rounded-lg border border-slate-300 px-3 py-1 text-xs hover:border-sky-600">Salin No. Rek</button>
+                </div>
+              </div>
+
+              <!-- Indonesia -->
+              <div class="mt-4 rounded-xl border border-slate-200 p-4">
+                <p class="text-sm font-semibold text-slate-900">🇮🇩 Indonesia — Bank Syariah Indonesia</p>
+                <ul class="mt-2 text-sm text-slate-700 space-y-1">
+                  <li>a.n. <span class="font-medium">DKM Masjid As‑Sunnah Hekinan</span></li>
+                  <li>No. Rekening: <span class="font-medium" id="rekBsi">[isi nomor BSI]</span></li>
+                </ul>
+                <div class="mt-3">
+                  <button data-copy="#rekBsi" class="copy-btn rounded-lg border border-slate-300 px-3 py-1 text-xs hover:border-sky-600">Salin No. Rek</button>
+                </div>
+              </div>
+
+              <p class="mt-3 text-xs text-slate-500">Setelah transfer, mohon kirim bukti via WhatsApp agar dicatat oleh bendahara.</p>
             </div>
           </aside>
         </div>
@@ -137,58 +177,174 @@
     <!-- Donasi CTA -->
     <section id="donasi" class="container mx-auto px-4 py-16">
       <div class="grid lg:grid-cols-2 gap-8 items-center">
-        <div>
-          <h2 class="text-2xl font-extrabold text-slate-900">Donasi Pelunasan</h2>
-          <p class="mt-3 text-slate-700">Pilih nominal, lalu konfirmasi via WhatsApp.</p>
-          <div class="mt-6 flex gap-3 no-print">
-            <a href="#progres" class="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-6 py-3">Pilih Nominal</a>
-            <a id="ctaWA" href="https://wa.me/818013909425?text=Assalamu%27alaikum%2C+saya+ingin+donasi+untuk+Masjid+As-Sunnah+Hekinan" target="_blank" rel="noopener" class="rounded-xl border hover:border-sky-600 px-6 py-3">Konfirmasi via WhatsApp</a>
+        <div class="order-2 lg:order-1">
+          <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Donasi Pelunasan</h2>
+          <p class="mt-3 text-slate-700">Pilih nominal, lalu konfirmasi via WhatsApp setelah transfer ke rekening Jepang atau Indonesia.</p>
+          <div class="mt-6 flex flex-wrap gap-3 no-print">
+            <a href="#progres" class="rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold px-6 py-3">Pilih Nominal</a>
+            <a id="ctaWA" href="https://wa.me/818013909425?text=Assalamu%27alaikum%2C+saya+ingin+donasi+untuk+Masjid+As-Sunnah+Hekinan" target="_blank" rel="noopener" class="rounded-xl border border-slate-300 hover:border-sky-600 px-6 py-3">Konfirmasi via WhatsApp</a>
           </div>
         </div>
-        <img src="https://images.unsplash.com/photo-1598425229439-61083ad973c4?q=80&w=1200&auto=format&fit=crop" class="rounded-2xl shadow-soft" alt="">
+        <div class="order-1 lg:order-2">
+          <img src="https://images.unsplash.com/photo-1598425229439-61083ad973c4?q=80&w=1200&auto=format&fit=crop" alt="Ilustrasi donasi" class="rounded-2xl shadow-soft">
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="bg-slate-50 border-t border-slate-200/70">
+      <div class="container mx-auto px-4 py-16">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 text-center">Pertanyaan yang Sering Diajukan</h2>
+        <div class="mt-8 grid md:grid-cols-2 gap-6">
+          <details class="rounded-xl border border-slate-200 bg-white p-5">
+            <summary class="font-semibold cursor-pointer">Apakah dana langsung dipakai untuk pelunasan?</summary>
+            <p class="mt-2 text-slate-700">Ya, prioritas utama adalah pelunasan pembelian bangunan dan kebutuhan fasilitas dasar.</p>
+          </details>
+          <details class="rounded-xl border border-slate-200 bg-white p-5">
+            <summary class="font-semibold cursor-pointer">Apakah ada laporan penggunaan dana?</summary>
+            <p class="mt-2 text-slate-700">InsyaAllah laporan akan dipublikasikan berkala melalui papan pengumuman dan kanal resmi.</p>
+          </details>
+          <details class="rounded-xl border border-slate-200 bg-white p-5">
+            <summary class="font-semibold cursor-pointer">Bagaimana cara mengirim bukti transfer?</summary>
+            <p class="mt-2 text-slate-700">Kirim bukti via WhatsApp admin pada tombol yang tersedia atau email resmi DKM.</p>
+          </details>
+          <details class="rounded-xl border border-slate-200 bg-white p-5">
+            <summary class="font-semibold cursor-pointer">Bisakah donasi dicicil?</summary>
+            <p class="mt-2 text-slate-700">Bisa. Silakan atur nominal sesuai kemampuan. Setiap kontribusi sangat berarti.</p>
+          </details>
+        </div>
       </div>
     </section>
 
     <!-- Footer -->
     <footer class="bg-white">
-      <div class="container mx-auto px-4 py-10 text-sm text-slate-600">
-        <p>© <span id="year"></span> Masjid As-Sunnah Hekinan</p>
+      <div class="container mx-auto px-4 py-10">
+        <div class="grid md:grid-cols-3 gap-8">
+          <div>
+            <img src="logohekinan.jpeg" alt="Logo Masjid As-Sunnah Hekinan" class="h-12 w-auto mb-3">
+            <h3 class="font-bold text-slate-900">Masjid As-Sunnah Hekinan</h3>
+            <p class="mt-2 text-sm text-slate-700">Alamat: (isi alamat lengkap di sini)</p>
+            <p class="mt-1 text-sm text-slate-700">Email: dkm@masjidhekinan.org</p>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-900">Tautan</h3>
+            <ul class="mt-2 space-y-2 text-sm">
+              <li><a href="#tentang" class="hover:text-sky-700">Tentang</a></li>
+              <li><a href="#progres" class="hover:text-sky-700">Progres</a></li>
+              <li><a href="#donasi" class="hover:text-sky-700">Donasi</a></li>
+              <li><a href="#faq" class="hover:text-sky-700">FAQ</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-900">Ikuti Kami</h3>
+            <ul class="mt-2 space-y-2 text-sm">
+              <li><a href="#" class="hover:text-sky-700">Instagram</a></li>
+              <li><a href="#" class="hover:text-sky-700">Facebook</a></li>
+              <li><a href="#" class="hover:text-sky-700">YouTube</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-8 border-t border-slate-200 pt-6 text-xs text-slate-500 flex flex-col md:flex-row justify-between">
+          <p>© <span id="year"></span> Masjid As-Sunnah Hekinan. Semua hak cipta dilindungi.</p>
+          <p>Designed with ♥️ wahyu.</p>
+        </div>
       </div>
     </footer>
 
+    <!-- Modal (tanpa QRIS) -->
+    <div id="modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4">
+      <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-soft">
+        <div class="flex items-start justify-between gap-4">
+          <h3 class="text-lg font-bold text-slate-900">Lanjutkan Donasi</h3>
+          <button id="closeModal" aria-label="Tutup" class="text-slate-500 hover:text-slate-700">✕</button>
+        </div>
+        <p class="mt-2 text-sm text-slate-700">Nominal: <span id="nominalFinal" class="font-semibold">JPY 0</span></p>
+        <div class="mt-4">
+          <a id="viaWA" href="#" target="_blank" rel="noopener" class="block rounded-xl border border-slate-300 hover:border-sky-600 px-4 py-3 text-center">Konfirmasi via WhatsApp</a>
+          <p class="mt-3 text-xs text-slate-500 text-center">Setelah transfer ke rekening Jepang atau Indonesia, silakan kirim bukti.</p>
+        </div>
+      </div>
+    </div>
+
     <script>
-      const TARGET = 42000000;
-      const TERKUMPUL = 1000000;
-      const WA_NUMBER = '818013909425';
+      // ====== KONFIG ======
+      const TARGET = 42000000;     // target pelunasan (JPY)
+      const TERKUMPUL = 1000000;   // total terkumpul saat ini (JPY)
+      const WA_NUMBER = '818013909425'; // nomor admin WhatsApp (Jepang)
 
-      const JPY = (n) => new Intl.NumberFormat('id-ID',{style:'currency',currency:'JPY',maximumFractionDigits:0}).format(n);
+      // ====== UTIL ======
+      const JPY = (n) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'JPY', maximumFractionDigits: 0 }).format(n);
+      const clamp = (n, min, max) => Math.max(min, Math.min(n, max));
 
-      function renderProgress(){
+      // ====== PROGRESS UI ======
+      function renderProgress() {
         const percent = TARGET > 0 ? Math.round((TERKUMPUL / TARGET) * 100) : 0;
         document.getElementById('terkumpulLabel').textContent = JPY(TERKUMPUL);
         document.getElementById('targetLabel').textContent = JPY(TARGET);
-        document.getElementById('percentLabel').textContent = percent;
-        document.getElementById('progressBar').style.width = percent+'%';
+        document.getElementById('percentLabel').textContent = clamp(percent, 0, 100);
+        document.getElementById('progressBar').style.width = clamp(percent, 0, 100) + '%';
       }
 
-      window.addEventListener('DOMContentLoaded',()=>{
+      // ====== MODAL ======
+      function openModal(nominal) {
+        const modal = document.getElementById('modal');
+        const final = document.getElementById('nominalFinal');
+        final.textContent = JPY(nominal);
+        const msg = encodeURIComponent(`Assalamu'alaikum, saya ingin donasi sebesar ${JPY(nominal)} untuk pelunasan Masjid As-Sunnah Hekinan. Saya akan transfer ke rekening Jepang/Indonesia lalu kirim bukti.`);
+        document.getElementById('viaWA').href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+
+      // ====== INIT ======
+      window.addEventListener('DOMContentLoaded', () => {
         document.getElementById('year').textContent = new Date().getFullYear();
         renderProgress();
 
+        // Copy buttons
+        document.querySelectorAll('.copy-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const sel = btn.getAttribute('data-copy');
+            const target = document.querySelector(sel);
+            if (!target) return;
+            const text = target.textContent.replace(/\s/g, '');
+            navigator.clipboard.writeText(text).then(() => {
+              const original = btn.textContent;
+              btn.textContent = 'Disalin!';
+              setTimeout(() => (btn.textContent = original), 1200);
+            });
+          });
+        });
+
         // Quick buttons
-        document.querySelectorAll('.quick-btn').forEach(btn=>{
-          btn.addEventListener('click',()=>{
-            const val = Number(btn.dataset.quick);
-            document.getElementById('nominalInput').value = isNaN(val)? '' : val;
+        document.querySelectorAll('.quick-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const valAttr = btn.getAttribute('data-quick');
+            const val = Number(valAttr);
+            const input = document.getElementById('nominalInput');
+            input.value = isNaN(val) ? '' : val;
+            input.focus();
           });
         });
 
         // Submit donasi
-        document.getElementById('donasiBtn').addEventListener('click',()=>{
+        document.getElementById('donasiBtn').addEventListener('click', () => {
           const val = Number(document.getElementById('nominalInput').value);
-          if(!val || val < 10000){ alert('Minimal donasi JPY 10.000'); return; }
-          const msg = encodeURIComponent(`Assalamu'alaikum, saya ingin donasi sebesar ${JPY(val)} untuk Masjid As-Sunnah Hekinan.`);
-          window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`,'_blank');
+          if (!val || val < 10000) {
+            alert('Minimal donasi JPY 10.000');
+            return;
+          }
+          openModal(val);
+        });
+
+        // Tutup modal
+        document.getElementById('closeModal').addEventListener('click', () => {
+          const modal = document.getElementById('modal');
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        });
+        document.getElementById('modal').addEventListener('click', (e) => {
+          if (e.target.id === 'modal') document.getElementById('closeModal').click();
         });
       });
     </script>
