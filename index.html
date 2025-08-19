@@ -201,7 +201,6 @@
 
         <div class="order-1 lg:order-2">
           <div class="rounded-2xl border border-slate-200 bg-white p-4 md:p-6 shadow-soft">
-            <!-- (SVG ilustrasi disingkat demi ringkas; tetap sama seperti versi Anda) -->
             <svg viewBox="0 0 600 420" role="img" aria-labelledby="donasiTitle" class="w-full h-auto">
               <title id="donasiTitle">Ilustrasi Donasi</title>
               <circle cx="480" cy="100" r="90" fill="#E0F2FE" />
@@ -235,22 +234,26 @@
           <div id="galeriTrack"
                class="flex transition-transform duration-500 ease-out overflow-hidden rounded-2xl border border-slate-200"
                data-index="0" data-autoplay="true" data-interval="4500">
-            <!-- Foto-foto (ganti nama file sesuai yang kamu upload) -->
-            <figure class="min-w-full max-h-[540px] bg-black flex items-center justify-center">
-              <img src="1.jpeg" alt="Kegiatan 1" class="w-full h-full object-cover" loading="lazy">
+            <!-- Foto -->
+            <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
+              <img src="1.jpeg" alt="Kegiatan 1" class="w-full h-full object-cover" loading="lazy"
+                   onerror="this.closest('figure').style.display='none'">
             </figure>
-            <figure class="min-w-full max-h-[540px] bg-black flex items-center justify-center">
-              <img src="2.jpeg" alt="Kegiatan 2" class="w-full h-full object-cover" loading="lazy">
+            <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
+              <img src="2.jpeg" alt="Kegiatan 2" class="w-full h-full object-cover" loading="lazy"
+                   onerror="this.closest('figure').style.display='none'">
             </figure>
-            <figure class="min-w-full max-h-[540px] bg-black flex items-center justify-center">
-              <img src="3.jpeg" alt="Kegiatan 3" class="w-full h-full object-cover" loading="lazy">
+            <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
+              <img src="3.jpeg" alt="Kegiatan 3" class="w-full h-full object-cover" loading="lazy"
+                   onerror="this.closest('figure').style.display='none'">
             </figure>
-            <figure class="min-w-full max-h-[540px] bg-black flex items-center justify-center">
-              <img src="4.jpeg" alt="Kegiatan 4" class="w-full h-full object-cover" loading="lazy">
+            <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
+              <img src="4.jpeg" alt="Kegiatan 4" class="w-full h-full object-cover" loading="lazy"
+                   onerror="this.closest('figure').style.display='none'">
             </figure>
             <!-- Video (opsional) -->
-            <figure class="min-w-full bg-black flex items-center justify-center">
-              <video class="w-full h-full max-h-[540px] object-cover" muted playsinline preload="metadata" data-video-slide controlslist="nodownload noplaybackrate">
+            <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
+              <video class="w-full h-full object-cover" muted playsinline preload="metadata" data-video-slide controlslist="nodownload noplaybackrate">
                 <source src="video1.mp4" type="video/mp4">
                 Browser Anda tidak mendukung video.
               </video>
@@ -415,7 +418,7 @@
         });
       });
 
-      /* ====== Galeri Slider (foto + video, no-folder paths) ====== */
+      /* ====== Galeri Slider (foto + video) ====== */
       (function(){
         const track = document.getElementById('galeriTrack');
         if (!track) return;
@@ -454,16 +457,9 @@
         track.addEventListener('mouseenter', pause);
         track.addEventListener('mouseleave', resume);
 
-        function isVideoSlide(i){ return slides[i]?.querySelector('video[data-video-slide]'); }
-
         function updateUI(){
           track.style.transform = `translateX(-${index*100}%)`;
           dots.forEach((d,i)=> d.setAttribute('aria-current', i===index));
-        }
-
-        function clearVideoStates(i){
-          const v = slides[i]?.querySelector('video[data-video-slide]');
-          if (v){ v.pause(); v.currentTime = 0; v.removeEventListener('ended', onVideoEnded); }
         }
 
         function onVideoEnded(){ go(index+1); }
@@ -471,21 +467,24 @@
         function scheduleNext(){
           const v = slides[index]?.querySelector('video[data-video-slide]');
           if (v){
-            // Jika file video tidak ada, jangan error; cukup skip setelah 6 detik.
-            try { v.currentTime = 0; v.play().catch(()=>{}); } catch(e){}
-            v.removeEventListener('ended', onVideoEnded);
-            v.addEventListener('ended', onVideoEnded, {once:false});
+            try {
+              v.currentTime = 0;
+              v.play().catch(()=>{});
+              v.removeEventListener('ended', onVideoEnded);
+              v.addEventListener('ended', onVideoEnded, {once:false});
+            } catch(e){}
             timer = setTimeout(()=> go(index+1), Math.max((v.duration||6)*1000, 4000));
             return;
           }
           timer = setTimeout(()=> go(index+1), intervalImg);
         }
 
-        function go(i, user=false){
+        function go(i){
           clearTimeout(timer);
-          const last = index;
+          const prev = slides[index]?.querySelector('video[data-video-slide]');
+          if (prev){ prev.pause(); prev.currentTime = 0; prev.removeEventListener('ended', onVideoEnded); }
+
           index = (i + slides.length) % slides.length;
-          clearVideoStates(last);
           updateUI();
           if (track.dataset.autoplay === 'true') scheduleNext();
         }
@@ -499,4 +498,3 @@
     </script>
   </body>
 </html>
-
