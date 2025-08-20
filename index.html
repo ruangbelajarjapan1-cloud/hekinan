@@ -303,20 +303,16 @@
                class="flex transition-transform duration-500 ease-out overflow-hidden rounded-2xl border border-slate-200"
                data-index="0" data-autoplay="true" data-interval="4500">
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img data-file="1" alt="Kegiatan pengajian jamaah di Hekinan" class="block w-full h-full object-cover"
-                   onerror="this.closest('figure').style.display='none'">
+              <img src="1.jpeg" alt="Kegiatan pengajian jamaah di Hekinan" class="block w-full h-full object-cover" loading="lazy">
             </figure>
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img data-file="2" alt="Relawan membersihkan area masjid" class="block w-full h-full object-cover"
-                   onerror="this.closest('figure').style.display='none'">
+              <img src="2.jpeg" alt="Relawan membersihkan area masjid" class="block w-full h-full object-cover" loading="lazy">
             </figure>
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img data-file="3" alt="Anak-anak belajar mengaji di kelas TPA" class="block w-full h-full object-cover"
-                   onerror="this.closest('figure').style.display='none'">
+              <img src="3.jpeg" alt="Anak-anak belajar mengaji di kelas TPA" class="block w-full h-full object-cover" loading="lazy">
             </figure>
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img data-file="4" alt="Panitia meninjau lokasi wudu dan area akhwat" class="block w-full h-full object-cover"
-                   onerror="this.closest('figure').style.display='none'">
+              <img src="4.jpeg" alt="Panitia meninjau lokasi wudu dan area akhwat" class="block w-full h-full object-cover" loading="lazy">
             </figure>
             <!-- Video -->
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
@@ -656,24 +652,7 @@
       });
     </script>
 
-    <!-- ===== Resolver ekstensi gambar galeri ===== -->
-    <script>
-      (function resolveGalleryImages(){
-        const exts = ['.webp', '.jpeg', '.jpg', '.JPG', '.png'];
-        const imgs = document.querySelectorAll('#galeriTrack img[data-file]');
-        imgs.forEach(img => {
-          const base = img.getAttribute('data-file');
-          tryNext(0);
-          function tryNext(i){
-            if (i >= exts.length) { console.warn('Gambar tidak ditemukan untuk', base); return; }
-            const url = `${base}${exts[i]}`;
-            fetch(url, { method:'HEAD' })
-              .then(res => { if (res.ok) { img.src = url; } else { tryNext(i+1); } })
-              .catch(() => tryNext(i+1));
-          }
-        });
-      })();
-    </script>
+    <!-- ===== (Resolver dihapus — pakai src eksplisit agar pasti tampil) ===== -->
 
     <!-- ===== Galeri Slider (foto + video) ===== -->
     <script>
@@ -755,8 +734,3 @@
     </script>
   </body>
 </html>
-
-
-
-
-
