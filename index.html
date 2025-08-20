@@ -1,16 +1,45 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="id">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- ===== SEO dasar ===== -->
     <title data-i18n="site.title">Masjid As-Sunnah Hekinan — Bantu Pelunasan Pembelian Bangunan Untuk Masjid</title>
     <meta name="description" content="Landing page resmi Masjid As-Sunnah Hekinan. Yuk ikut berkontribusi dalam donasi pelunasan pembelian bangunan untuk masjid." data-i18n-attr='{"content":"site.desc"}'>
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <link rel="canonical" href="https://assunnahhekinan.org/"/>
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml"/>
+
+    <!-- (Opsional) verifikasi GSC: ganti token jika perlu -->
+    <meta name="google-site-verification" content="SmI-n5Ww-Ct4BjQixlDqkgbCyheXf92H_C7ERG3UICs"/>
+
+    <!-- ===== Open Graph / Social ===== -->
     <meta property="og:title" content="Masjid As-Sunnah Hekinan — Bantu Pelunasan" data-i18n-attr='{"content":"og.title"}'/>
     <meta property="og:description" content="Yuk ikut berkontribusi dalam donasi pelunasan pembelian bangunan untuk masjid." data-i18n-attr='{"content":"og.desc"}'/>
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://images.unsplash.com/photo-1549649950-1c1a9f2d6cb1?q=80&w=1200&auto=format&fit=crop" />
+    <meta property="og:url" content="https://assunnahhekinan.org/"/>
+    <meta property="og:image" content="https://assunnahhekinan.org/masjid-hero.jpg" />
+    <meta property="og:locale" content="id_ID"/>
+    <meta property="og:locale:alternate" content="en_US"/>
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Masjid As-Sunnah Hekinan — Bantu Pelunasan" data-i18n-attr='{"content":"og.title"}'>
+    <meta name="twitter:description" content="Yuk ikut berkontribusi dalam donasi pelunasan pembelian bangunan untuk masjid." data-i18n-attr='{"content":"og.desc"}'>
+    <meta name="twitter:image" content="https://assunnahhekinan.org/masjid-hero.jpg">
+
     <meta name="theme-color" content="#0ea5e9" />
 
+    <!-- Favicon (opsional—sediakan file di root) -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+    <!-- Preconnect fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -28,6 +57,60 @@
       :focus-visible { outline: 3px solid #38bdf8; outline-offset: 2px; border-radius: .5rem; }
       @media print { nav, .no-print { display: none !important; } .print\:block{ display:block !important; } }
     </style>
+
+    <!-- ===== JSON-LD: Organization ===== -->
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"Organization",
+      "name":"Masjid As-Sunnah Hekinan",
+      "url":"https://assunnahhekinan.org/",
+      "logo":"https://assunnahhekinan.org/logohekinan.jpeg",
+      "sameAs":[
+        "https://www.instagram.com/USERNAME",
+        "https://www.facebook.com/USERNAME",
+        "https://www.youtube.com/@USERNAME"
+      ],
+      "address":{
+        "@type":"PostalAddress",
+        "streetAddress":"1 Chome-8 Dojoyamamachi",
+        "addressLocality":"Hekinan",
+        "addressRegion":"Aichi",
+        "postalCode":"447-0864",
+        "addressCountry":"JP"
+      },
+      "contactPoint":[{
+        "@type":"ContactPoint",
+        "contactType":"customer support",
+        "telephone":"+81-80-1390-9425",
+        "areaServed":"JP"
+      }]
+    }
+    </script>
+
+    <!-- ===== JSON-LD: WebSite ===== -->
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"WebSite",
+      "name":"Masjid As-Sunnah Hekinan",
+      "url":"https://assunnahhekinan.org/",
+      "potentialAction":{
+        "@type":"SearchAction",
+        "target":"https://assunnahhekinan.org/?q={search_term_string}",
+        "query-input":"required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- ===== Google Analytics 4 (ganti ID) ===== -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX'); // TODO: ganti dengan Measurement ID GA4 kamu
+    </script>
   </head>
 
   <body class="font-sans text-slate-800 bg-gradient-to-b from-sky-50 to-white">
@@ -41,7 +124,7 @@
       <nav class="container mx-auto px-4 py-3 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <a href="#home" class="flex items-center gap-3">
-            <img src="logohekinan.jpeg" alt="Logo Masjid As-Sunnah Hekinan" class="h-10 w-auto">
+            <img src="logohekinan.jpeg" alt="Logo Masjid As-Sunnah Hekinan" class="h-10 w-auto" loading="lazy">
             <span class="font-extrabold text-slate-900 text-lg" data-i18n="brand">Masjid As-Sunnah Hekinan</span>
           </a>
           <a href="https://www.google.com/maps?q=1%20Chome-8%20Dojoyamamachi,%20Hekinan,%20Aichi%20447-0864"
@@ -66,23 +149,25 @@
     <!-- Hero -->
     <section id="home" class="relative overflow-hidden">
       <div class="absolute inset-0 -z-10">
-        <img src="masjid-hero.jpg?v=2" alt="Masjid As-Sunnah Hekinan"
-             class="w-full h-full object-cover opacity-25" loading="lazy">
+        <picture>
+          <!-- siapkan masjid-hero.webp jika ada -->
+          <source srcset="masjid-hero.webp?v=2" type="image/webp">
+          <img src="masjid-hero.jpg?v=2" alt="Bangunan calon Masjid As-Sunnah Hekinan" class="w-full h-full object-cover opacity-25" loading="lazy">
+        </picture>
       </div>
 
       <div class="container mx-auto px-4 py-24 md:py-32 text-center">
-        <img src="logohekinan.jpeg" alt="Logo" class="mx-auto h-24 w-auto mb-6" loading="lazy">
+        <img src="logohekinan.jpeg" alt="Logo Masjid As-Sunnah Hekinan" class="mx-auto h-24 w-auto mb-6" loading="lazy">
         <p class="inline-block bg-white/70 backdrop-blur px-3 py-1 rounded-full text-sky-700 text-xs font-semibold mb-4" data-i18n="hero.tag">
           Ayo Bantu Pelunasan Pembelian Bangunan Untuk Masjid
         </p>
         <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900" data-i18n="hero.title">
           Wujudkan Kenyamanan Ibadah di <span class="text-sky-600">Masjid As-Sunnah Hekinan</span>
         </h1>
-        <p class="mt-4 text-base md:text-lg text-slate-700 max-w-2xl mx-auto" data-i18n="hero.body">
-        </p>
+        <p class="mt-4 text-base md:text-lg text-slate-700 max-w-2xl mx-auto" data-i18n="hero.body"></p>
         <p class="mt-3 text-sm md:text-base text-slate-700 max-w-2xl mx-auto" data-i18n="hero.hadith1"></p>
         <div class="mt-8 flex justify-center gap-4">
-          <a href="#donasi" class="rounded-2xl bg-sky-600 hover:bg-sky-700 text-white font-semibold px-6 py-3" data-i18n="btn.donate">Donasi Sekarang</a>
+          <a href="#donasi" class="rounded-2xl bg-sky-600 hover:bg-sky-700 text-white font-semibold px-6 py-3 shadow-soft" data-i18n="btn.donate">Donasi Sekarang</a>
           <a href="#tentang" class="rounded-2xl border border-slate-300 hover:border-slate-400 text-slate-700 font-semibold px-6 py-3 bg-white/80 backdrop-blur" data-i18n="btn.learn">Pelajari Lebih Lanjut</a>
         </div>
       </div>
@@ -92,7 +177,7 @@
     <section id="tentang" class="container mx-auto px-4 py-16">
       <div class="grid md:grid-cols-2 gap-10 items-center">
         <div>
-          <img src="1.jpeg" alt="Ilustrasi bangunan masjid" class="rounded-2xl shadow-soft">
+          <img src="1.jpeg" alt="Ilustrasi bangunan masjid yang akan direnovasi" class="rounded-2xl shadow-soft" loading="lazy">
         </div>
         <div>
           <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900" data-i18n="about.title">Tentang Program</h2>
@@ -237,21 +322,21 @@
           <div id="galeriTrack"
                class="flex transition-transform duration-500 ease-out overflow-hidden rounded-2xl border border-slate-200"
                data-index="0" data-autoplay="true" data-interval="4500">
-            <!-- Foto-foto: gunakan data-file="1|2|3|4" (resolver akan cari ekstensi yang cocok) -->
+            <!-- Foto-foto: resolver akan cari ekstensi yang cocok -->
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img data-file="1" alt="Kegiatan 1" class="block w-full h-full object-cover"
+              <img data-file="1" alt="Kegiatan pengajian jamaah di Hekinan" class="block w-full h-full object-cover"
                    onerror="this.closest('figure').style.display='none'">
             </figure>
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img data-file="2" alt="Kegiatan 2" class="block w-full h-full object-cover"
+              <img data-file="2" alt="Relawan membersihkan area masjid" class="block w-full h-full object-cover"
                    onerror="this.closest('figure').style.display='none'">
             </figure>
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img data-file="3" alt="Kegiatan 3" class="block w-full h-full object-cover"
+              <img data-file="3" alt="Anak-anak belajar mengaji di kelas TPA" class="block w-full h-full object-cover"
                    onerror="this.closest('figure').style.display='none'">
             </figure>
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img data-file="4" alt="Kegiatan 4" class="block w-full h-full object-cover"
+              <img data-file="4" alt="Panitia meninjau lokasi wudu dan area akhwat" class="block w-full h-full object-cover"
                    onerror="this.closest('figure').style.display='none'">
             </figure>
             <!-- Video (opsional) -->
@@ -363,7 +448,7 @@
       const TARGET = 42000000;   // ubah sesuai target akhir
       const TERKUMPUL = 1000000; // update jumlah terkini di sini
       const WA_NUMBER = '818013909425';
-      const MIN_DONATION = 1000; // <<< minimal donasi (JPY)
+      const MIN_DONATION = 1000; // minimal donasi (JPY)
 
       /* ===== I18N resources ===== */
       const I18N_RESOURCES = {
@@ -539,6 +624,8 @@
         const msg = encodeURIComponent("Assalamu'alaikum, saya ingin donasi sebesar " + I18NFormat.currency(n, 'id', 'JPY') + ' untuk pelunasan Masjid As-Sunnah Hekinan. Saya akan transfer ke rekening Jepang/Indonesia lalu kirim bukti.');
         document.getElementById('viaWA').href = 'https://wa.me/' + WA_NUMBER + '?text=' + msg;
         const m = document.getElementById('modal'); m.classList.remove('hidden'); m.classList.add('flex');
+        // GA4: event open modal
+        if (window.gtag) gtag('event', 'donation_modal_open', { currency: 'JPY', value: n });
       }
 
       // init on load
@@ -569,7 +656,14 @@
           if (!v || v < MIN_DONATION) {
             return alert(I18N.t('alert.minDonation', { amount: I18NFormat.currency(MIN_DONATION, I18N.lang, 'JPY') }));
           }
+          // GA4: intent donate
+          if (window.gtag) gtag('event', 'donation_intent', { currency: 'JPY', value: v });
           openModal(v);
+        });
+
+        // GA4: CTA WhatsApp
+        document.getElementById('ctaWA')?.addEventListener('click', () => {
+          if (window.gtag) gtag('event', 'click_whatsapp', { location: 'donasi_section' });
         });
 
         document.getElementById('closeModal').addEventListener('click', () => {
@@ -584,7 +678,7 @@
     <!-- ===== Resolver ekstensi gambar galeri ===== -->
     <script>
       (function resolveGalleryImages(){
-        const exts = ['.jpeg', '.jpg', '.JPG', '.png', '.webp'];
+        const exts = ['.webp', '.jpeg', '.jpg', '.JPG', '.png'];
         const imgs = document.querySelectorAll('#galeriTrack img[data-file]');
         imgs.forEach(img => {
           const base = img.getAttribute('data-file');
