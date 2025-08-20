@@ -20,6 +20,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://assunnahhekinan.org/"/>
     <meta property="og:image" content="https://assunnahhekinan.org/masjid-hero.jpg" />
+    <meta property="og:image:alt" content="Masjid As-Sunnah Hekinan" />
     <meta property="og:locale" content="id_ID"/>
     <meta property="og:locale:alternate" content="en_US"/>
 
@@ -31,13 +32,17 @@
 
     <meta name="theme-color" content="#0ea5e9" />
 
-    <!-- Favicon (opsional—sediakan file di root) -->
+    <!-- Favicons / App icons -->
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png"> <!-- 180x180 -->
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="preload" as="image" href="masjid-hero.jpg" imagesrcset="masjid-hero.webp 1x" imagesizes="100vw">
 
-    <!-- Preconnect fonts -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -51,14 +56,15 @@
         },
       };
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
       html { scroll-behavior: smooth; }
       :focus-visible { outline: 3px solid #38bdf8; outline-offset: 2px; border-radius: .5rem; }
       @media print { nav, .no-print { display: none !important; } .print\:block{ display:block !important; } }
+      /* bantu GPU hint di slider */
+      #galeriTrack figure { will-change: transform; }
     </style>
 
-    <!-- ===== JSON-LD: Mosque ===== -->
+    <!-- ===== JSON-LD: Mosque (informasi tempat) ===== -->
     <script type="application/ld+json">
     {
       "@context":"https://schema.org",
@@ -75,6 +81,26 @@
         "addressRegion":"Aichi",
         "postalCode":"447-0864",
         "addressCountry":"JP"
+      },
+      "sameAs":[
+        "https://www.instagram.com/assunnahhekinan",
+        "https://www.youtube.com/@assunnahhekinan"
+      ]
+    }
+    </script>
+
+    <!-- ===== JSON-LD: Organization (Logo untuk search engine) ===== -->
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"Organization",
+      "name":"Masjid As-Sunnah Hekinan",
+      "url":"https://assunnahhekinan.org/",
+      "logo":{
+        "@type":"ImageObject",
+        "url":"https://assunnahhekinan.org/logohekinan.png",
+        "width":512,
+        "height":512
       },
       "sameAs":[
         "https://www.instagram.com/assunnahhekinan",
@@ -302,18 +328,13 @@
           <div id="galeriTrack"
                class="flex transition-transform duration-500 ease-out overflow-hidden rounded-2xl border border-slate-200"
                data-index="0" data-autoplay="true" data-interval="4500">
-            <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img src="1.jpeg" alt="Kegiatan pengajian jamaah di Hekinan" class="block w-full h-full object-cover" loading="lazy">
-            </figure>
-            <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img src="2.jpeg" alt="Relawan membersihkan area masjid" class="block w-full h-full object-cover" loading="lazy">
-            </figure>
-            <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img src="3.jpeg" alt="Anak-anak belajar mengaji di kelas TPA" class="block w-full h-full object-cover" loading="lazy">
-            </figure>
-            <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <img src="4.jpeg" alt="Panitia meninjau lokasi wudu dan area akhwat" class="block w-full h-full object-cover" loading="lazy">
-            </figure>
+
+            <!-- Foto-foto sebagai background agar stabil di mobile -->
+            <figure class="min-w-full h-[360px] md:h-[540px] bg-center bg-cover" style="background-image:url('./1.jpeg');"></figure>
+            <figure class="min-w-full h-[360px] md:h-[540px] bg-center bg-cover" style="background-image:url('./2.jpeg');"></figure>
+            <figure class="min-w-full h-[360px] md:h-[540px] bg-center bg-cover" style="background-image:url('./3.jpeg');"></figure>
+            <figure class="min-w-full h-[360px] md:h-[540px] bg-center bg-cover" style="background-image:url('./4.jpeg');"></figure>
+
             <!-- Video -->
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
               <video class="w-full h-full object-cover" muted playsinline preload="metadata" data-video-slide controlslist="nodownload noplaybackrate">
@@ -431,34 +452,28 @@
           'site.desc': 'Landing page resmi Masjid As-Sunnah Hekinan. Yuk ikut berkontribusi dalam donasi pelunasan pembelian bangunan untuk masjid.',
           'og.title': 'Masjid As-Sunnah Hekinan — Bantu Pelunasan',
           'og.desc': 'Yuk ikut berkontribusi dalam donasi pelunasan pembelian bangunan untuk masjid.',
-
           brand: 'Masjid As-Sunnah Hekinan',
           'nav.about': 'Tentang', 'nav.progress': 'Progres', 'nav.donate': 'Donasi', 'nav.gallery': 'Galeri', 'nav.location': 'Lokasi', 'nav.faq': 'FAQ',
           'btn.donate': 'Donasi Sekarang', 'btn.learn': 'Pelajari Lebih Lanjut',
-
           'hero.tag': 'Ayo Bantu Pelunasan Pembelian Bangunan Untuk Masjid',
           'hero.title': 'Wujudkan Kenyamanan Ibadah di <span class="text-sky-600">Masjid As-Sunnah Hekinan</span>',
           'hero.body': 'Setiap kontribusi Anda menjadi amal jariyah. Mari bersama mewujudkan rumah ibadah yang nyaman untuk kaum Muslimin di Hekinan dan sekitarnya.',
           'hero.hadith1': '“Siapa yang membangun masjid karena Allah, maka Allah akan membangun baginya semisal itu di surga.” (HR. Bukhari no. 450 dan Muslim no. 533).',
-
           'about.title': 'Tentang Program',
           'about.desc': 'Kami sedang berikhtiar melunasi <span class="font-semibold">pembelian bangunan</span> yang akan digunakan sebagai Masjid As-Sunnah Hekinan. Dana juga dialokasikan untuk renovasi dasar: area wudhu, area akhwat, perpustakaan, dan aksesibilitas.',
           'about.point1': 'Lokasi strategis, parkir luas & ramah lingkungan',
           'about.point2': 'Menampung ±400 jamaah',
           'about.point3': 'Mendukung kajian, TPA, dan kegiatan sosial',
-
           'progress.title': 'Progres Pelunasan',
           'progress.note': 'Target pelunasan dan nominal yang sudah terkumpul diperbarui berkala.',
           'progress.collected': 'Terkumpul',
           'progress.target': 'Target',
           'progress.suffix': 'tercapai',
-
           'donate.unlimited': 'Tanpa Batas',
           'form.nominalLabel': 'Nominal Donasi',
           'donate.placeholder': 'Masukkan nominal (JPY)',
           'donate.proceed': 'Lanjut Donasi',
           'donate.note': '* Donasi via transfer bank (Jepang/Indonesia). Setelah klik “Lanjut Donasi”, konfirmasi via WhatsApp.',
-
           'accounts.title': 'Rekening Donasi',
           'accounts.jp': '🇯🇵 Jepang — Yucho Bank',
           'accounts.id': '🇮🇩 Indonesia — Bank Syariah Indonesia',
@@ -467,7 +482,6 @@
           'accounts.holderLabel': 'a.n.',
           'accounts.numberLabel': 'No. Rekening',
           'accounts.tbu': 'nomor akan diupdate',
-
           'donate.title': 'Donasi Pelunasan',
           'donate.desc': 'Pilih nominal, lalu konfirmasi via WhatsApp setelah transfer ke rekening Jepang atau Indonesia.',
           'donate.choose': 'Pilih Nominal',
@@ -477,16 +491,11 @@
           'donate.illustration': 'Ilustrasi Donasi',
           'donate.helper': 'Berapapun donasi anda akan sangat membantu pelunasan pembelian bangunan untuk masjid.',
           'donate.hadith2': '“Siapa yang membangun masjid karena Allah walaupun hanya selubang tempat burung bertelur atau lebih kecil, maka Allah bangunkan baginya (rumah) seperti itu pula di surga.” (HR. Ibnu Majah no. 738. Al-Hafizh Abu Thahir mengatakan bahwa sanad hadits ini shahih)',
-
           'gallery.title': 'Galeri Kegiatan', 'gallery.prev': 'Sebelumnya', 'gallery.next': 'Berikutnya',
           'gallery.hint': 'Geser di layar sentuh, atau gunakan tombol ◀ ▶. Slider berjalan otomatis dan berhenti saat di-hover.',
-
           'location.title': 'Lokasi Masjid', 'location.address': 'Alamat:', 'location.openmap': 'Buka di Google Maps', 'location.copy': 'Salin Alamat', 'location.hint': 'Gunakan tombol di atas untuk navigasi langsung ke lokasi.',
-
           'footer.links': 'Tautan', 'footer.follow': 'Ikuti Kami', 'footer.rights': 'Semua hak cipta dilindungi.',
-
           'modal.proceed': 'Lanjutkan Donasi', 'modal.close': 'Tutup', 'modal.amount': 'Nominal:', 'modal.remark': 'Setelah transfer ke rekening Jepang atau Indonesia, silakan kirim bukti.',
-
           'copy.copied': 'Disalin!',
           'alert.minDonation': 'Minimal donasi {amount}'
         },
@@ -495,34 +504,28 @@
           'site.desc': 'Official landing page of Masjid As-Sunnah Hekinan. Join us in contributing to pay off the mosque building purchase.',
           'og.title': 'Masjid As-Sunnah Hekinan — Payoff Campaign',
           'og.desc': 'Join the contribution to help pay off the mosque building purchase.',
-
           brand: 'Masjid As-Sunnah Hekinan',
           'nav.about': 'About', 'nav.progress': 'Progress', 'nav.donate': 'Donate', 'nav.gallery': 'Gallery', 'nav.location': 'Location', 'nav.faq': 'FAQ',
           'btn.donate': 'Donate Now', 'btn.learn': 'Learn More',
-
           'hero.tag': 'Help Pay Off the Mosque Building Purchase',
           'hero.title': 'Realize Comfortable Worship at <span class="text-sky-600">Masjid As-Sunnah Hekinan</span>',
           'hero.body': 'Every contribution you make becomes a continuous charity. Let us together build a comfortable house of worship for Muslims in Hekinan and surrounding areas.',
           'hero.hadith1': '“Whoever builds a mosque for Allah, Allah will build for him a house like it in Paradise.” (Bukhari no. 450; Muslim no. 533).',
-
           'about.title': 'About the Program',
           'about.desc': 'We are striving to pay off the <span class="font-semibold">purchase of a building</span> to be used as Masjid As-Sunnah Hekinan. Funds are also allocated for basic renovations: wudu area, women’s area, library, and accessibility.',
           'about.point1': 'Strategic location, ample parking & eco-friendly',
           'about.point2': 'Accommodates about 400 worshippers',
           'about.point3': 'Supports study circles, children’s classes, and social activities',
-
           'progress.title': 'Payoff Progress',
           'progress.note': 'The payoff target and the amount collected are updated periodically.',
           'progress.collected': 'Collected',
           'progress.target': 'Target',
           'progress.suffix': 'achieved',
-
           'donate.unlimited': 'Unlimited',
           'form.nominalLabel': 'Donation Amount',
           'donate.placeholder': 'Enter amount (JPY)',
           'donate.proceed': 'Continue to Donate',
           'donate.note': '* Donate via bank transfer (Japan/Indonesia). After clicking “Continue to Donate”, please confirm via WhatsApp.',
-
           'accounts.title': 'Donation Accounts',
           'accounts.jp': '🇯🇵 Japan — Yucho Bank',
           'accounts.id': '🇮🇩 Indonesia — Bank Syariah Indonesia',
@@ -531,7 +534,6 @@
           'accounts.holderLabel': 'Account holder',
           'accounts.numberLabel': 'Account No.',
           'accounts.tbu': 'to be updated',
-
           'donate.title': 'Payoff Donation',
           'donate.desc': 'Choose an amount, then confirm via WhatsApp after transferring to the Japan or Indonesia account.',
           'donate.choose': 'Choose Amount',
@@ -541,16 +543,11 @@
           'donate.illustration': 'Donation Illustration',
           'donate.helper': 'Any amount you donate will greatly help pay off the mosque building purchase.',
           'donate.hadith2': '“Whoever builds a mosque for Allah—even as small as a bird’s nest or smaller—Allah will build for him a house like it in Paradise.” (Ibn Majah no. 738; graded sahih by Al-Hafizh Abu Tahir).',
-
           'gallery.title': 'Activity Gallery', 'gallery.prev': 'Previous', 'gallery.next': 'Next',
           'gallery.hint': 'Swipe on touch screens, or use ◀ ▶. The slider auto-plays and pauses on hover.',
-
           'location.title': 'Mosque Location', 'location.address': 'Address:', 'location.openmap': 'Open in Google Maps', 'location.copy': 'Copy Address', 'location.hint': 'Use the buttons above to navigate directly to the location.',
-
           'footer.links': 'Links', 'footer.follow': 'Follow Us', 'footer.rights': 'All rights reserved.',
-
           'modal.proceed': 'Continue Donation', 'modal.close': 'Close', 'modal.amount': 'Amount:', 'modal.remark': 'After transferring to the Japan or Indonesia account, please send the receipt.',
-
           'copy.copied': 'Copied!',
           'alert.minDonation': 'Minimum donation is {amount}'
         }
@@ -651,8 +648,6 @@
         });
       });
     </script>
-
-    <!-- ===== (Resolver dihapus — pakai src eksplisit agar pasti tampil) ===== -->
 
     <!-- ===== Galeri Slider (foto + video) ===== -->
     <script>
