@@ -58,14 +58,16 @@
       @media print { nav, .no-print { display: none !important; } .print\:block{ display:block !important; } }
     </style>
 
-    <!-- ===== JSON-LD: Organization ===== -->
+    <!-- ===== JSON-LD: Mosque ===== -->
     <script type="application/ld+json">
     {
       "@context":"https://schema.org",
-      "@type":"Organization",
+      "@type":"Mosque",
       "name":"Masjid As-Sunnah Hekinan",
       "url":"https://assunnahhekinan.org/",
       "logo":"https://assunnahhekinan.org/logohekinan.jpeg",
+      "image":"https://assunnahhekinan.org/masjid-hero.jpg",
+      "telephone":"+81-80-1390-9425",
       "address":{
         "@type":"PostalAddress",
         "streetAddress":"1 Chome-8 Dojoyamamachi",
@@ -74,16 +76,14 @@
         "postalCode":"447-0864",
         "addressCountry":"JP"
       },
-      "contactPoint":[{
-        "@type":"ContactPoint",
-        "contactType":"information",
-        "telephone":"+81-80-1390-9425",
-        "areaServed":"JP"
-      }]
+      "sameAs":[
+        "https://www.instagram.com/assunnahhekinan",
+        "https://www.youtube.com/@assunnahhekinan"
+      ]
     }
     </script>
 
-    <!-- ===== JSON-LD: WebSite (tanpa SearchAction) ===== -->
+    <!-- ===== JSON-LD: WebSite ===== -->
     <script type="application/ld+json">
     {
       "@context":"https://schema.org",
@@ -131,7 +131,6 @@
     <section id="home" class="relative overflow-hidden">
       <div class="absolute inset-0 -z-10">
         <picture>
-          <!-- siapkan masjid-hero.webp jika ada -->
           <source srcset="masjid-hero.webp?v=2" type="image/webp">
           <img src="masjid-hero.jpg?v=2" alt="Bangunan calon Masjid As-Sunnah Hekinan" class="w-full h-full object-cover opacity-25" loading="lazy">
         </picture>
@@ -222,8 +221,8 @@
               <div class="mt-4 rounded-xl border border-slate-200 p-4">
                 <p class="text-sm font-semibold text-slate-900" data-i18n="accounts.jp">🇯🇵 Jepang — Yucho Bank</p>
                 <ul class="mt-2 text-sm text-slate-700 space-y-1">
-                  <li>a.n. <span class="font-medium">Yoshimine Adelfa</span></li>
-                  <li>No. Rekening: <span class="font-medium" id="rekYucho">12160-00457031</span></li>
+                  <li><span data-i18n="accounts.holderLabel">a.n.</span> <span class="font-medium">Yoshimine Adelfa</span></li>
+                  <li><span data-i18n="accounts.numberLabel">No. Rekening:</span> <span class="font-medium" id="rekYucho">12160-00457031</span></li>
                 </ul>
                 <div class="mt-3">
                   <button data-copy="#rekYucho" class="copy-btn rounded-lg border border-slate-300 px-3 py-1 text-xs hover:border-sky-600" data-i18n="accounts.copy">Salin No. Rek</button>
@@ -233,8 +232,8 @@
               <div class="mt-4 rounded-xl border border-slate-200 p-4">
                 <p class="text-sm font-semibold text-slate-900" data-i18n="accounts.id">🇮🇩 Indonesia — Bank Syariah Indonesia</p>
                 <ul class="mt-2 text-sm text-slate-700 space-y-1">
-                  <li>a.n. <span class="font-medium">DKM Masjid As-Sunnah Hekinan</span></li>
-                  <li>No. Rekening: <span class="font-medium" id="rekBsi">nomor akan diupdate</span></li>
+                  <li><span data-i18n="accounts.holderLabel">a.n.</span> <span class="font-medium">DKM Masjid As-Sunnah Hekinan</span></li>
+                  <li><span data-i18n="accounts.numberLabel">No. Rekening:</span> <span class="font-medium" id="rekBsi" data-i18n="accounts.tbu">nomor akan diupdate</span></li>
                 </ul>
                 <div class="mt-3">
                   <button data-copy="#rekBsi" class="copy-btn rounded-lg border border-slate-300 px-3 py-1 text-xs hover:border-sky-600" data-i18n="accounts.copy">Salin No. Rek</button>
@@ -303,12 +302,11 @@
           <div id="galeriTrack"
                class="flex transition-transform duration-500 ease-out overflow-hidden rounded-2xl border border-slate-200"
                data-index="0" data-autoplay="true" data-interval="4500">
-            <!-- Foto-foto: resolver akan cari ekstensi yang cocok -->
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
               <img data-file="1" alt="Kegiatan pengajian jamaah di Hekinan" class="block w-full h-full object-cover"
                    onerror="this.closest('figure').style.display='none'">
             </figure>
-            <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
+            <figure class="min-w-full h_[360px] md:h-[540px] bg-black flex items-center justify-center">
               <img data-file="2" alt="Relawan membersihkan area masjid" class="block w-full h-full object-cover"
                    onerror="this.closest('figure').style.display='none'">
             </figure>
@@ -320,7 +318,7 @@
               <img data-file="4" alt="Panitia meninjau lokasi wudu dan area akhwat" class="block w-full h-full object-cover"
                    onerror="this.closest('figure').style.display='none'">
             </figure>
-            <!-- Video (opsional) -->
+            <!-- Video -->
             <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
               <video class="w-full h-full object-cover" muted playsinline preload="metadata" data-video-slide controlslist="nodownload noplaybackrate">
                 <source src="video1.mp4" type="video/mp4">
@@ -395,9 +393,8 @@
           <div>
             <h3 class="font-bold text-slate-900" data-i18n="footer.follow">Ikuti Kami</h3>
             <ul class="mt-2 space-y-2 text-sm">
-              <li><a href="#" class="hover:text-sky-700">Instagram</a></li>
-              <li><a href="#" class="hover:text-sky-700">Facebook</a></li>
-              <li><a href="#" class="hover:text-sky-700">YouTube</a></li>
+              <li><a href="https://www.instagram.com/assunnahhekinan" target="_blank" rel="noopener" class="hover:text-sky-700">Instagram</a></li>
+              <li><a href="https://www.youtube.com/@assunnahhekinan" target="_blank" rel="noopener" class="hover:text-sky-700">YouTube</a></li>
             </ul>
           </div>
         </div>
@@ -408,7 +405,7 @@
       </div>
     </footer>
 
-    <!-- Modal (tanpa QRIS) -->
+    <!-- Modal -->
     <div id="modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4">
       <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-soft">
         <div class="flex items-start justify-between gap-4">
@@ -426,10 +423,10 @@
     <!-- i18n + app scripts -->
     <script>
       /* ===== Variabel donasi ===== */
-      const TARGET = 42000000;   // ubah sesuai target akhir
-      const TERKUMPUL = 1000000; // update jumlah terkini di sini
+      const TARGET = 42000000;
+      const TERKUMPUL = 1000000;
       const WA_NUMBER = '818013909425';
-      const MIN_DONATION = 1000; // minimal donasi (JPY)
+      const MIN_DONATION = 1000;
 
       /* ===== I18N resources ===== */
       const I18N_RESOURCES = {
@@ -471,6 +468,9 @@
           'accounts.id': '🇮🇩 Indonesia — Bank Syariah Indonesia',
           'accounts.copy': 'Salin No. Rek',
           'accounts.remark': 'Setelah transfer, mohon kirim bukti via WhatsApp agar dicatat oleh admin.',
+          'accounts.holderLabel': 'a.n.',
+          'accounts.numberLabel': 'No. Rekening',
+          'accounts.tbu': 'nomor akan diupdate',
 
           'donate.title': 'Donasi Pelunasan',
           'donate.desc': 'Pilih nominal, lalu konfirmasi via WhatsApp setelah transfer ke rekening Jepang atau Indonesia.',
@@ -532,6 +532,9 @@
           'accounts.id': '🇮🇩 Indonesia — Bank Syariah Indonesia',
           'accounts.copy': 'Copy Account No.',
           'accounts.remark': 'After transfer, please send proof via WhatsApp so the admin can record it.',
+          'accounts.holderLabel': 'Account holder',
+          'accounts.numberLabel': 'Account No.',
+          'accounts.tbu': 'to be updated',
 
           'donate.title': 'Payoff Donation',
           'donate.desc': 'Choose an amount, then confirm via WhatsApp after transferring to the Japan or Indonesia account.',
@@ -605,7 +608,6 @@
         const msg = encodeURIComponent("Assalamu'alaikum, saya ingin donasi sebesar " + I18NFormat.currency(n, 'id', 'JPY') + ' untuk pelunasan Masjid As-Sunnah Hekinan. Saya akan transfer ke rekening Jepang/Indonesia lalu kirim bukti.');
         document.getElementById('viaWA').href = 'https://wa.me/' + WA_NUMBER + '?text=' + msg;
         const m = document.getElementById('modal'); m.classList.remove('hidden'); m.classList.add('flex');
-        // GA4: event open modal (aman jika GA4 tidak dipasang)
         if (window.gtag) gtag('event', 'donation_modal_open', { currency: 'JPY', value: n });
       }
 
@@ -624,7 +626,7 @@
           });
         });
 
-        document.getElementById('copyAlamat')?.addEventListener('click', (e) => {
+        document.getElementById('copyAlamat')?.addEventListener('click', () => {
           navigator.clipboard.writeText(document.getElementById('alamat').textContent.trim());
         });
 
@@ -637,12 +639,10 @@
           if (!v || v < MIN_DONATION) {
             return alert(I18N.t('alert.minDonation', { amount: I18NFormat.currency(MIN_DONATION, I18N.lang, 'JPY') }));
           }
-          // GA4: intent donate (aman jika GA4 tidak dipasang)
           if (window.gtag) gtag('event', 'donation_intent', { currency: 'JPY', value: v });
           openModal(v);
         });
 
-        // GA4: CTA WhatsApp (aman jika GA4 tidak dipasang)
         document.getElementById('ctaWA')?.addEventListener('click', () => {
           if (window.gtag) gtag('event', 'click_whatsapp', { location: 'donasi_section' });
         });
@@ -741,7 +741,6 @@
           clearTimeout(timer);
           const prev = slides[index]?.querySelector('video[data-video-slide]');
           if (prev){ prev.pause(); prev.currentTime = 0; prev.removeEventListener('ended', onVideoEnded); }
-
           index = (i + slides.length) % slides.length;
           updateUI();
           if (track.dataset.autoplay === 'true') scheduleNext();
