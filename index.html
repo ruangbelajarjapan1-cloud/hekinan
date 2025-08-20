@@ -66,11 +66,6 @@
       "name":"Masjid As-Sunnah Hekinan",
       "url":"https://assunnahhekinan.org/",
       "logo":"https://assunnahhekinan.org/logohekinan.jpeg",
-      "sameAs":[
-        "https://www.instagram.com/USERNAME",
-        "https://www.facebook.com/USERNAME",
-        "https://www.youtube.com/@USERNAME"
-      ],
       "address":{
         "@type":"PostalAddress",
         "streetAddress":"1 Chome-8 Dojoyamamachi",
@@ -81,35 +76,21 @@
       },
       "contactPoint":[{
         "@type":"ContactPoint",
-        "contactType":"customer support",
+        "contactType":"information",
         "telephone":"+81-80-1390-9425",
         "areaServed":"JP"
       }]
     }
     </script>
 
-    <!-- ===== JSON-LD: WebSite ===== -->
+    <!-- ===== JSON-LD: WebSite (tanpa SearchAction) ===== -->
     <script type="application/ld+json">
     {
       "@context":"https://schema.org",
       "@type":"WebSite",
       "name":"Masjid As-Sunnah Hekinan",
-      "url":"https://assunnahhekinan.org/",
-      "potentialAction":{
-        "@type":"SearchAction",
-        "target":"https://assunnahhekinan.org/?q={search_term_string}",
-        "query-input":"required name=search_term_string"
-      }
+      "url":"https://assunnahhekinan.org/"
     }
-    </script>
-
-    <!-- ===== Google Analytics 4 (ganti ID) ===== -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX'); // TODO: ganti dengan Measurement ID GA4 kamu
     </script>
   </head>
 
@@ -624,7 +605,7 @@
         const msg = encodeURIComponent("Assalamu'alaikum, saya ingin donasi sebesar " + I18NFormat.currency(n, 'id', 'JPY') + ' untuk pelunasan Masjid As-Sunnah Hekinan. Saya akan transfer ke rekening Jepang/Indonesia lalu kirim bukti.');
         document.getElementById('viaWA').href = 'https://wa.me/' + WA_NUMBER + '?text=' + msg;
         const m = document.getElementById('modal'); m.classList.remove('hidden'); m.classList.add('flex');
-        // GA4: event open modal
+        // GA4: event open modal (aman jika GA4 tidak dipasang)
         if (window.gtag) gtag('event', 'donation_modal_open', { currency: 'JPY', value: n });
       }
 
@@ -656,12 +637,12 @@
           if (!v || v < MIN_DONATION) {
             return alert(I18N.t('alert.minDonation', { amount: I18NFormat.currency(MIN_DONATION, I18N.lang, 'JPY') }));
           }
-          // GA4: intent donate
+          // GA4: intent donate (aman jika GA4 tidak dipasang)
           if (window.gtag) gtag('event', 'donation_intent', { currency: 'JPY', value: v });
           openModal(v);
         });
 
-        // GA4: CTA WhatsApp
+        // GA4: CTA WhatsApp (aman jika GA4 tidak dipasang)
         document.getElementById('ctaWA')?.addEventListener('click', () => {
           if (window.gtag) gtag('event', 'click_whatsapp', { location: 'donasi_section' });
         });
