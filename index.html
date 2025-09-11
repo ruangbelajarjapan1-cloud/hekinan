@@ -141,6 +141,8 @@
             <span>1 Chome-8 Dojoyamamachi, Hekinan, Aichi 447-0864</span>
           </a>
         </div>
+
+        <!-- Desktop menu -->
         <div class="hidden md:flex items-center gap-6 text-sm">
           <a href="#tentang" class="hover:text-sky-700" data-i18n="nav.about">Tentang</a>
           <a href="#progres" class="hover:text-sky-700" data-i18n="nav.progress">Progres</a>
@@ -149,8 +151,28 @@
           <a href="#lokasi" class="hover:text-sky-700" data-i18n="nav.location">Lokasi</a>
           <a href="#faq" class="hover:text-sky-700" data-i18n="nav.faq">FAQ</a>
         </div>
-        <a href="#donasi" class="rounded-2xl bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold px-4 py-2 shadow-soft" data-i18n="btn.donate">Donasi Sekarang</a>
+
+        <!-- Burger button (mobile) -->
+        <div class="flex items-center gap-3">
+          <a href="#donasi" class="hidden md:inline-block rounded-2xl bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold px-4 py-2 shadow-soft" data-i18n="btn.donate">Donasi Sekarang</a>
+          <button id="burgerBtn" class="md:hidden flex flex-col gap-1.5 p-2 rounded-lg border border-slate-300 hover:border-sky-600" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+            <span class="block w-5 h-0.5 bg-slate-700"></span>
+            <span class="block w-5 h-0.5 bg-slate-700"></span>
+            <span class="block w-5 h-0.5 bg-slate-700"></span>
+          </button>
+        </div>
       </nav>
+
+      <!-- Mobile menu panel -->
+      <div id="mobileMenu" class="hidden md:hidden border-t border-slate-200 bg-white/95 backdrop-blur px-4 py-4 flex flex-col gap-3 text-sm">
+        <a href="#tentang" class="hover:text-sky-700" data-i18n="nav.about">Tentang</a>
+        <a href="#progres" class="hover:text-sky-700" data-i18n="nav.progress">Progres</a>
+        <a href="#donasi" class="hover:text-sky-700" data-i18n="nav.donate">Donasi</a>
+        <a href="#galeri" class="hover:text-sky-700" data-i18n="nav.gallery">Galeri</a>
+        <a href="#lokasi" class="hover:text-sky-700" data-i18n="nav.location">Lokasi</a>
+        <a href="#faq" class="hover:text-sky-700" data-i18n="nav.faq">FAQ</a>
+        <a href="#donasi" class="rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-center px-4 py-2" data-i18n="btn.donate">Donasi Sekarang</a>
+      </div>
     </header>
 
     <!-- (HERO DIHAPUS SESUAI PERMINTAAN) -->
@@ -173,7 +195,7 @@
       </div>
     </section>
 
-    <!-- Progres Donasi (tidak diubah) -->
+    <!-- Progres Donasi -->
     <section id="progres" class="bg-white border-y border-slate-200/70">
       <div class="container mx-auto px-4 py-16">
         <div class="grid lg:grid-cols-3 gap-8 items-start">
@@ -249,7 +271,7 @@
       </div>
     </section>
 
-    <!-- Donasi CTA (tidak diubah) -->
+    <!-- Donasi CTA -->
     <section id="donasi" class="container mx-auto px-4 py-16">
       <div class="grid lg:grid-cols-2 gap-8 items-center">
         <div class="order-2 lg:order-1">
@@ -288,14 +310,14 @@
       </div>
     </section>
 
-    <!-- GALERI: Slideshow diganti CAROUSEL + poster fit horizontal di 5.jpeg -->
+    <!-- GALERI: Carousel + poster fit horizontal (5.jpeg) -->
     <section id="galeri" class="bg-white border-y border-slate-200/70">
       <div class="container mx-auto px-4 py-16">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900" data-i18n="gallery.title">Galeri Kegiatan</h2>
           <div class="hidden md:flex items-center gap-2">
             <button id="carPrev" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600" aria-label="Sebelumnya" data-i18n-attr='{"aria-label":"gallery.prev"}'>◀</button>
-            <button id="carNext" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600" aria-label="Berikutnya" data-i18n-attr=''{"aria-label":"gallery.next"}'>▶</button>
+            <button id="carNext" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600" aria-label="Berikutnya" data-i18n-attr='{"aria-label":"gallery.next"}'>▶</button>
           </div>
         </div>
 
@@ -319,13 +341,15 @@
             <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden flex items-center justify-center bg-white">
               <img src="./5.jpeg" alt="Poster kegiatan" class="max-w-full max-h-full object-contain" loading="lazy">
             </figure>
-            <!-- Item Video -->
+            <!-- Item Video (opsional) -->
+            <!--
             <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-black flex items-center justify-center">
               <video class="w-full h-full object-cover" controls playsinline preload="metadata">
                 <source src="video1.mp4" type="video/mp4">
                 Browser Anda tidak mendukung video.
               </video>
             </figure>
+            -->
           </div>
 
           <!-- Controls mobile -->
@@ -343,7 +367,7 @@
       </div>
     </section>
 
-    <!-- LOKASI (tidak diubah) -->
+    <!-- LOKASI -->
     <section id="lokasi" class="bg-white border-t border-slate-200/70">
       <div class="container mx-auto px-4 py-16">
         <div class="grid lg:grid-cols-2 gap-8 items-start">
@@ -365,7 +389,7 @@
       </div>
     </section>
 
-    <!-- Footer (tidak diubah) -->
+    <!-- Footer -->
     <footer class="bg-white">
       <div class="container mx-auto px-4 py-10">
         <div class="grid md:grid-cols-3 gap-8">
@@ -418,7 +442,7 @@
       </div>
     </div>
 
-    <!-- i18n + app scripts (disalin dari versi sebelumnya, hanya minor penyesuaian) -->
+    <!-- i18n + app scripts -->
     <script>
       /* ===== Variabel donasi ===== */
       const TARGET = 42000000;
@@ -576,6 +600,21 @@
         const m = document.getElementById('modal'); m.classList.remove('hidden'); m.classList.add('flex');
         if (window.gtag) gtag('event', 'donation_modal_open', { currency: 'JPY', value: n });
       }
+
+      // ===== Burger toggle =====
+      document.getElementById('burgerBtn').addEventListener('click', () => {
+        const menu = document.getElementById('mobileMenu');
+        const expanded = document.getElementById('burgerBtn').getAttribute('aria-expanded') === 'true';
+        document.getElementById('burgerBtn').setAttribute('aria-expanded', (!expanded).toString());
+        menu.classList.toggle('hidden');
+      });
+      document.querySelectorAll('#mobileMenu a').forEach(a=> a.addEventListener('click', ()=>{
+        const menu = document.getElementById('mobileMenu');
+        if (!menu.classList.contains('hidden')) {
+          menu.classList.add('hidden');
+          document.getElementById('burgerBtn').setAttribute('aria-expanded','false');
+        }
+      }));
 
       // init on load
       window.addEventListener('DOMContentLoaded', () => {
