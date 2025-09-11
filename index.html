@@ -3,25 +3,306 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title data-i18n="site.title">Masjid As-Sunnah Hekinan — Bantu Pelunasan Pembelian Bangunan Untuk Masjid</title>
-    <!-- (head bagian lain sama, tidak diubah) -->
-  </head>
-  <body class="font-sans text-slate-800 bg-gradient-to-b from-sky-50 to-white">
-    <!-- (bagian header, tentang, progres, donasi tetap sama) -->
 
-    <!-- GALERI: Carousel -->
+    <!-- ===== SEO dasar ===== -->
+    <title data-i18n="site.title">Masjid As-Sunnah Hekinan — Bantu Pelunasan Pembelian Bangunan Untuk Masjid</title>
+    <meta name="description" content="Landing page resmi Masjid As-Sunnah Hekinan. Yuk ikut berkontribusi dalam donasi pelunasan pembelian bangunan untuk masjid." data-i18n-attr='{"content":"site.desc"}'>
+    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+    <link rel="canonical" href="https://assunnahhekinan.org/"/>
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml"/>
+
+    <!-- (Opsional) verifikasi GSC: ganti token jika perlu -->
+    <meta name="google-site-verification" content="SmI-n5Ww-Ct4BjQixlDqkgbCyheXf92H_C7ERG3UICs"/>
+
+    <!-- ===== Open Graph / Social ===== -->
+    <meta property="og:title" content="Masjid As-Sunnah Hekinan — Bantu Pelunasan" data-i18n-attr='{"content":"og.title"}'/>
+    <meta property="og:description" content="Yuk ikut berkontribusi dalam donasi pelunasan pembelian bangunan untuk masjid." data-i18n-attr='{"content":"og.desc"}'/>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://assunnahhekinan.org/"/>
+    <meta property="og:image" content="https://assunnahhekinan.org/logohekinan.jpeg" />
+    <meta property="og:image:alt" content="Masjid As-Sunnah Hekinan" />
+    <meta property="og:locale" content="id_ID"/>
+    <meta property="og:locale:alternate" content="en_US"/>
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Masjid As-Sunnah Hekinan — Bantu Pelunasan" data-i18n-attr='{"content":"og.title"}'>
+    <meta name="twitter:description" content="Yuk ikut berkontribusi dalam donasi pelunasan pembelian bangunan untuk masjid." data-i18n-attr='{"content":"og.desc"}'>
+    <meta name="twitter:image" content="https://assunnahhekinan.org/logohekinan.jpeg">
+
+    <meta name="theme-color" content="#0ea5e9" />
+
+    <!-- Favicons / App icons -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png"> <!-- 180x180 -->
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ["Inter","ui-sans-serif","system-ui","-apple-system","Segoe UI","Roboto","Noto Sans","Ubuntu","Cantarell","Helvetica Neue","Arial","sans-serif"] },
+            boxShadow: { soft: "0 10px 25px -15px rgba(0,0,0,0.3)" },
+          },
+        },
+      };
+    </script>
+    <style>
+      html { scroll-behavior: smooth; }
+      :focus-visible { outline: 3px solid #38bdf8; outline-offset: 2px; border-radius: .5rem; }
+      @media print { nav, .no-print { display: none !important; } .print\:block{ display:block !important; } }
+      /* Carousel */
+      .carousel-track { scroll-snap-type: x mandatory; }
+      .carousel-item { scroll-snap-align: start; }
+    </style>
+
+    <!-- ===== JSON-LD: Mosque ===== -->
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"Mosque",
+      "name":"Masjid As-Sunnah Hekinan",
+      "url":"https://assunnahhekinan.org/",
+      "logo":"https://assunnahhekinan.org/logohekinan.jpeg",
+      "image":"https://assunnahhekinan.org/logohekinan.jpeg",
+      "telephone":"+81-80-1390-9425",
+      "address":{
+        "@type":"PostalAddress",
+        "streetAddress":"1 Chome-8 Dojoyamamachi",
+        "addressLocality":"Hekinan",
+        "addressRegion":"Aichi",
+        "postalCode":"447-0864",
+        "addressCountry":"JP"
+      },
+      "sameAs":[
+        "https://www.instagram.com/assunnahhekinan",
+        "https://www.youtube.com/@assunnahhekinan"
+      ]
+    }
+    </script>
+
+    <!-- ===== JSON-LD: Organization ===== -->
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"Organization",
+      "name":"Masjid As-Sunnah Hekinan",
+      "url":"https://assunnahhekinan.org/",
+      "logo":{
+        "@type":"ImageObject",
+        "url":"https://assunnahhekinan.org/logohekinan.png",
+        "width":512,
+        "height":512
+      },
+      "sameAs":[
+        "https://www.instagram.com/assunnahhekinan",
+        "https://www.youtube.com/@assunnahhekinan"
+      ]
+    }
+    </script>
+
+    <!-- ===== JSON-LD: WebSite ===== -->
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"WebSite",
+      "name":"Masjid As-Sunnah Hekinan",
+      "url":"https://assunnahhekinan.org/"
+    }
+    </script>
+  </head>
+
+  <body class="font-sans text-slate-800 bg-gradient-to-b from-sky-50 to-white">
+    <!-- Toggle Bahasa -->
+    <div class="fixed bottom-4 right-4 z-50">
+      <button id="langToggle" class="rounded-xl bg-sky-600 text-white px-3 py-2 text-sm font-semibold shadow-soft" aria-label="Ubah Bahasa">EN</button>
+    </div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 backdrop-blur bg-white/70 border-b border-slate-200/70">
+      <nav class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <a href="#tentang" class="flex items-center gap-3">
+            <img src="logohekinan.jpeg" alt="Logo Masjid As-Sunnah Hekinan" class="h-10 w-auto" loading="lazy">
+            <span class="font-extrabold text-slate-900 text-lg" data-i18n="brand">Masjid As-Sunnah Hekinan</span>
+          </a>
+          <a href="https://www.google.com/maps?q=1%20Chome-8%20Dojoyamamachi,%20Hekinan,%20Aichi%20447-0864"
+             target="_blank" rel="noopener"
+             class="hidden sm:inline-flex items-center gap-1 text-xs ml-3 px-2 py-1 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200">
+            <span aria-hidden="true">📍</span>
+            <span>1 Chome-8 Dojoyamamachi, Hekinan, Aichi 447-0864</span>
+          </a>
+        </div>
+        <div class="hidden md:flex items-center gap-6 text-sm">
+          <a href="#tentang" class="hover:text-sky-700" data-i18n="nav.about">Tentang</a>
+          <a href="#progres" class="hover:text-sky-700" data-i18n="nav.progress">Progres</a>
+          <a href="#donasi" class="hover:text-sky-700" data-i18n="nav.donate">Donasi</a>
+          <a href="#galeri" class="hover:text-sky-700" data-i18n="nav.gallery">Galeri</a>
+          <a href="#lokasi" class="hover:text-sky-700" data-i18n="nav.location">Lokasi</a>
+          <a href="#faq" class="hover:text-sky-700" data-i18n="nav.faq">FAQ</a>
+        </div>
+        <a href="#donasi" class="rounded-2xl bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold px-4 py-2 shadow-soft" data-i18n="btn.donate">Donasi Sekarang</a>
+      </nav>
+    </header>
+
+    <!-- (HERO DIHAPUS SESUAI PERMINTAAN) -->
+
+    <!-- Tentang -->
+    <section id="tentang" class="container mx-auto px-4 py-16">
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <img src="1.jpeg" alt="Foto bangunan masjid yang akan dibeli" class="rounded-2xl shadow-soft" loading="lazy">
+        </div>
+        <div>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900" data-i18n="about.title">Tentang Program</h2>
+          <p class="mt-4 text-slate-700 leading-relaxed" data-i18n="about.desc"></p>
+          <ul class="mt-6 space-y-3 text-slate-700">
+            <li class="flex gap-3"><span class="text-sky-600">✓</span> <span data-i18n="about.point1">Lokasi strategis, parkir luas & ramah lingkungan</span></li>
+            <li class="flex gap-3"><span class="text-sky-600">✓</span> <span data-i18n="about.point2">Menampung ±400 jamaah</span></li>
+            <li class="flex gap-3"><span class="text-sky-600">✓</span> <span data-i18n="about.point3">Mendukung kajian, TPA, dan kegiatan sosial</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progres Donasi (tidak diubah) -->
+    <section id="progres" class="bg-white border-y border-slate-200/70">
+      <div class="container mx-auto px-4 py-16">
+        <div class="grid lg:grid-cols-3 gap-8 items-start">
+          <div class="lg:col-span-2">
+            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900" data-i18n="progress.title">Progres Pelunasan</h2>
+            <p class="mt-2 text-slate-700" data-i18n="progress.note">Target pelunasan dan nominal yang sudah terkumpul diperbarui berkala.</p>
+
+            <div class="mt-6 p-6 rounded-2xl border border-slate-200 bg-slate-50">
+              <div class="flex items-end justify-between gap-4">
+                <div>
+                  <p class="text-sm text-slate-600" data-i18n="progress.collected">Terkumpul</p>
+                  <p class="text-2xl md:text-3xl font-extrabold text-slate-900" id="terkumpulLabel">JPY 0</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-sm text-slate-600" data-i18n="progress.target">Target</p>
+                  <p class="text-xl md:text-2xl font-extrabold text-slate-900" id="targetLabel">JPY 0</p>
+                </div>
+              </div>
+
+              <div class="mt-4 w-full bg-white rounded-full border border-slate-200 overflow-hidden" aria-label="Progress bar">
+                <div id="progressBar" class="h-3 bg-sky-600" style="width:0%"></div>
+              </div>
+              <div class="mt-2 text-sm text-slate-600"><span id="percentLabel">0</span>% <span data-i18n="progress.suffix">tercapai</span></div>
+
+              <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+                <button data-quick="5000" class="quick-btn rounded-xl border border-slate-300 hover:border-sky-600 px-4 py-2">JPY 5.000</button>
+                <button data-quick="10000" class="quick-btn rounded-xl border border-slate-300 hover:border-sky-600 px-4 py-2">JPY 10.000</button>
+                <button data-quick="20000" class="quick-btn rounded-xl border border-slate-300 hover:border-sky-600 px-4 py-2">JPY 20.000</button>
+                <button data-quick="Unlimited" class="quick-btn rounded-xl border border-slate-300 hover:border-sky-600 px-4 py-2" data-i18n="donate.unlimited">Unlimited</button>
+              </div>
+
+              <form id="donasiForm" class="mt-4 flex flex-col sm:flex-row gap-3" onsubmit="return false">
+                <label for="nominalInput" class="sr-only" data-i18n="form.nominalLabel">Nominal Donasi</label>
+                <input id="nominalInput" type="number" min="1000" step="100" placeholder="Masukkan nominal (JPY)" class="flex-1 rounded-xl border border-slate-300 px-4 py-3 focus:border-sky-600" data-i18n-attr='{"placeholder":"donate.placeholder"}' />
+                <button id="donasiBtn" class="rounded-2xl bg-sky-600 hover:bg-sky-700 text-white font-semibold px-6 py-3" data-i18n="donate.proceed">Lanjut Donasi</button>
+              </form>
+
+              <p class="mt-3 text-xs text-slate-500" data-i18n="donate.note">* Donasi via transfer bank (Jepang/Indonesia). Setelah klik “Lanjut Donasi”, konfirmasi via WhatsApp.</p>
+            </div>
+          </div>
+
+          <!-- Rekening -->
+          <aside class="lg:col-span-1">
+            <div class="rounded-2xl border border-slate-200 bg-white p-6">
+              <h3 class="text-lg font-bold text-slate-900" data-i18n="accounts.title">Rekening Donasi</h3>
+
+              <div class="mt-4 rounded-xl border border-slate-200 p-4">
+                <p class="text-sm font-semibold text-slate-900" data-i18n="accounts.jp">🇯🇵 Jepang — Yucho Bank</p>
+                <ul class="mt-2 text-sm text-slate-700 space-y-1">
+                  <li><span data-i18n="accounts.holderLabel">a.n.</span> <span class="font-medium">Yoshimine Adelfa</span></li>
+                  <li><span data-i18n="accounts.numberLabel">No. Rekening:</span> <span class="font-medium" id="rekYucho">12160-00457031</span></li>
+                </ul>
+                <div class="mt-3">
+                  <button data-copy="#rekYucho" class="copy-btn rounded-lg border border-slate-300 px-3 py-1 text-xs hover:border-sky-600" data-i18n="accounts.copy">Salin No. Rek</button>
+                </div>
+              </div>
+
+              <div class="mt-4 rounded-xl border border-slate-200 p-4">
+                <p class="text-sm font-semibold text-slate-900" data-i18n="accounts.id">🇮🇩 Indonesia — Bank Syariah Indonesia</p>
+                <ul class="mt-2 text-sm text-slate-700 space-y-1">
+                  <li><span data-i18n="accounts.holderLabel">a.n.</span> <span class="font-medium">DKM Masjid As-Sunnah Hekinan</span></li>
+                  <li><span data-i18n="accounts.numberLabel">No. Rekening:</span> <span class="font-medium" id="rekBsi" data-i18n="accounts.tbu">nomor akan diupdate</span></li>
+                </ul>
+                <div class="mt-3">
+                  <button data-copy="#rekBsi" class="copy-btn rounded-lg border border-slate-300 px-3 py-1 text-xs hover:border-sky-600" data-i18n="accounts.copy">Salin No. Rek</button>
+                </div>
+              </div>
+
+              <p class="mt-3 text-xs text-slate-500" data-i18n="accounts.remark">Setelah transfer, mohon kirim bukti via WhatsApp agar dicatat oleh admin.</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Donasi CTA (tidak diubah) -->
+    <section id="donasi" class="container mx-auto px-4 py-16">
+      <div class="grid lg:grid-cols-2 gap-8 items-center">
+        <div class="order-2 lg:order-1">
+          <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900" data-i18n="donate.title">Donasi Pelunasan</h2>
+          <p class="mt-3 text-slate-700" data-i18n="donate.desc">
+            Pilih nominal, lalu konfirmasi via WhatsApp setelah transfer ke rekening Jepang atau Indonesia.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-3 no-print">
+            <a href="#progres" class="rounded-2xl bg-sky-600 hover:bg-sky-700 text-white font-semibold px-6 py-3" data-i18n="donate.choose">Pilih Nominal</a>
+            <a id="ctaWA" href="https://wa.me/818013909425?text=Assalamu%27alaikum%2C+saya+ingin+donasi+untuk+Masjid+As-Sunnah+Hekinan" target="_blank" rel="noopener" class="rounded-2xl border border-slate-300 hover:border-sky-600 px-6 py-3" data-i18n="donate.confirm">
+              Konfirmasi via WhatsApp
+            </a>
+          </div>
+          <div class="print:block hidden mt-6 text-sm">
+            <p><span class="font-semibold" data-i18n="print.noteLabel">Catatan:</span> <span data-i18n="print.note">Simpan halaman ini sebagai bukti transfer. Jazaakumullah khairan wa baarakallah fiikum atas donasinya.</span></p>
+          </div>
+        </div>
+
+        <div class="order-1 lg:order-2">
+          <div class="rounded-2xl border border-slate-200 bg-white p-4 md:p-6 shadow-soft">
+            <svg viewBox="0 0 600 420" role="img" aria-labelledby="donasiTitle" class="w-full h-auto">
+              <title id="donasiTitle" data-i18n="donate.illustration">Ilustrasi Donasi</title>
+              <circle cx="480" cy="100" r="90" fill="#E0F2FE" />
+              <circle cx="120" cy="80" r="60" fill="#F1F5F9" />
+              <circle cx="60"  cy="330" r="80" fill="#ECFEFF" />
+              <rect x="110" y="160" rx="18" ry="18" width="380" height="200" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="6"/>
+              <rect x="230" y="190" width="140" height="16" rx="8" fill="#334155"/>
+              <path d="M300 302c-22-20-50-35-50-64 0-17 13-30 30-30 10 0 19 5 24 12 5-7 14-12 24-12 17 0 30 13 30 30 0 29-28 44-50 64z" fill="#EF4444"/>
+              <g><circle cx="360" cy="130" r="38" fill="#FBBF24"/><circle cx="360" cy="130" r="24" fill="#FDE68A"/></g>
+              <g opacity="0.6"><circle cx="420" cy="90" r="26" fill="#FBBF24"/><circle cx="420" cy="90" r="16" fill="#FDE68A"/></g>
+            </svg>
+            <p class="mt-2 text-center text-xs text-slate-500" data-i18n="donate.helper">Berapapun donasi anda akan sangat membantu pelunasan pembelian bangunan untuk masjid.</p>
+            <p class="mt-1 text-center text-xs text-slate-500" data-i18n="donate.hadith2">“Siapa yang membangun masjid karena Allah walaupun hanya selubang tempat burung bertelur atau lebih kecil, maka Allah bangunkan baginya (rumah) seperti itu pula di surga.” (HR. Ibnu Majah no. 738. Al-Hafizh Abu Thahir mengatakan bahwa sanad hadits ini shahih)</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALERI: Slideshow diganti CAROUSEL + poster fit horizontal di 5.jpeg -->
     <section id="galeri" class="bg-white border-y border-slate-200/70">
       <div class="container mx-auto px-4 py-16">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900" data-i18n="gallery.title">Galeri Kegiatan</h2>
           <div class="hidden md:flex items-center gap-2">
-            <button id="carPrev" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600">◀</button>
-            <button id="carNext" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600">▶</button>
+            <button id="carPrev" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600" aria-label="Sebelumnya" data-i18n-attr='{"aria-label":"gallery.prev"}'>◀</button>
+            <button id="carNext" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600" aria-label="Berikutnya" data-i18n-attr=''{"aria-label":"gallery.next"}'>▶</button>
           </div>
         </div>
 
         <div class="relative">
-          <div id="carousel" class="carousel-track flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth rounded-2xl border border-slate-200 p-4">
+          <div id="carousel" class="carousel-track flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth rounded-2xl border border-slate-200 p-4"
+               style="scrollbar-width:none; -ms-overflow-style:none;">
+            <!-- Item Foto -->
             <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
               <img src="./1.jpeg" alt="Kegiatan 1" class="w-full h-full object-cover" loading="lazy">
             </figure>
@@ -34,11 +315,11 @@
             <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
               <img src="./4.jpeg" alt="Kegiatan 4" class="w-full h-full object-cover" loading="lazy">
             </figure>
-            <!-- Poster pada slide ke-5 -->
-            <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden flex items-center justify-center bg-slate-100">
-              <img src="./5.jpeg" alt="Poster" class="w-full h-full object-contain" loading="lazy">
+            <!-- Slide Poster (fit horizontal) -->
+            <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden flex items-center justify-center bg-white">
+              <img src="./5.jpeg" alt="Poster kegiatan" class="max-w-full max-h-full object-contain" loading="lazy">
             </figure>
-            <!-- Video -->
+            <!-- Item Video -->
             <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-black flex items-center justify-center">
               <video class="w-full h-full object-cover" controls playsinline preload="metadata">
                 <source src="video1.mp4" type="video/mp4">
@@ -49,17 +330,316 @@
 
           <!-- Controls mobile -->
           <div class="md:hidden absolute inset-y-0 left-0 flex items-center">
-            <button id="carPrevMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow-soft">◀</button>
+            <button id="carPrevMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow-soft" aria-label="Sebelumnya" data-i18n-attr='{"aria-label":"gallery.prev"}'>◀</button>
           </div>
           <div class="md:hidden absolute inset-y-0 right-0 flex items-center">
-            <button id="carNextMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow-soft">▶</button>
+            <button id="carNextMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow-soft" aria-label="Berikutnya" data-i18n-attr='{"aria-label":"gallery.next"}'>▶</button>
           </div>
         </div>
 
-        <p class="mt-4 text-center text-xs text-slate-500">Geser kiri/kanan pada layar sentuh, atau pakai tombol ◀ ▶ untuk pindah item.</p>
+        <p class="mt-4 text-center text-xs text-slate-500" data-i18n="gallery.hint">
+          Geser kiri/kanan pada layar sentuh, atau pakai tombol ◀ ▶ untuk pindah item.
+        </p>
       </div>
     </section>
 
-    <!-- (bagian lokasi, footer, modal, scripts tetap sama) -->
+    <!-- LOKASI (tidak diubah) -->
+    <section id="lokasi" class="bg-white border-t border-slate-200/70">
+      <div class="container mx-auto px-4 py-16">
+        <div class="grid lg:grid-cols-2 gap-8 items-start">
+          <div>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900" data-i18n="location.title">Lokasi Masjid</h2>
+            <p class="mt-3 text-slate-700">
+              <span data-i18n="location.address">Alamat:</span> <span id="alamat" class="font-semibold">1 Chome-8 Dojoyamamachi, Hekinan, Aichi 447-0864</span>
+            </p>
+            <div class="mt-4 flex gap-3">
+              <a href="https://www.google.com/maps?q=1%20Chome-8%20Dojoyamamachi,%20Hekinan,%20Aichi%20447-0864" target="_blank" rel="noopener" class="rounded-2xl bg-sky-600 hover:bg-sky-700 text-white font-semibold px-5 py-3" data-i18n="location.openmap">Buka di Google Maps</a>
+              <button id="copyAlamat" class="rounded-2xl border border-slate-300 hover:border-sky-600 px-5 py-3" data-i18n="location.copy">Salin Alamat</button>
+            </div>
+            <p class="mt-3 text-xs text-slate-500" data-i18n="location.hint">Gunakan tombol di atas untuk navigasi langsung ke lokasi.</p>
+          </div>
+          <div class="rounded-2xl overflow-hidden border border-slate-200">
+            <iframe title="Peta Masjid As-Sunnah Hekinan" src="https://www.google.com/maps?q=1%20Chome-8%20Dojoyamamachi,%20Hekinan,%20Aichi%20447-0864&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="w-full h-[320px] md:h-[420px]"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer (tidak diubah) -->
+    <footer class="bg-white">
+      <div class="container mx-auto px-4 py-10">
+        <div class="grid md:grid-cols-3 gap-8">
+          <div>
+            <img src="logohekinan.jpeg" alt="Logo Masjid As-Sunnah Hekinan" class="h-12 w-auto mb-3" loading="lazy">
+            <h3 class="font-bold text-slate-900">Masjid As-Sunnah Hekinan</h3>
+            <p class="mt-2 text-sm text-slate-700">
+              <span data-i18n="location.address">Alamat:</span> <a class="hover:text-sky-700" target="_blank" rel="noopener" href="https://www.google.com/maps?q=1%20Chome-8%20Dojoyamamachi,%20Hekinan,%20Aichi%20447-0864">1 Chome-8 Dojoyamamachi, Hekinan, Aichi 447-0864</a>
+            </p>
+            <p class="mt-1 text-sm text-slate-700">Email: hekinanmosque@gmail.com</p>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-900" data-i18n="footer.links">Tautan</h3>
+            <ul class="mt-2 space-y-2 text-sm">
+              <li><a href="#tentang" class="hover:text-sky-700" data-i18n="nav.about">Tentang</a></li>
+              <li><a href="#progres" class="hover:text-sky-700" data-i18n="nav.progress">Progres</a></li>
+              <li><a href="#donasi" class="hover:text-sky-700" data-i18n="nav.donate">Donasi</a></li>
+              <li><a href="#galeri" class="hover:text-sky-700" data-i18n="nav.gallery">Galeri</a></li>
+              <li><a href="#lokasi" class="hover:text-sky-700" data-i18n="nav.location">Lokasi</a></li>
+              <li><a href="#faq" class="hover:text-sky-700" data-i18n="nav.faq">FAQ</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-900" data-i18n="footer.follow">Ikuti Kami</h3>
+            <ul class="mt-2 space-y-2 text-sm">
+              <li><a href="https://www.instagram.com/assunnahhekinan" target="_blank" rel="noopener" class="hover:text-sky-700">Instagram</a></li>
+              <li><a href="https://www.youtube.com/@assunnahhekinan" target="_blank" rel="noopener" class="hover:text-sky-700">YouTube</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-8 border-t border-slate-200 pt-6 text-xs text-slate-500 flex flex-col md:flex-row justify-between">
+          <p>© <span id="year"></span> Masjid As-Sunnah Hekinan. <span data-i18n="footer.rights">Semua hak cipta dilindungi.</span></p>
+          <p>Designed with ♥️ abu khayla.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4">
+      <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-soft">
+        <div class="flex items-start justify-between gap-4">
+          <h3 class="text-lg font-bold text-slate-900" data-i18n="modal.proceed">Lanjutkan Donasi</h3>
+          <button id="closeModal" class="text-slate-500 hover:text-slate-700" aria-label="Tutup" data-i18n-attr='{"aria-label":"modal.close"}'>✕</button>
+        </div>
+        <p class="mt-2 text-sm text-slate-700"><span data-i18n="modal.amount">Nominal:</span> <span id="nominalFinal" class="font-semibold">JPY 0</span></p>
+        <div class="mt-4">
+          <a id="viaWA" href="#" target="_blank" rel="noopener" class="block rounded-2xl border border-slate-300 hover:border-sky-600 px-4 py-3 text-center" data-i18n="donate.confirm">Konfirmasi via WhatsApp</a>
+          <p class="mt-3 text-xs text-slate-500 text-center" data-i18n="modal.remark">Setelah transfer ke rekening Jepang atau Indonesia, silahkan kirim bukti.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- i18n + app scripts (disalin dari versi sebelumnya, hanya minor penyesuaian) -->
+    <script>
+      /* ===== Variabel donasi ===== */
+      const TARGET = 42000000;
+      const TERKUMPUL = 5290797;
+      const WA_NUMBER = '818013909425';
+      const MIN_DONATION = 1000;
+
+      /* ===== I18N resources ===== */
+      const I18N_RESOURCES = {
+        id: {
+          'site.title': 'Masjid As-Sunnah Hekinan — Bantu Pelunasan Pembelian Bangunan Untuk Masjid',
+          'site.desc': 'Landing page resmi Masjid As-Sunnah Hekinan. Yuk ikut berkontribusi dalam donasi pelunasan pembelian bangunan untuk masjid.',
+          'og.title': 'Masjid As-Sunnah Hekinan — Bantu Pelunasan',
+          'og.desc': 'Yuk ikut berkontribusi dalam donasi pelunasan pembelian bangunan untuk masjid.',
+          brand: 'Masjid As-Sunnah Hekinan',
+          'nav.about': 'Tentang', 'nav.progress': 'Progres', 'nav.donate': 'Donasi', 'nav.gallery': 'Galeri', 'nav.location': 'Lokasi', 'nav.faq': 'FAQ',
+          'btn.donate': 'Donasi Sekarang', 'btn.learn': 'Pelajari Lebih Lanjut',
+          'about.title': 'Tentang Program',
+          'about.desc': 'Kami sedang berikhtiar melunasi <span class="font-semibold">pembelian bangunan</span> yang akan digunakan sebagai Masjid As-Sunnah Hekinan. Dana juga dialokasikan untuk renovasi dasar: area wudhu, area akhwat, perpustakaan, dan aksesibilitas.',
+          'about.point1': 'Lokasi strategis, parkir luas & ramah lingkungan',
+          'about.point2': 'Menampung ±400 jamaah',
+          'about.point3': 'Mendukung kajian, TPA, dan kegiatan sosial',
+          'progress.title': 'Progres Pelunasan',
+          'progress.note': 'Target pelunasan dan nominal yang sudah terkumpul diperbarui berkala.',
+          'progress.collected': 'Terkumpul',
+          'progress.target': 'Target',
+          'progress.suffix': 'tercapai',
+          'donate.unlimited': 'Tanpa Batas',
+          'form.nominalLabel': 'Nominal Donasi',
+          'donate.placeholder': 'Masukkan nominal (JPY)',
+          'donate.proceed': 'Lanjut Donasi',
+          'donate.note': '* Donasi via transfer bank (Jepang/Indonesia). Setelah klik “Lanjut Donasi”, konfirmasi via WhatsApp.',
+          'accounts.title': 'Rekening Donasi',
+          'accounts.jp': '🇯🇵 Jepang — Yucho Bank',
+          'accounts.id': '🇮🇩 Indonesia — Bank Syariah Indonesia',
+          'accounts.copy': 'Salin No. Rek',
+          'accounts.remark': 'Setelah transfer, mohon kirim bukti via WhatsApp agar dicatat oleh admin.',
+          'accounts.holderLabel': 'a.n.',
+          'accounts.numberLabel': 'No. Rekening',
+          'accounts.tbu': 'nomor akan diupdate',
+          'donate.title': 'Donasi Pelunasan',
+          'donate.desc': 'Pilih nominal, lalu konfirmasi via WhatsApp setelah transfer ke rekening Jepang atau Indonesia.',
+          'donate.choose': 'Pilih Nominal',
+          'donate.confirm': 'Konfirmasi via WhatsApp',
+          'print.noteLabel': 'Catatan:',
+          'print.note': 'Simpan halaman ini sebagai bukti transfer. Jazaakumullah khairan wa baarakallah fiikum atas donasinya.',
+          'donate.illustration': 'Ilustrasi Donasi',
+          'donate.helper': 'Berapapun donasi anda akan sangat membantu pelunasan pembelian bangunan untuk masjid.',
+          'donate.hadith2': '“Siapa yang membangun masjid karena Allah walaupun hanya selubang tempat burung bertelur atau lebih kecil, maka Allah bangunkan baginya (rumah) seperti itu pula di surga.” (HR. Ibnu Majah no. 738. Al-Hafizh Abu Thahir mengatakan bahwa sanad hadits ini shahih)',
+          'gallery.title': 'Galeri Kegiatan', 'gallery.prev': 'Sebelumnya', 'gallery.next': 'Berikutnya',
+          'gallery.hint': 'Geser kiri/kanan atau gunakan tombol ◀ ▶.',
+          'location.title': 'Lokasi Masjid', 'location.address': 'Alamat:', 'location.openmap': 'Buka di Google Maps', 'location.copy': 'Salin Alamat', 'location.hint': 'Gunakan tombol di atas untuk navigasi langsung ke lokasi.',
+          'footer.links': 'Tautan', 'footer.follow': 'Ikuti Kami', 'footer.rights': 'Semua hak cipta dilindungi.',
+          'modal.proceed': 'Lanjutkan Donasi', 'modal.close': 'Tutup', 'modal.amount': 'Nominal:', 'modal.remark': 'Setelah transfer ke rekening Jepang atau Indonesia, silakan kirim bukti.',
+          'copy.copied': 'Disalin!',
+          'alert.minDonation': 'Minimal donasi {amount}'
+        },
+        en: {
+          'site.title': 'Masjid As-Sunnah Hekinan — Help Pay Off the Building Purchase',
+          'site.desc': 'Official landing page of Masjid As-Sunnah Hekinan. Join us in contributing to pay off the mosque building purchase.',
+          'og.title': 'Masjid As-Sunnah Hekinan — Payoff Campaign',
+          'og.desc': 'Join the contribution to help pay off the mosque building purchase.',
+          brand: 'Masjid As-Sunnah Hekinan',
+          'nav.about': 'About', 'nav.progress': 'Progress', 'nav.donate': 'Donate', 'nav.gallery': 'Gallery', 'nav.location': 'Location', 'nav.faq': 'FAQ',
+          'btn.donate': 'Donate Now', 'btn.learn': 'Learn More',
+          'about.title': 'About the Program',
+          'about.desc': 'We are striving to pay off the <span class="font-semibold">purchase of a building</span> to be used as Masjid As-Sunnah Hekinan. Funds are also allocated for basic renovations: wudu area, women’s area, library, and accessibility.',
+          'about.point1': 'Strategic location, ample parking & eco-friendly',
+          'about.point2': 'Accommodates about 400 worshippers',
+          'about.point3': 'Supports study circles, children’s classes, and social activities',
+          'progress.title': 'Payoff Progress',
+          'progress.note': 'The payoff target and the amount collected are updated periodically.',
+          'progress.collected': 'Collected',
+          'progress.target': 'Target',
+          'progress.suffix': 'achieved',
+          'donate.unlimited': 'Unlimited',
+          'form.nominalLabel': 'Donation Amount',
+          'donate.placeholder': 'Enter amount (JPY)',
+          'donate.proceed': 'Continue to Donate',
+          'donate.note': '* Donate via bank transfer (Japan/Indonesia). After clicking “Continue to Donate”, please confirm via WhatsApp.',
+          'accounts.title': 'Donation Accounts',
+          'accounts.jp': '🇯🇵 Japan — Yucho Bank',
+          'accounts.id': '🇮🇩 Indonesia — Bank Syariah Indonesia',
+          'accounts.copy': 'Copy Account No.',
+          'accounts.remark': 'After transfer, please send proof via WhatsApp so the admin can record it.',
+          'accounts.holderLabel': 'Account holder',
+          'accounts.numberLabel': 'Account No.',
+          'accounts.tbu': 'to be updated',
+          'donate.title': 'Payoff Donation',
+          'donate.desc': 'Choose an amount, then confirm via WhatsApp after transferring to the Japan or Indonesia account.',
+          'donate.choose': 'Choose Amount',
+          'donate.confirm': 'Confirm via WhatsApp',
+          'print.noteLabel': 'Note:',
+          'print.note': 'Save this page as proof of transfer. Jazaakumullahu khayran wa baarakallahu fiikum for your donation.',
+          'donate.illustration': 'Donation Illustration',
+          'donate.helper': 'Any amount you donate will greatly help pay off the mosque building purchase.',
+          'donate.hadith2': '“Whoever builds a mosque for Allah—even as small as a bird’s nest or smaller—Allah will build for him a house like it in Paradise.” (Ibn Majah no. 738; graded sahih by Al-Hafizh Abu Tahir).',
+          'gallery.title': 'Activity Gallery', 'gallery.prev': 'Previous', 'gallery.next': 'Next',
+          'gallery.hint': 'Swipe left/right or use ◀ ▶.',
+          'location.title': 'Mosque Location', 'location.address': 'Address:', 'location.openmap': 'Open in Google Maps', 'location.copy': 'Copy Address', 'location.hint': 'Use the buttons above to navigate directly to the location.',
+          'footer.links': 'Links', 'footer.follow': 'Follow Us', 'footer.rights': 'All rights reserved.',
+          'modal.proceed': 'Continue Donation', 'modal.close': 'Close', 'modal.amount': 'Amount:', 'modal.remark': 'After transferring to the Japan or Indonesia account, please send the receipt.',
+          'copy.copied': 'Copied!',
+          'alert.minDonation': 'Minimum donation is {amount}'
+        }
+      };
+
+      /* ===== i18n helpers ===== */
+      const I18N = {
+        lang: (localStorage.getItem('lang') || 'id'),
+        t(key, params){
+          const dict = I18N_RESOURCES[this.lang] || {};
+          let s = (dict[key] || key);
+          if (params) for (const k in params) s = s.replace(new RegExp('{'+k+'}','g'), params[k]);
+          return s;
+        },
+        apply(){
+          document.documentElement.setAttribute('lang', this.lang);
+          const titleEl = document.querySelector('title[data-i18n]'); if (titleEl) titleEl.innerHTML = this.t(titleEl.getAttribute('data-i18n'));
+          document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = this.t(el.getAttribute('data-i18n')); });
+          document.querySelectorAll('[data-i18n-attr]').forEach(el => {
+            try { const map = JSON.parse(el.getAttribute('data-i18n-attr')); Object.entries(map).forEach(([attr,key]) => el.setAttribute(attr, this.t(key))); } catch(e){}
+          });
+          const btn = document.getElementById('langToggle'); if (btn) btn.textContent = (this.lang === 'id' ? 'EN' : 'ID');
+        },
+        setLang(lang){ this.lang = lang; localStorage.setItem('lang', lang); this.apply(); renderProgress(); }
+      };
+
+      const I18NFormat = {
+        number: (n, lang='id', opts={}) => new Intl.NumberFormat(lang, opts).format(n),
+        currency: (n, lang='id', currency='JPY') => new Intl.NumberFormat(lang, {style:'currency', currency, maximumFractionDigits:0}).format(n)
+      };
+
+      // Toggle bahasa
+      document.getElementById('langToggle').addEventListener('click', () => {
+        I18N.setLang(I18N.lang === 'id' ? 'en' : 'id');
+      });
+
+      // Utils
+      const stripWS = s => s.split('').filter(ch => ch.trim() !== '').join('');
+      const clamp = (n, min, max) => Math.max(min, Math.min(n, max));
+
+      function renderProgress(){
+        const percent = TARGET > 0 ? Math.round((TERKUMPUL / TARGET) * 100) : 0;
+        const terkumpul = document.getElementById('terkumpulLabel'); if (terkumpul) terkumpul.textContent = I18NFormat.currency(TERKUMPUL, I18N.lang, 'JPY');
+        const target = document.getElementById('targetLabel'); if (target) target.textContent = I18NFormat.currency(TARGET, I18N.lang, 'JPY');
+        const percentLabel = document.getElementById('percentLabel'); if (percentLabel) percentLabel.textContent = clamp(percent,0,100);
+        const bar = document.getElementById('progressBar'); if (bar) bar.style.width = clamp(percent,0,100) + '%';
+      }
+
+      function openModal(n) {
+        document.getElementById('nominalFinal').textContent = I18NFormat.currency(n, I18N.lang, 'JPY');
+        const msg = encodeURIComponent("Assalamu'alaikum, saya ingin donasi sebesar " + I18NFormat.currency(n, 'id', 'JPY') + ' untuk pelunasan Masjid As-Sunnah Hekinan. Saya akan transfer ke rekening Jepang/Indonesia lalu kirim bukti.');
+        document.getElementById('viaWA').href = 'https://wa.me/' + WA_NUMBER + '?text=' + msg;
+        const m = document.getElementById('modal'); m.classList.remove('hidden'); m.classList.add('flex');
+        if (window.gtag) gtag('event', 'donation_modal_open', { currency: 'JPY', value: n });
+      }
+
+      // init on load
+      window.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('year').textContent = new Date().getFullYear();
+        I18N.apply();
+        renderProgress();
+
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const sel = btn.getAttribute('data-copy'); const t = document.querySelector(sel); if (!t) return; btn.disabled = true;
+            navigator.clipboard.writeText(stripWS(t.textContent)).then(()=>{
+              const o=btn.textContent; btn.textContent = I18N.t('copy.copied'); setTimeout(()=>{ btn.textContent=o; btn.disabled=false; }, 1200);
+            });
+          });
+        });
+
+        document.getElementById('copyAlamat')?.addEventListener('click', () => {
+          navigator.clipboard.writeText(document.getElementById('alamat').textContent.trim());
+        });
+
+        document.querySelectorAll('.quick-btn').forEach(btn => {
+          btn.addEventListener('click', () => { const v = Number(btn.dataset.quick); const i = document.getElementById('nominalInput'); i.value = isNaN(v) ? '' : v; i.focus(); });
+        });
+
+        document.getElementById('donasiBtn').addEventListener('click', () => {
+          const v = Number(document.getElementById('nominalInput').value);
+          if (!v || v < MIN_DONATION) {
+            return alert(I18N.t('alert.minDonation', { amount: I18NFormat.currency(MIN_DONATION, I18N.lang, 'JPY') }));
+          }
+          if (window.gtag) gtag('event', 'donation_intent', { currency: 'JPY', value: v });
+          openModal(v);
+        });
+
+        document.getElementById('ctaWA')?.addEventListener('click', () => {
+          if (window.gtag) gtag('event', 'click_whatsapp', { location: 'donasi_section' });
+        });
+
+        document.getElementById('closeModal').addEventListener('click', () => {
+          const m = document.getElementById('modal'); m.classList.add('hidden'); m.classList.remove('flex');
+        });
+        document.getElementById('modal').addEventListener('click', (e) => {
+          if (e.target.id === 'modal') document.getElementById('closeModal').click();
+        });
+
+        // ===== Carousel controls =====
+        const carousel = document.getElementById('carousel');
+        const prevs = [document.getElementById('carPrev'), document.getElementById('carPrevMob')].filter(Boolean);
+        const nexts = [document.getElementById('carNext'), document.getElementById('carNextMob')].filter(Boolean);
+
+        function pageWidth(){
+          // geser sebanyak lebar kontainer (minus padding) agar terasa seperti paging
+          return carousel.clientWidth;
+        }
+        function go(delta){
+          carousel.scrollBy({ left: delta * pageWidth(), behavior: 'smooth' });
+        }
+        prevs.forEach(b=> b.addEventListener('click', ()=> go(-1)));
+        nexts.forEach(b=> b.addEventListener('click', ()=> go(1)));
+
+        // Auto-scroll opsional (bisa dimatikan dengan hapus interval)
+        let auto = setInterval(()=> go(1), 6000);
+        carousel.addEventListener('mouseenter', ()=> clearInterval(auto));
+        carousel.addEventListener('mouseleave', ()=> auto = setInterval(()=> go(1), 6000));
+      });
+    </script>
   </body>
 </html>
