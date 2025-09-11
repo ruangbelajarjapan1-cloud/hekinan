@@ -19,7 +19,7 @@
     <meta property="og:description" content="Yuk ikut berkontribusi dalam donasi pelunasan pembelian bangunan untuk masjid." data-i18n-attr='{"content":"og.desc"}'/>
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://assunnahhekinan.org/"/>
-    <meta property="og:image" content="https://assunnahhekinan.org/masjid-hero.jpg" />
+    <meta property="og:image" content="https://assunnahhekinan.org/logohekinan.jpeg" />
     <meta property="og:image:alt" content="Masjid As-Sunnah Hekinan" />
     <meta property="og:locale" content="id_ID"/>
     <meta property="og:locale:alternate" content="en_US"/>
@@ -28,7 +28,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Masjid As-Sunnah Hekinan — Bantu Pelunasan" data-i18n-attr='{"content":"og.title"}'>
     <meta name="twitter:description" content="Yuk ikut berkontribusi dalam donasi pelunasan pembelian bangunan untuk masjid." data-i18n-attr='{"content":"og.desc"}'>
-    <meta name="twitter:image" content="https://assunnahhekinan.org/masjid-hero.jpg">
+    <meta name="twitter:image" content="https://assunnahhekinan.org/logohekinan.jpeg">
 
     <meta name="theme-color" content="#0ea5e9" />
 
@@ -37,7 +37,6 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png"> <!-- 180x180 -->
     <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="preload" as="image" href="masjid-hero.jpg" imagesrcset="masjid-hero.webp 1x" imagesizes="100vw">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
@@ -60,11 +59,12 @@
       html { scroll-behavior: smooth; }
       :focus-visible { outline: 3px solid #38bdf8; outline-offset: 2px; border-radius: .5rem; }
       @media print { nav, .no-print { display: none !important; } .print\:block{ display:block !important; } }
-      /* bantu GPU hint di slider */
-      #galeriTrack figure { will-change: transform; }
+      /* Carousel */
+      .carousel-track { scroll-snap-type: x mandatory; }
+      .carousel-item { scroll-snap-align: start; }
     </style>
 
-    <!-- ===== JSON-LD: Mosque (informasi tempat) ===== -->
+    <!-- ===== JSON-LD: Mosque ===== -->
     <script type="application/ld+json">
     {
       "@context":"https://schema.org",
@@ -72,7 +72,7 @@
       "name":"Masjid As-Sunnah Hekinan",
       "url":"https://assunnahhekinan.org/",
       "logo":"https://assunnahhekinan.org/logohekinan.jpeg",
-      "image":"https://assunnahhekinan.org/masjid-hero.jpg",
+      "image":"https://assunnahhekinan.org/logohekinan.jpeg",
       "telephone":"+81-80-1390-9425",
       "address":{
         "@type":"PostalAddress",
@@ -89,7 +89,7 @@
     }
     </script>
 
-    <!-- ===== JSON-LD: Organization (Logo untuk search engine) ===== -->
+    <!-- ===== JSON-LD: Organization ===== -->
     <script type="application/ld+json">
     {
       "@context":"https://schema.org",
@@ -130,7 +130,7 @@
     <header class="sticky top-0 z-40 backdrop-blur bg-white/70 border-b border-slate-200/70">
       <nav class="container mx-auto px-4 py-3 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <a href="#home" class="flex items-center gap-3">
+          <a href="#tentang" class="flex items-center gap-3">
             <img src="logohekinan.jpeg" alt="Logo Masjid As-Sunnah Hekinan" class="h-10 w-auto" loading="lazy">
             <span class="font-extrabold text-slate-900 text-lg" data-i18n="brand">Masjid As-Sunnah Hekinan</span>
           </a>
@@ -153,31 +153,7 @@
       </nav>
     </header>
 
-    <!-- Hero -->
-    <section id="home" class="relative overflow-hidden">
-      <div class="absolute inset-0 -z-10">
-        <picture>
-          <source srcset="masjid-hero.webp?v=2" type="image/webp">
-          <img src="masjid-hero.jpg?v=2" alt="Bangunan calon Masjid As-Sunnah Hekinan" class="w-full h-full object-cover opacity-25" loading="lazy">
-        </picture>
-      </div>
-
-      <div class="container mx-auto px-4 py-24 md:py-32 text-center">
-        <img src="logohekinan.jpeg" alt="Logo Masjid As-Sunnah Hekinan" class="mx-auto h-24 w-auto mb-6" loading="lazy">
-        <p class="inline-block bg-white/70 backdrop-blur px-3 py-1 rounded-full text-sky-700 text-xs font-semibold mb-4" data-i18n="hero.tag">
-          Ayo Bantu Pelunasan Pembelian Bangunan Untuk Masjid
-        </p>
-        <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900" data-i18n="hero.title">
-          Wujudkan Kenyamanan Ibadah di <span class="text-sky-600">Masjid As-Sunnah Hekinan</span>
-        </h1>
-        <p class="mt-4 text-base md:text-lg text-slate-700 max-w-2xl mx-auto" data-i18n="hero.body"></p>
-        <p class="mt-3 text-sm md:text-base text-slate-700 max-w-2xl mx-auto" data-i18n="hero.hadith1"></p>
-        <div class="mt-8 flex justify-center gap-4">
-          <a href="#donasi" class="rounded-2xl bg-sky-600 hover:bg-sky-700 text-white font-semibold px-6 py-3 shadow-soft" data-i18n="btn.donate">Donasi Sekarang</a>
-          <a href="#tentang" class="rounded-2xl border border-slate-300 hover:border-slate-400 text-slate-700 font-semibold px-6 py-3 bg-white/80 backdrop-blur" data-i18n="btn.learn">Pelajari Lebih Lanjut</a>
-        </div>
-      </div>
-    </section>
+    <!-- (HERO DIHAPUS SESUAI PERMINTAAN) -->
 
     <!-- Tentang -->
     <section id="tentang" class="container mx-auto px-4 py-16">
@@ -197,7 +173,7 @@
       </div>
     </section>
 
-    <!-- Progres Donasi -->
+    <!-- Progres Donasi (tidak diubah) -->
     <section id="progres" class="bg-white border-y border-slate-200/70">
       <div class="container mx-auto px-4 py-16">
         <div class="grid lg:grid-cols-3 gap-8 items-start">
@@ -273,7 +249,7 @@
       </div>
     </section>
 
-    <!-- Donasi CTA -->
+    <!-- Donasi CTA (tidak diubah) -->
     <section id="donasi" class="container mx-auto px-4 py-16">
       <div class="grid lg:grid-cols-2 gap-8 items-center">
         <div class="order-2 lg:order-1">
@@ -312,33 +288,39 @@
       </div>
     </section>
 
-    <!-- GALERI -->
+    <!-- GALERI: Slideshow diganti CAROUSEL -->
     <section id="galeri" class="bg-white border-y border-slate-200/70">
       <div class="container mx-auto px-4 py-16">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900" data-i18n="gallery.title">Galeri Kegiatan</h2>
           <div class="hidden md:flex items-center gap-2">
-            <button class="galeri-btn-prev rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600" aria-label="Sebelumnya" data-i18n-attr='{"aria-label":"gallery.prev"}'>◀</button>
-            <button class="galeri-btn-next rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600" aria-label="Berikutnya" data-i18n-attr='{"aria-label":"gallery.next"}'>▶</button>
+            <button id="carPrev" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600" aria-label="Sebelumnya" data-i18n-attr='{"aria-label":"gallery.prev"}'>◀</button>
+            <button id="carNext" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600" aria-label="Berikutnya" data-i18n-attr='{"aria-label":"gallery.next"}'>▶</button>
           </div>
         </div>
 
         <div class="relative">
-          <!-- Track -->
-          <div id="galeriTrack"
-               class="flex transition-transform duration-500 ease-out overflow-hidden rounded-2xl border border-slate-200"
-               data-index="0" data-autoplay="true" data-interval="4500">
-
-            <!-- Foto-foto sebagai background agar stabil di mobile -->
-            <figure class="min-w-full h-[360px] md:h-[540px] bg-center bg-cover" style="background-image:url('./1.jpeg');"></figure>
-            <figure class="min-w-full h-[360px] md:h-[540px] bg-center bg-cover" style="background-image:url('./2.jpeg');"></figure>
-            <figure class="min-w-full h-[360px] md:h-[540px] bg-center bg-cover" style="background-image:url('./3.jpeg');"></figure>
-            <figure class="min-w-full h-[360px] md:h-[540px] bg-center bg-cover" style="background-image:url('./4.jpeg');"></figure>
-            <figure class="min-w-full h-[360px] md:h-[540px] bg-center bg-cover" style="background-image:url('./5.jpeg');"></figure>
-
-            <!-- Video -->
-            <figure class="min-w-full h-[360px] md:h-[540px] bg-black flex items-center justify-center">
-              <video class="w-full h-full object-cover" muted playsinline preload="metadata" data-video-slide controlslist="nodownload noplaybackrate">
+          <div id="carousel" class="carousel-track flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth rounded-2xl border border-slate-200 p-4"
+               style="scrollbar-width:none; -ms-overflow-style:none;">
+            <!-- Item Foto -->
+            <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+              <img src="./1.jpeg" alt="Kegiatan 1" class="w-full h-full object-cover" loading="lazy">
+            </figure>
+            <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+              <img src="./2.jpeg" alt="Kegiatan 2" class="w-full h-full object-cover" loading="lazy">
+            </figure>
+            <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+              <img src="./3.jpeg" alt="Kegiatan 3" class="w-full h-full object-cover" loading="lazy">
+            </figure>
+            <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+              <img src="./4.jpeg" alt="Kegiatan 4" class="w-full h-full object-cover" loading="lazy">
+            </figure>
+            <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+              <img src="./5.jpeg" alt="Kegiatan 5" class="w-full h-full object-cover" loading="lazy">
+            </figure>
+            <!-- Item Video -->
+            <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-black flex items-center justify-center">
+              <video class="w-full h-full object-cover" controls playsinline preload="metadata">
                 <source src="video1.mp4" type="video/mp4">
                 Browser Anda tidak mendukung video.
               </video>
@@ -347,23 +329,20 @@
 
           <!-- Controls mobile -->
           <div class="md:hidden absolute inset-y-0 left-0 flex items-center">
-            <button class="galeri-btn-prev m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow-soft" aria-label="Sebelumnya" data-i18n-attr='{"aria-label":"gallery.prev"}'>◀</button>
+            <button id="carPrevMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow-soft" aria-label="Sebelumnya" data-i18n-attr='{"aria-label":"gallery.prev"}'>◀</button>
           </div>
           <div class="md:hidden absolute inset-y-0 right-0 flex items-center">
-            <button class="galeri-btn-next m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow-soft" aria-label="Berikutnya" data-i18n-attr='{"aria-label":"gallery.next"}'>▶</button>
+            <button id="carNextMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow-soft" aria-label="Berikutnya" data-i18n-attr='{"aria-label":"gallery.next"}'>▶</button>
           </div>
-
-          <!-- Dots -->
-          <div id="galeriDots" class="mt-4 flex items-center justify-center gap-2"></div>
         </div>
 
         <p class="mt-4 text-center text-xs text-slate-500" data-i18n="gallery.hint">
-          Geser di layar sentuh, atau gunakan tombol ◀ ▶. Slider berjalan otomatis dan berhenti saat di-hover.
+          Geser kiri/kanan pada layar sentuh, atau pakai tombol ◀ ▶ untuk pindah item.
         </p>
       </div>
     </section>
 
-    <!-- LOKASI -->
+    <!-- LOKASI (tidak diubah) -->
     <section id="lokasi" class="bg-white border-t border-slate-200/70">
       <div class="container mx-auto px-4 py-16">
         <div class="grid lg:grid-cols-2 gap-8 items-start">
@@ -385,7 +364,7 @@
       </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Footer (tidak diubah) -->
     <footer class="bg-white">
       <div class="container mx-auto px-4 py-10">
         <div class="grid md:grid-cols-3 gap-8">
@@ -438,7 +417,7 @@
       </div>
     </div>
 
-    <!-- i18n + app scripts -->
+    <!-- i18n + app scripts (disalin dari versi sebelumnya, hanya minor penyesuaian) -->
     <script>
       /* ===== Variabel donasi ===== */
       const TARGET = 42000000;
@@ -456,10 +435,6 @@
           brand: 'Masjid As-Sunnah Hekinan',
           'nav.about': 'Tentang', 'nav.progress': 'Progres', 'nav.donate': 'Donasi', 'nav.gallery': 'Galeri', 'nav.location': 'Lokasi', 'nav.faq': 'FAQ',
           'btn.donate': 'Donasi Sekarang', 'btn.learn': 'Pelajari Lebih Lanjut',
-          'hero.tag': 'Ayo Bantu Pelunasan Pembelian Bangunan Untuk Masjid',
-          'hero.title': 'Wujudkan Kenyamanan Ibadah di <span class="text-sky-600">Masjid As-Sunnah Hekinan</span>',
-          'hero.body': 'Setiap kontribusi Anda menjadi amal jariyah. Mari bersama mewujudkan rumah ibadah yang nyaman untuk kaum Muslimin di Hekinan dan sekitarnya.',
-          'hero.hadith1': '“Siapa yang membangun masjid karena Allah, maka Allah akan membangun baginya semisal itu di surga.” (HR. Bukhari no. 450 dan Muslim no. 533).',
           'about.title': 'Tentang Program',
           'about.desc': 'Kami sedang berikhtiar melunasi <span class="font-semibold">pembelian bangunan</span> yang akan digunakan sebagai Masjid As-Sunnah Hekinan. Dana juga dialokasikan untuk renovasi dasar: area wudhu, area akhwat, perpustakaan, dan aksesibilitas.',
           'about.point1': 'Lokasi strategis, parkir luas & ramah lingkungan',
@@ -493,7 +468,7 @@
           'donate.helper': 'Berapapun donasi anda akan sangat membantu pelunasan pembelian bangunan untuk masjid.',
           'donate.hadith2': '“Siapa yang membangun masjid karena Allah walaupun hanya selubang tempat burung bertelur atau lebih kecil, maka Allah bangunkan baginya (rumah) seperti itu pula di surga.” (HR. Ibnu Majah no. 738. Al-Hafizh Abu Thahir mengatakan bahwa sanad hadits ini shahih)',
           'gallery.title': 'Galeri Kegiatan', 'gallery.prev': 'Sebelumnya', 'gallery.next': 'Berikutnya',
-          'gallery.hint': 'Geser di layar sentuh, atau gunakan tombol ◀ ▶. Slider berjalan otomatis dan berhenti saat di-hover.',
+          'gallery.hint': 'Geser kiri/kanan atau gunakan tombol ◀ ▶.',
           'location.title': 'Lokasi Masjid', 'location.address': 'Alamat:', 'location.openmap': 'Buka di Google Maps', 'location.copy': 'Salin Alamat', 'location.hint': 'Gunakan tombol di atas untuk navigasi langsung ke lokasi.',
           'footer.links': 'Tautan', 'footer.follow': 'Ikuti Kami', 'footer.rights': 'Semua hak cipta dilindungi.',
           'modal.proceed': 'Lanjutkan Donasi', 'modal.close': 'Tutup', 'modal.amount': 'Nominal:', 'modal.remark': 'Setelah transfer ke rekening Jepang atau Indonesia, silakan kirim bukti.',
@@ -508,10 +483,6 @@
           brand: 'Masjid As-Sunnah Hekinan',
           'nav.about': 'About', 'nav.progress': 'Progress', 'nav.donate': 'Donate', 'nav.gallery': 'Gallery', 'nav.location': 'Location', 'nav.faq': 'FAQ',
           'btn.donate': 'Donate Now', 'btn.learn': 'Learn More',
-          'hero.tag': 'Help Pay Off the Mosque Building Purchase',
-          'hero.title': 'Realize Comfortable Worship at <span class="text-sky-600">Masjid As-Sunnah Hekinan</span>',
-          'hero.body': 'Every contribution you make becomes a continuous charity. Let us together build a comfortable house of worship for Muslims in Hekinan and surrounding areas.',
-          'hero.hadith1': '“Whoever builds a mosque for Allah, Allah will build for him a house like it in Paradise.” (Bukhari no. 450; Muslim no. 533).',
           'about.title': 'About the Program',
           'about.desc': 'We are striving to pay off the <span class="font-semibold">purchase of a building</span> to be used as Masjid As-Sunnah Hekinan. Funds are also allocated for basic renovations: wudu area, women’s area, library, and accessibility.',
           'about.point1': 'Strategic location, ample parking & eco-friendly',
@@ -545,7 +516,7 @@
           'donate.helper': 'Any amount you donate will greatly help pay off the mosque building purchase.',
           'donate.hadith2': '“Whoever builds a mosque for Allah—even as small as a bird’s nest or smaller—Allah will build for him a house like it in Paradise.” (Ibn Majah no. 738; graded sahih by Al-Hafizh Abu Tahir).',
           'gallery.title': 'Activity Gallery', 'gallery.prev': 'Previous', 'gallery.next': 'Next',
-          'gallery.hint': 'Swipe on touch screens, or use ◀ ▶. The slider auto-plays and pauses on hover.',
+          'gallery.hint': 'Swipe left/right or use ◀ ▶.',
           'location.title': 'Mosque Location', 'location.address': 'Address:', 'location.openmap': 'Open in Google Maps', 'location.copy': 'Copy Address', 'location.hint': 'Use the buttons above to navigate directly to the location.',
           'footer.links': 'Links', 'footer.follow': 'Follow Us', 'footer.rights': 'All rights reserved.',
           'modal.proceed': 'Continue Donation', 'modal.close': 'Close', 'modal.amount': 'Amount:', 'modal.remark': 'After transferring to the Japan or Indonesia account, please send the receipt.',
@@ -647,89 +618,27 @@
         document.getElementById('modal').addEventListener('click', (e) => {
           if (e.target.id === 'modal') document.getElementById('closeModal').click();
         });
+
+        // ===== Carousel controls =====
+        const carousel = document.getElementById('carousel');
+        const prevs = [document.getElementById('carPrev'), document.getElementById('carPrevMob')].filter(Boolean);
+        const nexts = [document.getElementById('carNext'), document.getElementById('carNextMob')].filter(Boolean);
+
+        function pageWidth(){
+          // geser sebanyak lebar kontainer (minus padding) agar terasa seperti paging
+          return carousel.clientWidth;
+        }
+        function go(delta){
+          carousel.scrollBy({ left: delta * pageWidth(), behavior: 'smooth' });
+        }
+        prevs.forEach(b=> b.addEventListener('click', ()=> go(-1)));
+        nexts.forEach(b=> b.addEventListener('click', ()=> go(1)));
+
+        // Auto-scroll opsional (bisa dimatikan dengan hapus interval)
+        let auto = setInterval(()=> go(1), 6000);
+        carousel.addEventListener('mouseenter', ()=> clearInterval(auto));
+        carousel.addEventListener('mouseleave', ()=> auto = setInterval(()=> go(1), 6000));
       });
-    </script>
-
-    <!-- ===== Galeri Slider (foto + video) ===== -->
-    <script>
-      (function(){
-        const track = document.getElementById('galeriTrack');
-        if (!track) return;
-
-        const slides = Array.from(track.children);
-        let index = 0;
-        let timer = null;
-        const intervalImg = Number(track.dataset.interval || 4500);
-
-        // Dots
-        const dotsWrap = document.getElementById('galeriDots');
-        const dots = slides.map((_, i) => {
-          const b = document.createElement('button');
-          b.className = 'w-2.5 h-2.5 rounded-full bg-slate-300 aria-[current=true]:bg-sky-600';
-          b.setAttribute('aria-label', 'Go to slide ' + (i+1));
-          b.addEventListener('click', () => go(i, true));
-          dotsWrap.appendChild(b);
-          return b;
-        });
-
-        // Controls
-        document.querySelectorAll('.galeri-btn-prev').forEach(btn => btn.addEventListener('click', () => go(index-1, true)));
-        document.querySelectorAll('.galeri-btn-next').forEach(btn => btn.addEventListener('click', () => go(index+1, true)));
-
-        // Swipe
-        let startX = null;
-        track.addEventListener('touchstart', e => startX = e.touches[0].clientX, {passive:true});
-        track.addEventListener('touchend', e => {
-          if (startX === null) return;
-          const dx = e.changedTouches[0].clientX - startX;
-          if (Math.abs(dx) > 40) go(index + (dx < 0 ? 1 : -1), true);
-          startX = null;
-        });
-
-        // Hover pause
-        track.addEventListener('mouseenter', pause);
-        track.addEventListener('mouseleave', resume);
-
-        function updateUI(){
-          track.style.transform = `translateX(-${index*100}%)`;
-          dots.forEach((d,i)=> d.setAttribute('aria-current', i===index));
-        }
-
-        function onVideoEnded(){ go(index+1); }
-
-        function scheduleNext(){
-          const v = slides[index]?.querySelector('video[data-video-slide]');
-          if (v){
-            try {
-              v.currentTime = 0;
-              v.play().catch(()=>{});
-              v.removeEventListener('ended', onVideoEnded);
-              v.addEventListener('ended', onVideoEnded, {once:false});
-            } catch(e){}
-            timer = setTimeout(()=> go(index+1), Math.max((v.duration||6)*1000, 4000));
-            return;
-          }
-          timer = setTimeout(()=> go(index+1), intervalImg);
-        }
-
-        function go(i){
-          clearTimeout(timer);
-          const prev = slides[index]?.querySelector('video[data-video-slide]');
-          if (prev){ prev.pause(); prev.currentTime = 0; prev.removeEventListener('ended', onVideoEnded); }
-          index = (i + slides.length) % slides.length;
-          updateUI();
-          if (track.dataset.autoplay === 'true') scheduleNext();
-        }
-
-        function pause(){ clearTimeout(timer); track.dataset.autoplay = 'false'; }
-        function resume(){ track.dataset.autoplay = 'true'; scheduleNext(); }
-
-        // init
-        updateUI(); scheduleNext();
-      })();
     </script>
   </body>
 </html>
-
-
-
