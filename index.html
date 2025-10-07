@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://assunnahhekinan.org/"/>
     <link rel="sitemap" type="application/xml" href="/sitemap.xml"/>
 
-    <!-- (Opsional) verifikasi GSC: ganti token jika perlu -->
+    <!-- (Opsional) verifikasi GSC -->
     <meta name="google-site-verification" content="SmI-n5Ww-Ct4BjQixlDqkgbCyheXf92H_C7ERG3UICs"/>
 
     <!-- ===== Open Graph / Social ===== -->
@@ -32,10 +32,10 @@
 
     <meta name="theme-color" content="#0ea5e9" />
 
-    <!-- Favicons / App icons -->
+    <!-- Favicons -->
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png"> <!-- 180x180 -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="shortcut icon" href="/favicon.ico">
 
     <!-- Fonts -->
@@ -51,6 +51,9 @@
           extend: {
             fontFamily: { sans: ["Inter","ui-sans-serif","system-ui","-apple-system","Segoe UI","Roboto","Noto Sans","Ubuntu","Cantarell","Helvetica Neue","Arial","sans-serif"] },
             boxShadow: { soft: "0 10px 25px -15px rgba(0,0,0,0.3)" },
+            colors: {
+              card: { DEFAULT: "#ffffff" },
+            }
           },
         },
       };
@@ -62,6 +65,33 @@
       /* Carousel */
       .carousel-track { scroll-snap-type: x mandatory; }
       .carousel-item { scroll-snap-align: start; }
+
+      /* Progress bar animation (ringan, elegan) */
+      #progressBar {
+        transition: width 900ms cubic-bezier(.22,.61,.36,1);
+        background: linear-gradient(90deg, #0EA5E9, #38BDF8);
+        position: relative; overflow: hidden;
+      }
+      #progressBar::after{
+        content:""; position:absolute; inset:0;
+        background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.35) 50%, rgba(255,255,255,0) 100%);
+        transform: translateX(-100%); animation: sheen 2.8s infinite;
+      }
+      @keyframes sheen{ 0%{transform:translateX(-100%)} 60%{transform:translateX(100%)} 100%{transform:translateX(100%)} }
+
+      /* Small currency icons */
+      .ic {
+        width: 22px; height: 22px; border-radius: 9999px;
+        display:inline-flex; align-items:center; justify-content:center;
+        background:#E0F2FE; color:#0C4A6E; font-weight:800; font-size:12px;
+        box-shadow: inset 0 0 0 1px rgba(2,132,199,.15);
+      }
+      .ic-rp { background:#F1F5F9; color:#0F172A; }
+
+      /* Nice number input (kurs) */
+      .rate-input::-webkit-outer-spin-button,
+      .rate-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+      .rate-input { -moz-appearance: textfield; }
     </style>
 
     <!-- ===== JSON-LD: Mosque ===== -->
@@ -111,12 +141,7 @@
 
     <!-- ===== JSON-LD: WebSite ===== -->
     <script type="application/ld+json">
-    {
-      "@context":"https://schema.org",
-      "@type":"WebSite",
-      "name":"Masjid As-Sunnah Hekinan",
-      "url":"https://assunnahhekinan.org/"
-    }
+    { "@context":"https://schema.org", "@type":"WebSite", "name":"Masjid As-Sunnah Hekinan", "url":"https://assunnahhekinan.org/" }
     </script>
   </head>
 
@@ -216,9 +241,56 @@
               </div>
 
               <div class="mt-4 w-full bg-white rounded-full border border-slate-200 overflow-hidden" aria-label="Progress bar">
-                <div id="progressBar" class="h-3 bg-sky-600" style="width:0%"></div>
+                <div id="progressBar" class="h-3" style="width:0%"></div>
               </div>
               <div class="mt-2 text-sm text-slate-600"><span id="percentLabel">0</span>% <span data-i18n="progress.suffix">tercapai</span></div>
+
+              <!-- ====== Donasi Anda: JPY & IDR berdampingan ====== -->
+              <div class="mt-6 rounded-2xl border border-slate-200 bg-card p-5">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm font-semibold text-slate-900">Donasi Anda</span>
+                    <span class="text-xs text-slate-500">（Masukkan nominal di bawah）</span>
+                  </div>
+                  <label class="flex items-center gap-2 text-xs text-slate-600">
+                    <span>Kurs estimasi</span>
+                    <div class="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2 py-1">
+                      <span class="text-slate-500">1&nbsp;JPY&nbsp;=</span>
+                      <input id="rateInput" class="rate-input w-16 text-right bg-transparent outline-none" type="number" min="50" step="1" value="110" />
+                      <span class="text-slate-500">IDR</span>
+                    </div>
+                  </label>
+                </div>
+
+                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <!-- donasi（JPY） -->
+                  <div id="cardJPY" class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center gap-2">
+                        <span class="ic" aria-hidden="true">¥</span>
+                        <span class="text-sm font-semibold">donasi（JPY）</span>
+                      </div>
+                    </div>
+                    <p class="mt-2 text-xl md:text-2xl font-extrabold tracking-tight text-slate-900 amount">—</p>
+                  </div>
+
+                  <!-- donasi（IDR） -->
+                  <div id="cardIDR" class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center gap-2">
+                        <span class="ic ic-rp" aria-hidden="true">Rp</span>
+                        <span class="text-sm font-semibold">donasi（IDR）</span>
+                      </div>
+                    </div>
+                    <p class="mt-2 text-xl md:text-2xl font-extrabold tracking-tight text-slate-900 amount">—</p>
+                  </div>
+                </div>
+
+                <p class="mt-3 text-[11px] text-slate-500">
+                  * Nilai rupiah bersifat indikatif sesuai kurs estimasi. Anda dapat menyesuaikan kurs.
+                </p>
+              </div>
+              <!-- ====== /Donasi Anda ====== -->
 
               <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
                 <button data-quick="5000" class="quick-btn rounded-xl border border-slate-300 hover:border-sky-600 px-4 py-2">JPY 5.000</button>
@@ -310,7 +382,7 @@
       </div>
     </section>
 
-    <!-- GALERI: Carousel + poster fit horizontal (5.jpeg) -->
+    <!-- GALERI -->
     <section id="galeri" class="bg-white border-y border-slate-200/70">
       <div class="container mx-auto px-4 py-16">
         <div class="flex items-center justify-between mb-6">
@@ -324,7 +396,6 @@
         <div class="relative">
           <div id="carousel" class="carousel-track flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth rounded-2xl border border-slate-200 p-4"
                style="scrollbar-width:none; -ms-overflow-style:none;">
-            <!-- Item Foto -->
             <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
               <img src="./1.jpeg" alt="Kegiatan 1" class="w-full h-full object-cover" loading="lazy">
             </figure>
@@ -337,19 +408,9 @@
             <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
               <img src="./4.jpeg" alt="Kegiatan 4" class="w-full h-full object-cover" loading="lazy">
             </figure>
-            <!-- Slide Poster (fit horizontal) -->
             <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden flex items-center justify-center bg-white">
               <img src="./5.jpeg" alt="Poster kegiatan" class="max-w-full max-h-full object-contain" loading="lazy">
             </figure>
-            <!-- Item Video (opsional) -->
-            <!--
-            <figure class="carousel-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-black flex items-center justify-center">
-              <video class="w-full h-full object-cover" controls playsinline preload="metadata">
-                <source src="video1.mp4" type="video/mp4">
-                Browser Anda tidak mendukung video.
-              </video>
-            </figure>
-            -->
           </div>
 
           <!-- Controls mobile -->
@@ -444,11 +505,15 @@
 
     <!-- i18n + app scripts -->
     <script>
-      /* ===== Variabel donasi ===== */
+      /* ===== Variabel kampanye (progres) ===== */
       const TARGET = 42000000;
       const TERKUMPUL = 5290797;
       const WA_NUMBER = '818013909425';
       const MIN_DONATION = 1000;
+
+      /* ===== Kurs estimasi JPY->IDR (editable) ===== */
+      const EXRATE_DEFAULT = 110; // default estimasi
+      let EXRATE = Number(localStorage.getItem('rate_jpy_idr')) || EXRATE_DEFAULT;
 
       /* ===== I18N resources ===== */
       const I18N_RESOURCES = {
@@ -491,7 +556,7 @@
           'print.note': 'Simpan halaman ini sebagai bukti transfer. Jazaakumullah khairan wa baarakallah fiikum atas donasinya.',
           'donate.illustration': 'Ilustrasi Donasi',
           'donate.helper': 'Berapapun donasi anda akan sangat membantu pelunasan pembelian bangunan untuk masjid.',
-          'donate.hadith2': '“Siapa yang membangun masjid karena Allah walaupun hanya selubang tempat burung bertelur atau lebih kecil, maka Allah bangunkan baginya (rumah) seperti itu pula di surga.” (HR. Ibnu Majah no. 738. Al-Hafizh Abu Thahir mengatakan bahwa sanad hadits ini shahih)',
+          'donate.hadith2': '“Siapa yang membangun masjid karena Allah…',
           'gallery.title': 'Galeri Kegiatan', 'gallery.prev': 'Sebelumnya', 'gallery.next': 'Berikutnya',
           'gallery.hint': 'Geser kiri/kanan atau gunakan tombol ◀ ▶.',
           'location.title': 'Lokasi Masjid', 'location.address': 'Alamat:', 'location.openmap': 'Buka di Google Maps', 'location.copy': 'Salin Alamat', 'location.hint': 'Gunakan tombol di atas untuk navigasi langsung ke lokasi.',
@@ -509,10 +574,7 @@
           'nav.about': 'About', 'nav.progress': 'Progress', 'nav.donate': 'Donate', 'nav.gallery': 'Gallery', 'nav.location': 'Location', 'nav.faq': 'FAQ',
           'btn.donate': 'Donate Now', 'btn.learn': 'Learn More',
           'about.title': 'About the Program',
-          'about.desc': 'We are striving to pay off the <span class="font-semibold">purchase of a building</span> to be used as Masjid As-Sunnah Hekinan. Funds are also allocated for basic renovations: wudu area, women’s area, library, and accessibility.',
-          'about.point1': 'Strategic location, ample parking & eco-friendly',
-          'about.point2': 'Accommodates about 400 worshippers',
-          'about.point3': 'Supports study circles, children’s classes, and social activities',
+          'about.desc': 'We are striving to pay off the <span class="font-semibold">purchase of a building</span> to be used as Masjid As-Sunnah Hekinan…',
           'progress.title': 'Payoff Progress',
           'progress.note': 'The payoff target and the amount collected are updated periodically.',
           'progress.collected': 'Collected',
@@ -533,13 +595,8 @@
           'accounts.tbu': 'to be updated',
           'donate.title': 'Payoff Donation',
           'donate.desc': 'Choose an amount, then confirm via WhatsApp after transferring to the Japan or Indonesia account.',
-          'donate.choose': 'Choose Amount',
-          'donate.confirm': 'Confirm via WhatsApp',
-          'print.noteLabel': 'Note:',
-          'print.note': 'Save this page as proof of transfer. Jazaakumullahu khayran wa baarakallahu fiikum for your donation.',
           'donate.illustration': 'Donation Illustration',
-          'donate.helper': 'Any amount you donate will greatly help pay off the mosque building purchase.',
-          'donate.hadith2': '“Whoever builds a mosque for Allah—even as small as a bird’s nest or smaller—Allah will build for him a house like it in Paradise.” (Ibn Majah no. 738; graded sahih by Al-Hafizh Abu Tahir).',
+          'donate.helper': 'Any amount you donate will greatly help…',
           'gallery.title': 'Activity Gallery', 'gallery.prev': 'Previous', 'gallery.next': 'Next',
           'gallery.hint': 'Swipe left/right or use ◀ ▶.',
           'location.title': 'Mosque Location', 'location.address': 'Address:', 'location.openmap': 'Open in Google Maps', 'location.copy': 'Copy Address', 'location.hint': 'Use the buttons above to navigate directly to the location.',
@@ -568,7 +625,7 @@
           });
           const btn = document.getElementById('langToggle'); if (btn) btn.textContent = (this.lang === 'id' ? 'EN' : 'ID');
         },
-        setLang(lang){ this.lang = lang; localStorage.setItem('lang', lang); this.apply(); renderProgress(); }
+        setLang(lang){ this.lang = lang; localStorage.setItem('lang', lang); this.apply(); renderProgress(); renderDonationMirror(); }
       };
 
       const I18NFormat = {
@@ -585,12 +642,37 @@
       const stripWS = s => s.split('').filter(ch => ch.trim() !== '').join('');
       const clamp = (n, min, max) => Math.max(min, Math.min(n, max));
 
+      /* ===== Progres (kampanye) ===== */
       function renderProgress(){
         const percent = TARGET > 0 ? Math.round((TERKUMPUL / TARGET) * 100) : 0;
         const terkumpul = document.getElementById('terkumpulLabel'); if (terkumpul) terkumpul.textContent = I18NFormat.currency(TERKUMPUL, I18N.lang, 'JPY');
         const target = document.getElementById('targetLabel'); if (target) target.textContent = I18NFormat.currency(TARGET, I18N.lang, 'JPY');
         const percentLabel = document.getElementById('percentLabel'); if (percentLabel) percentLabel.textContent = clamp(percent,0,100);
-        const bar = document.getElementById('progressBar'); if (bar) bar.style.width = clamp(percent,0,100) + '%';
+
+        const bar = document.getElementById('progressBar');
+        if (bar){
+          bar.style.width = '0%';
+          requestAnimationFrame(()=> setTimeout(()=> bar.style.width = clamp(percent,0,100) + '%', 40));
+        }
+      }
+
+      /* ===== Donasi Anda: JPY & IDR ===== */
+      function renderDonationMirror(){
+        const jpyCard = document.getElementById('cardJPY');
+        const idrCard = document.getElementById('cardIDR');
+        const input = document.getElementById('nominalInput');
+        if (!jpyCard || !idrCard || !input) return;
+
+        const vJPY = Number(input.value) || 0;
+        const amountJPY = I18NFormat.currency(vJPY, I18N.lang, 'JPY');
+        const amountIDR = new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(Math.round(vJPY * EXRATE));
+
+        jpyCard.querySelector('.amount').textContent = vJPY > 0 ? amountJPY : '—';
+        idrCard.querySelector('.amount').textContent = vJPY > 0 ? amountIDR : '—';
+
+        // Sync kurs input
+        const rateInput = document.getElementById('rateInput');
+        if (rateInput && Number(rateInput.value) !== Number(EXRATE)) rateInput.value = EXRATE;
       }
 
       function openModal(n) {
@@ -621,7 +703,21 @@
         document.getElementById('year').textContent = new Date().getFullYear();
         I18N.apply();
         renderProgress();
+        renderDonationMirror();
 
+        // Kurs input
+        const rateInput = document.getElementById('rateInput');
+        if (rateInput){
+          rateInput.value = EXRATE;
+          rateInput.addEventListener('input', () => {
+            const v = Number(rateInput.value);
+            EXRATE = (!v || v < 1) ? EXRATE_DEFAULT : Math.round(v);
+            localStorage.setItem('rate_jpy_idr', String(EXRATE));
+            renderDonationMirror();
+          });
+        }
+
+        // Copy buttons
         document.querySelectorAll('.copy-btn').forEach(btn => {
           btn.addEventListener('click', () => {
             const sel = btn.getAttribute('data-copy'); const t = document.querySelector(sel); if (!t) return; btn.disabled = true;
@@ -635,10 +731,21 @@
           navigator.clipboard.writeText(document.getElementById('alamat').textContent.trim());
         });
 
+        // Quick buttons
         document.querySelectorAll('.quick-btn').forEach(btn => {
-          btn.addEventListener('click', () => { const v = Number(btn.dataset.quick); const i = document.getElementById('nominalInput'); i.value = isNaN(v) ? '' : v; i.focus(); });
+          btn.addEventListener('click', () => {
+            const v = Number(btn.dataset.quick);
+            const i = document.getElementById('nominalInput');
+            i.value = isNaN(v) ? '' : v;
+            i.focus();
+            renderDonationMirror();
+          });
         });
 
+        // Live update mirror while mengetik
+        document.getElementById('nominalInput').addEventListener('input', renderDonationMirror);
+
+        // Lanjut donasi
         document.getElementById('donasiBtn').addEventListener('click', () => {
           const v = Number(document.getElementById('nominalInput').value);
           if (!v || v < MIN_DONATION) {
@@ -664,17 +771,12 @@
         const prevs = [document.getElementById('carPrev'), document.getElementById('carPrevMob')].filter(Boolean);
         const nexts = [document.getElementById('carNext'), document.getElementById('carNextMob')].filter(Boolean);
 
-        function pageWidth(){
-          // geser sebanyak lebar kontainer (minus padding) agar terasa seperti paging
-          return carousel.clientWidth;
-        }
-        function go(delta){
-          carousel.scrollBy({ left: delta * pageWidth(), behavior: 'smooth' });
-        }
+        function pageWidth(){ return carousel.clientWidth; }
+        function go(delta){ carousel.scrollBy({ left: delta * pageWidth(), behavior: 'smooth' }); }
         prevs.forEach(b=> b.addEventListener('click', ()=> go(-1)));
         nexts.forEach(b=> b.addEventListener('click', ()=> go(1)));
 
-        // Auto-scroll opsional (bisa dimatikan dengan hapus interval)
+        // Auto-scroll opsional
         let auto = setInterval(()=> go(1), 6000);
         carousel.addEventListener('mouseenter', ()=> clearInterval(auto));
         carousel.addEventListener('mouseleave', ()=> auto = setInterval(()=> go(1), 6000));
