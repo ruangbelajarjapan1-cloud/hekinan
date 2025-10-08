@@ -426,9 +426,44 @@
     })();
 
     /* ====== Data Dinamis (CSV/JSON/sample) ====== */
-    function parseCSV(text){ return text.trim().split(/\r?\n/).map(r=>r.split(',').map(c=>c.trim())); }
-    async function loadCsv(url){ if(!url) return null; try{ const txt=await fetch(url,{cache:'no-store'}).then(r=>r.text()); const rows=parseCSV(txt); const head=rows[0].map(h=>h.toLowerCase()); return rows.slice(1).map(cols=>{const o={}; head.forEach((h,i)=>o[h]=cols[i]||''); return o;}); }catch{return null;} }
-    async function loadJson(url){ try{ return await fetch(url,{cache:'no-store'}).then(r=>r.json()); }catch{return null;} }
+    // Parser CSV yang mendukung tanda kutip ganda dan koma di dalam sel
+function parseCSV(text){
+  const rows = [];
+  let i = 0, cur = '', row = [], inQuotes = false;
+
+  while (i < text.length) {
+    const c = text[i];
+
+    if (c === '"') {
+      // handle "" sebagai escape untuk "
+      if (inQuotes && text[i+1] === '"') { cur += '"'; i += 2; continue; }
+      inQuotes = !inQuotes; i++; continue;
+    }
+
+    if (!inQuotes && c === ',') { row.push(cur); cur = ''; i++; continue; }
+    if (!inQuotes && (c === '\n' || c === '\r')) {
+      // akhiri baris
+      if (cur !== '' || row.length) { row.push(cur); rows.push(row); row = []; cur = ''; }
+      // lewati CRLF
+      if (c === '\r' && text[i+1] === '\n') i++;
+      i++; continue;
+    }
+
+    cur += c; i++;
+  }
+  // baris terakhir
+  if (cur !== '' || row.length) { row.push(cur); rows.push(row); }
+
+  // mapping header -> object
+  if (!rows.length) return [];
+  const head = rows[0].map(h => h.trim().toLowerCase());
+  return rows.slice(1).map(cols => {
+    const o = {};
+    head.forEach((h, idx) => o[h] = (cols[idx] || '').trim());
+    return o;
+  });
+}
+
 
     async function getPengumuman(){
       const csv = await loadCsv(localStorage.getItem('sheet_pengumuman')||''); if(csv && csv.length) return csv;
@@ -519,5 +554,6 @@
   </script>
 </body>
 </html>
+
 
 
