@@ -2,54 +2,41 @@
 <html lang="id">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Masjid As-Sunnah Hekinan — Donasi, Jadwal Sholat, Pengumuman & Artikel</title>
-
-  <!-- Tailwind -->
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Masjid As-Sunnah Hekinan — Beranda</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons (OSS, ringan) -->
   <script src="https://unpkg.com/lucide@latest"></script>
-
   <style>
     html{scroll-behavior:smooth}
-    [data-lucide]{transition:transform .3s ease}
-    .card{transition:transform .15s ease, box-shadow .15s ease}
-    .card:hover{transform:translateY(-2px)}
     #progressBar{transition:width 1s ease;background:linear-gradient(90deg,#0ea5e9,#38bdf8)}
-    #refreshSholat.spin{animation:spin 1s linear infinite}
-    @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-    .scrollx-snap{scroll-snap-type:x mandatory}
-    .snap-item{scroll-snap-align:start}
-    .hide-scrollbar{scrollbar-width:none;-ms-overflow-style:none}
-    .hide-scrollbar::-webkit-scrollbar{display:none}
   </style>
 </head>
-
 <body class="font-sans text-slate-800 bg-gradient-to-b from-sky-50 to-white">
-  <!-- ================= HEADER ================= -->
   <header class="sticky top-0 bg-white/80 backdrop-blur border-b border-slate-200 z-40">
     <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex gap-3 items-center">
-        <img src="logohekinan.jpeg" class="h-10 w-auto rounded-lg" alt="Logo Masjid" loading="lazy">
+        <img src="logohekinan.jpeg" class="h-10 w-auto rounded-lg" alt="Logo">
         <h1 class="font-extrabold text-lg md:text-xl text-slate-900">Masjid As-Sunnah Hekinan</h1>
       </div>
-      <div class="flex items-center gap-2">
-        <a href="#donasi" class="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 text-sm font-semibold shadow">Donasi Sekarang</a>
-        <button id="openData" class="ml-1 rounded-xl border border-slate-300 px-3 py-2 text-sm hover:border-sky-600 flex items-center gap-2">
+      <div class="flex items-center gap-4 text-sm">
+        <a href="kegiatan.html" class="hover:text-sky-700 flex items-center gap-1"><i data-lucide="images" class="w-4 h-4"></i>Kegiatan</a>
+        <a href="pengumuman.html" class="hover:text-sky-700 flex items-center gap-1"><i data-lucide="megaphone" class="w-4 h-4"></i>Pengumuman</a>
+        <a href="artikel.html" class="hover:text-sky-700 flex items-center gap-1"><i data-lucide="book-open-text" class="w-4 h-4"></i>Artikel</a>
+        <a href="#donasi" class="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 font-semibold">Donasi</a>
+        <!-- tombol admin disembunyikan default -->
+        <button id="openData" class="admin-only hidden rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600 flex items-center gap-2">
           <i data-lucide="settings-2" class="w-4 h-4"></i> ⚙️ Data
         </button>
       </div>
     </nav>
   </header>
 
-  <!-- ================= JADWAL SHOLAT ================= -->
-  <section id="sholat" class="container mx-auto px-4 py-12">
-    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow card">
+  <!-- Jadwal Sholat -->
+  <section class="container mx-auto px-4 py-10">
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow">
       <div class="flex justify-between items-center">
         <div>
-          <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2">
-            <i data-lucide="moon-star" class="text-sky-600"></i> Jadwal Sholat
-          </h2>
+          <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2"><i data-lucide="moon-star" class="text-sky-600"></i> Jadwal Sholat</h2>
           <p id="locLabel" class="text-sm text-slate-600 mt-1">Mendeteksi lokasi...</p>
         </div>
         <button id="refreshSholat" class="flex items-center gap-2 border border-slate-300 px-3 py-2 rounded-xl hover:border-sky-600">
@@ -61,407 +48,93 @@
     </div>
   </section>
 
-  <!-- ================= KEGIATAN (Slideshow) ================= -->
-  <section id="kegiatan" class="bg-white border-y border-slate-200/70">
-    <div class="container mx-auto px-4 py-12">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2">
-          <i data-lucide="images" class="text-fuchsia-600"></i> Kegiatan
-        </h2>
-        <div class="hidden md:flex items-center gap-2">
-          <button id="kgPrev" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600" aria-label="Sebelumnya">◀</button>
-          <button id="kgNext" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600" aria-label="Berikutnya">▶</button>
-        </div>
-      </div>
-
-      <div class="relative">
-        <div id="kgTrack" class="scrollx-snap hide-scrollbar flex gap-4 overflow-x-auto rounded-2xl border border-slate-200 p-4">
-          <!-- Ganti gambar berikut sesuai folder kamu -->
-          <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
-            <img src="./1.jpeg" alt="Kegiatan 1" class="w-full h-full object-cover" loading="lazy">
-          </figure>
-          <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
-            <img src="./2.jpeg" alt="Kegiatan 2" class="w-full h-full object-cover" loading="lazy">
-          </figure>
-          <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
-            <img src="./3.jpeg" alt="Kegiatan 3" class="w-full h-full object-cover" loading="lazy">
-          </figure>
-          <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
-            <img src="./4.jpeg" alt="Kegiatan 4" class="w-full h-full object-cover" loading="lazy">
-          </figure>
-          <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden flex items-center justify-center bg-white">
-            <img src="./5.jpeg" alt="Poster kegiatan" class="max-w-full max-h-full object-contain" loading="lazy">
-          </figure>
-        </div>
-        <!-- Controls mobile -->
-        <div class="md:hidden absolute inset-y-0 left-0 flex items-center">
-          <button id="kgPrevMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow" aria-label="Sebelumnya">◀</button>
-        </div>
-        <div class="md:hidden absolute inset-y-0 right-0 flex items-center">
-          <button id="kgNextMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow" aria-label="Berikutnya">▶</button>
-        </div>
-      </div>
-
-      <p class="mt-4 text-center text-xs text-slate-500">Geser kiri/kanan pada layar sentuh, atau pakai tombol ◀ ▶.</p>
-    </div>
-  </section>
-
-  <!-- ================= PENGUMUMAN (Google Sheet CSV / JSON / Sample) ================= -->
-  <section id="pengumuman" class="container mx-auto px-4 py-12">
-    <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2 mb-6">
-      <i data-lucide="megaphone" class="text-amber-600"></i> Pengumuman
-    </h2>
-    <div id="board" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    <p id="boardEmpty" class="hidden text-sm text-slate-500">Belum ada pengumuman.</p>
-  </section>
-
-  <!-- ================= ARTIKEL (Google Sheet CSV / JSON / Sample) ================= -->
-  <section id="artikel" class="bg-white border-y border-slate-200/70">
-    <div class="container mx-auto px-4 py-12">
-      <div class="flex items-center justify-between gap-3">
-        <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2">
-          <i data-lucide="book-open-text" class="text-emerald-600"></i> Artikel
-        </h2>
-        <div class="relative">
-          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-          <input id="searchArtikel" type="search" placeholder="Cari artikel…" class="pl-9 pr-3 py-2 rounded-xl border border-slate-300 focus:border-sky-600 text-sm w-64 max-w-full">
-        </div>
-      </div>
-      <div id="artikelList" class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-      <p id="artikelEmpty" class="hidden text-sm text-slate-500">Belum ada artikel.</p>
-    </div>
-  </section>
-
-  <!-- ================= PROGRES DONASI + REKENING ================= -->
-  <section id="donasi" class="container mx-auto px-4 py-12">
-    <h2 class="text-2xl font-extrabold text-slate-900 mb-4 flex items-center gap-2">
-      <i data-lucide="heart-handshake" class="text-rose-600"></i> Progres Donasi Masjid
-    </h2>
-
-    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 card">
+  <!-- Donasi -->
+  <section id="donasi" class="container mx-auto px-4 pb-12">
+    <h2 class="text-2xl font-extrabold text-slate-900 mb-4 flex items-center gap-2"><i data-lucide="heart-handshake" class="text-rose-600"></i> Progres Donasi</h2>
+    <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
       <div class="flex justify-between items-end">
-        <div>
-          <p class="text-sm text-slate-600">Terkumpul</p>
-          <p id="terkumpulLabel" class="text-3xl font-bold text-slate-900">JPY 0</p>
-        </div>
-        <div class="text-right">
-          <p class="text-sm text-slate-600">Target</p>
-          <p id="targetLabel" class="text-2xl font-bold text-slate-900">JPY 0</p>
-        </div>
+        <div><p class="text-sm text-slate-600">Terkumpul</p><p id="terkumpulLabel" class="text-3xl font-bold">JPY 0</p></div>
+        <div class="text-right"><p class="text-sm text-slate-600">Target</p><p id="targetLabel" class="text-2xl font-bold">JPY 0</p></div>
       </div>
-      <div class="mt-4 w-full bg-white rounded-full border border-slate-200 overflow-hidden">
-        <div id="progressBar" class="h-3 w-0"></div>
-      </div>
+      <div class="mt-4 w-full bg-white rounded-full border border-slate-200 overflow-hidden"><div id="progressBar" class="h-3 w-0"></div></div>
       <p class="mt-2 text-sm text-slate-600"><span id="percentLabel">0</span>% tercapai</p>
-    </div>
 
-    <div class="mt-8 grid md:grid-cols-2 gap-6">
-      <div class="rounded-2xl border border-slate-200 bg-white p-5 card">
-        <h3 class="font-bold text-slate-900">🇯🇵 Jepang — Yucho Bank</h3>
-        <p class="mt-2 text-sm">a.n. <b>Yoshimine Adelfa</b></p>
-        <p>No. Rekening: <span id="rekYucho" class="font-semibold">12160-00457031</span></p>
-        <button data-copy="#rekYucho" class="mt-3 border border-slate-300 px-3 py-1 rounded-lg text-xs hover:border-sky-600">Salin</button>
+      <!-- Nominal -->
+      <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div><label class="text-sm font-semibold">Nominal (JPY)</label>
+            <input id="inputJPY" type="number" min="1000" step="1000" class="mt-1 w-full border border-slate-300 rounded-xl px-3 py-2 focus:border-sky-600">
+            <div class="mt-2 flex flex-wrap gap-2 text-xs">
+              <button class="quick-btn-jpy border border-slate-300 rounded-xl px-3 py-1" data-v="1000">1.000</button>
+              <button class="quick-btn-jpy border border-slate-300 rounded-xl px-3 py-1" data-v="5000">5.000</button>
+              <button class="quick-btn-jpy border border-slate-300 rounded-xl px-3 py-1" data-v="10000">10.000</button>
+              <button class="quick-btn-jpy border border-slate-300 rounded-xl px-3 py-1" data-v="20000">20.000</button>
+            </div>
+          </div>
+          <div><label class="text-sm font-semibold">Nominal (IDR)</label>
+            <input id="inputIDR" type="number" min="10000" step="1000" class="mt-1 w-full border border-slate-300 rounded-xl px-3 py-2 focus:border-sky-600">
+            <div class="mt-2 flex flex-wrap gap-2 text-xs">
+              <button class="quick-btn-idr border border-slate-300 rounded-xl px-3 py-1" data-v="50000">50.000</button>
+              <button class="quick-btn-idr border border-slate-300 rounded-xl px-3 py-1" data-v="100000">100.000</button>
+              <button class="quick-btn-idr border border-slate-300 rounded-xl px-3 py-1" data-v="200000">200.000</button>
+              <button class="quick-btn-idr border border-slate-300 rounded-xl px-3 py-1" data-v="500000">500.000</button>
+            </div>
+          </div>
+        </div>
+        <button id="donasiBtn" class="mt-4 w-full rounded-xl bg-sky-600 hover:bg-sky-700 text-white py-3 font-semibold">Lanjut Konfirmasi via WA</button>
       </div>
-      <div class="rounded-2xl border border-slate-200 bg-white p-5 card">
-        <h3 class="font-bold text-slate-900">🇮🇩 Indonesia — Bank Syariah Indonesia</h3>
-        <p class="mt-2 text-sm">a.n. <b>DKM Masjid As-Sunnah Hekinan</b></p>
-        <p>No. Rekening: <span id="rekBsi" class="font-semibold">Segera diumumkan</span></p>
-        <button data-copy="#rekBsi" class="mt-3 border border-slate-300 px-3 py-1 rounded-lg text-xs hover:border-sky-600">Salin</button>
+
+      <!-- Rekening -->
+      <div class="mt-6 grid md:grid-cols-2 gap-6">
+        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+          <h3 class="font-bold">🇯🇵 Yucho Bank</h3>
+          <p class="text-sm mt-1">a.n. <b>Yoshimine Adelfa</b></p>
+          <p>No.Rek: <span id="rekYucho">12160-00457031</span></p>
+          <button data-copy="#rekYucho" class="mt-2 border border-slate-300 px-3 py-1 rounded-lg text-xs hover:border-sky-600">Salin</button>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-5">
+          <h3 class="font-bold">🇮🇩 Bank Syariah Indonesia</h3>
+          <p class="text-sm mt-1">a.n. <b>DKM Masjid As-Sunnah Hekinan</b></p>
+          <p>No.Rek: <span id="rekBsi">Segera diumumkan</span></p>
+          <button data-copy="#rekBsi" class="mt-2 border border-slate-300 px-3 py-1 rounded-lg text-xs hover:border-sky-600">Salin</button>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ================= FOOTER ================= -->
   <footer class="bg-white">
     <div class="container mx-auto px-4 py-10 text-sm text-slate-700">
-      <p>© <span id="year"></span> Masjid As-Sunnah Hekinan — Designed by Abu Khayla.</p>
+      <p>© <span id="year"></span> Masjid As-Sunnah Hekinan.</p>
     </div>
   </footer>
 
-  <!-- ================= MODAL: DATA SOURCE (CSV URL) ================= -->
+  <!-- MODAL DATA (admin only) -->
   <div id="dataModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
     <div class="w-full max-w-2xl rounded-2xl bg-white p-6 shadow">
       <div class="flex items-start justify-between gap-4">
         <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="database"></i> Sumber Data</h3>
         <button id="closeData" class="text-slate-500 hover:text-slate-700" aria-label="Tutup">✕</button>
       </div>
-      <p class="mt-2 text-sm text-slate-600">
-        Tempel URL **Google Sheet → File → Share → Publish to the web → CSV**. Simpan akan tersimpan di browser (localStorage).
-      </p>
+      <p class="mt-2 text-sm text-slate-600">Tempel URL Google Sheet (Publish to web → CSV). Tersimpan di browser.</p>
       <div class="grid md:grid-cols-2 gap-4 mt-4">
         <div class="rounded-xl border border-slate-200 p-4">
           <label class="text-sm font-semibold">CSV Pengumuman</label>
           <input id="csvPengumuman" type="url" placeholder="https://docs.google.com/.../pub?output=csv" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600">
-          <p class="text-xs text-slate-500 mt-2">Kolom: <code>title,date,desc,link</code></p>
+          <p class="text-xs text-slate-500 mt-2">Kolom: title,date,desc,link</p>
         </div>
         <div class="rounded-xl border border-slate-200 p-4">
           <label class="text-sm font-semibold">CSV Artikel</label>
           <input id="csvArtikel" type="url" placeholder="https://docs.google.com/.../pub?output=csv" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600">
-          <p class="text-xs text-slate-500 mt-2">Kolom: <code>title,tag,excerpt,link</code> (tag pakai <code>|</code>)</p>
+          <p class="text-xs text-slate-500 mt-2">Kolom: title,tag,excerpt,link</p>
         </div>
       </div>
-      <div class="mt-4 flex justify-end gap-2">
-        <button id="saveData" class="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 text-sm font-semibold">Simpan</button>
-      </div>
-      <hr class="my-4">
-      <p class="text-xs text-slate-500">
-        Fallback opsional: siapkan <code>pengumuman.json</code> & <code>artikel.json</code> (format array objek) di folder yang sama.
-      </p>
+      <div class="mt-4 flex justify-end"><button id="saveData" class="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 text-sm font-semibold">Simpan</button></div>
     </div>
   </div>
 
-  <!-- ================= APP (modular) ================= -->
   <script type="module">
-    /* ======= Utils ======= */
-    const $ = (s, r=document)=>r.querySelector(s);
-    const $$ = (s, r=document)=>[...r.querySelectorAll(s)];
-    const fmtJPY = n => new Intl.NumberFormat('id-ID',{style:'currency',currency:'JPY',maximumFractionDigits:0}).format(n||0);
-    const nowYear = new Date().getFullYear(); $('#year').textContent = nowYear;
-    lucide.createIcons();
-
-    // ========= CONFIG (bisa diubah via modal) =========
-    const DS = {
-      pengumuman: { sheetCsv: localStorage.getItem('sheet_pengumuman') || '', json:'pengumuman.json' },
-      artikel:    { sheetCsv: localStorage.getItem('sheet_artikel')    || '', json:'artikel.json'    },
-    };
-
-    // ========= MODULE: SholatWidget =========
-    const SholatWidget = (function(){
-      const GRID = $('#sholatGrid'), LOC = $('#locLabel'), BTN = $('#refreshSholat');
-      const FALLBACK = { lat:34.884, lon:136.993, label:'Hekinan, Aichi' };
-
-      async function getLocation(){
-        return new Promise(res=>{
-          if(!navigator.geolocation) return res(null);
-          navigator.geolocation.getCurrentPosition(
-            p=>res({lat:p.coords.latitude,lon:p.coords.longitude}),
-            ()=>res(null),
-            {enableHighAccuracy:true,timeout:8000}
-          );
-        });
-      }
-      async function reverseGeocode(lat,lon){
-        try{
-          const j = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`).then(r=>r.json());
-          return j.address?.city || j.address?.town || j.address?.state || 'Tidak diketahui';
-        }catch{return 'Tidak diketahui'}
-      }
-      async function fetchTimings(lat,lon){
-        // tanpa mazhab (school), method=2 (Umm Al-Qura) seperti versi sebelumnya
-        const j = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`).then(r=>r.json());
-        return j.data?.timings;
-      }
-      function tile(icon,label,time){
-        const el = document.createElement('div');
-        el.className = "rounded-2xl border border-slate-200 bg-white p-4 text-center hover:shadow card";
-        el.innerHTML = `
-          <i data-lucide="${icon}" class="w-5 h-5 mx-auto text-sky-600 mb-2"></i>
-          <div class="text-xs text-slate-500">${label}</div>
-          <div class="text-lg font-bold text-slate-900">${time||'—'}</div>`;
-        return el;
-      }
-      async function render(){
-        BTN.classList.add('spin');
-        GRID.innerHTML = '<p class="col-span-6 text-center text-slate-500">Memuat...</p>';
-        const loc = await getLocation() || FALLBACK;
-        const city = await reverseGeocode(loc.lat, loc.lon);
-        LOC.textContent = `Lokasi: ${city} • (${loc.lat.toFixed(3)}, ${loc.lon.toFixed(3)})`;
-        try{
-          const t = await fetchTimings(loc.lat, loc.lon);
-          GRID.innerHTML = '';
-          const order = [
-            ['Fajr','sunrise','Subuh'],
-            ['Sunrise','sun','Syuruq'],
-            ['Dhuhr','clock','Dzuhur'],
-            ['Asr','cloud-sun','Ashar'],
-            ['Maghrib','moon','Maghrib'],
-            ['Isha','star','Isya']
-          ];
-          order.forEach(([k,ic,label])=> GRID.appendChild(tile(ic, label, t[k])));
-          lucide.createIcons();
-        }catch{
-          GRID.innerHTML = '<p class="col-span-6 text-center text-red-600">Gagal memuat jadwal.</p>';
-        }
-        BTN.classList.remove('spin');
-      }
-      function init(){
-        $('#refreshSholat').addEventListener('click', render);
-        render();
-      }
-      return { init };
-    })();
-
-    // ========= MODULE: Kegiatan (slideshow) =========
-    const KegiatanModule = (function(){
-      const track = $('#kgTrack');
-      const prevs = [$('#kgPrev'), $('#kgPrevMob')].filter(Boolean);
-      const nexts = [$('#kgNext'), $('#kgNextMob')].filter(Boolean);
-
-      function page(){ return track.clientWidth; }
-      function go(delta){ track.scrollBy({left: delta*page(), behavior:'smooth'}); }
-
-      function init(){
-        prevs.forEach(b=>b?.addEventListener('click',()=>go(-1)));
-        nexts.forEach(b=>b?.addEventListener('click',()=>go(1)));
-        let timer = setInterval(()=>go(1), 6000);
-        track.addEventListener('mouseenter', ()=> clearInterval(timer));
-        track.addEventListener('mouseleave', ()=> timer = setInterval(()=>go(1), 6000));
-      }
-      return { init };
-    })();
-
-    // ========= Data Helpers (CSV / JSON) =========
-    function parseCSV(text){
-      // parser ringan (tanpa dukungan tanda kutip kompleks)
-      return text.trim().split(/\r?\n/).map(r=>r.split(',').map(c=>c.trim()));
-    }
-    async function loadFromCsv(url){
-      if(!url) return null;
-      try{
-        const txt = await fetch(url, {cache:'no-store'}).then(r=>r.text());
-        const rows = parseCSV(txt); if(!rows.length) return [];
-        const head = rows[0].map(h=>h.toLowerCase());
-        return rows.slice(1).map(cols=>{
-          const o={}; head.forEach((h,i)=> o[h] = cols[i] || ''); return o;
-        });
-      }catch{ return null; }
-    }
-    async function loadFromJson(url){
-      try{ return await fetch(url, {cache:'no-store'}).then(r=>r.json()); }catch{ return null; }
-    }
-
-    // ========= MODULE: Pengumuman =========
-    const PengumumanModule = (function(){
-      const wrap = $('#board'), empty = $('#boardEmpty');
-      const SAMPLE = [
-        { title:'Kajian Ahad Pagi', date:'2025-11-10', desc:'Kajian rutin ba’da Subuh.', link:'#' },
-        { title:'Open Donasi Perbaikan Wudhu', date:'2025-11-15', desc:'Bantu perbaikan area wudhu.', link:'#' },
-        { title:'TPA — Pendaftaran Baru', date:'2025-12-01', desc:'Kuota terbatas.', link:'#' },
-      ];
-      async function getData(){
-        const csv = await loadFromCsv(DS.pengumuman.sheetCsv); if(csv && csv.length) return csv;
-        const json = await loadFromJson(DS.pengumuman.json);   if(json && json.length) return json;
-        return SAMPLE;
-      }
-      function card({title,date,desc,link}){
-        const el = document.createElement('article');
-        const dt = date ? new Date(date) : null;
-        const dateTxt = dt && !isNaN(dt) ? dt.toLocaleDateString('id-ID',{weekday:'short',year:'numeric',month:'short',day:'numeric'}) : '';
-        el.className = "rounded-2xl border border-slate-200 bg-white p-5 shadow card";
-        el.innerHTML = `
-          <div class="text-xs text-slate-500">${dateTxt}</div>
-          <h3 class="mt-1 font-bold text-slate-900">${title||''}</h3>
-          <p class="mt-2 text-sm text-slate-700">${desc||''}</p>
-          ${link? `<a href="${link}" class="inline-flex items-center gap-2 mt-3 text-sky-700 hover:underline text-sm"><i data-lucide="arrow-right"></i> Detail</a>`:''}
-        `;
-        return el;
-      }
-      async function init(){
-        const data = await getData();
-        wrap.innerHTML = '';
-        if(!data.length){ empty.classList.remove('hidden'); return; }
-        empty.classList.add('hidden');
-        data.forEach(d=> wrap.appendChild(card(d)));
-        lucide.createIcons();
-      }
-      return { init };
-    })();
-
-    // ========= MODULE: Artikel =========
-    const ArtikelModule = (function(){
-      const list = $('#artikelList'), empty = $('#artikelEmpty'), input = $('#searchArtikel');
-      const SAMPLE = [
-        { title:'Keutamaan Membangun Masjid', tag:'donasi|masjid', excerpt:'Dalil & faedah ringkas.', link:'#' },
-        { title:'Adab ke Masjid untuk Anak', tag:'adab|anak', excerpt:'Checklist adab singkat.', link:'#' },
-        { title:'Panduan Wudhu Singkat', tag:'fiqih', excerpt:'Tata cara wudhu.', link:'#' },
-      ];
-      let CACHE = [];
-      async function getData(){
-        const csv = await loadFromCsv(DS.artikel.sheetCsv); if(csv && csv.length) return csv;
-        const json = await loadFromJson(DS.artikel.json);   if(json && json.length) return json;
-        return SAMPLE;
-      }
-      function render(query=''){
-        const q = query.trim().toLowerCase();
-        const data = CACHE.filter(a=>{
-          const tags = (a.tag||'').toLowerCase();
-          return !q || (a.title||'').toLowerCase().includes(q) || (a.excerpt||'').toLowerCase().includes(q) || tags.includes(q);
-        });
-        list.innerHTML = '';
-        if(!data.length){ empty.classList.remove('hidden'); return; }
-        empty.classList.add('hidden');
-        data.forEach(a=>{
-          const badges = (a.tag||'').split('|').filter(Boolean).map(t=>`<span class="text-xs px-2 py-1 rounded-full bg-slate-100">${t}</span>`).join('');
-          const el = document.createElement('article');
-          el.className = "rounded-2xl border border-slate-200 bg-white p-5 shadow card";
-          el.innerHTML = `
-            <h3 class="font-bold text-slate-900">${a.title||''}</h3>
-            <p class="mt-2 text-sm text-slate-700">${a.excerpt||''}</p>
-            <div class="mt-3 flex flex-wrap gap-2">${badges}</div>
-            ${a.link? `<a href="${a.link}" class="inline-flex items-center gap-2 mt-4 text-emerald-700 hover:underline text-sm"><i data-lucide="book-open"></i> Baca</a>`:''}
-          `;
-          list.appendChild(el);
-        });
-        lucide.createIcons();
-      }
-      async function init(){
-        CACHE = await getData();
-        render();
-        input.addEventListener('input', e=>render(e.target.value));
-      }
-      return { init };
-    })();
-
-    // ========= MODULE: Donasi (progress & rekening) =========
-    const DonasiModule = (function(){
-      const TARGET = 42000000, TERKUMPUL = 5290797; // contoh JPY
-      function renderProgress(){
-        $('#terkumpulLabel').textContent = fmtJPY(TERKUMPUL);
-        $('#targetLabel').textContent = fmtJPY(TARGET);
-        const p = Math.min(100, Math.round((TERKUMPUL/TARGET)*100));
-        $('#percentLabel').textContent = p;
-        const bar = $('#progressBar'); bar.style.width = '0%';
-        requestAnimationFrame(()=> setTimeout(()=> bar.style.width = p + '%', 50));
-      }
-      function copyInit(){
-        $$('[data-copy]').forEach(btn=>{
-          btn.addEventListener('click', ()=>{
-            const sel = btn.getAttribute('data-copy'); const t = $(sel);
-            if(!t)return; navigator.clipboard.writeText(String(t.textContent).trim());
-            const o=btn.textContent; btn.textContent='Disalin!'; setTimeout(()=>btn.textContent=o,1200);
-          });
-        });
-      }
-      function init(){ renderProgress(); copyInit(); }
-      return { init };
-    })();
-
-    // ========= MODAL DATA SOURCE (CSV URLs) =========
-    (function(){
-      const modal = $('#dataModal'), openBtn = $('#openData'), closeBtn = $('#closeData');
-      const inputP = $('#csvPengumuman'), inputA = $('#csvArtikel'), saveBtn = $('#saveData');
-      function open(){ inputP.value = localStorage.getItem('sheet_pengumuman')||''; inputA.value = localStorage.getItem('sheet_artikel')||''; modal.classList.remove('hidden'); modal.classList.add('flex'); }
-      function close(){ modal.classList.add('hidden'); modal.classList.remove('flex'); }
-      openBtn.addEventListener('click', open);
-      closeBtn.addEventListener('click', close);
-      modal.addEventListener('click', e=>{ if(e.target.id==='dataModal') close(); });
-      saveBtn.addEventListener('click', ()=>{
-        const p = inputP.value.trim(); const a = inputA.value.trim();
-        if(p) localStorage.setItem('sheet_pengumuman', p); else localStorage.removeItem('sheet_pengumuman');
-        if(a) localStorage.setItem('sheet_artikel', a);    else localStorage.removeItem('sheet_artikel');
-        // perbarui DS di-memory lalu refresh modul
-        DS.pengumuman.sheetCsv = localStorage.getItem('sheet_pengumuman')||'';
-        DS.artikel.sheetCsv    = localStorage.getItem('sheet_artikel')||'';
-        PengumumanModule.init(); ArtikelModule.init(); close();
-      });
-    })();
-
-    // ========= BOOTSTRAP =========
-    SholatWidget.init();
-    KegiatanModule.init();
-    PengumumanModule.init();
-    ArtikelModule.init();
-    DonasiModule.init();
+    import { boot } from './app.js';
+    boot();
   </script>
 </body>
 </html>
