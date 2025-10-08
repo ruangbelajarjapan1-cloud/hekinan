@@ -1,431 +1,435 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title data-i18n="site.title">Masjid As-Sunnah Hekinan — Bantu Pelunasan Pembelian Bangunan Untuk Masjid</title>
+  <meta name="description" content="Landing page resmi Masjid As-Sunnah Hekinan. Yuk ikut berkontribusi dalam donasi pelunasan pembelian bangunan untuk masjid." data-i18n-attr='{"content":"site.desc"}'>
+  <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
+  <link rel="canonical" href="https://assunnahhekinan.org/"/>
+  <meta name="theme-color" content="#0ea5e9" />
 
-    <title data-i18n="site.title">Masjid As-Sunnah Hekinan — Bantu Pelunasan Pembelian Bangunan Untuk Masjid</title>
-    <meta name="description" content="Landing page resmi Masjid As-Sunnah Hekinan. Yuk ikut berkontribusi dalam donasi pelunasan pembelian bangunan untuk masjid." data-i18n-attr='{"content":"site.desc"}'>
-    <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />
-    <link rel="canonical" href="https://assunnahhekinan.org/"/>
-    <link rel="sitemap" type="application/xml" href="/sitemap.xml"/>
-    <meta name="theme-color" content="#0ea5e9" />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: { sans: ["Inter","ui-sans-serif","system-ui","-apple-system","Segoe UI","Roboto","Noto Sans","Ubuntu","Cantarell","Helvetica Neue","Arial","sans-serif"] },
-            boxShadow: { soft: "0 10px 25px -15px rgba(0,0,0,0.3)" },
-          },
-        },
-      };
-    </script>
-    <style>
-      html { scroll-behavior: smooth; }
-      :focus-visible { outline: 3px solid #38bdf8; outline-offset: 2px; border-radius: .5rem; }
-      @media print { nav, .no-print { display: none !important; } .print\:block{ display:block !important; } }
-
-      /* Progress animation */
-      #progressBar {
-        transition: width 900ms cubic-bezier(.22,.61,.36,1);
-        background: linear-gradient(90deg, #0EA5E9, #38BDF8);
-        position: relative; overflow: hidden;
+  <!-- Fonts & Tailwind -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ["Inter","ui-sans-serif","system-ui","-apple-system","Segoe UI","Roboto","Noto Sans","Ubuntu","Cantarell","Helvetica Neue","Arial","sans-serif"] },
+          boxShadow: { soft: "0 10px 25px -15px rgba(0,0,0,.3)" },
+          colors: { brand: { 600:"#0ea5e9",700:"#0284c7" } }
+        }
       }
-      #progressBar::after{
-        content:""; position:absolute; inset:0;
-        background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.35) 50%, rgba(255,255,255,0) 100%);
-        transform: translateX(-100%); animation: sheen 2.8s infinite;
-      }
-      @keyframes sheen{ 0%{transform:translateX(-100%)} 60%{transform:translateX(100%)} 100%{transform:translateX(100%)} }
+    }
+  </script>
 
-      /* Small currency icons */
-      .ic {
-        width: 22px; height: 22px; border-radius: 9999px;
-        display:inline-flex; align-items:center; justify-content:center;
-        background:#E0F2FE; color:#0C4A6E; font-weight:800; font-size:12px;
-        box-shadow: inset 0 0 0 1px rgba(2,132,199,.15);
-      }
-      .ic-rp { background:#F1F5F9; color:#0F172A; }
+  <!-- Lucide Icons (ringan, OSS) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-      /* Tabs underline slider */
-      .tab-slider {
-        position: absolute; bottom: 0; height: 2px; width: 50%;
-        background: #0EA5E9; transition: transform .3s ease;
-      }
-      .tab-active-left  .tab-slider { transform: translateX(0%); }
-      .tab-active-right .tab-slider { transform: translateX(100%); }
-    </style>
-  </head>
+  <style>
+    html{scroll-behavior:smooth}
+    :focus-visible{outline:3px solid #38bdf8; outline-offset:2px; border-radius:.5rem}
+    .scrollx-snap{scroll-snap-type:x mandatory}
+    .snap-item{scroll-snap-align:start}
+  </style>
+</head>
 
-  <body class="font-sans text-slate-800 bg-gradient-to-b from-sky-50 to-white">
-    <!-- Toggle Bahasa (opsional) -->
-    <div class="fixed bottom-4 right-4 z-50">
-      <button id="langToggle" class="rounded-xl bg-sky-600 text-white px-3 py-2 text-sm font-semibold shadow-soft" aria-label="Ubah Bahasa">EN</button>
+<body class="font-sans text-slate-800 bg-gradient-to-b from-sky-50 to-white">
+  <!-- Toggle Bahasa -->
+  <div class="fixed bottom-4 right-4 z-50">
+    <button id="langToggle" class="rounded-xl bg-brand-600 hover:bg-brand-700 text-white px-3 py-2 text-sm font-semibold shadow-soft" aria-label="Ubah Bahasa">EN</button>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 backdrop-blur bg-white/70 border-b border-slate-200/70">
+    <nav class="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="#top" class="flex items-center gap-3">
+          <img src="logohekinan.jpeg" alt="Logo Masjid As-Sunnah Hekinan" class="h-10 w-auto" loading="lazy">
+          <span class="font-extrabold text-slate-900 text-lg" data-i18n="brand">Masjid As-Sunnah Hekinan</span>
+        </a>
+      </div>
+
+      <!-- Desktop menu -->
+      <div class="hidden md:flex items-center gap-6 text-sm">
+        <a href="#sholat" class="hover:text-brand-700 flex items-center gap-2"><i data-lucide="moon-star" class="w-4 h-4"></i>Jadwal Sholat</a>
+        <a href="#kegiatan" class="hover:text-brand-700 flex items-center gap-2"><i data-lucide="images" class="w-4 h-4"></i>Kegiatan</a>
+        <a href="#pengumuman" class="hover:text-brand-700 flex items-center gap-2"><i data-lucide="megaphone" class="w-4 h-4"></i>Pengumuman</a>
+        <a href="#artikel" class="hover:text-brand-700 flex items-center gap-2"><i data-lucide="book-open-text" class="w-4 h-4"></i>Artikel</a>
+        <a href="#donasi" class="hover:text-brand-700 flex items-center gap-2"><i data-lucide="heart-handshake" class="w-4 h-4"></i>Donasi</a>
+      </div>
+
+      <!-- Burger button (mobile) -->
+      <button id="burgerBtn" class="md:hidden flex flex-col gap-1.5 p-2 rounded-lg border border-slate-300 hover:border-brand-600" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+        <span class="block w-5 h-0.5 bg-slate-700"></span>
+        <span class="block w-5 h-0.5 bg-slate-700"></span>
+        <span class="block w-5 h-0.5 bg-slate-700"></span>
+      </button>
+    </nav>
+
+    <!-- Mobile menu panel -->
+    <div id="mobileMenu" class="hidden md:hidden border-t border-slate-200 bg-white/95 backdrop-blur px-4 py-4 flex flex-col gap-3 text-sm">
+      <a href="#sholat" class="hover:text-brand-700">Jadwal Sholat</a>
+      <a href="#kegiatan" class="hover:text-brand-700">Kegiatan</a>
+      <a href="#pengumuman" class="hover:text-brand-700">Pengumuman</a>
+      <a href="#artikel" class="hover:text-brand-700">Artikel</a>
+      <a href="#donasi" class="rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-center px-4 py-2">Donasi</a>
     </div>
+  </header>
 
-    <!-- Header ringkas -->
-    <header class="sticky top-0 z-40 backdrop-blur bg-white/70 border-b border-slate-200/70">
-      <nav class="container mx-auto px-4 py-3 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <img src="logohekinan.jpeg" alt="Logo" class="h-10 w-auto" loading="lazy">
-          <span class="font-extrabold text-slate-900 text-lg">Masjid As-Sunnah Hekinan</span>
-        </div>
-        <a href="#donasi" class="rounded-2xl bg-sky-600 hover:bg-sky-700 text-white text-sm font-semibold px-4 py-2 shadow-soft">Donasi Sekarang</a>
-      </nav>
-    </header>
-
-    <!-- Tentang -->
-    <section id="tentang" class="container mx-auto px-4 py-10">
-      <div class="grid md:grid-cols-2 gap-10 items-center">
-        <img src="1.jpeg" alt="Bangunan masjid" class="rounded-2xl shadow-soft" loading="lazy">
-        <div>
-          <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Tentang Program</h2>
-          <p class="mt-4 text-slate-700 leading-relaxed">
-            Kami berikhtiar melunasi <span class="font-semibold">pembelian bangunan</span> Masjid As-Sunnah Hekinan. Dukungan Anda sangat berarti.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Progres + Donasi -->
-    <section id="progres" class="bg-white border-y border-slate-200/70">
-      <div class="container mx-auto px-4 py-12">
-        <div class="grid lg:grid-cols-3 gap-8 items-start">
-          <div class="lg:col-span-2">
-            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Progres Pelunasan</h2>
-            <p class="mt-2 text-slate-700">Target pelunasan dan nominal terkumpul diperbarui berkala.</p>
-
-            <div class="mt-6 p-6 rounded-2xl border border-slate-200 bg-slate-50">
-              <div class="flex items-end justify-between gap-4">
-                <div>
-                  <p class="text-sm text-slate-600">Terkumpul</p>
-                  <p class="text-2xl md:text-3xl font-extrabold text-slate-900" id="terkumpulLabel">JPY 0</p>
-                </div>
-                <div class="text-right">
-                  <p class="text-sm text-slate-600">Target</p>
-                  <p class="text-xl md:text-2xl font-extrabold text-slate-900" id="targetLabel">JPY 0</p>
-                </div>
-              </div>
-
-              <div class="mt-4 w-full bg-white rounded-full border border-slate-200 overflow-hidden" aria-label="Progress bar">
-                <div id="progressBar" class="h-3" style="width:0%"></div>
-              </div>
-              <div class="mt-2 text-sm text-slate-600"><span id="percentLabel">0</span>% tercapai</div>
-
-              <!-- ========== Donasi (bebas JPY atau IDR, TANPA konversi) ========== -->
-              <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
-                <!-- Tabs -->
-                <div id="currencyTabs" class="relative tab-active-left">
-                  <div class="flex gap-2">
-                    <button data-cur="JPY" id="tabJPY" class="flex-1 rounded-xl px-4 py-2 text-sm font-semibold border border-slate-300 bg-slate-50 hover:bg-slate-100 focus:bg-sky-50 focus:border-sky-500">
-                      <span class="ic mr-2">¥</span> Input JPY
-                    </button>
-                    <button data-cur="IDR" id="tabIDR" class="flex-1 rounded-xl px-4 py-2 text-sm font-semibold border border-slate-300 bg-slate-50 hover:bg-slate-100 focus:bg-sky-50 focus:border-sky-500">
-                      <span class="ic ic-rp mr-2">Rp</span> Input IDR
-                    </button>
-                  </div>
-                  <span class="tab-slider"></span>
-                </div>
-
-                <!-- Fields -->
-                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <label for="inputJPY" class="flex items-center gap-2 text-sm font-semibold text-slate-700">
-                      <span class="ic" aria-hidden="true">¥</span> Masukkan Donasi JPY
-                    </label>
-                    <input id="inputJPY" type="number" inputmode="numeric" min="0" step="100"
-                      placeholder="Nominal dalam JPY"
-                      class="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-sky-600"/>
-                  </div>
-                  <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <label for="inputIDR" class="flex items-center gap-2 text-sm font-semibold text-slate-700">
-                      <span class="ic ic-rp" aria-hidden="true">Rp</span> Masukkan Donasi IDR
-                    </label>
-                    <input id="inputIDR" type="number" inputmode="numeric" min="0" step="1000"
-                      placeholder="Nominal dalam IDR"
-                      class="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 focus:border-sky-600"/>
-                  </div>
-                </div>
-
-                <!-- Dua kartu tampil angka berdampingan -->
-                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div id="cardJPY" class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <div class="flex items-center gap-2">
-                      <span class="ic" aria-hidden="true">¥</span>
-                      <span class="text-sm font-semibold">donasi（JPY）</span>
-                    </div>
-                    <p class="mt-2 text-xl md:text-2xl font-extrabold tracking-tight text-slate-900 amount">—</p>
-                  </div>
-                  <div id="cardIDR" class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <div class="flex items-center gap-2">
-                      <span class="ic ic-rp" aria-hidden="true">Rp</span>
-                      <span class="text-sm font-semibold">donasi（IDR）</span>
-                    </div>
-                    <p class="mt-2 text-xl md:text-2xl font-extrabold tracking-tight text-slate-900 amount">—</p>
-                  </div>
-                </div>
-
-                <!-- Quick buttons menyesuaikan TAB aktif, TANPA konversi -->
-                <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
-                  <button class="quick-btn rounded-xl border border-slate-300 hover:border-sky-600 px-4 py-2">5.000</button>
-                  <button class="quick-btn rounded-xl border border-slate-300 hover:border-sky-600 px-4 py-2">10.000</button>
-                  <button class="quick-btn rounded-xl border border-slate-300 hover:border-sky-600 px-4 py-2">20.000</button>
-                  <button class="quick-btn rounded-xl border border-slate-300 hover:border-sky-600 px-4 py-2">50.000</button>
-                </div>
-
-                <div class="mt-4">
-                  <button id="donasiBtn" class="w-full rounded-2xl bg-sky-600 hover:bg-sky-700 text-white font-semibold px-6 py-3">
-                    Lanjut Donasi
-                  </button>
-                  <p class="mt-2 text-[11px] text-slate-500">
-                    Minimal: 1.000 JPY <em>atau</em> 10.000 IDR. Pilih tab sesuai mata uang yang Anda donasikan.
-                  </p>
-                </div>
-              </div>
-              <!-- ========== /Donasi bebas mata uang ========== -->
-
-              <p class="mt-3 text-xs text-slate-500">* Donasi via transfer bank (Jepang/Indonesia). Setelah klik “Lanjut Donasi”, konfirmasi via WhatsApp.</p>
-            </div>
-          </div>
-
-          <!-- Rekening -->
-          <aside class="lg:col-span-1">
-            <div class="rounded-2xl border border-slate-200 bg-white p-6">
-              <h3 class="text-lg font-bold text-slate-900">Rekening Donasi</h3>
-
-              <div class="mt-4 rounded-xl border border-slate-200 p-4">
-                <p class="text-sm font-semibold text-slate-900">🇯🇵 Jepang — Yucho Bank</p>
-                <ul class="mt-2 text-sm text-slate-700 space-y-1">
-                  <li>a.n. <span class="font-medium">Yoshimine Adelfa</span></li>
-                  <li>No. Rekening: <span class="font-medium" id="rekYucho">12160-00457031</span></li>
-                </ul>
-                <div class="mt-3">
-                  <button data-copy="#rekYucho" class="copy-btn rounded-lg border border-slate-300 px-3 py-1 text-xs hover:border-sky-600">Salin No. Rek</button>
-                </div>
-              </div>
-
-              <div class="mt-4 rounded-xl border border-slate-200 p-4">
-                <p class="text-sm font-semibold text-slate-900">🇮🇩 Indonesia — Bank Syariah Indonesia</p>
-                <ul class="mt-2 text-sm text-slate-700 space-y-1">
-                  <li>a.n. <span class="font-medium">DKM Masjid As-Sunnah Hekinan</span></li>
-                  <li>No. Rekening: <span class="font-medium" id="rekBsi">nomor akan diupdate</span></li>
-                </ul>
-                <div class="mt-3">
-                  <button data-copy="#rekBsi" class="copy-btn rounded-lg border border-slate-300 px-3 py-1 text-xs hover:border-sky-600">Salin No. Rek</button>
-                </div>
-              </div>
-
-              <p class="mt-3 text-xs text-slate-500">Setelah transfer, mohon kirim bukti via WhatsApp agar dicatat oleh admin.</p>
-            </div>
-          </aside>
-        </div>
-      </div>
-    </section>
-
-    <!-- Donasi CTA -->
-    <section id="donasi" class="container mx-auto px-4 py-12">
-      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
-        <h3 class="text-lg font-bold text-slate-900">Terima kasih atas dukungannya!</h3>
-        <p class="mt-2 text-sm text-slate-600">Berapapun donasi Anda sangat berarti untuk pelunasan pembelian bangunan masjid.</p>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-white">
-      <div class="container mx-auto px-4 py-10">
-        <div class="grid md:grid-cols-3 gap-8">
+  <!-- ======== SECTION: JADWAL SHOLAT ======== -->
+  <section id="sholat" class="container mx-auto px-4 py-12">
+    <div class="grid lg:grid-cols-3 gap-8 items-start">
+      <!-- Widget -->
+      <div class="lg:col-span-2 rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
+        <div class="flex items-center justify-between gap-4">
           <div>
-            <img src="logohekinan.jpeg" alt="Logo Masjid As-Sunnah Hekinan" class="h-12 w-auto mb-3" loading="lazy">
-            <h3 class="font-bold text-slate-900">Masjid As-Sunnah Hekinan</h3>
-            <p class="mt-2 text-sm text-slate-700">1 Chome-8 Dojoyamamachi, Hekinan, Aichi 447-0864</p>
-            <p class="mt-1 text-sm text-slate-700">Email: hekinanmosque@gmail.com</p>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Jadwal Sholat</h2>
+            <p id="locLabel" class="text-sm text-slate-600 mt-1">Mencari lokasi…</p>
           </div>
-          <div>
-            <h3 class="font-bold text-slate-900">Tautan</h3>
-            <ul class="mt-2 space-y-2 text-sm">
-              <li><a href="#tentang" class="hover:text-sky-700">Tentang</a></li>
-              <li><a href="#progres" class="hover:text-sky-700">Progres</a></li>
-              <li><a href="#donasi" class="hover:text-sky-700">Donasi</a></li>
-            </ul>
-          </div>
-          <div>
-            <h3 class="font-bold text-slate-900">Ikuti Kami</h3>
-            <ul class="mt-2 space-y-2 text-sm">
-              <li><a href="https://www.instagram.com/assunnahhekinan" target="_blank" rel="noopener" class="hover:text-sky-700">Instagram</a></li>
-              <li><a href="https://www.youtube.com/@assunnahhekinan" target="_blank" rel="noopener" class="hover:text-sky-700">YouTube</a></li>
-            </ul>
-          </div>
+          <button id="refreshSholat" class="rounded-xl border border-slate-300 hover:border-brand-600 px-3 py-2 text-sm flex items-center gap-2">
+            <i data-lucide="refresh-ccw" class="w-4 h-4"></i>Perbarui
+          </button>
         </div>
-        <div class="mt-8 border-t border-slate-200 pt-6 text-xs text-slate-500 flex flex-col md:flex-row justify-between">
-          <p>© <span id="year"></span> Masjid As-Sunnah Hekinan. Semua hak cipta dilindungi.</p>
-          <p>Designed with ♥️ abu khayla.</p>
-        </div>
-      </div>
-    </footer>
 
-    <!-- Modal -->
-    <div id="modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4">
-      <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-soft">
-        <div class="flex items-start justify-between gap-4">
-          <h3 class="text-lg font-bold text-slate-900">Lanjutkan Donasi</h3>
-          <button id="closeModal" class="text-slate-500 hover:text-slate-700" aria-label="Tutup">✕</button>
-        </div>
+        <div id="sholatGrid" class="mt-6 grid grid-cols-2 md:grid-cols-6 gap-3"></div>
+        <p id="sholatNote" class="mt-3 text-xs text-slate-500"></p>
+      </div>
+
+      <!-- Tips / CTA -->
+      <aside class="rounded-2xl border border-slate-200 bg-sky-50 p-6">
+        <h3 class="font-bold text-slate-900 flex items-center gap-2"><i data-lucide="info" class="w-4 h-4"></i>Catatan</h3>
         <p class="mt-2 text-sm text-slate-700">
-          Nominal: <span id="nominalFinal" class="font-semibold">—</span>
+          Jadwal diambil otomatis dari <span class="font-medium">AlAdhan</span> berdasarkan lokasi perangkat Anda.
+          Jika tidak memberi izin lokasi, sistem memakai koordinat Hekinan (Aichi).
         </p>
-        <div class="mt-4">
-          <a id="viaWA" href="#" target="_blank" rel="noopener" class="block rounded-2xl border border-slate-300 hover:border-sky-600 px-4 py-3 text-center">
-            Konfirmasi via WhatsApp
-          </a>
-          <p class="mt-3 text-xs text-slate-500 text-center">Setelah transfer ke rekening Jepang atau Indonesia, silakan kirim bukti.</p>
+        <a href="#donasi" class="inline-block mt-4 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-semibold px-5 py-2">Dukung Donasi</a>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ======== SECTION: KEGIATAN (slideshow) ======== -->
+  <section id="kegiatan" class="bg-white border-y border-slate-200/70">
+    <div class="container mx-auto px-4 py-12">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Kegiatan</h2>
+        <div class="hidden md:flex items-center gap-2">
+          <button id="kgPrev" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-brand-600" aria-label="Sebelumnya">◀</button>
+          <button id="kgNext" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-brand-600" aria-label="Berikutnya">▶</button>
         </div>
       </div>
+
+      <div class="relative">
+        <div id="kgTrack" class="scrollx-snap flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth rounded-2xl border border-slate-200 p-4" style="scrollbar-width:none; -ms-overflow-style:none;">
+          <!-- Item contoh (data diganti dari JS juga boleh) -->
+          <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+            <img src="./1.jpeg" alt="Kegiatan 1" class="w-full h-full object-cover" loading="lazy">
+          </figure>
+          <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+            <img src="./2.jpeg" alt="Kegiatan 2" class="w-full h-full object-cover" loading="lazy">
+          </figure>
+          <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+            <img src="./3.jpeg" alt="Kegiatan 3" class="w-full h-full object-cover" loading="lazy">
+          </figure>
+          <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+            <img src="./4.jpeg" alt="Kegiatan 4" class="w-full h-full object-cover" loading="lazy">
+          </figure>
+          <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden flex items-center justify-center bg-white">
+            <img src="./5.jpeg" alt="Poster kegiatan" class="max-w-full max-h-full object-contain" loading="lazy">
+          </figure>
+        </div>
+        <!-- Controls mobile -->
+        <div class="md:hidden absolute inset-y-0 left-0 flex items-center">
+          <button id="kgPrevMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow-soft" aria-label="Sebelumnya">◀</button>
+        </div>
+        <div class="md:hidden absolute inset-y-0 right-0 flex items-center">
+          <button id="kgNextMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow-soft" aria-label="Berikutnya">▶</button>
+        </div>
+      </div>
+
+      <p class="mt-4 text-center text-xs text-slate-500">Geser kiri/kanan pada layar sentuh, atau pakai tombol ◀ ▶ untuk pindah item.</p>
     </div>
+  </section>
 
-    <script>
-      /* ===== Konfigurasi Progres (JPY) ===== */
-      const TARGET = 42000000;     // JPY
-      const TERKUMPUL = 5290797;   // JPY
-      const WA_NUMBER = '818013909425';
-      const MIN_JPY = 1000;
-      const MIN_IDR = 10000;
+  <!-- ======== SECTION: PENGUMUMAN ======== -->
+  <section id="pengumuman" class="container mx-auto px-4 py-12">
+    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-6">Pengumuman</h2>
+    <div id="board" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </section>
 
-      /* ===== Helpers ===== */
-      const fmtJPY = (n, lang='id') => new Intl.NumberFormat(lang, { style:'currency', currency:'JPY', maximumFractionDigits:0 }).format(n||0);
-      const fmtIDR = (n) => new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(n||0);
-      const clamp = (n, min, max) => Math.max(min, Math.min(n, max));
+  <!-- ======== SECTION: ARTIKEL ======== -->
+  <section id="artikel" class="bg-white border-y border-slate-200/70">
+    <div class="container mx-auto px-4 py-12">
+      <div class="flex items-center justify-between gap-3">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Artikel</h2>
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input id="searchArtikel" type="search" placeholder="Cari artikel…" class="pl-9 pr-3 py-2 rounded-xl border border-slate-300 focus:border-brand-600 text-sm w-64 max-w-full">
+        </div>
+      </div>
+      <div id="artikelList" class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+  </section>
 
-      /* ===== Progres render ===== */
-      function renderProgress(){
-        const percent = TARGET > 0 ? Math.round((TERKUMPUL / TARGET) * 100) : 0;
-        const terkumpul = document.getElementById('terkumpulLabel'); if (terkumpul) terkumpul.textContent = fmtJPY(TERKUMPUL);
-        const target = document.getElementById('targetLabel'); if (target) target.textContent = fmtJPY(TARGET);
-        document.getElementById('percentLabel').textContent = clamp(percent,0,100);
-        const bar = document.getElementById('progressBar');
-        if (bar){ bar.style.width = '0%'; requestAnimationFrame(()=> setTimeout(()=> bar.style.width = clamp(percent,0,100) + '%', 40)); }
+  <!-- ======== SECTION: DONASI (ringkas) ======== -->
+  <section id="donasi" class="container mx-auto px-4 py-12">
+    <div class="grid lg:grid-cols-2 gap-8 items-center">
+      <div class="order-2 lg:order-1">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Donasi Pelunasan</h2>
+        <p class="mt-3 text-slate-700">Pilih nominal, lalu konfirmasi via WhatsApp setelah transfer ke rekening Jepang/Indonesia.</p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="https://wa.me/818013909425?text=Assalamu%27alaikum%2C+saya+ingin+donasi+untuk+Masjid+As-Sunnah+Hekinan" target="_blank" rel="noopener" class="rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-semibold px-6 py-3">Konfirmasi via WhatsApp</a>
+          <a href="#pengumuman" class="rounded-2xl border border-slate-300 hover:border-brand-600 px-6 py-3">Lihat Pengumuman</a>
+        </div>
+      </div>
+      <div class="order-1 lg:order-2 rounded-2xl border border-slate-200 bg-white p-4 md:p-6 shadow-soft">
+        <svg viewBox="0 0 600 420" role="img" aria-label="Ilustrasi Donasi" class="w-full h-auto">
+          <circle cx="480" cy="100" r="90" fill="#E0F2FE" />
+          <circle cx="120" cy="80" r="60" fill="#F1F5F9" />
+          <circle cx="60"  cy="330" r="80" fill="#ECFEFF" />
+          <rect x="110" y="160" rx="18" ry="18" width="380" height="200" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="6"/>
+          <rect x="230" y="190" width="140" height="16" rx="8" fill="#334155"/>
+          <path d="M300 302c-22-20-50-35-50-64 0-17 13-30 30-30 10 0 19 5 24 12 5-7 14-12 24-12 17 0 30 13 30 30 0 29-28 44-50 64z" fill="#EF4444"/>
+          <g><circle cx="360" cy="130" r="38" fill="#FBBF24"/><circle cx="360" cy="130" r="24" fill="#FDE68A"/></g>
+          <g opacity="0.6"><circle cx="420" cy="90" r="26" fill="#FBBF24"/><circle cx="420" cy="90" r="16" fill="#FDE68A"/></g>
+        </svg>
+        <p class="mt-2 text-center text-xs text-slate-500">Berapapun donasi Anda sangat membantu pelunasan pembelian bangunan untuk masjid.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white">
+    <div class="container mx-auto px-4 py-10">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div>
+          <img src="logohekinan.jpeg" alt="Logo Masjid As-Sunnah Hekinan" class="h-12 w-auto mb-3" loading="lazy">
+          <h3 class="font-bold text-slate-900">Masjid As-Sunnah Hekinan</h3>
+          <p class="mt-2 text-sm text-slate-700">1 Chome-8 Dojoyamamachi, Hekinan, Aichi 447-0864</p>
+          <p class="mt-1 text-sm text-slate-700">Email: hekinanmosque@gmail.com</p>
+        </div>
+        <div>
+          <h3 class="font-bold text-slate-900">Tautan</h3>
+          <ul class="mt-2 space-y-2 text-sm">
+            <li><a href="#sholat" class="hover:text-brand-700">Jadwal Sholat</a></li>
+            <li><a href="#kegiatan" class="hover:text-brand-700">Kegiatan</a></li>
+            <li><a href="#pengumuman" class="hover:text-brand-700">Pengumuman</a></li>
+            <li><a href="#artikel" class="hover:text-brand-700">Artikel</a></li>
+            <li><a href="#donasi" class="hover:text-brand-700">Donasi</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-bold text-slate-900">Ikuti Kami</h3>
+          <ul class="mt-2 space-y-2 text-sm">
+            <li><a href="https://www.instagram.com/assunnahhekinan" target="_blank" rel="noopener" class="hover:text-brand-700">Instagram</a></li>
+            <li><a href="https://www.youtube.com/@assunnahhekinan" target="_blank" rel="noopener" class="hover:text-brand-700">YouTube</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-8 border-t border-slate-200 pt-6 text-xs text-slate-500 flex flex-col md:flex-row justify-between">
+        <p>© <span id="year"></span> Masjid As-Sunnah Hekinan. Semua hak cipta dilindungi.</p>
+        <p>Designed with ♥️ abu khayla.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== APP SCRIPTS (modular per menu) ========== -->
+  <script type="module">
+    // ====== Util umum
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
+    window.addEventListener('DOMContentLoaded', ()=> { $('#year').textContent = new Date().getFullYear(); lucide.createIcons(); });
+
+    // ====== Header: burger
+    $('#burgerBtn')?.addEventListener('click', ()=>{
+      const m = $('#mobileMenu'); const ex = $('#burgerBtn').getAttribute('aria-expanded')==='true';
+      $('#burgerBtn').setAttribute('aria-expanded', (!ex).toString()); m.classList.toggle('hidden');
+    });
+    $$('#mobileMenu a').forEach(a=>a.addEventListener('click',()=>{ const m=$('#mobileMenu'); if(!m.classList.contains('hidden')){m.classList.add('hidden'); $('#burgerBtn').setAttribute('aria-expanded','false')} }));
+
+    // =========================================================
+    // 1) MODULE: Jadwal Sholat (lokasi otomatis + AlAdhan API)
+    // =========================================================
+    const SholatWidget = (function(){
+      const GRID = $('#sholatGrid');
+      const LOC  = $('#locLabel');
+      const NOTE = $('#sholatNote');
+
+      const FALLBACK = { lat: 34.884, lon: 136.993, label: 'Hekinan, Aichi (fallback)' };
+
+      function card(name, time){
+        const el = document.createElement('div');
+        el.className = "rounded-xl border border-slate-200 p-4 text-center";
+        el.innerHTML = `<div class="text-xs text-slate-500">${name}</div>
+                        <div class="mt-1 text-xl font-bold text-slate-900">${time}</div>`;
+        return el;
       }
 
-      /* ===== Kartu Donasi (tanpa konversi) ===== */
-      function renderCards(){
-        const jpy = Number(document.getElementById('inputJPY').value) || 0;
-        const idr = Number(document.getElementById('inputIDR').value) || 0;
-        document.querySelector('#cardJPY .amount').textContent = jpy > 0 ? fmtJPY(jpy) : '—';
-        document.querySelector('#cardIDR .amount').textContent = idr > 0 ? fmtIDR(idr) : '—';
+      async function reverseGeocode(lat, lon){
+        try{
+          const u = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+          const j = await fetch(u, {headers:{'Accept':'application/json'}}).then(r=>r.json());
+          return j.address?.city || j.address?.town || j.address?.village || j.address?.state || 'Lokasi tidak diketahui';
+        }catch{ return 'Lokasi tidak diketahui' }
       }
 
-      /* ===== Tabs mata uang aktif ===== */
-      let activeCur = 'JPY';
-      function setActiveTab(cur){
-        activeCur = cur;
-        const tabs = document.getElementById('currencyTabs');
-        tabs.classList.toggle('tab-active-left',  cur === 'JPY');
-        tabs.classList.toggle('tab-active-right', cur === 'IDR');
-        // placeholder & steps quick button akan menyesuaikan label saja (angka tetap manual/non-konversi)
-        updateQuickButtons();
+      async function fetchTimings(lat, lon){
+        const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2&school=1`;
+        const j = await fetch(url).then(r=>r.json());
+        return j.data?.timings;
       }
 
-      function parseNumberFromLabel(s){
-        // Ambil angka mentah dari label seperti "5.000" -> 5000
-        return Number(String(s).replaceAll('.', '').replaceAll(',', '').trim());
-      }
+      async function render(pos){
+        const {lat, lon, label} = pos;
+        LOC.textContent = `Lokasi: ${label || (await reverseGeocode(lat, lon))} • (${lat.toFixed(3)}, ${lon.toFixed(3)})`;
+        GRID.innerHTML = '<div class="col-span-2 md:col-span-6 text-sm text-slate-500">Memuat jadwal…</div>';
 
-      function updateQuickButtons(){
-        const btns = document.querySelectorAll('.quick-btn');
-        if (activeCur === 'JPY'){
-          const labels = ['5.000','10.000','20.000','50.000']; // JPY
-          btns.forEach((b,i)=> b.textContent = labels[i] || b.textContent);
-        } else {
-          const labels = ['50.000','100.000','200.000','500.000']; // IDR
-          btns.forEach((b,i)=> b.textContent = labels[i] || b.textContent);
+        try{
+          const t = await fetchTimings(lat, lon);
+          if(!t) throw new Error('no timings');
+          GRID.innerHTML = '';
+          const order = ['Fajr','Sunrise','Dhuhr','Asr','Maghrib','Isha'];
+          const labelMap = {Fajr:'Subuh',Sunrise:'Syuruq',Dhuhr:'Dzuhur',Asr:'Ashar',Maghrib:'Maghrib',Isha:'Isya'};
+          order.forEach(k => GRID.appendChild(card(labelMap[k], t[k])));
+
+          NOTE.textContent = `Metode: Umm Al-Qura (method=2), Mazhab: Shafi'i (school=1). Zona waktu mengikuti perangkat Anda.`;
+        }catch(e){
+          GRID.innerHTML = '<div class="col-span-2 md:col-span-6 text-sm text-red-600">Gagal memuat jadwal. Coba tekan Perbarui.</div>';
         }
       }
 
-      /* ===== Modal ===== */
-      function openModal(amount, currency){
-        const nominalFinal = document.getElementById('nominalFinal');
-        nominalFinal.textContent = currency === 'JPY' ? fmtJPY(amount) : fmtIDR(amount);
-        const msg = encodeURIComponent(
-          `Assalamu'alaikum, saya ingin donasi sebesar ${currency === 'JPY' ? fmtJPY(amount) : fmtIDR(amount)} untuk pelunasan Masjid As-Sunnah Hekinan.`
-        );
-        document.getElementById('viaWA').href = 'https://wa.me/' + WA_NUMBER + '?text=' + msg;
-        const m = document.getElementById('modal'); m.classList.remove('hidden'); m.classList.add('flex');
+      async function init(){
+        // izin lokasi
+        const ok = await new Promise(resolve=>{
+          if(!navigator.geolocation) return resolve(false);
+          navigator.geolocation.getCurrentPosition(
+            p=>resolve({lat:p.coords.latitude, lon:p.coords.longitude}),
+            ()=>resolve(false),
+            { enableHighAccuracy:true, timeout:8000 }
+          );
+        });
+
+        if(ok && ok.lat){
+          const city = await reverseGeocode(ok.lat, ok.lon);
+          render({lat:ok.lat, lon:ok.lon, label: city});
+        }else{
+          render(FALLBACK);
+        }
       }
 
-      /* ===== INIT ===== */
-      window.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('year').textContent = new Date().getFullYear?.() || new Date().getFullYear();
-        renderProgress();
-        renderCards();
-        updateQuickButtons();
+      $('#refreshSholat').addEventListener('click', init);
+      init();
+      return { init };
+    })();
 
-        // Tabs
-        document.getElementById('tabJPY').addEventListener('click', ()=> setActiveTab('JPY'));
-        document.getElementById('tabIDR').addEventListener('click', ()=> setActiveTab('IDR'));
+    // ==========================================
+    // 2) MODULE: Kegiatan (slideshow kontrol)
+    // ==========================================
+    const KegiatanModule = (function(){
+      const track = $('#kgTrack');
+      const prevs = [$('#kgPrev'), $('#kgPrevMob')].filter(Boolean);
+      const nexts = [$('#kgNext'), $('#kgNextMob')].filter(Boolean);
 
-        // Input listeners (tanpa konversi—hanya tampil)
-        document.getElementById('inputJPY').addEventListener('input', renderCards);
-        document.getElementById('inputIDR').addEventListener('input', renderCards);
+      function pageWidth(){ return track.clientWidth; }
+      function go(delta){ track.scrollBy({ left: delta*pageWidth(), behavior:'smooth' }); }
 
-        // Quick buttons: isi ke field sesuai tab aktif (tanpa konversi)
-        document.querySelectorAll('.quick-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const v = parseNumberFromLabel(btn.textContent);
-            if (activeCur === 'JPY'){
-              document.getElementById('inputJPY').value = v;
-            } else {
-              document.getElementById('inputIDR').value = v;
-            }
-            renderCards();
-          });
-        });
+      prevs.forEach(b=>b?.addEventListener('click',()=>go(-1)));
+      nexts.forEach(b=>b?.addEventListener('click',()=>go(1)));
 
-        // Donasi action
-        document.getElementById('donasiBtn').addEventListener('click', () => {
-          const valJPY = Number(document.getElementById('inputJPY').value) || 0;
-          const valIDR = Number(document.getElementById('inputIDR').value) || 0;
+      let auto = setInterval(()=>go(1), 6000);
+      track.addEventListener('mouseenter', ()=> clearInterval(auto));
+      track.addEventListener('mouseleave', ()=> auto = setInterval(()=>go(1), 6000));
 
-          if (activeCur === 'JPY'){
-            if (valJPY < MIN_JPY) { alert(`Minimal donasi ${fmtJPY(MIN_JPY)} untuk JPY.`); return; }
-            openModal(valJPY, 'JPY');
-          } else {
-            if (valIDR < MIN_IDR) { alert(`Minimal donasi ${fmtIDR(MIN_IDR)} untuk IDR.`); return; }
-            openModal(valIDR, 'IDR');
-          }
-        });
+      return {};
+    })();
 
-        // Modal close
-        document.getElementById('closeModal').addEventListener('click', () => {
-          const m = document.getElementById('modal'); m.classList.add('hidden'); m.classList.remove('flex');
-        });
-        document.getElementById('modal').addEventListener('click', (e) => {
-          if (e.target.id === 'modal') document.getElementById('closeModal').click();
-        });
+    // ==========================================
+    // 3) MODULE: Pengumuman (data -> kartu)
+    // ==========================================
+    const PengumumanModule = (function(){
+      const data = [
+        { title: "Kajian Ahad Pagi", date:"2025-11-10", desc:"Kajian rutin ahad pagi ba’da Subuh. Tematik fiqih ibadah.", link:"#"},
+        { title: "Donasi Renovasi Wudhu", date:"2025-11-15", desc:"Open donasi untuk perbaikan area wudhu dan akses difabel.", link:"#"},
+        { title: "TPA: Pendaftaran Santri Baru", date:"2025-12-01", desc:"Pendaftaran TPA dibuka. Kuota terbatas.", link:"#"}
+      ];
+      const wrap = $('#board');
 
-        // Copy buttons
-        document.querySelectorAll('.copy-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const sel = btn.getAttribute('data-copy'); const t = document.querySelector(sel); if (!t) return; btn.disabled = true;
-            navigator.clipboard.writeText(String(t.textContent).replace(/\s+/g,'')).then(()=>{
-              const o=btn.textContent; btn.textContent = 'Disalin!'; setTimeout(()=>{ btn.textContent=o; btn.disabled=false; }, 1200);
-            });
-          });
-        });
+      function card({title,date,desc,link}){
+        const el = document.createElement('article');
+        el.className = "rounded-2xl border border-slate-200 bg-white p-5 shadow-soft";
+        el.innerHTML = `
+          <div class="text-xs text-slate-500">${new Date(date).toLocaleDateString('id-ID',{weekday:'short',year:'numeric',month:'short',day:'numeric'})}</div>
+          <h3 class="mt-1 font-bold text-slate-900">${title}</h3>
+          <p class="mt-2 text-sm text-slate-700">${desc}</p>
+          <a href="${link}" class="inline-flex items-center gap-2 mt-3 text-brand-700 hover:underline text-sm">
+            <i data-lucide="arrow-right" class="w-4 h-4"></i> Detail
+          </a>`;
+        return el;
+      }
 
-        // Lang toggle (opsional tampilan)
-        document.getElementById('langToggle').addEventListener('click', () => {
-          const el = document.documentElement;
-          el.lang = el.lang === 'id' ? 'en' : 'id';
-          document.getElementById('langToggle').textContent = el.lang === 'id' ? 'EN' : 'ID';
-        });
-      });
-    </script>
-  </body>
+      function render(){
+        wrap.innerHTML = '';
+        data.forEach(d => wrap.appendChild(card(d)));
+        lucide.createIcons();
+      }
+      render();
+      return { render };
+    })();
+
+    // ==========================================
+    // 4) MODULE: Artikel (search + kartu)
+    // ==========================================
+    const ArtikelModule = (function(){
+      const data = [
+        { title:"Keutamaan Membangun Masjid", tag:["donasi","masjid"], excerpt:"Ringkasan dalil dan faedah membangun masjid secara ringkas.", link:"#"},
+        { title:"Adab ke Masjid untuk Anak", tag:["adab","anak"], excerpt:"Checklist singkat adab ke masjid untuk ayah-bunda.", link:"#"},
+        { title:"Panduan Wudhu Singkat", tag:["fiqih"], excerpt:"Infografik singkat tata cara wudhu sesuai sunnah.", link:"#"}
+      ];
+      const list = $('#artikelList');
+      const input = $('#searchArtikel');
+
+      function item({title,excerpt,link,tag}){
+        const el = document.createElement('article');
+        el.className = "rounded-2xl border border-slate-200 bg-white p-5 shadow-soft";
+        el.innerHTML = `
+          <h3 class="font-bold text-slate-900">${title}</h3>
+          <p class="mt-2 text-sm text-slate-700">${excerpt}</p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            ${(tag||[]).map(t=>`<span class="text-xs px-2 py-1 rounded-full bg-slate-100">${t}</span>`).join('')}
+          </div>
+          <a href="${link}" class="inline-flex items-center gap-2 mt-4 text-brand-700 hover:underline text-sm">
+            <i data-lucide="book-open" class="w-4 h-4"></i> Baca
+          </a>`;
+        return el;
+      }
+
+      function render(query=''){
+        list.innerHTML = '';
+        const q = query.trim().toLowerCase();
+        data
+          .filter(a => !q || a.title.toLowerCase().includes(q) || a.excerpt.toLowerCase().includes(q) || (a.tag||[]).some(t=>t.toLowerCase().includes(q)))
+          .forEach(a => list.appendChild(item(a)));
+        lucide.createIcons();
+      }
+
+      input.addEventListener('input', e=>render(e.target.value));
+      render();
+      return { render };
+    })();
+
+    // ====== Language toggle (placeholder untuk masa depan)
+    // Anda sudah punya i18n di versi sebelumnya; di sini dibuat minimal agar ringan
+    const langBtn = $('#langToggle');
+    let lang = localStorage.getItem('lang') || 'id';
+    function applyLang(){
+      document.documentElement.setAttribute('lang', lang);
+      langBtn.textContent = (lang==='id' ? 'EN' : 'ID');
+    }
+    langBtn.addEventListener('click', ()=>{ lang = (lang==='id' ? 'en' : 'id'); localStorage.setItem('lang', lang); applyLang(); });
+    applyLang();
+  </script>
+</body>
 </html>
