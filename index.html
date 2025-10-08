@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<title>Masjid As-Sunnah Hekinan — Jadwal Sholat, Info & Donasi</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-<style>
-  html{scroll-behavior:smooth}
-  [data-lucide]{transition:transform .2s ease}
-  .card{transition:transform .15s ease,box-shadow .15s ease}
-  .card:hover{transform:translateY(-2px)}
-  #progressBar{transition:width 1s ease;background:linear-gradient(90deg,#0ea5e9,#38bdf8)}
-  .tab-slider{position:absolute;bottom:0;height:2px;width:50%;background:#0ea5e9;transition:transform .25s ease}
-  .tab-left .tab-slider{transform:translateX(0)}
-  .tab-right .tab-slider{transform:translateX(100%)}
-</style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>Masjid As-Sunnah Hekinan — Jadwal Sholat & Donasi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    html{scroll-behavior:smooth}
+    [data-lucide]{transition:transform .2s ease}
+    .card{transition:transform .15s ease,box-shadow .15s ease}
+    .card:hover{transform:translateY(-2px)}
+    #progressBar{transition:width 1s ease;background:linear-gradient(90deg,#0ea5e9,#38bdf8)}
+    .scrollx-snap{scroll-snap-type:x mandatory}
+    .snap-item{scroll-snap-align:start}
+    .hide-scrollbar{scrollbar-width:none;-ms-overflow-style:none}
+    .hide-scrollbar::-webkit-scrollbar{display:none}
+    .tab-slider{position:absolute;bottom:0;height:2px;width:50%;background:#0ea5e9;transition:transform .25s ease}
+    .tab-left .tab-slider{transform:translateX(0)}
+    .tab-right .tab-slider{transform:translateX(100%)}
+  </style>
 </head>
 
 <body class="font-sans text-slate-800 bg-gradient-to-b from-sky-50 to-white">
-  <!-- HEADER -->
+  <!-- Header -->
   <header class="sticky top-0 bg-white/80 backdrop-blur border-b border-slate-200 z-40">
     <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <a class="flex gap-3 items-center" href="#top">
+      <div class="flex gap-3 items-center">
         <img src="logohekinan.jpeg" class="h-10 w-auto rounded-md" alt="logo">
-        <span class="font-extrabold text-lg md:text-xl text-slate-900">Masjid As-Sunnah Hekinan</span>
-      </a>
+        <h1 class="font-extrabold text-lg md:text-xl text-slate-900">Masjid As-Sunnah Hekinan</h1>
+      </div>
       <div class="flex items-center gap-3 text-sm">
         <a href="#sholat" class="hover:text-sky-700 flex items-center gap-1"><i data-lucide="moon-star" class="w-4 h-4"></i>Sholat</a>
+        <a href="#kegiatan" class="hover:text-sky-700 flex items-center gap-1"><i data-lucide="images" class="w-4 h-4"></i>Kegiatan</a>
         <a href="#info" class="hover:text-sky-700 flex items-center gap-1"><i data-lucide="layers" class="w-4 h-4"></i>Info</a>
         <a href="#donasi" class="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 font-semibold">Donasi</a>
-        <!-- hanya admin -->
+        <!-- tombol admin hanya untuk admin -->
         <button id="openData" class="admin-only hidden rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600 flex items-center gap-2">
           <i data-lucide="settings-2" class="w-4 h-4"></i>⚙️ Data
         </button>
@@ -55,7 +60,50 @@
     </div>
   </section>
 
-  <!-- PENGUMUMAN & ARTIKEL -->
+  <!-- KEGIATAN (slideshow elegan) -->
+  <section id="kegiatan" class="bg-white border-y border-slate-200/70">
+    <div class="container mx-auto px-4 py-10">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 flex items-center gap-2"><i data-lucide="images" class="text-fuchsia-600"></i> Kegiatan</h2>
+        <div class="hidden md:flex items-center gap-2">
+          <button id="kgPrev" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600">◀</button>
+          <button id="kgNext" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600">▶</button>
+        </div>
+      </div>
+
+      <div class="relative">
+        <div id="kgTrack" class="scrollx-snap hide-scrollbar flex gap-4 overflow-x-auto rounded-2xl border border-slate-200 p-4">
+          <!-- ganti gambar sesuai file kamu -->
+          <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+            <img src="./1.jpeg" class="w-full h-full object-cover" alt="Kegiatan 1" loading="lazy">
+          </figure>
+          <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+            <img src="./2.jpeg" class="w-full h-full object-cover" alt="Kegiatan 2" loading="lazy">
+          </figure>
+          <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+            <img src="./3.jpeg" class="w-full h-full object-cover" alt="Kegiatan 3" loading="lazy">
+          </figure>
+          <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+            <img src="./4.jpeg" class="w-full h-full object-cover" alt="Kegiatan 4" loading="lazy">
+          </figure>
+          <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-white flex items-center justify-center">
+            <img src="./5.jpeg" class="max-w-full max-h-full object-contain" alt="Poster">
+          </figure>
+        </div>
+        <!-- mobile controls -->
+        <div class="md:hidden absolute inset-y-0 left-0 flex items-center">
+          <button id="kgPrevMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow">◀</button>
+        </div>
+        <div class="md:hidden absolute inset-y-0 right-0 flex items-center">
+          <button id="kgNextMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow">▶</button>
+        </div>
+      </div>
+
+      <p class="mt-4 text-center text-xs text-slate-500">Geser kiri/kanan atau pakai tombol ◀ ▶.</p>
+    </div>
+  </section>
+
+  <!-- INFO (TAB: PENGUMUMAN & ARTIKEL) -->
   <section id="info" class="container mx-auto px-4 py-10">
     <div id="tabs" class="relative tab-left">
       <div class="flex gap-2">
@@ -65,14 +113,16 @@
       <span class="tab-slider"></span>
     </div>
 
+    <!-- Pengumuman -->
     <div id="wrapPengumuman" class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     <p id="boardEmpty" class="hidden text-sm text-slate-500">Belum ada pengumuman.</p>
 
+    <!-- Artikel -->
     <div id="wrapArtikel" class="mt-6 hidden">
       <div class="flex justify-end">
         <div class="relative">
           <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-          <input id="searchArtikel" placeholder="Cari artikel…" class="pl-9 pr-3 py-2 rounded-xl border border-slate-300 focus:border-sky-600 text-sm w-64 max-w-full">
+          <input id="searchArtikel" type="search" placeholder="Cari artikel…" class="pl-9 pr-3 py-2 rounded-xl border border-slate-300 focus:border-sky-600 text-sm w-64 max-w-full">
         </div>
       </div>
       <div id="artikelList" class="mt-4 grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
@@ -80,10 +130,9 @@
     </div>
   </section>
 
-  <!-- DONASI -->
+  <!-- DONASI (dengan nominal & rekening) -->
   <section id="donasi" class="container mx-auto px-4 pb-12">
     <h2 class="text-2xl font-extrabold mb-4 flex items-center gap-2"><i data-lucide="heart-handshake" class="text-rose-600"></i>Progres Donasi</h2>
-
     <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6 card">
       <div class="flex justify-between items-end">
         <div><p class="text-sm text-slate-600">Terkumpul</p><p id="terkumpulLabel" class="text-3xl font-bold">JPY 0</p></div>
@@ -92,7 +141,7 @@
       <div class="mt-4 w-full bg-white rounded-full border border-slate-200 overflow-hidden"><div id="progressBar" class="h-3 w-0"></div></div>
       <p class="mt-2 text-sm text-slate-600"><span id="percentLabel">0</span>% tercapai</p>
 
-      <!-- Nominal -->
+      <!-- Nominal Donasi -->
       <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
@@ -108,13 +157,12 @@
           </div>
           <div>
             <label class="text-sm font-semibold">Nominal (IDR)</label>
-            <input id="inputIDR" type="number" min="1000" step="1000" placeholder="Masukkan IDR"
+            <input id="inputIDR" type="number" min="10000" step="1000" placeholder="Masukkan IDR"
                    class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600"/>
             <div class="mt-2 flex flex-wrap gap-2 text-xs">
-              <button class="quick-idr border rounded-xl px-3 py-1" data-v="1000">1.000</button>
-              <button class="quick-idr border rounded-xl px-3 py-1" data-v="10000">10.000</button>
               <button class="quick-idr border rounded-xl px-3 py-1" data-v="50000">50.000</button>
               <button class="quick-idr border rounded-xl px-3 py-1" data-v="100000">100.000</button>
+              <button class="quick-idr border rounded-xl px-3 py-1" data-v="200000">200.000</button>
               <button class="quick-idr border rounded-xl px-3 py-1" data-v="500000">500.000</button>
             </div>
           </div>
@@ -122,7 +170,7 @@
         <button id="donasiBtn" class="mt-4 w-full rounded-2xl bg-sky-600 hover:bg-sky-700 text-white font-semibold px-6 py-3">
           Konfirmasi via WhatsApp
         </button>
-        <p class="mt-2 text-[11px] text-slate-500">Minimal 1.000 JPY atau 1.000 IDR.</p>
+        <p class="mt-2 text-[11px] text-slate-500">Minimal 1.000 JPY atau 10.000 IDR.</p>
       </div>
 
       <!-- Rekening -->
@@ -145,66 +193,133 @@
 
   <!-- FOOTER -->
   <footer class="bg-white">
-    <div class="container mx-auto px-4 py-10 text-sm text-slate-700 flex justify-between">
-      <span>© <small id="year"></small> Masjid As-Sunnah Hekinan.</span>
-      <span>Designed with ♥️ Abu Khayla.</span>
+    <div class="container mx-auto px-4 py-10">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div>
+          <img src="logohekinan.jpeg" alt="Logo" class="h-12 w-auto mb-3">
+          <h3 class="font-bold text-slate-900">Masjid As-Sunnah Hekinan</h3>
+          <p class="mt-1 text-sm text-slate-700">1 Chome-8 Dojoyamamachi, Hekinan, Aichi 447-0864</p>
+          <p class="text-sm text-slate-700">Email: hekinanmosque@gmail.com</p>
+        </div>
+        <div>
+          <h3 class="font-bold text-slate-900">Tautan</h3>
+          <ul class="mt-2 space-y-2 text-sm">
+            <li><a href="#sholat" class="hover:text-sky-700">Jadwal Sholat</a></li>
+            <li><a href="#kegiatan" class="hover:text-sky-700">Kegiatan</a></li>
+            <li><a href="#info" class="hover:text-sky-700">Pengumuman & Artikel</a></li>
+            <li><a href="#donasi" class="hover:text-sky-700">Donasi</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-bold text-slate-900">Ikuti Kami</h3>
+          <div class="mt-2 flex items-center gap-3">
+            <a href="https://www.instagram.com/assunnahhekinan" target="_blank" rel="noopener" class="flex items-center gap-2 px-3 py-2 rounded-xl border hover:border-sky-600 text-sm">
+              <i data-lucide="instagram" class="w-4 h-4"></i>Instagram
+            </a>
+            <a href="https://www.youtube.com/@assunnahhekinan" target="_blank" rel="noopener" class="flex items-center gap-2 px-3 py-2 rounded-xl border hover:border-sky-600 text-sm">
+              <i data-lucide="youtube" class="w-4 h-4"></i>YouTube
+            </a>
+            <a href="https://www.tiktok.com/" target="_blank" rel="noopener" class="flex items-center gap-2 px-3 py-2 rounded-xl border hover:border-sky-600 text-sm">
+              <i data-lucide="music-3" class="w-4 h-4"></i>TikTok
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="mt-8 border-t border-slate-200 pt-6 text-xs text-slate-500 flex flex-col md:flex-row justify-between">
+        <p>© <span id="year"></span> Masjid As-Sunnah Hekinan. Semua hak cipta dilindungi.</p>
+        <p>Designed with ♥️ Abu Khayla.</p>
+      </div>
     </div>
   </footer>
+
+  <!-- MODAL ADMIN (HIDDEN) -->
+  <div id="dataModal" class="fixed inset-0 bg-black/40 hidden items-center justify-center p-4 z-50 backdrop-blur-sm">
+    <div class="w-full max-w-2xl rounded-2xl bg-white p-6 shadow">
+      <div class="flex justify-between items-center mb-2">
+        <h3 class="font-bold flex items-center gap-2"><i data-lucide="database"></i>Sumber Data</h3>
+        <button id="closeData">✕</button>
+      </div>
+      <p class="text-sm text-slate-600">Tempel URL Google Sheet yang sudah <b>Publish to the web → CSV</b>.</p>
+      <div class="grid md:grid-cols-2 gap-4 mt-4">
+        <div>
+          <label class="text-sm font-semibold">CSV Pengumuman</label>
+          <input id="csvPengumuman" type="url" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2">
+        </div>
+        <div>
+          <label class="text-sm font-semibold">CSV Artikel</label>
+          <input id="csvArtikel" type="url" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2">
+        </div>
+      </div>
+      <div class="text-right mt-4">
+        <button id="saveData" class="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 text-sm">Simpan</button>
+      </div>
+    </div>
+  </div>
 
   <!-- APP SCRIPT -->
   <script type="module">
     const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
     $('#year').textContent=new Date().getFullYear(); lucide.createIcons();
 
-    /* ========= Admin (⚙️ tersembunyi) ========= */
+    /* ===== Admin gate ===== */
     const ADMIN_CODE='as-sunnah-2025';
     const isAdmin=()=>localStorage.getItem('is_admin')==='1'||location.search.includes('admin=1');
     if(isAdmin()) $$('.admin-only').forEach(el=>el.classList.remove('hidden'));
     document.addEventListener('keydown',e=>{
       if(e.ctrlKey&&e.altKey&&e.key.toLowerCase()==='a'){
         const c=prompt('Masukkan kode admin:');
-        if(c===ADMIN_CODE){localStorage.setItem('is_admin','1');alert('Admin aktif.');$$('.admin-only').forEach(el=>el.classList.remove('hidden'));}
+        if(c===ADMIN_CODE){localStorage.setItem('is_admin','1');alert('Admin mode aktif.');$$('.admin-only').forEach(el=>el.classList.remove('hidden')); }
       }
     });
     $('#openData')?.addEventListener('click',()=>{
-      const wrap=document.createElement('div');
-      wrap.className='fixed inset-0 bg-black/40 flex items-center justify-center z-50';
-      wrap.innerHTML=`<div class="bg-white p-6 rounded-2xl shadow w-full max-w-xl">
-        <div class="flex justify-between items-center mb-2"><h3 class="font-bold flex items-center gap-2"><i data-lucide="database"></i>Sumber Data</h3><button id="xModal">✕</button></div>
-        <p class="text-sm text-slate-600">Tempel URL Google Sheet yang sudah <b>Publish to the web → CSV</b>.</p>
-        <div class="grid md:grid-cols-2 gap-4 mt-4">
-          <div><label class="text-sm font-semibold">CSV Pengumuman</label><input id="csvPeng" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" value="${localStorage.getItem('sheet_pengumuman')||''}"></div>
-          <div><label class="text-sm font-semibold">CSV Artikel</label><input id="csvArt" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2" value="${localStorage.getItem('sheet_artikel')||''}"></div>
-        </div>
-        <div class="text-right mt-4"><button id="saveSheet" class="bg-sky-600 hover:bg-sky-700 text-white rounded-xl px-4 py-2 text-sm">Simpan</button></div>
-      </div>`;
-      document.body.appendChild(wrap); lucide.createIcons();
-      wrap.addEventListener('click',e=>{ if(e.target===wrap||e.target.id==='xModal'){ wrap.remove(); }});
-      $('#saveSheet').onclick=()=>{ localStorage.setItem('sheet_pengumuman',$('#csvPeng').value.trim()); localStorage.setItem('sheet_artikel',$('#csvArt').value.trim()); alert('Disimpan. Refresh halaman.'); wrap.remove(); loadInfo(); };
+      $('#csvPengumuman').value=localStorage.getItem('sheet_pengumuman')||'';
+      $('#csvArtikel').value=localStorage.getItem('sheet_artikel')||'';
+      $('#dataModal').classList.remove('hidden'); $('#dataModal').classList.add('flex');
+    });
+    $('#closeData')?.addEventListener('click',()=>$('#dataModal').classList.add('hidden'));
+    $('#saveData')?.addEventListener('click',()=>{
+      localStorage.setItem('sheet_pengumuman',$('#csvPengumuman').value.trim());
+      localStorage.setItem('sheet_artikel',$('#csvArtikel').value.trim());
+      alert('URL tersimpan. Refresh halaman.'); $('#dataModal').classList.add('hidden'); loadInfo();
     });
 
-    /* ========= Jadwal Sholat ========= */
-    const FALLBACK={lat:34.884,lon:136.993}; // Hekinan
-    async function getTimes(lat,lon){ const j=await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`).then(r=>r.json()); return j.data?.timings; }
-    function tile(label,time,ic){ const d=document.createElement('div'); d.className="rounded-xl border border-slate-200 p-4 text-center bg-white"; d.innerHTML=`<i data-lucide="${ic}" class="w-5 h-5 mx-auto text-sky-600 mb-2"></i><div class="text-xs text-slate-500">${label}</div><div class="mt-1 text-xl font-bold">${time||'—'}</div>`; return d; }
+    /* ===== Jadwal Sholat (tanpa mazhab) ===== */
+    const FALLBACK={lat:34.884,lon:136.993,label:'Hekinan'};
+    async function getTimes(lat,lon){const j=await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`).then(r=>r.json());return j.data?.timings;}
+    function makeCard(label,time,ic){const e=document.createElement('div');e.className="rounded-xl border border-slate-200 p-4 text-center bg-white";e.innerHTML=`<i data-lucide="${ic}" class="w-5 h-5 mx-auto text-sky-600 mb-2"></i><div class="text-xs text-slate-500">${label}</div><div class="mt-1 text-xl font-bold">${time||'—'}</div>`;return e;}
     async function renderSholat(){
       const g=$("#sholatGrid"); g.innerHTML='<p>Memuat…</p>';
-      let pos=null; try{ pos=await new Promise(res=>navigator.geolocation.getCurrentPosition(p=>res({lat:p.coords.latitude,lon:p.coords.longitude}),()=>res(null),{enableHighAccuracy:true,timeout:7000})) }catch{}
-      pos=pos||FALLBACK; $('#locLabel').textContent=`Lokasi: (${pos.lat.toFixed(3)}, ${pos.lon.toFixed(3)})`;
+      let pos=null; try{ pos=await new Promise(r=>navigator.geolocation.getCurrentPosition(p=>r({lat:p.coords.latitude,lon:p.coords.longitude}),()=>r(null),{enableHighAccuracy:true,timeout:7000})) }catch{}
+      pos=pos||FALLBACK; $("#locLabel").textContent=`Lokasi: (${pos.lat.toFixed(3)}, ${pos.lon.toFixed(3)})`;
       try{
         const t=await getTimes(pos.lat,pos.lon); g.innerHTML='';
         const map={Fajr:['Subuh','sunrise'],Sunrise:['Syuruq','sun'],Dhuhr:['Dzuhur','clock'],Asr:['Ashar','cloud-sun'],Maghrib:['Maghrib','moon'],Isha:['Isya','star']};
-        Object.keys(map).forEach(k=> g.appendChild(tile(map[k][0], t?.[k], map[k][1])) ); lucide.createIcons();
-      }catch{ g.innerHTML='<p class="text-red-600">Gagal memuat jadwal. Coba Perbarui.</p>'; }
+        Object.keys(map).forEach(k=> g.appendChild(makeCard(map[k][0], t?.[k], map[k][1])) );
+        lucide.createIcons();
+      }catch{ g.innerHTML='<p class="text-red-600">Gagal memuat jadwal.</p>'; }
     }
     $('#refreshSholat').addEventListener('click',renderSholat); renderSholat();
 
-    /* ========= CSV parser aman (kutip & koma) ========= */
+    /* ===== Slideshow Kegiatan ===== */
+    (function(){
+      const track=$("#kgTrack"); if(!track) return;
+      const prevs=[$("#kgPrev"),$("#kgPrevMob")].filter(Boolean);
+      const nexts=[$("#kgNext"),$("#kgNextMob")].filter(Boolean);
+      const page=()=>track.clientWidth;
+      const go=d=>track.scrollBy({left:d*page(),behavior:'smooth'});
+      prevs.forEach(b=>b?.addEventListener('click',()=>go(-1)));
+      nexts.forEach(b=>b?.addEventListener('click',()=>go(1)));
+      let timer=setInterval(()=>go(1),6000);
+      track.addEventListener('mouseenter',()=>clearInterval(timer));
+      track.addEventListener('mouseleave',()=>timer=setInterval(()=>go(1),6000));
+    })();
+
+    /* ===== CSV parser aman (kutip & koma) ===== */
     function parseCSV(text){
-      const rows=[]; let i=0, cur='', row=[], inQ=false;
-      while(i<text.length){
+      const rows=[], n=text.length; let i=0, cur='', row=[], inQ=false;
+      while(i<n){
         const c=text[i];
-        if(c=='"'){ if(inQ && text[i+1]=='"'){ cur+='"'; i+=2; continue; } inQ=!inQ; i++; continue; }
+        if(c=='"'){ if(inQ && text[i+1]=='"'){cur+='"'; i+=2; continue;} inQ=!inQ; i++; continue; }
         if(!inQ && c==','){ row.push(cur); cur=''; i++; continue; }
         if(!inQ && (c=='\n'||c=='\r')){ if(cur!==''||row.length){ row.push(cur); rows.push(row); row=[]; cur=''; } if(c=='\r'&&text[i+1]=='\n') i++; i++; continue; }
         cur+=c; i++;
@@ -216,57 +331,72 @@
     }
     const normalizeUrl=u=>{ if(!u) return ''; u=u.trim(); if(!/^https?:\/\//i.test(u)) u='https://'+u; return u; };
 
-    /* ========= Data loader (CSV/JSON/sample) ========= */
+    /* ===== Data loader (CSV / JSON / sample) ===== */
     async function loadCsv(u){ if(!u) return null; try{ const t=await fetch(u,{cache:'no-store'}).then(r=>r.text()); return parseCSV(t); }catch{ return null; } }
     async function loadJson(u){ try{ return await fetch(u,{cache:'no-store'}).then(r=>r.json()); }catch{ return null; } }
     async function getPeng(){ return (await loadCsv(localStorage.getItem('sheet_pengumuman'))) || await loadJson('pengumuman.json') || []; }
     async function getArt(){ return (await loadCsv(localStorage.getItem('sheet_artikel')))    || await loadJson('artikel.json')    || []; }
 
     function cardPeng({title,date,desc,link}){
-      const el=document.createElement('article'); el.className="rounded-2xl border border-slate-200 bg-white p-5 shadow card";
-      const d=date?new Date(date):null; const disp=d&&!isNaN(d)?d.toLocaleDateString('id-ID',{weekday:'short',year:'numeric',month:'short',day:'numeric'}):'';
-      el.innerHTML=`<div class="text-xs text-slate-500">${disp}</div>
-        <h3 class="mt-1 font-bold">${title||''}</h3>
+      const e=document.createElement('article'); e.className="rounded-2xl border border-slate-200 bg-white p-5 shadow card";
+      const dt=date?new Date(date):null, txt=dt&&!isNaN(dt)?dt.toLocaleDateString('id-ID',{weekday:'short',year:'numeric',month:'short',day:'numeric'}):'';
+      e.innerHTML=`<div class="text-xs text-slate-500">${txt}</div>
+        <h3 class="mt-1 font-bold text-slate-900">${title||''}</h3>
         <p class="mt-2 text-sm text-slate-700">${desc||''}</p>
-        ${link?`<a href="${normalizeUrl(link)}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-2 text-sky-700 hover:underline text-sm"><i data-lucide="arrow-right"></i> Detail</a>`:''}`;
-      return el;
+        ${link?`<a href="${normalizeUrl(link)}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-3 text-sky-700 hover:underline text-sm"><i data-lucide="arrow-right"></i> Detail</a>`:''}`;
+      return e;
     }
     function cardArt({title,excerpt,link,tag}){
-      const el=document.createElement('article'); el.className="rounded-2xl border border-slate-200 bg-white p-5 shadow card";
+      const e=document.createElement('article'); e.className="rounded-2xl border border-slate-200 bg-white p-5 shadow card";
       const badges=(tag||'').split('|').filter(Boolean).map(t=>`<span class="text-xs px-2 py-1 rounded-full bg-slate-100">${t}</span>`).join('');
-      el.innerHTML=`<h3 class="font-bold">${title||''}</h3>
+      e.innerHTML=`<h3 class="font-bold text-slate-900">${title||''}</h3>
         <p class="mt-2 text-sm text-slate-700">${excerpt||''}</p>
         <div class="mt-3 flex flex-wrap gap-2">${badges}</div>
-        ${link?`<a href="${normalizeUrl(link)}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-3 text-emerald-700 hover:underline text-sm"><i data-lucide="book-open"></i> Baca</a>`:''}`;
-      return el;
+        ${link?`<a href="${normalizeUrl(link)}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-4 text-emerald-700 hover:underline text-sm"><i data-lucide="book-open"></i> Baca</a>`:''}`;
+      return e;
     }
 
     async function loadInfo(){
-      const P=await getPeng(); const Wp=$("#wrapPengumuman"), Ep=$("#boardEmpty");
-      Wp.innerHTML=''; if(!P.length){ Ep.classList.remove('hidden'); } else { Ep.classList.add('hidden'); P.forEach(x=>Wp.appendChild(cardPeng(x))); }
-      const A=await getArt(); const La=$("#artikelList"), Ea=$("#artikelEmpty");
-      function renderA(q=''){ const s=q.toLowerCase(); La.innerHTML=''; const data=A.filter(a=>!s||(a.title||'').toLowerCase().includes(s)||(a.excerpt||'').toLowerCase().includes(s)||(a.tag||'').toLowerCase().includes(s)); if(!data.length){ Ea.classList.remove('hidden'); } else { Ea.classList.add('hidden'); data.forEach(a=>La.appendChild(cardArt(a))); } lucide.createIcons(); }
-      renderA(); $('#searchArtikel')?.addEventListener('input',e=>renderA(e.target.value)); lucide.createIcons();
+      // Pengumuman
+      const P=await getPeng(); const wrapP=$("#wrapPengumuman"), emptyP=$("#boardEmpty");
+      wrapP.innerHTML=''; if(!P.length){ emptyP.classList.remove('hidden'); } else { emptyP.classList.add('hidden'); P.forEach(x=>wrapP.appendChild(cardPeng(x))); }
+
+      // Artikel
+      const A=await getArt(); const list=$("#artikelList"), emptyA=$("#artikelEmpty");
+      function renderA(q=''){
+        const s=q.trim().toLowerCase(); list.innerHTML='';
+        const data=A.filter(a=>{
+          const tags=(a.tag||'').toLowerCase();
+          return !s || (a.title||'').toLowerCase().includes(s) || (a.excerpt||'').toLowerCase().includes(s) || tags.includes(s);
+        });
+        if(!data.length){ emptyA.classList.remove('hidden'); } else { emptyA.classList.add('hidden'); data.forEach(a=> list.appendChild(cardArt(a))); }
+        lucide.createIcons();
+      }
+      renderA();
+      $('#searchArtikel')?.addEventListener('input', e=>renderA(e.target.value));
+      lucide.createIcons();
     }
     loadInfo();
 
-    // Tab switch
+    // Tabs
     $('#tabPengumuman').addEventListener('click',()=>{$('#wrapPengumuman').classList.remove('hidden');$('#wrapArtikel').classList.add('hidden');$('#tabs').classList.add('tab-left');$('#tabs').classList.remove('tab-right');});
     $('#tabArtikel').addEventListener('click',()=>{$('#wrapPengumuman').classList.add('hidden');$('#wrapArtikel').classList.remove('hidden');$('#tabs').classList.remove('tab-left');$('#tabs').classList.add('tab-right');});
 
-    /* ========= Donasi – konfigurasi ========= */
-    const TARGET=42000000;     // JPY
-    const TERKUMPUL=5290797;   // JPY
-    const WA_NUMBER='818013909425';
+    /* ===== Donasi – konfigurasi ===== */
+    const TARGET=42000000, TERKUMPUL=5290797, WA_NUMBER='818013909425';
 
     // Progress bar
-    (function(){ const p=Math.min(100,Math.round((TERKUMPUL/TARGET)*100)); $('#terkumpulLabel').textContent=new Intl.NumberFormat('id-ID',{style:'currency',currency:'JPY',maximumFractionDigits:0}).format(TERKUMPUL); $('#targetLabel').textContent=new Intl.NumberFormat('id-ID',{style:'currency',currency:'JPY',maximumFractionDigits:0}).format(TARGET); $('#percentLabel').textContent=p; const bar=$('#progressBar'); bar.style.width='0%'; requestAnimationFrame(()=>setTimeout(()=>bar.style.width=p+'%',40)); })();
+    (function(){
+      $('#terkumpulLabel').textContent=new Intl.NumberFormat('id-ID',{style:'currency',currency:'JPY',maximumFractionDigits:0}).format(TERKUMPUL);
+      $('#targetLabel').textContent=new Intl.NumberFormat('id-ID',{style:'currency',currency:'JPY',maximumFractionDigits:0}).format(TARGET);
+      const p=Math.min(100,Math.round((TERKUMPUL/TARGET)*100));
+      $('#percentLabel').textContent=p;
+      const bar=$('#progressBar'); bar.style.width='0%'; requestAnimationFrame(()=>setTimeout(()=>bar.style.width=p+'%',40));
+    })();
 
-    // Nominal cepat
+    // Nominal cepat & WA
     $$('.quick-jpy').forEach(b=> b.addEventListener('click',()=> $('#inputJPY').value=b.dataset.v ));
     $$('.quick-idr').forEach(b=> b.addEventListener('click',()=> $('#inputIDR').value=b.dataset.v ));
-
-    // Konfirmasi WA
     const fmtJPY=n=>new Intl.NumberFormat('id-ID',{style:'currency',currency:'JPY',maximumFractionDigits:0}).format(n||0);
     const fmtIDR=n=>new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(n||0);
     $('#donasiBtn').addEventListener('click',()=>{
@@ -276,7 +406,7 @@
       window.open(`https://wa.me/${WA_NUMBER}?text=${txt}`,'_blank');
     });
 
-    // Salin nomor rekening
+    // Salin no rekening
     $$('[data-copy]').forEach(btn=> btn.addEventListener('click',()=>{
       const sel=btn.getAttribute('data-copy'); const t=document.querySelector(sel); if(!t) return;
       navigator.clipboard.writeText(String(t.textContent).trim());
