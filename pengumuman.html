@@ -6,11 +6,23 @@
   <title>Pengumuman — Masjid As-Sunnah Hekinan</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            fig: { primary:"#0EA5E9", primaryDark:"#0284C7", accent:"#F59E0B", success:"#10B981", text:"#0F172A", soft:"#F0F9FF" }
+          }
+        }
+      }
+    }
+  </script>
 </head>
 <body class="font-sans text-slate-800 bg-gradient-to-b from-sky-50 to-white">
   <header class="sticky top-0 bg-white/80 backdrop-blur border-b border-slate-200 z-40">
     <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <a href="index.html" class="flex gap-3 items-center hover:text-sky-700"><i data-lucide="arrow-left"></i>Kembali</a>
+      <a href="index.html#info" class="flex gap-3 items-center hover:text-sky-700"><i data-lucide="arrow-left"></i>Kembali</a>
       <h1 class="font-extrabold text-lg md:text-xl text-slate-900">Pengumuman</h1>
       <button id="openData" class="admin-only hidden rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600 flex items-center gap-2">
         <i data-lucide="settings-2" class="w-4 h-4"></i> ⚙️ Data
@@ -31,22 +43,29 @@
       </div>
       <div class="grid md:grid-cols-2 gap-4 mt-4">
         <div class="rounded-xl border border-slate-200 p-4">
+          <label class="text-sm font-semibold">CSV Kajian</label>
+          <input id="csvKajian" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600">
+        </div>
+        <div class="rounded-xl border border-slate-200 p-4">
           <label class="text-sm font-semibold">CSV Pengumuman</label>
-          <input id="csvPengumuman" type="url" placeholder="https://docs.google.com/.../pub?output=csv" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600">
+          <input id="csvPengumuman" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600">
         </div>
         <div class="rounded-xl border border-slate-200 p-4">
           <label class="text-sm font-semibold">CSV Artikel</label>
-          <input id="csvArtikel" type="url" placeholder="https://docs.google.com/.../pub?output=csv" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600">
+          <input id="csvArtikel" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600">
         </div>
       </div>
       <div class="mt-4 flex justify-end"><button id="saveData" class="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 text-sm font-semibold">Simpan</button></div>
     </div>
   </div>
 
-  <footer class="bg-white"><div class="container mx-auto px-4 py-10 text-sm text-slate-700">© <span id="year"></span> Masjid As-Sunnah Hekinan.</div></footer>
+  <footer class="bg-white">
+    <div class="container mx-auto px-4 py-10 text-sm text-slate-700 flex justify-between">
+      <span>© <span id="year"></span> Masjid As-Sunnah Hekinan.</span>
+      <span>Design by Abu Khayla.</span>
+    </div>
+  </footer>
 
-  <script type="module">
-    import { boot } from './app.js'; boot();
-  </script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
