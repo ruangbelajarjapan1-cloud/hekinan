@@ -1,95 +1,75 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Kegiatan — Masjid As-Sunnah Hekinan</title>
-
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            fig: {
-              primary: "#0EA5E9",
-              primaryDark: "#0284C7",
-              accent: "#F59E0B",
-              success: "#10B981",
-              surface: "#FFFFFF",
-              text: "#0F172A",
-              soft: "#F0F9FF"
-            }
-          },
-          borderRadius: { fig: "20px" },
-          boxShadow: { soft: "0 14px 40px -20px rgba(2,8,23,.25)" },
-          fontFamily: {
-            sans: ["Inter","ui-sans-serif","system-ui","-apple-system","Segoe UI","Roboto","Noto Sans","Ubuntu","Cantarell","Helvetica Neue","Arial","sans-serif"]
-          }
-        }
-      }
-    }
-  </script>
+  <style>
+    .scrollx-snap{scroll-snap-type:x mandatory}
+    .snap-item{scroll-snap-align:start}
+    .hide-scrollbar{scrollbar-width:none;-ms-overflow-style:none}
+    .hide-scrollbar::-webkit-scrollbar{display:none}
+  </style>
 </head>
-
-<body class="font-sans text-fig-text bg-gradient-to-b from-fig-soft to-white">
+<body class="font-sans text-slate-800 bg-gradient-to-b from-sky-50 to-white">
   <header class="sticky top-0 bg-white/80 backdrop-blur border-b border-slate-200 z-40">
     <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <a href="index.html#kegiatan" class="flex items-center gap-2 hover:text-fig-primaryDark">
-        <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
-      </a>
-      <div class="flex items-center gap-3">
-        <img src="logohekinan.jpeg" class="h-9 w-auto rounded-[12px]" alt="Logo">
-        <span class="font-extrabold">Kegiatan</span>
-      </div>
-      <div class="w-20"></div>
+      <a href="index.html" class="flex gap-3 items-center hover:text-sky-700"><i data-lucide="arrow-left"></i>Kembali</a>
+      <h1 class="font-extrabold text-lg md:text-xl text-slate-900">Kegiatan</h1>
+      <span></span>
     </nav>
   </header>
 
-  <main class="container mx-auto px-4 py-10">
-    <div class="flex items-center justify-between mb-4">
-      <h1 class="text-2xl md:text-3xl font-extrabold flex items-center gap-2">
-        <i data-lucide="image" class="text-fig-accent"></i> Galeri Kegiatan
-      </h1>
+  <section class="container mx-auto px-4 py-12">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-extrabold">Galeri</h2>
       <div class="hidden md:flex items-center gap-2">
-        <button id="kgPrev" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">◀</button>
-        <button id="kgNext" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">▶</button>
+        <button id="kgPrev" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600" aria-label="Sebelumnya">◀</button>
+        <button id="kgNext" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600" aria-label="Berikutnya">▶</button>
       </div>
     </div>
-
-    <div id="kgTrack" class="flex gap-4 overflow-x-auto rounded-[20px] border border-slate-200 p-4 bg-white">
-      <figure class="shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
-        <img src="masjid-hero.jpg" class="w-full h-full object-cover" alt="Kegiatan" loading="lazy">
-      </figure>
-      <figure class="shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
-        <img src="masjid-hero.jpg" class="w-full h-full object-cover" alt="Kegiatan" loading="lazy">
-      </figure>
-      <figure class="shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
-        <img src="masjid-hero.jpg" class="w-full h-full object-cover" alt="Kegiatan" loading="lazy">
-      </figure>
-      <figure class="shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
-        <img src="masjid-hero.jpg" class="w-full h-full object-cover" alt="Kegiatan" loading="lazy">
-      </figure>
+    <div class="relative">
+      <div id="kgTrack" class="scrollx-snap hide-scrollbar flex gap-4 overflow-x-auto rounded-2xl border border-slate-200 p-4">
+        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+          <img src="./1.jpeg" class="w-full h-full object-cover" alt="Kegiatan 1">
+        </figure>
+        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+          <img src="./2.jpeg" class="w-full h-full object-cover" alt="Kegiatan 2">
+        </figure>
+        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+          <img src="./3.jpeg" class="w-full h-full object-cover" alt="Kegiatan 3">
+        </figure>
+        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
+          <img src="./4.jpeg" class="w-full h-full object-cover" alt="Kegiatan 4">
+        </figure>
+        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-white flex items-center justify-center">
+          <img src="./5.jpeg" class="max-w-full max-h-full object-contain" alt="Poster">
+        </figure>
+        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-white flex items-center justify-center">
+          <img src="./6.jpeg" class="max-w-full max-h-full object-contain" alt="Poster">
+        </figure>
+        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-white flex items-center justify-center">
+          <img src="./7.jpeg" class="max-w-full max-h-full object-contain" alt="Poster">
+        </figure>
+      </div>
+      <div class="md:hidden absolute inset-y-0 left-0 flex items-center">
+        <button id="kgPrevMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow">◀</button>
+      </div>
+      <div class="md:hidden absolute inset-y-0 right-0 flex items-center">
+        <button id="kgNextMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow">▶</button>
+      </div>
     </div>
+  </section>
 
-    <div class="mt-4 flex md:hidden items-center justify-center gap-3">
-      <button id="kgPrevMob" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">◀</button>
-      <button id="kgNextMob" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">▶</button>
-    </div>
-  </main>
-
-  <footer class="bg-white border-t border-slate-200">
-    <div class="container mx-auto px-4 py-8 text-xs text-slate-500 flex justify-between">
-      <p>© <span id="year"></span> Masjid As-Sunnah Hekinan.</p>
-      <p>Design by Abu Khayla.</p>
+  <footer class="bg-white">
+    <div class="container mx-auto px-4 py-10 text-sm text-slate-700 flex justify-between">
+      <span>© <span id="year"></span> Masjid As-Sunnah Hekinan.</span>
+      <span>Design by Abu Khayla.</span>
     </div>
   </footer>
 
-  <script type="module">
-    import { boot } from './app.js';
-    boot();
-  </script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>
