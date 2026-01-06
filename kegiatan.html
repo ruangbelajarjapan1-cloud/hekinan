@@ -1,114 +1,95 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <title>Kegiatan — Masjid As-Sunnah Hekinan</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    .scrollx-snap{scroll-snap-type:x mandatory}
-    .snap-item{scroll-snap-align:start}
-    .hide-scrollbar{scrollbar-width:none;-ms-overflow-style:none}
-    .hide-scrollbar::-webkit-scrollbar{display:none}
-  </style>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            fig: {
+              primary: "#0EA5E9",
+              primaryDark: "#0284C7",
+              accent: "#F59E0B",
+              success: "#10B981",
+              surface: "#FFFFFF",
+              text: "#0F172A",
+              soft: "#F0F9FF"
+            }
+          },
+          borderRadius: { fig: "20px" },
+          boxShadow: { soft: "0 14px 40px -20px rgba(2,8,23,.25)" },
+          fontFamily: {
+            sans: ["Inter","ui-sans-serif","system-ui","-apple-system","Segoe UI","Roboto","Noto Sans","Ubuntu","Cantarell","Helvetica Neue","Arial","sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body class="font-sans text-slate-800 bg-gradient-to-b from-sky-50 to-white">
+
+<body class="font-sans text-fig-text bg-gradient-to-b from-fig-soft to-white">
   <header class="sticky top-0 bg-white/80 backdrop-blur border-b border-slate-200 z-40">
     <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <a href="index.html" class="flex gap-3 items-center hover:text-sky-700"><i data-lucide="arrow-left"></i>Kembali</a>
-      <h1 class="font-extrabold text-lg md:text-xl text-slate-900">Kegiatan</h1>
-      <button id="openData" class="admin-only hidden rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600 flex items-center gap-2">
-        <i data-lucide="settings-2" class="w-4 h-4"></i> ⚙️ Data
-      </button>
+      <a href="index.html#kegiatan" class="flex items-center gap-2 hover:text-fig-primaryDark">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
+      </a>
+      <div class="flex items-center gap-3">
+        <img src="logohekinan.jpeg" class="h-9 w-auto rounded-[12px]" alt="Logo">
+        <span class="font-extrabold">Kegiatan</span>
+      </div>
+      <div class="w-20"></div>
     </nav>
   </header>
 
-  <section class="container mx-auto px-4 py-12">
-    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow mb-10">
-      <div class="flex items-center justify-between gap-4">
-        <h2 class="text-2xl font-extrabold flex items-center gap-2">
-          <i data-lucide="calendar-clock" class="w-5 h-5 text-sky-700"></i> Kegiatan Terdekat (Agenda)
-        </h2>
-      </div>
-      <div id="kegiatanAgendaList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4"></div>
-      <p id="kegiatanAgendaEmpty" class="hidden text-sm text-slate-500 mt-2">Belum ada agenda kegiatan terdekat.</p>
-      <p class="text-xs text-slate-500 mt-3">Agenda ini berasal dari Google Sheet (CSV) dan bisa diatur lewat ⚙️ Data (khusus admin).</p>
-    </div>
-
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-extrabold">Galeri</h2>
+  <main class="container mx-auto px-4 py-10">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-2xl md:text-3xl font-extrabold flex items-center gap-2">
+        <i data-lucide="image" class="text-fig-accent"></i> Galeri Kegiatan
+      </h1>
       <div class="hidden md:flex items-center gap-2">
-        <button id="kgPrev" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600" aria-label="Sebelumnya">◀</button>
-        <button id="kgNext" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600" aria-label="Berikutnya">▶</button>
+        <button id="kgPrev" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">◀</button>
+        <button id="kgNext" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">▶</button>
       </div>
     </div>
 
-    <div class="relative">
-      <div id="kgTrack" class="scrollx-snap hide-scrollbar flex gap-4 overflow-x-auto rounded-2xl border border-slate-200 p-4">
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
-          <img src="./1.jpeg" class="w-full h-full object-cover" alt="Kegiatan 1">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
-          <img src="./2.jpeg" class="w-full h-full object-cover" alt="Kegiatan 2">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
-          <img src="./3.jpeg" class="w-full h-full object-cover" alt="Kegiatan 3">
-        </figure>
-      </div>
+    <div id="kgTrack" class="flex gap-4 overflow-x-auto rounded-[20px] border border-slate-200 p-4 bg-white">
+      <figure class="shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
+        <img src="masjid-hero.jpg" class="w-full h-full object-cover" alt="Kegiatan" loading="lazy">
+      </figure>
+      <figure class="shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
+        <img src="masjid-hero.jpg" class="w-full h-full object-cover" alt="Kegiatan" loading="lazy">
+      </figure>
+      <figure class="shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
+        <img src="masjid-hero.jpg" class="w-full h-full object-cover" alt="Kegiatan" loading="lazy">
+      </figure>
+      <figure class="shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
+        <img src="masjid-hero.jpg" class="w-full h-full object-cover" alt="Kegiatan" loading="lazy">
+      </figure>
     </div>
-  </section>
 
-  <!-- Modal admin sama seperti halaman lain -->
-  <div id="dataModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="w-full max-w-2xl rounded-2xl bg-white p-6 shadow">
-      <div class="flex items-start justify-between gap-4">
-        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="database"></i> Sumber Data</h3>
-        <button id="closeData" class="text-slate-500 hover:text-slate-700" aria-label="Tutup">✕</button>
-      </div>
-      <div class="grid md:grid-cols-2 gap-4 mt-4">
-        <div class="rounded-xl border border-slate-200 p-4">
-          <label class="text-sm font-semibold">CSV Pengumuman</label>
-          <input id="csvPengumuman" type="url" placeholder="https://docs.google.com/.../pub?output=csv"
-                 class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600">
-          <p class="text-xs text-slate-500 mt-2">Kolom minimal: <span class="font-mono">title,date,desc,link</span></p>
-        </div>
-
-        <div class="rounded-xl border border-slate-200 p-4">
-          <label class="text-sm font-semibold">CSV Artikel</label>
-          <input id="csvArtikel" type="url" placeholder="https://docs.google.com/.../pub?output=csv"
-                 class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600">
-          <p class="text-xs text-slate-500 mt-2">Kolom minimal: <span class="font-mono">title,tag,excerpt,link</span></p>
-        </div>
-
-        <div class="rounded-xl border border-slate-200 p-4">
-          <label class="text-sm font-semibold">CSV Kajian</label>
-          <input id="csvKajian" type="url" placeholder="https://docs.google.com/.../pub?output=csv"
-                 class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600">
-          <p class="text-xs text-slate-500 mt-2">Kolom minimal: <span class="font-mono">tanggal,waktu,judul,pemateri,platform,link,poster,catatan,status</span></p>
-        </div>
-
-        <div class="rounded-xl border border-slate-200 p-4">
-          <label class="text-sm font-semibold">CSV Kegiatan (Agenda)</label>
-          <input id="csvKegiatan" type="url" placeholder="(opsional) https://docs.google.com/.../pub?output=csv"
-                 class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600">
-          <p class="text-xs text-slate-500 mt-2">Kolom minimal: <span class="font-mono">tanggal,waktu,title,lokasi,pemateri,desc,poster,link,status</span></p>
-        </div>
-      </div>
-      <div class="mt-4 flex justify-end">
-        <button id="saveData" class="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 text-sm font-semibold">Simpan</button>
-      </div>
+    <div class="mt-4 flex md:hidden items-center justify-center gap-3">
+      <button id="kgPrevMob" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">◀</button>
+      <button id="kgNextMob" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">▶</button>
     </div>
-  </div>
+  </main>
 
-  <footer class="bg-white">
-    <div class="container mx-auto px-4 py-10 text-center text-sm text-slate-500">
-      © <span id="year"></span> Masjid As-Sunnah Hekinan.
+  <footer class="bg-white border-t border-slate-200">
+    <div class="container mx-auto px-4 py-8 text-xs text-slate-500 flex justify-between">
+      <p>© <span id="year"></span> Masjid As-Sunnah Hekinan.</p>
+      <p>Design by Abu Khayla.</p>
     </div>
   </footer>
 
   <script type="module">
-    import { boot } from './app.js'; boot();
+    import { boot } from './app.js';
+    boot();
   </script>
 </body>
 </html>
