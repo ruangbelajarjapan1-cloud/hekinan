@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <title>Masjid As-Sunnah Hekinan — Jadwal Sholat, Kegiatan & Donasi</title>
+  <title>Masjid As-Sunnah Hekinan — Jadwal Sholat, Kajian, Kegiatan & Donasi</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -35,9 +35,6 @@
 
   <style>
     html{scroll-behavior:smooth}
-    [data-lucide]{transition:transform .2s ease}
-    .card{transition:transform .15s ease,box-shadow .15s ease}
-    .card:hover{transform:translateY(-2px)}
     #progressBar{transition:width 1s ease;background:linear-gradient(90deg,#0EA5E9,#38BDF8)}
     .tab-slider{position:absolute;bottom:0;height:2px;width:50%;background:#0EA5E9;transition:transform .25s ease;pointer-events:none}
     .tab-left .tab-slider{transform:translateX(0)}
@@ -59,7 +56,10 @@
         <a href="#kajian" class="hover:text-fig-primaryDark flex items-center gap-1"><i data-lucide="video" class="w-4 h-4"></i>Kajian</a>
         <a href="#kegiatan" class="hover:text-fig-primaryDark flex items-center gap-1"><i data-lucide="calendar" class="w-4 h-4"></i>Kegiatan</a>
         <a href="#info" class="hover:text-fig-primaryDark flex items-center gap-1"><i data-lucide="layers" class="w-4 h-4"></i>Info</a>
-        <a href="#donasi" class="relative z-10 rounded-[20px] bg-fig-primary hover:bg-fig-primaryDark text-white px-4 py-2 font-semibold shadow-soft">Berdonasi</a>
+
+        <a href="#donasi" class="relative z-10 rounded-[20px] bg-fig-primary hover:bg-fig-primaryDark text-white px-4 py-2 font-semibold shadow-soft">
+          Berdonasi
+        </a>
 
         <button id="openData" class="admin-only hidden rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark flex items-center gap-2">
           <i data-lucide="settings-2" class="w-4 h-4"></i>⚙️ Data
@@ -69,7 +69,7 @@
   </header>
 
   <section id="sholat" class="container mx-auto px-4 py-10">
-    <div class="rounded-[20px] border border-slate-200 bg-white p-6 shadow-soft card">
+    <div class="rounded-[20px] border border-slate-200 bg-white p-6 shadow-soft">
       <div class="flex justify-between items-center">
         <div>
           <h2 class="text-2xl font-extrabold flex items-center gap-2"><i data-lucide="moon-star" class="text-fig-primary"></i>Jadwal Sholat</h2>
@@ -101,7 +101,31 @@
         <a href="kegiatan.html" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark text-sm font-semibold">Galeri</a>
       </div>
 
-      <div id="kegiatanTerdekatBox" class="hidden rounded-[20px] border border-slate-200 bg-fig-soft p-5">
+      <div class="relative">
+        <div class="hidden md:flex items-center justify-end gap-2 mb-3">
+          <button id="kgPrev" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">◀</button>
+          <button id="kgNext" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">▶</button>
+        </div>
+
+        <div id="kgTrack" class="flex gap-4 overflow-x-auto rounded-[20px] border border-slate-200 p-4 bg-white">
+          <figure class="shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
+            <img src="masjid-hero.jpg" class="w-full h-full object-cover" alt="Kegiatan" loading="lazy">
+          </figure>
+          <figure class="shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
+            <img src="masjid-hero.jpg" class="w-full h-full object-cover" alt="Kegiatan" loading="lazy">
+          </figure>
+          <figure class="shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
+            <img src="masjid-hero.jpg" class="w-full h-full object-cover" alt="Kegiatan" loading="lazy">
+          </figure>
+        </div>
+
+        <div class="mt-3 flex md:hidden items-center justify-center gap-3">
+          <button id="kgPrevMob" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">◀</button>
+          <button id="kgNextMob" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">▶</button>
+        </div>
+      </div>
+
+      <div id="kegiatanTerdekatBox" class="hidden mt-8 rounded-[20px] border border-slate-200 bg-fig-soft p-5">
         <h3 class="font-bold text-slate-900 flex items-center gap-2"><i data-lucide="clock-3" class="text-fig-primary"></i>Kegiatan Terdekat</h3>
         <div id="kegiatanTerdekat" class="mt-4 grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
       </div>
@@ -261,22 +285,22 @@
       <div class="grid md:grid-cols-2 gap-4 mt-4">
         <div class="rounded-xl border border-slate-200 p-4">
           <label class="text-sm font-semibold">CSV Kajian</label>
-          <input id="csvKajian" type="url" placeholder="https://docs.google.com/.../pub?output=csv" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary">
+          <input id="csvKajian" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary">
         </div>
 
         <div class="rounded-xl border border-slate-200 p-4">
           <label class="text-sm font-semibold">CSV Kegiatan Terdekat (Opsional)</label>
-          <input id="csvKegiatan" type="url" placeholder="https://docs.google.com/.../pub?output=csv" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary">
+          <input id="csvKegiatan" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary">
         </div>
 
         <div class="rounded-xl border border-slate-200 p-4">
           <label class="text-sm font-semibold">CSV Pengumuman</label>
-          <input id="csvPengumuman" type="url" placeholder="https://docs.google.com/.../pub?output=csv" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary">
+          <input id="csvPengumuman" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary">
         </div>
 
         <div class="rounded-xl border border-slate-200 p-4">
           <label class="text-sm font-semibold">CSV Artikel</label>
-          <input id="csvArtikel" type="url" placeholder="https://docs.google.com/.../pub?output=csv" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary">
+          <input id="csvArtikel" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary">
         </div>
       </div>
 
