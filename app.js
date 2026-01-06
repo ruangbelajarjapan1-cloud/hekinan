@@ -1,14 +1,7 @@
 // app.js (ES Module)
 
-// ========== Utils ==========
-export const $  = (s, r = document) => r.querySelector(s);
+export const $ = (s, r = document) => r.querySelector(s);
 export const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-
-export const fmtJPY = (n) =>
-  new Intl.NumberFormat("id-ID", { style: "currency", currency: "JPY", maximumFractionDigits: 0 }).format(Number(n || 0));
-
-export const fmtIDR = (n) =>
-  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(Number(n || 0));
 
 function normalizeUrl(u) {
   if (!u) return "";
@@ -18,59 +11,30 @@ function normalizeUrl(u) {
   return "https://" + s;
 }
 
-// CSV parser yang mendukung koma di dalam tanda kutip ("...")
+// CSV parser (mendukung koma di dalam tanda kutip)
 function parseCSV(text) {
   const rows = [];
-  let i = 0;
-  let cur = "";
-  let row = [];
-  let inQ = false;
+  let i = 0, cur = "", row = [], inQ = false;
 
   while (i < text.length) {
     const c = text[i];
 
     if (c === '"') {
-      if (inQ && text[i + 1] === '"') {
-        cur += '"';
-        i += 2;
-        continue;
-      }
-      inQ = !inQ;
-      i++;
-      continue;
+      if (inQ && text[i + 1] === '"') { cur += '"'; i += 2; continue; }
+      inQ = !inQ; i++; continue;
     }
-
-    if (!inQ && c === ",") {
-      row.push(cur);
-      cur = "";
-      i++;
-      continue;
-    }
-
+    if (!inQ && c === ",") { row.push(cur); cur = ""; i++; continue; }
     if (!inQ && (c === "\n" || c === "\r")) {
-      if (cur !== "" || row.length) {
-        row.push(cur);
-        rows.push(row);
-        row = [];
-        cur = "";
-      }
+      if (cur !== "" || row.length) { row.push(cur); rows.push(row); row = []; cur = ""; }
       if (c === "\r" && text[i + 1] === "\n") i++;
-      i++;
-      continue;
+      i++; continue;
     }
-
-    cur += c;
-    i++;
+    cur += c; i++;
   }
-
-  if (cur !== "" || row.length) {
-    row.push(cur);
-    rows.push(row);
-  }
+  if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
 
   if (!rows.length) return [];
   const head = rows[0].map((h) => String(h || "").trim().toLowerCase());
-
   return rows.slice(1).map((cols) => {
     const o = {};
     head.forEach((h, idx) => (o[h] = String(cols[idx] || "").trim()));
@@ -82,42 +46,58 @@ async function loadFromCsv(url) {
   if (!url) return null;
   try {
     const txt = await fetch(url, { cache: "no-store" }).then((r) => r.text());
-    return parseCSV(txt);
+    const data = parseCSV(txt);
+    return Array.isArray(data) ? data : null;
   } catch {
     return null;
   }
 }
 
-async function loadFromJson(url) {
-  try {
-    return await fetch(url, { cache: "no-store" }).then((r) => r.json());
-  } catch {
-    return null;
-  }
-}
+export const fmtJPY = (n) =>
+  new Intl.NumberFormat("id-ID", { style: "currency", currency: "JPY", maximumFractionDigits: 0 }).format(Number(n || 0));
 
-// ========== Admin Gate ==========
+export const fmtIDR = (n) =>
+  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(Number(n || 0));
+
+// =====================
+// DEFAULT (global) CSV URLs (untuk semua pengguna)
+// =====================
+export const DEFAULT_KAJIAN_CSV =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
+
+export const DEFAULT_PENGUMUMAN_CSV =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv";
+
+export const DEFAULT_ARTIKEL_CSV =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv";
+
+// opsional (kosong = fitur Kegiatan Terdekat otomatis nonaktif)
+export const DEFAULT_KEGIATAN_TERDEKAT_CSV = "";
+
+// =====================
+// Admin gate (Data button khusus admin)
+// =====================
 export const Admin = (function () {
   const KEY = "is_admin";
   const CODE = "as-sunnah-2025";
 
   function isAdmin() {
-    return localStorage.getItem(KEY) === "1" || new URLSearchParams(location.search).get("admin") === "1";
+    return localStorage.getItem(KEY) === "1";
   }
 
-  function revealButtons() {
+  function reveal() {
     $$(".admin-only").forEach((el) => el.classList.remove("hidden"));
   }
 
   function setup() {
-    if (isAdmin()) revealButtons();
+    if (isAdmin()) reveal();
 
     document.addEventListener("keydown", (e) => {
       if (e.ctrlKey && e.altKey && e.key.toLowerCase() === "a") {
         const code = prompt("Masukkan kode admin:");
         if (code === CODE) {
           localStorage.setItem(KEY, "1");
-          revealButtons();
+          reveal();
           alert("Admin mode aktif.");
         } else if (code) {
           alert("Kode salah.");
@@ -126,60 +106,58 @@ export const Admin = (function () {
     });
   }
 
-  return { isAdmin, setup, revealButtons };
+  return { isAdmin, setup };
 })();
 
-// ========== Data Store ==========
-export const DataStore = (function () {
-  const cfg = {
-    kajian:     { sheetKey: "sheet_kajian",     json: "kajian.json" },
-    kegiatan:   { sheetKey: "sheet_kegiatan",   json: "kegiatan.json" }, // opsional
-    pengumuman: { sheetKey: "sheet_pengumuman", json: "pengumuman.json" },
-    artikel:    { sheetKey: "sheet_artikel",    json: "artikel.json" },
+// =====================
+// Config store (override hanya untuk admin; default tetap global)
+// =====================
+export const Config = (function () {
+  const keys = {
+    kajian: "sheet_kajian",
+    kegiatan: "sheet_kegiatan",
+    pengumuman: "sheet_pengumuman",
+    artikel: "sheet_artikel",
   };
 
-  function sheetUrl(key) {
-    return localStorage.getItem(key) || "";
+  function getUrl(kind) {
+    const v = (localStorage.getItem(keys[kind]) || "").trim();
+    if (v) return v;
+
+    if (kind === "kajian") return DEFAULT_KAJIAN_CSV;
+    if (kind === "pengumuman") return DEFAULT_PENGUMUMAN_CSV;
+    if (kind === "artikel") return DEFAULT_ARTIKEL_CSV;
+    if (kind === "kegiatan") return DEFAULT_KEGIATAN_TERDEKAT_CSV;
+    return "";
   }
 
-  function saveSheet(key, url) {
+  function setUrl(kind, url) {
+    const k = keys[kind];
     const v = (url || "").trim();
-    if (v) localStorage.setItem(key, v);
-    else localStorage.removeItem(key);
+    if (!k) return;
+    if (v) localStorage.setItem(k, v);
+    else localStorage.removeItem(k);
   }
 
-  async function get(kind, fallback = []) {
-    const c = cfg[kind];
-    const csvUrl = sheetUrl(c.sheetKey);
-
-    const csv = await loadFromCsv(csvUrl);
-    if (csv && csv.length) return csv;
-
-    const j = await loadFromJson(c.json);
-    if (j && j.length) return j;
-
-    return fallback;
-  }
-
-  return { cfg, saveSheet, get, sheetUrl };
+  return { getUrl, setUrl };
 })();
 
-// ========== Modal Data (Admin Only) ==========
 export const AdminDataModal = (function () {
   function open() {
+    if (!Admin.isAdmin()) return;
     const m = $("#dataModal");
     if (!m) return;
 
-    const setVal = (id, key) => {
+    const setVal = (id, kind) => {
       const el = $(id);
       if (!el) return;
-      el.value = DataStore.sheetUrl(key);
+      el.value = Config.getUrl(kind) || "";
     };
 
-    setVal("#csvKajian", "sheet_kajian");
-    setVal("#csvKegiatan", "sheet_kegiatan");
-    setVal("#csvPengumuman", "sheet_pengumuman");
-    setVal("#csvArtikel", "sheet_artikel");
+    setVal("#csvKajian", "kajian");
+    setVal("#csvKegiatan", "kegiatan");
+    setVal("#csvPengumuman", "pengumuman");
+    setVal("#csvArtikel", "artikel");
 
     m.classList.remove("hidden");
     m.classList.add("flex");
@@ -193,61 +171,61 @@ export const AdminDataModal = (function () {
   }
 
   function init() {
-    const openBtn = $("#openData");
-    const closeBtn = $("#closeData");
-    const saveBtn = $("#saveData");
+    $("#openData")?.addEventListener("click", (e) => { e.preventDefault(); open(); });
+    $("#closeData")?.addEventListener("click", close);
 
-    if (openBtn) openBtn.addEventListener("click", (e) => { e.preventDefault(); open(); });
-    if (closeBtn) closeBtn.addEventListener("click", close);
+    $("#dataModal")?.addEventListener("click", (e) => {
+      if (e.target && e.target.id === "dataModal") close();
+    });
 
-    $("#dataModal")?.addEventListener("click", (e) => { if (e.target && e.target.id === "dataModal") close(); });
+    $("#saveData")?.addEventListener("click", () => {
+      if (!Admin.isAdmin()) return;
 
-    if (saveBtn) {
-      saveBtn.addEventListener("click", () => {
-        const getVal = (id) => ($(id)?.value || "").trim();
+      const v = (id) => ($(id)?.value || "").trim();
+      if ($("#csvKajian")) Config.setUrl("kajian", v("#csvKajian"));
+      if ($("#csvKegiatan")) Config.setUrl("kegiatan", v("#csvKegiatan"));
+      if ($("#csvPengumuman")) Config.setUrl("pengumuman", v("#csvPengumuman"));
+      if ($("#csvArtikel")) Config.setUrl("artikel", v("#csvArtikel"));
 
-        if ($("#csvKajian")) DataStore.saveSheet("sheet_kajian", getVal("#csvKajian"));
-        if ($("#csvKegiatan")) DataStore.saveSheet("sheet_kegiatan", getVal("#csvKegiatan"));
-        if ($("#csvPengumuman")) DataStore.saveSheet("sheet_pengumuman", getVal("#csvPengumuman"));
-        if ($("#csvArtikel")) DataStore.saveSheet("sheet_artikel", getVal("#csvArtikel"));
-
-        close();
-        try { KajianLatestModule.init(); } catch {}
-        try { KegiatanTerdekatModule.init(); } catch {}
-        try { PengumumanModule.init(); } catch {}
-        try { ArtikelModule.init(); } catch {}
-      });
-    }
+      close();
+      try { KajianLatestModule.init(); } catch {}
+      try { KegiatanTerdekatModule.init(); } catch {}
+      try { PengumumanModule.init(); } catch {}
+      try { ArtikelModule.init(); } catch {}
+    });
   }
 
-  return { init, open, close };
+  return { init };
 })();
 
-// ========== SholatWidget ==========
+// =====================
+// Sholat (lokasi pengguna)
+// =====================
 export const SholatWidget = (function () {
   async function getLoc() {
-    return new Promise((res) => {
-      if (!navigator.geolocation) return res(null);
+    return new Promise((res, rej) => {
+      if (!navigator.geolocation) return rej(new Error("no geolocation"));
       navigator.geolocation.getCurrentPosition(
         (p) => res({ lat: p.coords.latitude, lon: p.coords.longitude }),
-        () => res(null),
+        (e) => rej(e),
         { enableHighAccuracy: true, timeout: 10000 }
       );
     });
   }
 
   async function times(lat, lon) {
-    const j = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`, { cache: "no-store" }).then((r) => r.json());
-    return j.data?.timings || null;
+    const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`;
+    const j = await fetch(url, { cache: "no-store" }).then((r) => r.json());
+    return j?.data?.timings || null;
   }
 
-  function tile(ic, label, val) {
+  function tile(icon, label, value) {
     const d = document.createElement("div");
     d.className = "rounded-2xl border border-slate-200 bg-white p-4 text-center";
     d.innerHTML = `
-      <i data-lucide="${ic}" class="w-5 h-5 mx-auto text-sky-600 mb-2"></i>
+      <i data-lucide="${icon}" class="w-5 h-5 mx-auto text-sky-600 mb-2"></i>
       <div class="text-xs text-slate-500">${label}</div>
-      <div class="text-lg font-bold text-slate-900">${val || "—"}</div>
+      <div class="text-lg font-bold text-slate-900">${value || "—"}</div>
     `;
     return d;
   }
@@ -255,16 +233,16 @@ export const SholatWidget = (function () {
   async function render() {
     const grid = $("#sholatGrid");
     const btn = $("#refreshSholat");
-    const lab = $("#locLabel");
+    const locLabel = $("#locLabel");
     if (!grid) return;
 
     btn?.classList.add("animate-spin");
-    grid.innerHTML = '<p class="col-span-6 text-center text-slate-500">Memuat...</p>';
-
-    const loc = (await getLoc()) || { lat: 34.884, lon: 136.993 };
-    if (lab) lab.textContent = `Lokasi: (${loc.lat.toFixed(3)}, ${loc.lon.toFixed(3)})`;
+    grid.innerHTML = "";
 
     try {
+      const loc = await getLoc();
+      if (locLabel) locLabel.textContent = "Lokasi terdeteksi.";
+
       const t = await times(loc.lat, loc.lon);
       grid.innerHTML = "";
       [
@@ -278,7 +256,8 @@ export const SholatWidget = (function () {
 
       window.lucide?.createIcons?.();
     } catch {
-      grid.innerHTML = '<p class="col-span-6 text-center text-red-600">Gagal memuat jadwal.</p>';
+      if (locLabel) locLabel.textContent = "";
+      grid.innerHTML = '<p class="col-span-6 text-center text-red-600">Gagal memuat jadwal sholat.</p>';
     }
 
     btn?.classList.remove("animate-spin");
@@ -293,33 +272,33 @@ export const SholatWidget = (function () {
   return { init };
 })();
 
-// ========== Kajian Terbaru (Index) ==========
+// =====================
+// Kajian Terbaru (CSV)
+// =====================
 export const KajianLatestModule = (function () {
-  const SAMPLE = [
-    { tanggal: "2026-01-10", waktu: "19:30", judul: "Tafsir Surat Al-Mulk", pemateri: "Ustadz Fulan", platform: "YouTube", link: "#", status: "aktif" },
-  ];
-
-  function toDateTimeISO(tanggal, waktu) {
+  function toDateTime(tanggal, waktu) {
     if (!tanggal) return null;
     const w = waktu || "00:00";
-    const iso = `${tanggal}T${w}:00`;
-    const d = new Date(iso);
+    const d = new Date(`${tanggal}T${w}:00`);
     return isNaN(d.getTime()) ? null : d;
   }
 
   function card(r) {
     const el = document.createElement("article");
     el.className = "rounded-2xl border border-slate-200 bg-white p-5 shadow";
-    const when = [r.tanggal || r.date || "", r.waktu || ""].filter(Boolean).join(" • ");
 
-    const poster = r.poster ? normalizeUrl(r.poster) : "";
-    const link = normalizeUrl(r.link || "");
+    const when = [r.tanggal || r.date || "", r.waktu || r.time || ""].filter(Boolean).join(" • ");
+    const judul = r.judul || r.title || "";
+    const pemateri = r.pemateri || "";
+    const platform = r.platform || "";
+    const link = normalizeUrl(r.link || r.url || "");
+    const poster = normalizeUrl(r.poster || "");
 
     el.innerHTML = `
       ${poster ? `<img src="${poster}" alt="" class="w-full h-40 object-cover rounded-xl mb-4" loading="lazy">` : ""}
       <div class="text-xs text-slate-500">${when}</div>
-      <h3 class="mt-1 font-bold text-slate-900">${r.judul || r.title || "Kajian"}</h3>
-      <p class="mt-2 text-sm text-slate-700">${[r.pemateri, r.platform].filter(Boolean).join(" • ")}</p>
+      <h3 class="mt-1 font-bold text-slate-900">${judul}</h3>
+      <p class="mt-2 text-sm text-slate-700">${[pemateri, platform].filter(Boolean).join(" • ")}</p>
       ${link ? `<a href="${link}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-4 text-sky-700 hover:underline text-sm">
         <i data-lucide="external-link" class="w-4 h-4"></i> Link Kajian
       </a>` : ""}
@@ -332,14 +311,15 @@ export const KajianLatestModule = (function () {
     const empty = $("#kajianEmpty");
     if (!wrap) return;
 
-    const rows = await DataStore.get("kajian", SAMPLE);
+    const url = Config.getUrl("kajian");
+    const rows = (await loadFromCsv(url)) || [];
 
     const now = new Date();
-    const data = (rows || [])
+    const data = rows
       .filter((r) => (r.status || "").toLowerCase() !== "nonaktif")
-      .map((r) => ({ ...r, _dt: toDateTimeISO(r.tanggal || r.date, r.waktu || r.time) }))
-      .filter((r) => !r._dt || r._dt >= new Date(now.getTime() - 60 * 60 * 1000))
+      .map((r) => ({ ...r, _dt: toDateTime(r.tanggal || r.date, r.waktu || r.time) }))
       .sort((a, b) => (a._dt?.getTime() || 0) - (b._dt?.getTime() || 0))
+      .filter((r) => !r._dt || r._dt >= new Date(now.getTime() - 24 * 60 * 60 * 1000))
       .slice(0, 6);
 
     wrap.innerHTML = "";
@@ -356,28 +336,27 @@ export const KajianLatestModule = (function () {
   return { init };
 })();
 
-// ========== Kegiatan Terdekat (Index) - opsional ==========
+// =====================
+// Kegiatan Terdekat (CSV opsional)
+// =====================
 export const KegiatanTerdekatModule = (function () {
+  function toDT(r) {
+    const t = r.tanggal || r.date || "";
+    const w = r.waktu || r.time || "00:00";
+    const d = new Date(`${t}T${w}:00`);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
   async function init() {
     const box = $("#kegiatanTerdekatBox");
     const list = $("#kegiatanTerdekat");
     if (!box || !list) return;
 
-    const url = DataStore.sheetUrl("sheet_kegiatan");
-    if (!url) {
-      box.classList.add("hidden");
-      return;
-    }
+    const url = Config.getUrl("kegiatan");
+    if (!url) { box.classList.add("hidden"); return; }
 
-    const rows = (await DataStore.get("kegiatan", [])) || [];
+    const rows = (await loadFromCsv(url)) || [];
     const now = new Date();
-
-    function toDT(r) {
-      const t = r.tanggal || r.date || "";
-      const w = r.waktu || r.time || "00:00";
-      const d = new Date(`${t}T${w}:00`);
-      return isNaN(d.getTime()) ? null : d;
-    }
 
     const data = rows
       .filter((r) => (r.status || "").toLowerCase() !== "nonaktif")
@@ -387,17 +366,14 @@ export const KegiatanTerdekatModule = (function () {
       .slice(0, 5);
 
     list.innerHTML = "";
-    if (!data.length) {
-      box.classList.add("hidden");
-      return;
-    }
+    if (!data.length) { box.classList.add("hidden"); return; }
     box.classList.remove("hidden");
 
     data.forEach((r) => {
       const li = document.createElement("div");
       li.className = "rounded-xl border border-slate-200 bg-white p-4";
       const when = `${r.tanggal || ""} • ${r.waktu || ""}`.trim();
-      const link = normalizeUrl(r.link || "");
+      const link = normalizeUrl(r.link || r.url || "");
       li.innerHTML = `
         <div class="text-xs text-slate-500">${when}</div>
         <div class="mt-1 font-semibold text-slate-900">${r.judul || ""}</div>
@@ -415,10 +391,10 @@ export const KegiatanTerdekatModule = (function () {
   return { init };
 })();
 
-// ========== Pengumuman ==========
+// =====================
+// Pengumuman (CSV)
+// =====================
 export const PengumumanModule = (function () {
-  const SAMPLE = [{ title: "Contoh Pengumuman", date: "2026-01-01", desc: "Isi via Google Sheet.", link: "#" }];
-
   function card(r) {
     const el = document.createElement("article");
     el.className = "rounded-2xl border border-slate-200 bg-white p-5 shadow";
@@ -446,25 +422,27 @@ export const PengumumanModule = (function () {
     const empty = $("#boardEmpty");
     if (!wrap) return;
 
-    const data = await DataStore.get("pengumuman", SAMPLE);
+    const url = Config.getUrl("pengumuman");
+    const rows = (await loadFromCsv(url)) || [];
 
     wrap.innerHTML = "";
-    if (!data.length) {
+    if (!rows.length) {
       empty?.classList.remove("hidden");
       return;
     }
     empty?.classList.add("hidden");
 
-    data.forEach((x) => wrap.appendChild(card(x)));
+    rows.forEach((x) => wrap.appendChild(card(x)));
     window.lucide?.createIcons?.();
   }
 
   return { init };
 })();
 
-// ========== Artikel ==========
+// =====================
+// Artikel (CSV)
+// =====================
 export const ArtikelModule = (function () {
-  const SAMPLE = [{ title: "Contoh Artikel", tag: "info", excerpt: "Isi via Google Sheet.", link: "#" }];
   let CACHE = [];
 
   function card(a) {
@@ -494,9 +472,9 @@ export const ArtikelModule = (function () {
     return el;
   }
 
-  function render(q = "") {
-    const list = $("#artikelList");
-    const empty = $("#artikelEmpty");
+  function renderList(q = "", listId = "#artikelList", emptyId = "#artikelEmpty") {
+    const list = $(listId);
+    const empty = $(emptyId);
     if (!list) return;
 
     const s = (q || "").toLowerCase().trim();
@@ -519,44 +497,31 @@ export const ArtikelModule = (function () {
   }
 
   async function init() {
-    if (!$("#artikelList") && !$("#wrapArtikel")) return;
+    const isArtikelPage = !!$("#artikelList");
+    const isIndexWrap = !!$("#wrapArtikelList");
 
-    CACHE = await DataStore.get("artikel", SAMPLE);
+    if (!isArtikelPage && !isIndexWrap) return;
 
-    if ($("#artikelList")) {
-      render($("#searchArtikel")?.value || "");
-      $("#searchArtikel")?.addEventListener("input", (e) => render(e.target.value));
+    const url = Config.getUrl("artikel");
+    CACHE = (await loadFromCsv(url)) || [];
+
+    if (isArtikelPage) {
+      renderList($("#searchArtikel")?.value || "", "#artikelList", "#artikelEmpty");
+      $("#searchArtikel")?.addEventListener("input", (e) => renderList(e.target.value, "#artikelList", "#artikelEmpty"));
     }
 
-    if ($("#wrapArtikel") && !$("#artikelList")) {
-      const list = $("#wrapArtikelList");
-      const empty = $("#artikelEmpty");
-      if (!list) return;
-
-      const s = $("#searchArtikel")?.value || "";
-      const data = CACHE.filter((a) => {
-        const q = (s || "").toLowerCase().trim();
-        const t = (a.title || a.judul || "").toLowerCase();
-        const e = (a.excerpt || a.ringkasan || a.desc || "").toLowerCase();
-        const g = (a.tag || a.kategori || "").toLowerCase();
-        return !q || t.includes(q) || e.includes(q) || g.includes(q);
-      });
-
-      list.innerHTML = "";
-      if (!data.length) empty?.classList.remove("hidden");
-      else empty?.classList.add("hidden");
-
-      data.forEach((a) => list.appendChild(card(a)));
-      window.lucide?.createIcons?.();
-
-      $("#searchArtikel")?.addEventListener("input", () => init());
+    if (isIndexWrap) {
+      renderList($("#searchArtikel")?.value || "", "#wrapArtikelList", "#artikelEmpty");
+      $("#searchArtikel")?.addEventListener("input", (e) => renderList(e.target.value, "#wrapArtikelList", "#artikelEmpty"));
     }
   }
 
   return { init };
 })();
 
-// ========== Info Tabs (Index) ==========
+// =====================
+// Tabs Info (index)
+// =====================
 export const InfoTabs = (function () {
   function init() {
     const tabs = $("#tabs");
@@ -583,14 +548,22 @@ export const InfoTabs = (function () {
     tabP.addEventListener("click", showP);
     tabA.addEventListener("click", showA);
   }
+
   return { init };
 })();
 
-// ========== Donasi ==========
+// =====================
+// Donasi (angka sesuai permintaan)
+// =====================
 export const DonasiModule = (function () {
-  const TARGET = 42000000;   // JPY
-  const TERKUMPUL = 5290797; // JPY
+  const TARGET = 42000000;
+  const KEKURANGAN = 33800000;
+  const TERKUMPUL = TARGET - KEKURANGAN; // 8,200,000
   const WA_NUMBER = "818013909425";
+
+  function clamp(n, min, max) {
+    return Math.max(min, Math.min(max, n));
+  }
 
   function progress() {
     if (!$("#progressBar")) return;
@@ -598,7 +571,7 @@ export const DonasiModule = (function () {
     $("#terkumpulLabel").textContent = fmtJPY(TERKUMPUL);
     $("#targetLabel").textContent = fmtJPY(TARGET);
 
-    const p = Math.min(100, Math.round((TERKUMPUL / TARGET) * 100));
+    const p = clamp(Math.round((TERKUMPUL / TARGET) * 100), 0, 100);
     $("#percentLabel").textContent = String(p);
 
     const bar = $("#progressBar");
@@ -618,7 +591,7 @@ export const DonasiModule = (function () {
     btn.addEventListener("click", () => {
       const vj = Number(j.value) || 0;
       const vr = Number(r.value) || 0;
-      if (vj < 1000 && vr < 10000) { alert('Minimal 1.000 JPY atau 10.000 IDR.'); return; }
+      if (vj < 1000 && vr < 10000) { alert("Minimal 1.000 JPY atau 10.000 IDR."); return; }
 
       const msg = encodeURIComponent(
         `Assalamu'alaikum, saya ingin donasi sebesar ${vj > 0 ? fmtJPY(vj) : fmtIDR(vr)} untuk Masjid As-Sunnah Hekinan.`
@@ -635,7 +608,7 @@ export const DonasiModule = (function () {
         if (!t) return;
         navigator.clipboard.writeText(String(t.textContent).trim());
         const o = btn.textContent;
-        btn.textContent = 'Disalin!';
+        btn.textContent = "Disalin!";
         setTimeout(() => (btn.textContent = o), 1100);
       })
     );
@@ -650,8 +623,10 @@ export const DonasiModule = (function () {
   return { init };
 })();
 
-// ========== Galeri Kegiatan (kegiatan.html) ==========
-export const KegiatanModule = (function () {
+// =====================
+// Carousel Galeri (kegiatan.html & index)
+// =====================
+export const KegiatanCarousel = (function () {
   function init() {
     const track = $("#kgTrack");
     if (!track) return;
@@ -669,12 +644,15 @@ export const KegiatanModule = (function () {
     track.addEventListener("mouseenter", () => clearInterval(t));
     track.addEventListener("mouseleave", () => (t = setInterval(() => go(1), 6000)));
   }
+
   return { init };
 })();
 
-// ========== Bootstrap ==========
+// =====================
+// Boot
+// =====================
 export function boot() {
-  if (document.getElementById("year")) $("#year").textContent = String(new Date().getFullYear());
+  if ($("#year")) $("#year").textContent = String(new Date().getFullYear());
   window.lucide?.createIcons?.();
 
   Admin.setup();
@@ -682,8 +660,8 @@ export function boot() {
 
   SholatWidget.init();
   KajianLatestModule.init();
-  KegiatanModule.init();
   KegiatanTerdekatModule.init();
+  KegiatanCarousel.init();
 
   InfoTabs.init();
   PengumumanModule.init();
