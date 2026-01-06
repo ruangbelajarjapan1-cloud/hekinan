@@ -1,298 +1,294 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Masjid As-Sunnah Hekinan</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>Masjid As-Sunnah Hekinan — Jadwal Sholat, Kegiatan & Donasi</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          fig: {
-            primary: "#0EA5E9",
-            primaryDark: "#0284C7",
-            accent: "#F59E0B",
-            success: "#10B981",
-            soft: "#F0F9FF"
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            fig: {
+              primary: "#0EA5E9",
+              primaryDark: "#0284C7",
+              accent: "#F59E0B",
+              success: "#10B981",
+              surface: "#FFFFFF",
+              text: "#0F172A",
+              soft: "#F0F9FF"
+            }
+          },
+          borderRadius: { fig: "20px" },
+          boxShadow: { soft: "0 14px 40px -20px rgba(2,8,23,.25)" },
+          fontFamily: {
+            sans: ["Inter","ui-sans-serif","system-ui","-apple-system","Segoe UI","Roboto","Noto Sans","Ubuntu","Cantarell","Helvetica Neue","Arial","sans-serif"]
           }
-        },
-        borderRadius: { fig: "20px" },
-        boxShadow: { soft: "0 10px 30px rgba(2,132,199,.15)" }
+        }
       }
     }
-  }
-</script>
+  </script>
 
-<style>
-  .scrollx-snap{scroll-snap-type:x mandatory}
-  .snap-item{scroll-snap-align:start}
-  .hide-scrollbar{scrollbar-width:none;-ms-overflow-style:none}
-  .hide-scrollbar::-webkit-scrollbar{display:none}
-
-  /* slider tab pengumuman/artikel */
-  #tabs{position:relative}
-  .tab-slider{
-    position:absolute; left:0; top:100%;
-    width:50%; height:3px; border-radius:999px;
-    background:#0284C7;
-    transform:translateY(10px);
-    transition:transform .25s ease;
-  }
-  #tabs.tab-right .tab-slider{transform:translate(100%,10px)}
-  #tabs.tab-left .tab-slider{transform:translate(0,10px)}
-</style>
+  <style>
+    html{scroll-behavior:smooth}
+    [data-lucide]{transition:transform .2s ease}
+    .card{transition:transform .15s ease,box-shadow .15s ease}
+    .card:hover{transform:translateY(-2px)}
+    #progressBar{transition:width 1s ease;background:linear-gradient(90deg,#0EA5E9,#38BDF8)}
+    .tab-slider{position:absolute;bottom:0;height:2px;width:50%;background:#0EA5E9;transition:transform .25s ease;pointer-events:none}
+    .tab-left .tab-slider{transform:translateX(0)}
+    .tab-right .tab-slider{transform:translateX(100%)}
+    #tabs button{position:relative;z-index:1}
+  </style>
 </head>
 
-<body class="font-sans text-slate-800 bg-gradient-to-b from-fig-soft to-white">
-<header class="sticky top-0 bg-white/80 backdrop-blur border-b border-slate-200 z-40">
-  <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
-    <a href="#top" class="flex gap-3 items-center">
-      <img src="logohekinan.jpeg" class="h-10 w-auto rounded-[12px]" alt="Logo">
-      <span class="font-extrabold text-lg md:text-xl">Masjid As-Sunnah Hekinan</span>
-    </a>
-    <div class="flex items-center gap-3 text-sm">
-      <a href="#sholat" class="hover:text-fig-primaryDark flex items-center gap-1"><i data-lucide="moon-star" class="w-4 h-4"></i>Sholat</a>
-      <a href="#kegiatan" class="hover:text-fig-primaryDark flex items-center gap-1"><i data-lucide="images" class="w-4 h-4"></i>Kegiatan</a>
-      <a href="#kajian" class="hover:text-fig-primaryDark flex items-center gap-1"><i data-lucide="video" class="w-4 h-4"></i>Kajian</a>
-      <a href="#info" class="hover:text-fig-primaryDark flex items-center gap-1"><i data-lucide="layers" class="w-4 h-4"></i>Info</a>
-      <a href="#donasi" class="rounded-[20px] bg-fig-primary hover:bg-fig-primaryDark text-white px-4 py-2 font-semibold shadow">Donasi</a>
-      <button id="openData" class="admin-only hidden rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark flex items-center gap-2">
-        <i data-lucide="settings-2" class="w-4 h-4"></i>⚙️ Data
-      </button>
-    </div>
-  </nav>
-</header>
+<body id="top" class="font-sans text-fig-text bg-gradient-to-b from-fig-soft to-white">
+  <header class="sticky top-0 bg-white/80 backdrop-blur border-b border-slate-200 z-40">
+    <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="#top" class="flex gap-3 items-center">
+        <img src="logohekinan.jpeg" class="h-10 w-auto rounded-[12px]" alt="Logo">
+        <span class="font-extrabold text-lg md:text-xl">Masjid As-Sunnah Hekinan</span>
+      </a>
 
-<!-- ================== JADWAL SHOLAT ================== -->
-<section id="sholat" class="container mx-auto px-4 py-10">
-  <div class="rounded-[20px] border border-slate-200 bg-white p-6 shadow">
-    <div class="flex items-center justify-between gap-4">
-      <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-3">
-        <i data-lucide="moon-star" class="text-fig-primaryDark"></i>Jadwal Sholat (berdasarkan lokasi Anda)
-      </h2>
-      <button id="refreshSholat" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark" title="Refresh">⟳</button>
-    </div>
-    <div id="sholatGrid" class="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3"></div>
-    <p class="mt-3 text-xs text-slate-500">Waktu mengikuti zona perangkat Anda.</p>
-  </div>
-</section>
+      <div class="flex items-center gap-3 text-sm">
+        <a href="#sholat" class="hover:text-fig-primaryDark flex items-center gap-1"><i data-lucide="moon-star" class="w-4 h-4"></i>Sholat</a>
+        <a href="#kajian" class="hover:text-fig-primaryDark flex items-center gap-1"><i data-lucide="video" class="w-4 h-4"></i>Kajian</a>
+        <a href="#kegiatan" class="hover:text-fig-primaryDark flex items-center gap-1"><i data-lucide="calendar" class="w-4 h-4"></i>Kegiatan</a>
+        <a href="#info" class="hover:text-fig-primaryDark flex items-center gap-1"><i data-lucide="layers" class="w-4 h-4"></i>Info</a>
+        <a href="#donasi" class="relative z-10 rounded-[20px] bg-fig-primary hover:bg-fig-primaryDark text-white px-4 py-2 font-semibold shadow-soft">Berdonasi</a>
 
-<!-- ================== KAJIAN TERBARU ================== -->
-<section id="kajian" class="container mx-auto px-4 py-10">
-  <div class="flex items-center justify-between mb-4">
-    <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-3">
-      <i data-lucide="video" class="text-fig-accent"></i>Kajian Terbaru
-    </h2>
-    <a href="kajian.html" class="text-sm font-semibold text-fig-primaryDark hover:underline inline-flex items-center gap-2">
-      Lihat semua <i data-lucide="arrow-right" class="w-4 h-4"></i>
-    </a>
-  </div>
-  <div id="kajianLatestList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-  <p id="kajianLatestEmpty" class="hidden text-sm text-slate-500">Belum ada kajian yang akan datang.</p>
-  <p class="mt-3 text-xs text-slate-500">Data kajian bisa diambil dari Google Sheet (CSV). Anda dapat mengaturnya lewat tombol ⚙️ Data (khusus admin).</p>
-</section>
-
-<!-- ================== KEGIATAN ================== -->
-<section id="kegiatan" class="bg-white border-y border-slate-200/70">
-  <div class="container mx-auto px-4 py-10">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-3">
-        <i data-lucide="images" class="text-fig-accent"></i>Kegiatan
-      </h2>
-      <div class="hidden md:flex items-center gap-2">
-        <button id="kgPrev" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">◀</button>
-        <button id="kgNext" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">▶</button>
-      </div>
-    </div>
-
-    <div class="rounded-[20px] border border-slate-200 bg-white p-5 shadow mb-6">
-      <div class="flex items-center justify-between">
-        <h3 class="text-lg font-extrabold flex items-center gap-2">
-          <i data-lucide="calendar-clock" class="text-fig-success"></i>Kegiatan Terdekat
-        </h3>
-        <a href="kegiatan.html" class="text-sm font-semibold text-fig-primaryDark hover:underline inline-flex items-center gap-2">
-          Detail <i data-lucide="arrow-right" class="w-4 h-4"></i>
-        </a>
-      </div>
-      <div id="kegiatanUpcomingList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4"></div>
-      <p id="kegiatanUpcomingEmpty" class="hidden text-sm text-slate-500 mt-2">Belum ada agenda kegiatan terdekat.</p>
-      <p class="text-xs text-slate-500 mt-2">Catatan: Galeri foto tetap manual di halaman Kegiatan, sedangkan “Kegiatan Terdekat” ini berasal dari Google Sheet (opsional).</p>
-    </div>
-
-    <div class="relative">
-      <div id="kgTrack" class="scrollx-snap hide-scrollbar flex gap-4 overflow-x-auto rounded-[20px] border border-slate-200 p-4">
-        <!-- Jika Anda punya foto kegiatan, taruh file di repo dan ubah src di bawah ini -->
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
-          <img src="./1.jpeg" class="w-full h-full object-cover" alt="Kegiatan 1">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
-          <img src="./2.jpeg" class="w-full h-full object-cover" alt="Kegiatan 2">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
-          <img src="./3.jpeg" class="w-full h-full object-cover" alt="Kegiatan 3">
-        </figure>
-      </div>
-      <div class="md:hidden flex justify-end gap-2 mt-3">
-        <button id="kgPrevMob" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">◀</button>
-        <button id="kgNextMob" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">▶</button>
-      </div>
-    </div>
-    <p class="mt-4 text-center text-xs text-slate-500">Geser kiri/kanan atau pakai tombol ◀ ▶.</p>
-  </div>
-</section>
-
-<!-- ================== INFO (PENGUMUMAN & ARTIKEL) ================== -->
-<section id="info" class="container mx-auto px-4 py-10">
-  <div id="tabs" class="relative tab-left">
-    <div class="flex gap-2">
-      <button id="tabPengumuman" class="flex-1 rounded-[12px] px-4 py-3 font-semibold border border-slate-300 bg-slate-50">Pengumuman</button>
-      <button id="tabArtikel" class="flex-1 rounded-[12px] px-4 py-3 font-semibold border border-slate-300 bg-slate-50">Artikel</button>
-    </div>
-    <span class="tab-slider"></span>
-  </div>
-
-  <div id="wrapPengumuman" class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-  <p id="boardEmpty" class="hidden text-sm text-slate-500">Belum ada pengumuman.</p>
-
-  <div id="wrapArtikel" class="mt-6 hidden">
-    <div class="flex justify-end">
-      <div class="relative">
-        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-        <input id="searchArtikel" type="search" placeholder="Cari artikel..."
-               class="w-full rounded-[12px] border border-slate-300 pl-10 pr-3 py-2 focus:border-fig-primary text-sm w-64 max-w-full">
-      </div>
-    </div>
-    <div id="wrapArtikel" class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    <p id="artikelEmpty" class="hidden text-sm text-slate-500">Belum ada artikel.</p>
-  </div>
-</section>
-
-<!-- ================== DONASI ================== -->
-<section id="donasi" class="container mx-auto px-4 pb-12">
-  <h2 class="text-2xl font-extrabold mb-4 flex items-center gap-3">
-    <i data-lucide="heart-handshake" class="text-fig-success"></i>Progres Donasi
-  </h2>
-
-  <div class="rounded-[20px] border border-slate-200 bg-fig-soft p-6 shadow">
-    <div class="flex justify-between items-end">
-      <div>
-        <p class="text-sm text-slate-600">Terkumpul</p>
-        <p id="terkumpulLabel" class="text-3xl font-bold">JPY 0</p>
-      </div>
-      <div class="text-right">
-        <p class="text-sm text-slate-600">Target</p>
-        <p id="targetLabel" class="text-2xl font-bold">JPY 0</p>
-      </div>
-    </div>
-
-    <div class="mt-4 w-full bg-white rounded-full border border-slate-200 overflow-hidden">
-      <div id="progressBar" class="h-3 w-0 bg-fig-primary"></div>
-    </div>
-    <p class="mt-2 text-sm text-slate-600"><span id="percentLabel">0</span>% tercapai</p>
-
-    <div class="mt-6 rounded-[20px] border border-slate-200 bg-white p-5">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div>
-          <label class="text-sm font-semibold">Nominal (JPY)</label>
-          <input id="inputJPY" type="number" min="1000" step="1000" placeholder="Masukkan JPY"
-                 class="mt-1 w-full rounded-[12px] border border-slate-300 px-3 py-2 focus:border-fig-primary"/>
-          <div class="mt-2 flex flex-wrap gap-2 text-xs">
-            <button class="quick-jpy border rounded-[12px] px-3 py-1" data-v="1000">1.000</button>
-            <button class="quick-jpy border rounded-[12px] px-3 py-1" data-v="5000">5.000</button>
-            <button class="quick-jpy border rounded-[12px] px-3 py-1" data-v="10000">10.000</button>
-            <button class="quick-jpy border rounded-[12px] px-3 py-1" data-v="20000">20.000</button>
-          </div>
-        </div>
-        <div>
-          <label class="text-sm font-semibold">Nominal (IDR)</label>
-          <input id="inputIDR" type="number" min="10000" step="1000" placeholder="Masukkan IDR"
-                 class="mt-1 w-full rounded-[12px] border border-slate-300 px-3 py-2 focus:border-fig-primary"/>
-          <p class="text-xs text-slate-500 mt-2">Konversi otomatis (kurs contoh di app.js).</p>
-        </div>
-      </div>
-      <div class="mt-4 flex justify-end">
-        <button id="donasiBtn" class="rounded-[12px] bg-fig-primary hover:bg-fig-primaryDark text-white px-4 py-2 font-semibold shadow">
-          Saya ingin berdonasi
+        <button id="openData" class="admin-only hidden rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark flex items-center gap-2">
+          <i data-lucide="settings-2" class="w-4 h-4"></i>⚙️ Data
         </button>
       </div>
+    </nav>
+  </header>
+
+  <section id="sholat" class="container mx-auto px-4 py-10">
+    <div class="rounded-[20px] border border-slate-200 bg-white p-6 shadow-soft card">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-2xl font-extrabold flex items-center gap-2"><i data-lucide="moon-star" class="text-fig-primary"></i>Jadwal Sholat</h2>
+          <p id="locLabel" class="text-sm text-slate-600 mt-1">Mendeteksi lokasi…</p>
+        </div>
+        <button id="refreshSholat" class="rounded-[12px] border border-slate-300 hover:border-fig-primaryDark px-3 py-2 text-sm flex items-center gap-2">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>Perbarui
+        </button>
+      </div>
+
+      <div id="sholatGrid" class="mt-6 grid grid-cols-2 md:grid-cols-6 gap-3"></div>
+      <p class="mt-3 text-xs text-slate-500">Waktu mengikuti zona perangkat Anda.</p>
+    </div>
+  </section>
+
+  <section id="kajian" class="container mx-auto px-4 pb-10">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-2"><i data-lucide="video" class="text-fig-accent"></i>Kajian Terbaru</h2>
+    </div>
+
+    <div id="kajianLatest" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <p id="kajianEmpty" class="hidden text-sm text-slate-500">Belum ada kajian.</p>
+  </section>
+
+  <section id="kegiatan" class="bg-white border-y border-slate-200/70">
+    <div class="container mx-auto px-4 py-10">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-2"><i data-lucide="calendar" class="text-fig-accent"></i>Kegiatan</h2>
+        <a href="kegiatan.html" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark text-sm font-semibold">Galeri</a>
+      </div>
+
+      <div id="kegiatanTerdekatBox" class="hidden rounded-[20px] border border-slate-200 bg-fig-soft p-5">
+        <h3 class="font-bold text-slate-900 flex items-center gap-2"><i data-lucide="clock-3" class="text-fig-primary"></i>Kegiatan Terdekat</h3>
+        <div id="kegiatanTerdekat" class="mt-4 grid md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="info" class="container mx-auto px-4 py-10">
+    <div id="tabs" class="relative tab-left">
+      <div class="flex gap-2">
+        <button id="tabPengumuman" type="button" class="flex-1 rounded-[12px] px-4 py-2 text-sm font-semibold border border-slate-300 bg-slate-50">Pengumuman</button>
+        <button id="tabArtikel" type="button" class="flex-1 rounded-[12px] px-4 py-2 text-sm font-semibold border border-slate-300 bg-slate-50">Artikel</button>
+      </div>
+      <span class="tab-slider"></span>
+    </div>
+
+    <div id="wrapPengumuman" class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <p id="boardEmpty" class="hidden text-sm text-slate-500">Belum ada pengumuman.</p>
+
+    <div id="wrapArtikel" class="mt-6 hidden">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-extrabold flex items-center gap-2"><i data-lucide="book-open" class="text-fig-success"></i>Artikel</h3>
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input id="searchArtikel" type="search" placeholder="Cari artikel…" class="pl-9 pr-3 py-2 rounded-[12px] border border-slate-300 focus:border-fig-primary text-sm w-64 max-w-full">
+        </div>
+      </div>
+      <div id="wrapArtikelList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      <p id="artikelEmpty" class="hidden text-sm text-slate-500">Belum ada artikel.</p>
+    </div>
+  </section>
+
+  <section id="donasi" class="bg-white border-t border-slate-200">
+    <div class="container mx-auto px-4 py-12">
+      <div class="flex flex-col lg:flex-row gap-8 items-start">
+        <div class="w-full lg:w-2/5 rounded-[20px] border border-slate-200 bg-white p-6 shadow-soft">
+          <h2 class="text-2xl font-extrabold mb-4 flex items-center gap-2"><i data-lucide="heart-handshake" class="text-fig-success"></i>Progres Donasi</h2>
+
+          <div class="flex items-end justify-between">
+            <div>
+              <div class="text-xs text-slate-500">Terkumpul</div>
+              <div id="terkumpulLabel" class="text-2xl font-extrabold">—</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs text-slate-500">Target</div>
+              <div id="targetLabel" class="text-lg font-bold">—</div>
+            </div>
+          </div>
+
+          <div class="mt-4 h-3 w-full bg-slate-100 rounded-full overflow-hidden">
+            <div id="progressBar" class="h-full w-0"></div>
+          </div>
+          <div class="mt-2 text-sm text-slate-700"><b><span id="percentLabel">0</span>%</b> tercapai</div>
+        </div>
+
+        <div class="w-full lg:w-3/5 rounded-[20px] border border-slate-200 bg-fig-soft p-6 shadow-soft">
+          <h3 class="text-xl font-extrabold flex items-center gap-2"><i data-lucide="wallet" class="text-fig-primary"></i>Konfirmasi Donasi</h3>
+
+          <div class="mt-4 grid md:grid-cols-2 gap-4">
+            <div class="rounded-[20px] border border-slate-200 bg-white p-5">
+              <div class="text-sm font-semibold">Nominal (JPY)</div>
+              <input id="inputJPY" type="number" inputmode="numeric" class="mt-2 w-full rounded-[12px] border border-slate-300 px-3 py-2" placeholder="1000">
+              <div class="mt-3 flex flex-wrap gap-2">
+                <button type="button" class="quick-jpy text-xs border rounded-[999px] px-3 py-1 bg-white" data-v="1000">1.000</button>
+                <button type="button" class="quick-jpy text-xs border rounded-[999px] px-3 py-1 bg-white" data-v="3000">3.000</button>
+                <button type="button" class="quick-jpy text-xs border rounded-[999px] px-3 py-1 bg-white" data-v="5000">5.000</button>
+                <button type="button" class="quick-jpy text-xs border rounded-[999px] px-3 py-1 bg-white" data-v="10000">10.000</button>
+              </div>
+            </div>
+
+            <div class="rounded-[20px] border border-slate-200 bg-white p-5">
+              <div class="text-sm font-semibold">Nominal (IDR)</div>
+              <input id="inputIDR" type="number" inputmode="numeric" class="mt-2 w-full rounded-[12px] border border-slate-300 px-3 py-2" placeholder="10000">
+              <div class="mt-3 flex flex-wrap gap-2">
+                <button type="button" class="quick-idr text-xs border rounded-[999px] px-3 py-1 bg-white" data-v="10000">10.000</button>
+                <button type="button" class="quick-idr text-xs border rounded-[999px] px-3 py-1 bg-white" data-v="50000">50.000</button>
+                <button type="button" class="quick-idr text-xs border rounded-[999px] px-3 py-1 bg-white" data-v="100000">100.000</button>
+                <button type="button" class="quick-idr text-xs border rounded-[999px] px-3 py-1 bg-white" data-v="200000">200.000</button>
+              </div>
+            </div>
+          </div>
+
+          <button id="donasiBtn" type="button" class="mt-5 w-full rounded-[14px] bg-fig-primary hover:bg-fig-primaryDark text-white font-semibold py-3 shadow-soft flex items-center justify-center gap-2">
+            <i data-lucide="message-circle" class="w-5 h-5"></i> Konfirmasi via WhatsApp
+          </button>
+
+          <div class="mt-6 grid md:grid-cols-2 gap-6">
+            <div class="rounded-[20px] border border-slate-200 bg-white p-5">
+              <h3 class="font-bold">🇯🇵 Jepang — Yucho Bank</h3>
+              <p class="text-sm text-slate-700 mt-1">a.n. <b>Yoshimine Adelfa</b></p>
+              <p class="text-sm text-slate-700">No. Rekening: <span id="rekYucho">12160-00457031</span></p>
+              <button type="button" data-copy="#rekYucho" class="mt-2 text-xs border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark">Salin No. Rek</button>
+            </div>
+
+            <div class="rounded-[20px] border border-slate-200 bg-white p-5">
+              <h3 class="font-bold">🇮🇩 Indonesia — Bank Syariah Indonesia</h3>
+              <p class="text-sm text-slate-700 mt-1">a.n. <b>Hidayah Cinta Hekinan</b></p>
+              <p class="text-sm text-slate-700">No. Rekening: <span id="rekBsi">7329283768</span></p>
+              <button type="button" data-copy="#rekBsi" class="mt-2 text-xs border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark">Salin No. Rek</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-white">
+    <div class="container mx-auto px-4 py-10">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div>
+          <img src="logohekinan.jpeg" alt="Logo" class="h-12 w-auto mb-3 rounded-[12px]">
+          <h3 class="font-bold">Masjid As-Sunnah Hekinan</h3>
+          <p class="mt-1 text-sm text-slate-700">1 Chome-8 Dojoyamamachi, Hekinan, Aichi 447-0864</p>
+          <p class="text-sm text-slate-700">Email: hekinanmosque@gmail.com</p>
+        </div>
+
+        <div>
+          <h3 class="font-bold">Tautan</h3>
+          <ul class="mt-2 space-y-2 text-sm">
+            <li><a href="#sholat" class="hover:text-fig-primaryDark">Jadwal Sholat</a></li>
+            <li><a href="#kajian" class="hover:text-fig-primaryDark">Kajian</a></li>
+            <li><a href="#kegiatan" class="hover:text-fig-primaryDark">Kegiatan</a></li>
+            <li><a href="#info" class="hover:text-fig-primaryDark">Pengumuman & Artikel</a></li>
+            <li><a href="#donasi" class="hover:text-fig-primaryDark">Berdonasi</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-bold">Ikuti Kami</h3>
+          <div class="mt-2 flex items-center gap-3">
+            <a href="https://www.instagram.com/assunnahhekinan" target="_blank" rel="noopener" class="flex items-center gap-2 px-3 py-2 rounded-[12px] border hover:border-fig-primaryDark text-sm">
+              <i data-lucide="instagram" class="w-4 h-4"></i>Instagram
+            </a>
+            <a href="https://www.youtube.com/@assunnahhekinan" target="_blank" rel="noopener" class="flex items-center gap-2 px-3 py-2 rounded-[12px] border hover:border-fig-primaryDark text-sm">
+              <i data-lucide="youtube" class="w-4 h-4"></i>YouTube
+            </a>
+            <a href="https://www.tiktok.com/" target="_blank" rel="noopener" class="flex items-center gap-2 px-3 py-2 rounded-[12px] border hover:border-fig-primaryDark text-sm">
+              <i data-lucide="music-3" class="w-4 h-4"></i>TikTok
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8 border-t border-slate-200 pt-6 text-xs text-slate-500 flex flex-col md:flex-row justify-between">
+        <p>© <span id="year"></span> Masjid As-Sunnah Hekinan.</p>
+        <p>Design by Abu Khayla.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div id="dataModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="w-full max-w-3xl rounded-2xl bg-white p-6 shadow-soft">
+      <div class="flex items-start justify-between gap-4">
+        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="database"></i> Sumber Data</h3>
+        <button id="closeData" type="button" class="text-slate-500 hover:text-slate-700" aria-label="Tutup">✕</button>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4 mt-4">
+        <div class="rounded-xl border border-slate-200 p-4">
+          <label class="text-sm font-semibold">CSV Kajian</label>
+          <input id="csvKajian" type="url" placeholder="https://docs.google.com/.../pub?output=csv" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary">
+        </div>
+
+        <div class="rounded-xl border border-slate-200 p-4">
+          <label class="text-sm font-semibold">CSV Kegiatan Terdekat (Opsional)</label>
+          <input id="csvKegiatan" type="url" placeholder="https://docs.google.com/.../pub?output=csv" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary">
+        </div>
+
+        <div class="rounded-xl border border-slate-200 p-4">
+          <label class="text-sm font-semibold">CSV Pengumuman</label>
+          <input id="csvPengumuman" type="url" placeholder="https://docs.google.com/.../pub?output=csv" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary">
+        </div>
+
+        <div class="rounded-xl border border-slate-200 p-4">
+          <label class="text-sm font-semibold">CSV Artikel</label>
+          <input id="csvArtikel" type="url" placeholder="https://docs.google.com/.../pub?output=csv" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary">
+        </div>
+      </div>
+
+      <div class="mt-4 flex justify-end">
+        <button id="saveData" type="button" class="rounded-xl bg-fig-primary hover:bg-fig-primaryDark text-white px-4 py-2 text-sm font-semibold">Simpan</button>
+      </div>
     </div>
   </div>
-</section>
 
-<!-- Modal admin -->
-<div id="dataModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-  <div class="w-full max-w-2xl rounded-[20px] bg-white p-6 shadow">
-    <div class="flex items-start justify-between gap-4">
-      <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
-        <i data-lucide="database" class="w-5 h-5"></i> Sumber Data (Google Sheet CSV)
-      </h3>
-      <button id="closeData" class="text-slate-500 hover:text-slate-700" aria-label="Tutup">✕</button>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-4 mt-4">
-      <div class="rounded-[16px] border border-slate-200 p-4">
-        <label class="text-sm font-semibold">CSV Pengumuman</label>
-        <input id="csvPengumuman" type="url" placeholder="https://docs.google.com/.../pub?output=csv"
-               class="mt-2 w-full rounded-[12px] border border-slate-300 px-3 py-2 focus:border-fig-primary"/>
-        <p class="text-xs text-slate-500 mt-2">Kolom minimal: <span class="font-mono">title,date,desc,link</span></p>
-      </div>
-
-      <div class="rounded-[16px] border border-slate-200 p-4">
-        <label class="text-sm font-semibold">CSV Artikel</label>
-        <input id="csvArtikel" type="url" placeholder="https://docs.google.com/.../pub?output=csv"
-               class="mt-2 w-full rounded-[12px] border border-slate-300 px-3 py-2 focus:border-fig-primary"/>
-        <p class="text-xs text-slate-500 mt-2">Kolom minimal: <span class="font-mono">title,tag,excerpt,link</span></p>
-      </div>
-
-      <div class="rounded-[16px] border border-slate-200 p-4">
-        <label class="text-sm font-semibold">CSV Kajian</label>
-        <input id="csvKajian" type="url" placeholder="https://docs.google.com/.../pub?output=csv"
-               class="mt-2 w-full rounded-[12px] border border-slate-300 px-3 py-2 focus:border-fig-primary"/>
-        <p class="text-xs text-slate-500 mt-2">Kolom minimal: <span class="font-mono">tanggal,waktu,judul,pemateri,platform,link,poster,catatan,status</span></p>
-      </div>
-
-      <div class="rounded-[16px] border border-slate-200 p-4">
-        <label class="text-sm font-semibold">CSV Kegiatan (Agenda)</label>
-        <input id="csvKegiatan" type="url" placeholder="(opsional) https://docs.google.com/.../pub?output=csv"
-               class="mt-2 w-full rounded-[12px] border border-slate-300 px-3 py-2 focus:border-fig-primary"/>
-        <p class="text-xs text-slate-500 mt-2">Kolom minimal: <span class="font-mono">tanggal,waktu,title,lokasi,pemateri,desc,poster,link,status</span></p>
-      </div>
-    </div>
-
-    <div class="mt-4 flex justify-end">
-      <button id="saveData" class="rounded-[12px] bg-fig-primary hover:bg-fig-primaryDark text-white px-4 py-2 text-sm font-semibold shadow">
-        Simpan
-      </button>
-    </div>
-
-    <p class="text-xs text-slate-500 mt-3">
-      Tips: untuk gambar poster, Anda bisa pakai URL file di GitHub Pages (folder <span class="font-mono">assets/</span>) atau link publik Google Drive.
-    </p>
-  </div>
-</div>
-
-<footer class="bg-white border-t border-slate-200">
-  <div class="container mx-auto px-4 py-10 text-center text-sm text-slate-500">
-    © <span id="year"></span> Masjid As-Sunnah Hekinan.
-    <div class="mt-3 flex flex-wrap justify-center gap-3 text-sm">
-      <a href="#" class="inline-flex items-center gap-2 hover:underline"><i data-lucide="instagram" class="w-4 h-4"></i>Instagram</a>
-      <a href="#" class="inline-flex items-center gap-2 hover:underline"><i data-lucide="youtube" class="w-4 h-4"></i>YouTube</a>
-      <a href="#" class="inline-flex items-center gap-2 hover:underline"><i data-lucide="facebook" class="w-4 h-4"></i>Facebook</a>
-      <a href="kajian.html" class="inline-flex items-center gap-2 hover:underline"><i data-lucide="video" class="w-4 h-4"></i>Kajian</a>
-      <a href="pengumuman.html" class="inline-flex items-center gap-2 hover:underline"><i data-lucide="megaphone" class="w-4 h-4"></i>Pengumuman</a>
-      <a href="artikel.html" class="inline-flex items-center gap-2 hover:underline"><i data-lucide="file-text" class="w-4 h-4"></i>Artikel</a>
-    </div>
-  </div>
-</footer>
-
-<script type="module">
-  import { boot } from './app.js';
-  boot();
-</script>
+  <script type="module">
+    import { boot } from './app.js';
+    boot();
+  </script>
 </body>
 </html>
