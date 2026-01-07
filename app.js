@@ -4,14 +4,14 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
 // ===== KONFIGURASI =====
-// ⚠️ PASTIKAN URL APPS SCRIPT SUDAH BENAR SESUAI LANGKAH SEBELUMNYA
+// URL Apps Script Anda (PASTIKAN SUDAH DEPLOY "ANYONE")
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec"; 
 
 const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
 const DEFAULT_PENGUMUMAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv";
 const DEFAULT_ARTIKEL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv";
 
-// ===== HERO IMAGE SLIDER =====
+// ===== HERO SLIDER =====
 function initHeroSlider() {
   const slides = $$(".hero-slide");
   if (slides.length < 2) return;
@@ -67,7 +67,8 @@ function setLang(lang) {
   renderHadith(); renderHijri();
 }
 
-// ===== SMART CAROUSEL (DRIVE) =====
+// ===== SMART CAROUSEL (GALERI) =====
+// Perbaikan: Menambahkan referrerPolicy='no-referrer' agar gambar Google Drive tidak diblokir
 async function initSmartCarousel() {
   const track = $("#kgTrack"); if (!track) return;
   track.innerHTML = `<div class="flex items-center justify-center w-full h-64 text-slate-400 gap-2"><i data-lucide="loader" class="animate-spin"></i> Memuat Galeri...</div>`;
@@ -83,7 +84,7 @@ async function initSmartCarousel() {
 
   track.innerHTML = "";
   if (driveItems.length === 0) {
-    track.innerHTML = `<div class="w-full text-center text-slate-400 py-10">Belum ada foto.</div>`;
+    track.innerHTML = `<div class="w-full text-center text-slate-400 py-10">Belum ada foto. Pastikan Folder Drive 'Public'.</div>`;
     return;
   }
 
@@ -91,15 +92,31 @@ async function initSmartCarousel() {
     const isVideo = item.mime.includes("video");
     const el = document.createElement("figure");
     el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-white relative group border border-slate-100";
+    
     if (isVideo) {
-      el.innerHTML = `<iframe src="${item.videoUrl}" class="w-full h-full" allow="autoplay" style="border:none;"></iframe><div class="absolute top-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1"><i data-lucide="video" class="w-3 h-3"></i> Video</div>`;
+      el.innerHTML = `
+        <iframe src="${item.videoUrl}" class="w-full h-full" allow="autoplay" style="border:none;"></iframe>
+        <div class="absolute top-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1"><i data-lucide="video" class="w-3 h-3"></i> Video</div>
+      `;
     } else {
-      el.innerHTML = `<img src="${item.src}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy"><div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity"><p class="text-white text-xs truncate">${item.name}</p></div>`;
+      // PERBAIKAN PENTING: referrerpolicy="no-referrer" dan error handler
+      el.innerHTML = `
+        <img src="${item.src}" 
+             referrerpolicy="no-referrer" 
+             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+             loading="lazy" 
+             alt="${item.name}"
+             onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'flex items-center justify-center h-full bg-slate-100 text-slate-400 text-xs\\'>Gagal muat</div>';">
+        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+          <p class="text-white text-xs truncate">${item.name}</p>
+        </div>
+      `;
     }
     track.appendChild(el);
   });
   window.lucide?.createIcons?.();
 
+  // Slide Logic
   let interval; const speed = 3500;
   const getW = () => track.firstElementChild ? track.firstElementChild.offsetWidth + 16 : 300;
   const start = () => {
@@ -117,7 +134,7 @@ async function initSmartCarousel() {
   $("#kgPrev")?.addEventListener("click", ()=>scroll(-1)); $("#kgNext")?.addEventListener("click", ()=>scroll(1));
 }
 
-// ===== ZAKAT CALCULATOR (NEW) =====
+// ===== ZAKAT CALCULATOR (TOGGLE MATA UANG) =====
 function initZakatCalculator() {
   const openBtn = $("#openZakat");
   const modal = $("#zakatModal");
@@ -125,6 +142,45 @@ function initZakatCalculator() {
   const calcBtn = $("#calcBtn");
   
   if(!openBtn || !modal) return;
+
+  // Elemen UI
+  let currentZakatCurr = 'JPY';
+  const btnJPY = $("#currJPY");
+  const btnIDR = $("#currIDR");
+  const priceInput = $("#zGoldPrice");
+  const labelCurr = $("#zCurrLabel");
+  const linkJPY = $("#linkGoldJPY");
+  const linkIDR = $("#linkGoldIDR");
+
+  // Estimasi Awal (Update Manual User Lebih Akurat)
+  const DEFAULT_JPY = 14000; 
+  const DEFAULT_IDR = 1400000;
+
+  // Set Default
+  priceInput.value = DEFAULT_JPY;
+
+  const setCurrency = (c) => {
+    currentZakatCurr = c;
+    labelCurr.textContent = c;
+    
+    if (c === 'JPY') {
+      btnJPY.className = "flex-1 py-2 text-sm font-bold rounded-lg bg-white shadow-sm text-slate-800 transition-all border border-slate-200";
+      btnIDR.className = "flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 hover:bg-white/50 transition-all";
+      priceInput.value = DEFAULT_JPY; 
+      linkJPY.classList.remove("hidden");
+      linkIDR.classList.add("hidden");
+    } else {
+      btnIDR.className = "flex-1 py-2 text-sm font-bold rounded-lg bg-white shadow-sm text-slate-800 transition-all border border-slate-200";
+      btnJPY.className = "flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 hover:bg-white/50 transition-all";
+      priceInput.value = DEFAULT_IDR; 
+      linkIDR.classList.remove("hidden");
+      linkJPY.classList.add("hidden");
+    }
+    $("#zResultBox").classList.add("hidden");
+  };
+
+  btnJPY.addEventListener("click", () => setCurrency('JPY'));
+  btnIDR.addEventListener("click", () => setCurrency('IDR'));
 
   const toggle = (show) => {
     if(show) { modal.classList.remove("hidden"); modal.classList.add("flex"); }
@@ -136,45 +192,44 @@ function initZakatCalculator() {
   modal.addEventListener("click", (e) => { if(e.target===modal) toggle(false); });
 
   calcBtn.addEventListener("click", () => {
-    // 1. Ambil Nilai
-    const goldPrice = Number($("#zGoldPrice")?.value || 0);
+    const goldPrice = Number(priceInput.value || 0);
     const cash = Number($("#zCash")?.value || 0);
     const goldVal = Number($("#zGoldVal")?.value || 0);
     const assets = Number($("#zAssets")?.value || 0);
     const debt = Number($("#zDebt")?.value || 0);
 
-    // 2. Hitung Nishab (85 gram emas)
     const nisab = goldPrice * 85;
-
-    // 3. Hitung Total Harta Bersih
     const totalNet = (cash + goldVal + assets) - debt;
+    
+    const fmt = (n) => new Intl.NumberFormat('id-ID', {
+      style:'currency', 
+      currency: currentZakatCurr, 
+      maximumFractionDigits:0
+    }).format(n);
 
-    // 4. Logika Zakat
+    $("#zTotalNet").textContent = fmt(totalNet);
+    $("#zNisab").textContent = fmt(nisab);
+    
     const resultBox = $("#zResultBox");
     const statusEl = $("#zStatus");
     const amountEl = $("#zFinalAmount");
     
-    $("#zTotalNet").textContent = new Intl.NumberFormat('id-ID').format(totalNet);
-    $("#zNisab").textContent = new Intl.NumberFormat('id-ID').format(nisab);
-    
     resultBox.classList.remove("hidden");
 
     if (totalNet >= nisab) {
-      // Wajib Zakat
       const zakat = totalNet * 0.025;
       statusEl.textContent = "WAJIB ZAKAT";
       statusEl.className = "font-extrabold text-lg text-emerald-600 mb-1";
-      amountEl.textContent = new Intl.NumberFormat('id-ID', {style:'currency', currency: (goldPrice > 100000 ? 'IDR' : 'JPY')}).format(zakat);
+      amountEl.textContent = fmt(zakat);
     } else {
-      // Tidak Wajib
       statusEl.textContent = "BELUM WAJIB";
       statusEl.className = "font-extrabold text-lg text-slate-500 mb-1";
-      amountEl.textContent = "0";
+      amountEl.textContent = fmt(0);
     }
   });
 }
 
-// ===== UTILS LAINNYA =====
+// ===== UTILS =====
 const HADITHS = [
   { ar: "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ", id: "Sesungguhnya setiap amalan tergantung pada niatnya.", en: "Actions are but by intentions." },
   { ar: "خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ", id: "Sebaik-baik kalian adalah yang belajar Al-Qur'an dan mengajarkannya.", en: "The best of you learn Quran and teach it." }
@@ -271,7 +326,7 @@ function boot() {
   if($("#year")) $("#year").textContent = new Date().getFullYear();
   
   renderSholat(); renderContent(); initCountdown(); initDonasi(); initSmartCarousel(); initHeroSlider(); setupAdmin(); 
-  initZakatCalculator(); // <= Inisialisasi Kalkulator
+  initZakatCalculator(); // ZAKAT INIT
   
   const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add("active")}),{threshold:0.1});
   $$(".reveal").forEach(e=>obs.observe(e));
