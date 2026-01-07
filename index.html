@@ -60,6 +60,21 @@
   /* Font Arab untuk Hadits */
   @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
   .font-arab { font-family: 'Amiri', serif; line-height: 2; }
+  /* Mencegah scroll horizontal di HP */
+html, body {
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Penyesuaian padding Hero section di HP agar tidak terlalu rapat */
+@media (max-width: 640px) {
+  #hero {
+    padding-top: 1.5rem; /* pt-6 */
+  }
+  h1 {
+    font-size: 1.875rem; /* text-3xl agar tidak terlalu besar */
+  }
+}
 </style>
 </head>
 
@@ -453,4 +468,5 @@
 <script type="module" src="./app.js"></script>
 </body>
 </html>
+
 
