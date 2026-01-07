@@ -75,11 +75,8 @@
       </div>
     </a>
     
-    <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
-      <a href="#sholat" class="hover:text-fig-primary transition-colors" data-i18n="nav_sholat">Jadwal Sholat</a>
-      <a href="#kegiatan" class="hover:text-fig-primary transition-colors" data-i18n="nav_kegiatan">Kegiatan</a>
-      <a href="#info" class="hover:text-fig-primary transition-colors" data-i18n="nav_info">Info</a>
-    </div>
+   <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+   </div>
 
     <div class="flex items-center gap-3">
       <button id="langToggle" class="text-xs font-bold border border-slate-300 rounded-lg px-2 py-1 hover:bg-slate-50">
@@ -424,7 +421,36 @@
     </div>
   </div>
 </div>
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50 px-6 py-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+  <div class="flex justify-between items-center">
+    <a href="#hero" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors">
+      <i data-lucide="home" class="w-6 h-6"></i>
+      <span class="text-[10px] font-medium">Home</span>
+    </a>
+    <a href="#sholat" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors">
+      <i data-lucide="clock" class="w-6 h-6"></i>
+      <span class="text-[10px] font-medium">Sholat</span>
+    </a>
+    
+    <div class="relative -top-6">
+      <a href="#donasi" class="flex items-center justify-center w-14 h-14 rounded-full bg-fig-accent text-white shadow-lg shadow-amber-200 transform active:scale-95 transition-transform border-4 border-slate-50">
+        <i data-lucide="heart" class="w-6 h-6 fill-current"></i>
+      </a>
+    </div>
 
+    <a href="#kegiatan" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors">
+      <i data-lucide="image" class="w-6 h-6"></i>
+      <span class="text-[10px] font-medium">Galeri</span>
+    </a>
+    <a href="#info" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors">
+      <i data-lucide="info" class="w-6 h-6"></i>
+      <span class="text-[10px] font-medium">Info</span>
+    </a>
+  </div>
+</nav>
+
+<div class="h-20 md:hidden"></div>
 <script type="module" src="./app.js"></script>
 </body>
 </html>
+
