@@ -1,12 +1,10 @@
-<!-- =========================
-FILE: index.html
-========================= -->
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<title>Masjid As-Sunnah Hekinan — Jadwal Sholat, Kegiatan & Donasi</title>
+<meta name="description" content="Pusat dakwah dan ibadah masyarakat muslim Indonesia di Hekinan, Jepang. Mari bantu pembangunan Masjid As-Sunnah Hekinan.">
+<title>Masjid As-Sunnah Hekinan — Halaman Resmi</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
@@ -17,24 +15,28 @@ FILE: index.html
       extend: {
         colors: {
           fig: {
-            primary: "#0EA5E9",
-            primaryDark: "#0284C7",
-            accent: "#F59E0B",
+            primary: "#0EA5E9",   // Sky-500
+            primaryDark: "#0284C7", // Sky-600
+            accent: "#F59E0B",    // Amber-500 (Emas untuk donasi)
             success: "#10B981",
             surface: "#FFFFFF",
             text: "#0F172A",
-            soft: "#F0F9FF",
-            ink: "#0B1220",
-            line: "#E2E8F0"
+            soft: "#F0F9FF"
           }
         },
         borderRadius: { fig: "20px" },
-        boxShadow: {
-          soft: "0 14px 40px -20px rgba(2,8,23,.25)",
-          lift: "0 18px 60px -35px rgba(2,8,23,.35)"
+        boxShadow: { 
+          soft: "0 10px 40px -10px rgba(14, 165, 233, 0.15)",
+          card: "0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)"
         },
-        fontFamily: {
-          sans: ["Inter","ui-sans-serif","system-ui","-apple-system","Segoe UI","Roboto","Noto Sans","Ubuntu","Cantarell","Helvetica Neue","Arial","sans-serif"]
+        animation: {
+          'fade-up': 'fadeUp 0.8s ease-out forwards',
+        },
+        keyframes: {
+          fadeUp: {
+            '0%': { opacity: '0', transform: 'translateY(20px)' },
+            '100%': { opacity: '1', transform: 'translateY(0)' },
+          }
         }
       }
     }
@@ -42,1237 +44,399 @@ FILE: index.html
 </script>
 
 <style>
-  html{scroll-behavior:smooth}
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: #f1f5f9; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-  /* IMPROVE: micro-interactions */
-  .btn{transition:transform .15s ease, box-shadow .15s ease, background-color .15s ease, border-color .15s ease}
-  .btn:active{transform:translateY(1px)}
-  .card{transition:transform .15s ease,box-shadow .15s ease}
-  .card:hover{transform:translateY(-2px)}
-  #progressBar{transition:width 1s ease;background:linear-gradient(90deg,#0EA5E9,#38BDF8)}
+  /* Utilities */
+  .scrollx-snap { scroll-snap-type: x mandatory; }
+  .snap-item { scroll-snap-align: center; }
+  .hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  
+  /* Tabs Animation */
+  .tab-slider { position: absolute; bottom: 0; height: 3px; width: 50%; background: #0EA5E9; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; border-radius: 3px 3px 0 0; }
+  .tab-left .tab-slider { transform: translateX(0); }
+  .tab-right .tab-slider { transform: translateX(100%); }
 
-  /* slider */
-  .scrollx-snap{scroll-snap-type:x mandatory}
-  .snap-item{scroll-snap-align:start}
-  .hide-scrollbar{scrollbar-width:none;-ms-overflow-style:none}
-  .hide-scrollbar::-webkit-scrollbar{display:none}
-
-  /* tabs */
-  .tab-slider{position:absolute;bottom:0;height:2px;width:50%;background:#0EA5E9;transition:transform .25s ease;pointer-events:none}
-  .tab-left .tab-slider{transform:translateX(0)}
-  .tab-right .tab-slider{transform:translateX(100%)}
-
-  /* FIX: focus ring */
-  .ring-focus:focus{outline:none;box-shadow:0 0 0 4px rgba(14,165,233,.18)}
+  /* Animation Classes controlled by JS Observer */
+  .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+  .reveal.active { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 
-<body class="font-sans text-fig-text bg-gradient-to-b from-fig-soft to-white">
-<!-- FIX: anchor #top -->
-<div id="top"></div>
+<body class="font-sans text-fig-text bg-slate-50">
 
-<header class="sticky top-0 bg-white/80 backdrop-blur border-b border-slate-200 z-40">
-  <nav class="container mx-auto px-4 py-3 flex justify-between items-center gap-3">
-    <a href="#top" class="flex gap-3 items-center">
-      <img src="logohekinan.jpeg" class="h-10 w-auto rounded-[12px]" alt="Logo">
+<header class="sticky top-0 bg-white/90 backdrop-blur-md border-b border-slate-200 z-50 transition-all duration-300">
+  <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
+    <a href="#hero" class="flex gap-3 items-center group">
+      <img src="logohekinan.jpeg" class="h-10 w-auto rounded-[12px] shadow-sm group-hover:scale-105 transition-transform" alt="Logo">
       <div class="leading-tight">
-        <div class="font-extrabold text-lg md:text-xl" data-i18n="brand">Masjid As-Sunnah Hekinan</div>
-        <div class="text-xs text-slate-500" id="dateLine">&nbsp;</div>
-        <div class="text-xs text-slate-500" id="hijriLine">&nbsp;</div>
+        <span class="block font-extrabold text-base md:text-lg text-slate-800">Masjid As-Sunnah</span>
+        <span class="block text-xs font-medium text-slate-500">Hekinan, Jepang</span>
       </div>
     </a>
+    
+    <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+      <a href="#sholat" class="hover:text-fig-primary transition-colors">Jadwal Sholat</a>
+      <a href="#kegiatan" class="hover:text-fig-primary transition-colors">Kegiatan</a>
+      <a href="#info" class="hover:text-fig-primary transition-colors">Info</a>
+    </div>
 
-    <div class="flex items-center gap-2">
-      <!-- IMPROVE: language switcher -->
-      <div class="flex items-center gap-1 rounded-[14px] border border-slate-200 bg-white/70 p-1">
-        <button class="btn px-3 py-1.5 text-xs font-semibold rounded-[12px] ring-focus" data-langbtn="id">ID</button>
-        <button class="btn px-3 py-1.5 text-xs font-semibold rounded-[12px] ring-focus" data-langbtn="en">EN</button>
-        <button class="btn px-3 py-1.5 text-xs font-semibold rounded-[12px] ring-focus" data-langbtn="ja">JP</button>
-      </div>
-
-      <button id="openData" class="admin-only hidden btn rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark text-sm ring-focus">
-        <span data-i18n="data_btn">Data</span>
+    <div class="flex items-center gap-3">
+      <a href="#donasi" class="hidden sm:flex rounded-full bg-fig-primary hover:bg-fig-primaryDark text-white px-5 py-2 text-sm font-bold shadow-soft hover:shadow-lg transition-all transform hover:-translate-y-0.5">
+        <i data-lucide="heart" class="w-4 h-4 mr-2 fill-current"></i> Donasi
+      </a>
+      
+      <button id="openData" class="admin-only hidden rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-slate-600 hover:border-fig-primary hover:text-fig-primary transition-all">
+        <i data-lucide="settings-2" class="w-4 h-4"></i>
       </button>
     </div>
   </nav>
-
-  <div class="border-t border-slate-200/70">
-    <div class="container mx-auto px-4 py-2 flex items-center justify-between">
-      <div class="flex items-center gap-3 text-sm">
-        <a href="#sholat" class="hover:text-fig-primaryDark" data-i18n="nav_sholat">Sholat</a>
-        <a href="#kegiatan" class="hover:text-fig-primaryDark" data-i18n="nav_kegiatan">Kegiatan</a>
-        <a href="#info" class="hover:text-fig-primaryDark" data-i18n="nav_info">Info</a>
-        <a href="#donasi" class="rounded-[14px] bg-fig-primary hover:bg-fig-primaryDark text-white px-4 py-2 font-semibold shadow-soft btn" data-i18n="nav_donasi">Donasi</a>
-      </div>
-
-      <div class="text-xs text-slate-500">
-        <span data-i18n="deadline_label">Deadline:</span>
-        <span id="deadlineInline">31 Mei 2026</span>
-      </div>
-    </div>
-  </div>
 </header>
 
-<!-- IMPROVE: hero section (persuasi + CTA kuat + urgency halus) -->
-<section class="container mx-auto px-4 pt-10 pb-8">
-  <div class="grid lg:grid-cols-12 gap-8 items-center">
-    <div class="lg:col-span-7">
-      <h1 class="text-3xl md:text-5xl font-extrabold leading-tight text-fig-ink" data-i18n="hero_title">
-        Dukung operasional masjid dan program ilmu
-      </h1>
-      <p class="mt-4 text-slate-700 max-w-2xl leading-relaxed" data-i18n="hero_sub">
-        Donasi Anda membantu kebutuhan rutin seperti listrik, air, kebersihan, dan perawatan. Alur donasi dibuat singkat agar mudah ditunaikan.
-      </p>
-
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a href="#donasi" class="btn rounded-[20px] bg-fig-primary hover:bg-fig-primaryDark text-white px-6 py-3 font-semibold shadow-soft ring-focus" data-i18n="hero_cta">
-          Mulai Donasi
-        </a>
-        <a href="#info" class="btn rounded-[20px] bg-white hover:bg-slate-50 border border-slate-200 px-6 py-3 font-semibold ring-focus" data-i18n="hero_cta2">
-          Lihat Kajian & Info
-        </a>
-      </div>
-
-      <div class="mt-6 grid sm:grid-cols-3 gap-3 max-w-2xl">
-        <div class="rounded-[20px] border border-slate-200 bg-white/70 p-4 shadow-soft card">
-          <div class="text-sm font-bold" data-i18n="trust_1_t">Amanah</div>
-          <div class="text-xs text-slate-600 mt-1" data-i18n="trust_1_s">Rekening jelas, konfirmasi via WhatsApp.</div>
+<section id="hero" class="relative bg-white pt-10 pb-16 overflow-hidden">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-12">
+      <div class="w-full md:w-1/2 text-center md:text-left reveal active">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-100 text-fig-primary text-xs font-bold mb-4">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
+          </span>
+          Rumah Allah di Negeri Sakura
         </div>
-        <div class="rounded-[20px] border border-slate-200 bg-white/70 p-4 shadow-soft card">
-          <div class="text-sm font-bold" data-i18n="trust_2_t">Cepat</div>
-          <div class="text-xs text-slate-600 mt-1" data-i18n="trust_2_s">Pilih nominal, transfer, lalu konfirmasi.</div>
-        </div>
-        <div class="rounded-[20px] border border-slate-200 bg-white/70 p-4 shadow-soft card">
-          <div class="text-sm font-bold" data-i18n="trust_3_t">Terukur</div>
-          <div class="text-xs text-slate-600 mt-1" data-i18n="trust_3_s">Progres target ditampilkan di halaman ini.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="lg:col-span-5">
-      <div class="rounded-[20px] border border-slate-200 bg-white p-6 shadow-lift card">
-        <div class="flex items-start justify-between gap-4">
-          <div>
-            <div class="text-sm text-slate-600" data-i18n="deadline_box_t">Deadline donasi</div>
-            <div class="text-xl font-extrabold text-fig-ink" id="deadlineDate">31 Mei 2026</div>
-            <div class="text-sm text-slate-600 mt-1" id="deadlineCountdown">&nbsp;</div>
-          </div>
-          <div class="text-right text-xs text-slate-500" data-i18n="deadline_note">
-            Batas waktu pembayaran akhir Mei 2026 (JST)
-          </div>
-        </div>
-
-        <div class="mt-5 rounded-[20px] border border-slate-200 bg-fig-soft p-4">
-          <div class="text-sm font-bold" data-i18n="micro_title">Catatan singkat</div>
-          <div class="text-sm text-slate-700 mt-1 leading-relaxed" data-i18n="micro_body">
-            Nominal kecil tetap bermakna bila dilakukan konsisten. Ini membantu stabilitas operasional bulanan.
-          </div>
-        </div>
-
-        <div class="mt-5 flex gap-2">
-          <a href="#donasi" class="btn w-full text-center rounded-[18px] bg-fig-primary hover:bg-fig-primaryDark text-white px-4 py-3 font-semibold ring-focus" data-i18n="cta_go_donate">
-            Ke Halaman Donasi
+        <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-4">
+          Merajut Ukhuwah, <br/>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-fig-primary to-blue-600">Membangun Peradaban.</span>
+        </h1>
+        <p class="text-slate-600 text-lg mb-8 leading-relaxed">
+          Selamat datang di laman resmi Masjid As-Sunnah Hekinan. Pusat kegiatan ibadah, pendidikan anak, dan silaturahmi masyarakat muslim Indonesia di Aichi, Jepang.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+          <a href="#donasi" class="rounded-full bg-fig-accent hover:bg-amber-600 text-white px-8 py-3.5 font-bold shadow-lg shadow-amber-200 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+            <i data-lucide="gift" class="w-5 h-5"></i> Ikut Wakaf
+          </a>
+          <a href="#sholat" class="rounded-full border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 px-8 py-3.5 font-bold transition-all flex items-center justify-center gap-2">
+            <i data-lucide="clock" class="w-5 h-5"></i> Jadwal Sholat
           </a>
         </div>
       </div>
+      <div class="w-full md:w-1/2 relative reveal active" style="transition-delay: 100ms;">
+        <div class="absolute -inset-4 bg-gradient-to-r from-sky-100 to-indigo-50 rounded-full blur-3xl opacity-50 -z-10"></div>
+        <div class="rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white rotate-2 hover:rotate-0 transition-transform duration-500">
+            <img src="1.jpeg" alt="Kegiatan Masjid As-Sunnah Hekinan" class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700">
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="sholat" class="container mx-auto px-4 py-10">
-  <div class="rounded-[20px] border border-slate-200 bg-white p-6 shadow-soft card">
-    <div class="flex justify-between items-center gap-3">
+<section id="sholat" class="container mx-auto px-4 py-8 -mt-8 relative z-10">
+  <div class="rounded-3xl border border-slate-200 bg-white/80 backdrop-blur-xl p-6 md:p-8 shadow-card reveal">
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
       <div>
-        <h2 class="text-2xl font-extrabold" data-i18n="sholat_title">Jadwal Sholat</h2>
-        <p id="locLabel" class="text-sm text-slate-600 mt-1" data-i18n="loc_loading">Mendeteksi lokasi…</p>
+        <h2 class="text-2xl font-extrabold flex items-center gap-2 text-slate-800">
+          <i data-lucide="moon-star" class="text-fig-primary fill-sky-100"></i> Jadwal Sholat
+        </h2>
+        <p id="locLabel" class="text-sm text-slate-500 mt-1">Mendeteksi lokasi...</p>
       </div>
-      <button id="refreshSholat" class="btn rounded-[12px] border border-slate-300 hover:border-fig-primaryDark px-3 py-2 text-sm ring-focus" data-i18n="refresh">
-        Perbarui
+      <button id="refreshSholat" class="group rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-fig-primary px-4 py-2 text-sm font-medium transition-all flex items-center gap-2">
+        <i data-lucide="refresh-cw" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-500"></i> Perbarui
       </button>
     </div>
-    <div id="sholatGrid" class="mt-6 grid grid-cols-2 md:grid-cols-6 gap-3"></div>
-    <p class="mt-3 text-xs text-slate-500" data-i18n="tz_note">Waktu mengikuti zona perangkat Anda.</p>
+    
+    <div id="sholatGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+      </div>
+    <p class="mt-4 text-center text-xs text-slate-400">Waktu sholat dihitung berdasarkan lokasi perangkat Anda.</p>
   </div>
 </section>
 
-<section id="kegiatan" class="bg-white border-y border-slate-200/70">
-  <div class="container mx-auto px-4 py-10">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-2xl md:text-3xl font-extrabold" data-i18n="kegiatan_title">Kegiatan</h2>
+<section id="kegiatan" class="py-16 bg-slate-50 border-t border-slate-200">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-between mb-8 reveal">
+      <div>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Galeri Kegiatan</h2>
+        <p class="text-slate-500 mt-1">Dokumentasi kebersamaan jamaah.</p>
+      </div>
       <div class="hidden md:flex items-center gap-2">
-        <button id="kgPrev" class="btn rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark ring-focus" aria-label="Prev">&lt;</button>
-        <button id="kgNext" class="btn rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark ring-focus" aria-label="Next">&gt;</button>
+        <button id="kgPrev" class="rounded-full border border-slate-300 bg-white p-3 hover:border-fig-primary hover:text-fig-primary transition-colors">
+          <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        </button>
+        <button id="kgNext" class="rounded-full border border-slate-300 bg-white p-3 hover:border-fig-primary hover:text-fig-primary transition-colors">
+          <i data-lucide="arrow-right" class="w-5 h-5"></i>
+        </button>
       </div>
     </div>
 
-    <div class="relative">
-      <div id="kgTrack" class="scrollx-snap hide-scrollbar flex gap-4 overflow-x-auto rounded-[20px] border border-slate-200 p-4">
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
-          <img src="./1.jpeg" class="w-full h-full object-cover" alt="Kegiatan 1" loading="lazy">
+    <div class="relative reveal">
+      <div id="kgTrack" class="scrollx-snap hide-scrollbar flex gap-4 overflow-x-auto pb-4 cursor-grab active:cursor-grabbing">
+        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 md:h-72 rounded-2xl overflow-hidden shadow-md group">
+          <img src="./1.jpeg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Kegiatan" loading="lazy">
+          <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
         </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
-          <img src="./2.jpeg" class="w-full h-full object-cover" alt="Kegiatan 2" loading="lazy">
+        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 md:h-72 rounded-2xl overflow-hidden shadow-md group">
+          <img src="./2.jpeg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Kegiatan" loading="lazy">
         </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
-          <img src="./3.jpeg" class="w-full h-full object-cover" alt="Kegiatan 3" loading="lazy">
+        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 md:h-72 rounded-2xl overflow-hidden shadow-md group">
+          <img src="./3.jpeg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Kegiatan" loading="lazy">
         </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
-          <img src="./4.jpeg" class="w-full h-full object-cover" alt="Kegiatan 4" loading="lazy">
+        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 md:h-72 rounded-2xl overflow-hidden shadow-md group">
+          <img src="./4.jpeg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Kegiatan" loading="lazy">
         </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-white flex items-center justify-center">
-          <img src="./5.jpeg" class="max-w-full max-h-full object-contain" alt="Poster" loading="lazy">
+        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 md:h-72 rounded-2xl overflow-hidden shadow-md bg-white flex items-center justify-center p-2">
+          <img src="./5.jpeg" class="max-w-full max-h-full object-contain" alt="Poster">
         </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-white flex items-center justify-center">
-          <img src="./6.jpeg" class="max-w-full max-h-full object-contain" alt="Poster" loading="lazy">
+         <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 md:h-72 rounded-2xl overflow-hidden shadow-md bg-white flex items-center justify-center p-2">
+          <img src="./6.jpeg" class="max-w-full max-h-full object-contain" alt="Poster">
         </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-white flex items-center justify-center">
-          <img src="./7.jpeg" class="max-w-full max-h-full object-contain" alt="Poster" loading="lazy">
+         <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 md:h-72 rounded-2xl overflow-hidden shadow-md bg-white flex items-center justify-center p-2">
+          <img src="./7.jpeg" class="max-w-full max-h-full object-contain" alt="Poster">
         </figure>
       </div>
-
-      <div class="md:hidden absolute inset-y-0 left-0 flex items-center">
-        <button id="kgPrevMob" class="btn m-2 rounded-full bg-white/85 hover:bg-white p-2 shadow-soft ring-focus" aria-label="Prev">&lt;</button>
-      </div>
-      <div class="md:hidden absolute inset-y-0 right-0 flex items-center">
-        <button id="kgNextMob" class="btn m-2 rounded-full bg-white/85 hover:bg-white p-2 shadow-soft ring-focus" aria-label="Next">&gt;</button>
+      
+      <div class="md:hidden pointer-events-none absolute inset-0 flex justify-between items-center px-2">
+        <button id="kgPrevMob" class="pointer-events-auto rounded-full bg-white/90 p-2 shadow-lg text-slate-700"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+        <button id="kgNextMob" class="pointer-events-auto rounded-full bg-white/90 p-2 shadow-lg text-slate-700"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
       </div>
     </div>
-
-    <p class="mt-4 text-center text-xs text-slate-500" data-i18n="kegiatan_note">Geser kiri/kanan atau pakai tombol.</p>
   </div>
 </section>
 
-<section id="info" class="container mx-auto px-4 py-10">
-  <div id="tabs" class="relative tab-left">
-    <div class="flex gap-2">
-      <button id="tabPengumuman" class="flex-1 rounded-[12px] px-4 py-2 text-sm font-semibold border border-slate-300 bg-slate-50" data-i18n="tab_pengumuman">Pengumuman</button>
-      <button id="tabArtikel" class="flex-1 rounded-[12px] px-4 py-2 text-sm font-semibold border border-slate-300 bg-slate-50" data-i18n="tab_artikel">Artikel</button>
-    </div>
-    <span class="tab-slider"></span>
-  </div>
-
-  <div id="wrapPengumuman" class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-  <p id="boardEmpty" class="hidden text-sm text-slate-500" data-i18n="empty_pengumuman">Belum ada pengumuman.</p>
-
-  <div id="wrapArtikel" class="mt-6 hidden">
-    <div class="flex justify-end">
-      <div class="relative">
-        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-        <input id="searchArtikel" data-i18n-placeholder="search_placeholder" placeholder="Cari artikel…"
-               class="ring-focus pl-9 pr-3 py-2 rounded-[12px] border border-slate-300 focus:border-fig-primary text-sm w-64 max-w-full">
-      </div>
-    </div>
-    <div id="artikelList" class="mt-4 grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    <p id="artikelEmpty" class="hidden text-sm text-slate-500" data-i18n="empty_artikel">Belum ada artikel.</p>
-  </div>
-</section>
-
-<section id="donasi" class="container mx-auto px-4 pb-12">
-  <!-- FIX: avoid icons resembling living beings (removed handshake icon) -->
-  <div class="flex items-end justify-between gap-3 flex-wrap mb-4">
-    <h2 class="text-2xl font-extrabold" data-i18n="donasi_title">Progres Donasi</h2>
-    <div class="text-sm text-slate-600">
-      <span data-i18n="deadline_label">Deadline:</span>
-      <span id="deadlineInline2">31 Mei 2026</span>
-    </div>
-  </div>
-
-  <div class="rounded-[20px] border border-slate-200 bg-fig-soft p-6 card shadow-soft">
-    <div class="flex justify-between items-end">
-      <div><p class="text-sm text-slate-600" data-i18n="collected">Terkumpul</p><p id="terkumpulLabel" class="text-3xl font-bold">JPY 0</p></div>
-      <div class="text-right"><p class="text-sm text-slate-600" data-i18n="target">Target</p><p id="targetLabel" class="text-2xl font-bold">JPY 0</p></div>
-    </div>
-    <div class="mt-4 w-full bg-white rounded-full border border-slate-200 overflow-hidden"><div id="progressBar" class="h-3 w-0"></div></div>
-    <p class="mt-2 text-sm text-slate-600"><span id="percentLabel">0</span>% <span data-i18n="achieved">tercapai</span></p>
-
-    <div class="mt-6 rounded-[20px] border border-slate-200 bg-white p-5">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div>
-          <label class="text-sm font-semibold" data-i18n="amount_jpy">Nominal (JPY)</label>
-          <input id="inputJPY" type="number" min="1000" step="1000" data-i18n-placeholder="ph_jpy" placeholder="Masukkan JPY"
-                 class="ring-focus mt-1 w-full rounded-[12px] border border-slate-300 px-3 py-2 focus:border-fig-primary"/>
-          <div class="mt-2 flex flex-wrap gap-2 text-xs">
-            <button class="btn quick-jpy border rounded-[12px] px-3 py-1 ring-focus" data-v="1000">1.000</button>
-            <button class="btn quick-jpy border rounded-[12px] px-3 py-1 ring-focus" data-v="5000">5.000</button>
-            <button class="btn quick-jpy border rounded-[12px] px-3 py-1 ring-focus" data-v="10000">10.000</button>
-            <button class="btn quick-jpy border rounded-[12px] px-3 py-1 ring-focus" data-v="20000">20.000</button>
-          </div>
-        </div>
-        <div>
-          <label class="text-sm font-semibold" data-i18n="amount_idr">Nominal (IDR)</label>
-          <input id="inputIDR" type="number" min="10000" step="1000" data-i18n-placeholder="ph_idr" placeholder="Masukkan IDR"
-                 class="ring-focus mt-1 w-full rounded-[12px] border border-slate-300 px-3 py-2 focus:border-fig-primary"/>
-          <div class="mt-2 flex flex-wrap gap-2 text-xs">
-            <button class="btn quick-idr border rounded-[12px] px-3 py-1 ring-focus" data-v="50000">50.000</button>
-            <button class="btn quick-idr border rounded-[12px] px-3 py-1 ring-focus" data-v="100000">100.000</button>
-            <button class="btn quick-idr border rounded-[12px] px-3 py-1 ring-focus" data-v="200000">200.000</button>
-            <button class="btn quick-idr border rounded-[12px] px-3 py-1 ring-focus" data-v="500000">500.000</button>
-          </div>
-        </div>
-      </div>
-      <button id="donasiBtn" class="btn mt-4 w-full rounded-[20px] bg-fig-primary hover:bg-fig-primaryDark text-white font-semibold px-6 py-3 ring-focus" data-i18n="cta_wa">
-        Konfirmasi via WhatsApp
+<section id="info" class="container mx-auto px-4 py-16">
+  <div class="max-w-4xl mx-auto">
+    <div id="tabs" class="relative tab-left bg-slate-100 p-1 rounded-xl flex mb-8 reveal">
+      <button id="tabPengumuman" class="flex-1 relative z-10 py-2.5 text-sm font-bold text-slate-600 transition-colors rounded-lg hover:text-fig-primary">
+        Pengumuman
       </button>
-      <p class="mt-2 text-[11px] text-slate-500" data-i18n="min_note">Minimal 1.000 JPY atau 10.000 IDR.</p>
+      <button id="tabArtikel" class="flex-1 relative z-10 py-2.5 text-sm font-bold text-slate-600 transition-colors rounded-lg hover:text-fig-primary">
+        Artikel & Faedah
+      </button>
+      <span class="tab-slider absolute bottom-1 h-[calc(100%-8px)] w-[calc(50%-4px)] bg-white shadow-sm rounded-lg !transform transition-all"></span>
     </div>
 
-    <div class="mt-6 grid md:grid-cols-2 gap-6">
-      <div class="rounded-[20px] border border-slate-200 bg-white p-5">
-        <h3 class="font-bold" data-i18n="jp_bank">Jepang — Yucho Bank</h3>
-        <p class="text-sm text-slate-700 mt-1"><span data-i18n="an">a.n.</span> <b>Yoshimine Adelfa</b></p>
-        <p class="text-sm text-slate-700"><span data-i18n="rek">No. Rekening:</span> <span id="rekYucho">12160-00457031</span></p>
-        <button data-copy="#rekYucho" class="btn mt-2 text-xs border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark ring-focus" data-i18n="copy">Salin No. Rek</button>
+    <div id="wrapPengumuman" class="grid md:grid-cols-2 gap-6 min-h-[200px]"></div>
+    <p id="boardEmpty" class="hidden text-center text-slate-500 py-10">Belum ada pengumuman terbaru.</p>
+
+    <div id="wrapArtikel" class="hidden min-h-[200px]">
+      <div class="flex justify-end mb-6">
+        <div class="relative w-full md:w-auto">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input id="searchArtikel" placeholder="Cari judul artikel..." class="w-full md:w-64 pl-9 pr-4 py-2 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-sky-200 focus:border-sky-400 transition-all text-sm outline-none">
+        </div>
       </div>
-      <div class="rounded-[20px] border border-slate-200 bg-white p-5">
-        <h3 class="font-bold" data-i18n="id_bank">Indonesia — Bank Syariah Indonesia</h3>
-        <p class="text-sm text-slate-700 mt-1"><span data-i18n="an">a.n.</span> <b>Hidayah Cinta Hekinan</b></p>
-        <p class="text-sm text-slate-700"><span data-i18n="rek">No. Rekening:</span> <span id="rekBsi">7329283768</span></p>
-        <button data-copy="#rekBsi" class="btn mt-2 text-xs border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark ring-focus" data-i18n="copy">Salin No. Rek</button>
+      <div id="artikelList" class="grid md:grid-cols-2 gap-6"></div>
+      <p id="artikelEmpty" class="hidden text-center text-slate-500 py-10">Artikel tidak ditemukan.</p>
+    </div>
+  </div>
+</section>
+
+<section id="donasi" class="bg-gradient-to-b from-slate-50 to-sky-50 py-20 border-t border-slate-200">
+  <div class="container mx-auto px-4">
+    <div class="max-w-5xl mx-auto">
+      
+      <div class="text-center mb-10 reveal">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100 text-amber-700 text-xs font-bold mb-4 border border-amber-200">
+          <i data-lucide="star" class="w-3 h-3 fill-amber-500 text-amber-500"></i> Peluang Amal Jariyah
+        </div>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Investasi Kekal untuk Akhirat</h2>
+        <p class="text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          "Siapa yang membangun masjid karena Allah, maka Allah akan membangunkan baginya semisal itu di surga." (HR. Bukhari & Muslim)
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-5 gap-8 items-start">
+        
+        <div class="lg:col-span-3 rounded-[2rem] bg-white border border-slate-200 p-6 md:p-8 shadow-xl reveal relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-64 h-64 bg-sky-50 rounded-full blur-3xl opacity-50 -z-0 transform translate-x-1/2 -translate-y-1/2"></div>
+
+          <h3 class="font-bold text-lg text-slate-800 mb-6 flex items-center gap-2 relative z-10">
+            <span class="bg-sky-100 p-2 rounded-lg text-fig-primary"><i data-lucide="trending-up" class="w-5 h-5"></i></span>
+            Progres Pembangunan
+          </h3>
+
+          <div class="grid grid-cols-2 gap-4 mb-6 relative z-10">
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+              <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Terkumpul</p>
+              <p id="terkumpulLabel" class="text-2xl md:text-3xl font-extrabold text-fig-primary">JPY 0</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-amber-50 border border-amber-100">
+              <p class="text-xs text-amber-600 font-semibold uppercase tracking-wider mb-1">Kekurangan</p>
+              <p class="text-2xl md:text-3xl font-extrabold text-amber-600">JPY <span id="kekuranganLabel">0</span></p>
+            </div>
+          </div>
+
+          <div class="relative pt-2 mb-2 z-10">
+            <div class="flex mb-2 items-center justify-between">
+              <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-sky-600 bg-sky-200">
+                Pencapaian
+              </span>
+              <div class="text-right">
+                <span id="percentLabel" class="text-xs font-bold inline-block text-sky-600">0</span>
+                <span class="text-xs font-bold inline-block text-sky-600">%</span>
+              </div>
+            </div>
+            <div class="overflow-hidden h-4 mb-4 text-xs flex rounded-full bg-slate-100 shadow-inner">
+              <div id="progressBar" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-sky-400 to-sky-600 transition-all duration-1000 ease-out w-0 relative">
+                <div class="absolute inset-0 bg-white/30 w-full h-full animate-[shimmer_2s_infinite] skew-x-12"></div>
+              </div>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 font-medium">
+              <span>0%</span>
+              <span>Target: <span id="targetLabel">JPY 0</span></span>
+            </div>
+          </div>
+
+          <div class="mt-8 space-y-4 relative z-10">
+             <div class="p-4 rounded-2xl border border-slate-200 hover:border-sky-300 transition-colors bg-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+               <div class="flex items-center gap-4">
+                 <div class="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-xl">🇯🇵</div>
+                 <div>
+                   <p class="font-bold text-slate-800">Yucho Bank (Jepang)</p>
+                   <p class="text-xs text-slate-500">a.n. Yoshimine Adelfa</p>
+                 </div>
+               </div>
+               <div class="flex items-center gap-2 w-full sm:w-auto bg-slate-50 rounded-lg p-1.5 border border-slate-200">
+                 <span id="rekYucho" class="font-mono font-bold text-slate-700 text-sm px-2">12160-00457031</span>
+                 <button data-copy="#rekYucho" class="p-1.5 rounded-md bg-white text-slate-500 hover:text-fig-primary shadow-sm border border-slate-200 transition-all" title="Salin">
+                   <i data-lucide="copy" class="w-4 h-4"></i>
+                 </button>
+               </div>
+             </div>
+
+             <div class="p-4 rounded-2xl border border-slate-200 hover:border-sky-300 transition-colors bg-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+               <div class="flex items-center gap-4">
+                 <div class="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-xl">🇮🇩</div>
+                 <div>
+                   <p class="font-bold text-slate-800">BSI (Indonesia)</p>
+                   <p class="text-xs text-slate-500">a.n. Hidayah Cinta Hekinan</p>
+                 </div>
+               </div>
+               <div class="flex items-center gap-2 w-full sm:w-auto bg-slate-50 rounded-lg p-1.5 border border-slate-200">
+                 <span id="rekBsi" class="font-mono font-bold text-slate-700 text-sm px-2">7329283768</span>
+                 <button data-copy="#rekBsi" class="p-1.5 rounded-md bg-white text-slate-500 hover:text-fig-primary shadow-sm border border-slate-200 transition-all" title="Salin">
+                   <i data-lucide="copy" class="w-4 h-4"></i>
+                 </button>
+               </div>
+             </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-2 rounded-[2rem] bg-fig-primary text-white p-6 md:p-8 shadow-xl shadow-sky-200 reveal relative overflow-hidden" style="transition-delay: 200ms;">
+           <div class="absolute top-0 right-0 w-32 h-32 bg-white rounded-full blur-3xl opacity-20 -mr-10 -mt-10"></div>
+           
+           <h3 class="font-bold text-xl mb-4 relative z-10">Konfirmasi Donasi</h3>
+           <p class="text-sky-100 text-sm mb-6 relative z-10">Silakan masukkan nominal yang telah Anda transfer untuk konfirmasi ke pengurus.</p>
+
+           <div class="space-y-4 relative z-10">
+             <div>
+               <label class="text-xs font-semibold text-sky-100 uppercase tracking-wide">Nominal (JPY)</label>
+               <input id="inputJPY" type="number" placeholder="0" class="w-full mt-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:bg-white/20 transition-all font-mono">
+               <div class="flex flex-wrap gap-2 mt-2">
+                 <button class="quick-jpy text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="1000">¥1k</button>
+                 <button class="quick-jpy text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="5000">¥5k</button>
+                 <button class="quick-jpy text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="10000">¥10k</button>
+               </div>
+             </div>
+             
+             <div class="relative flex py-1 items-center">
+                <div class="flex-grow border-t border-white/20"></div>
+                <span class="flex-shrink-0 mx-4 text-xs text-sky-200">ATAU</span>
+                <div class="flex-grow border-t border-white/20"></div>
+            </div>
+
+             <div>
+               <label class="text-xs font-semibold text-sky-100 uppercase tracking-wide">Nominal (IDR)</label>
+               <input id="inputIDR" type="number" placeholder="0" class="w-full mt-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:bg-white/20 transition-all font-mono">
+                <div class="flex flex-wrap gap-2 mt-2">
+                 <button class="quick-idr text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="50000">50rb</button>
+                 <button class="quick-idr text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="100000">100rb</button>
+                 <button class="quick-idr text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="500000">500rb</button>
+               </div>
+             </div>
+           </div>
+
+           <button id="donasiBtn" class="mt-8 w-full bg-white text-fig-primary hover:bg-sky-50 font-bold py-4 rounded-xl shadow-lg transition-transform transform active:scale-95 flex items-center justify-center gap-2">
+             <i data-lucide="message-circle" class="w-5 h-5"></i> Konfirmasi WA
+           </button>
+           <p class="text-center text-[10px] text-sky-100 mt-3 opacity-80">Jazaakumullahu Khairan.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- IMPROVE: FAQ ringkas -->
-<section id="faq" class="container mx-auto px-4 pb-12">
-  <div class="rounded-[20px] border border-slate-200 bg-white p-6 shadow-soft card">
-    <div class="flex items-end justify-between gap-3 flex-wrap">
-      <div>
-        <h2 class="text-2xl font-extrabold" data-i18n="faq_title">FAQ</h2>
-        <p class="text-sm text-slate-600 mt-1" data-i18n="faq_sub">Jawaban singkat untuk pertanyaan yang paling sering ditanyakan.</p>
-      </div>
-      <a href="#donasi" class="btn rounded-[12px] border border-slate-300 px-4 py-2 hover:border-fig-primaryDark text-sm ring-focus" data-i18n="back_donate">
-        Kembali ke Donasi
-      </a>
-    </div>
-
-    <div class="mt-5 space-y-3">
-      <details class="rounded-[18px] border border-slate-200 p-4">
-        <summary class="font-semibold cursor-pointer" data-i18n="faq_q1">Bagaimana cara konfirmasi setelah transfer?</summary>
-        <p class="mt-2 text-sm text-slate-700 leading-relaxed" data-i18n="faq_a1">Setelah transfer, klik tombol WhatsApp pada bagian donasi, lalu kirimkan bukti transfer. Admin akan membalas untuk konfirmasi.</p>
-      </details>
-      <details class="rounded-[18px] border border-slate-200 p-4">
-        <summary class="font-semibold cursor-pointer" data-i18n="faq_q2">Apakah boleh donasi dari luar Jepang?</summary>
-        <p class="mt-2 text-sm text-slate-700 leading-relaxed" data-i18n="faq_a2">Boleh. Silakan pilih rekening yang paling mudah (JPY atau IDR), lalu konfirmasi melalui WhatsApp.</p>
-      </details>
-      <details class="rounded-[18px] border border-slate-200 p-4">
-        <summary class="font-semibold cursor-pointer" data-i18n="faq_q3">Donasi digunakan untuk apa?</summary>
-        <p class="mt-2 text-sm text-slate-700 leading-relaxed" data-i18n="faq_a3">Untuk kebutuhan operasional dan perawatan fasilitas (misalnya listrik, air, kebersihan, dan perbaikan ringan) serta dukungan program kajian.</p>
-      </details>
-      <details class="rounded-[18px] border border-slate-200 p-4">
-        <summary class="font-semibold cursor-pointer" data-i18n="faq_q4">Apakah website menyimpan data pribadi?</summary>
-        <p class="mt-2 text-sm text-slate-700 leading-relaxed" data-i18n="faq_a4">Tidak. Website hanya menampilkan informasi dan mengambil konten dari Google Sheet (CSV). Konfirmasi dilakukan melalui WhatsApp.</p>
-      </details>
-    </div>
-  </div>
-</section>
-
-<footer class="bg-white">
-  <div class="container mx-auto px-4 py-10">
-    <div class="grid md:grid-cols-3 gap-8">
-      <div>
-        <img src="logohekinan.jpeg" alt="Logo" class="h-12 w-auto mb-3 rounded-[12px]">
-        <h3 class="font-bold" data-i18n="brand">Masjid As-Sunnah Hekinan</h3>
-        <p class="mt-1 text-sm text-slate-700">1 Chome-8 Dojoyamamachi, Hekinan, Aichi 447-0864</p>
-        <p class="text-sm text-slate-700">Email: hekinanmosque@gmail.com</p>
+<footer class="bg-white border-t border-slate-200">
+  <div class="container mx-auto px-4 py-12">
+    <div class="grid md:grid-cols-4 gap-8 mb-8">
+      <div class="md:col-span-1">
+         <img src="logohekinan.jpeg" alt="Logo" class="h-12 w-auto mb-4 rounded-xl shadow-sm">
+         <h3 class="font-extrabold text-slate-900 text-lg">Masjid As-Sunnah Hekinan</h3>
+         <p class="text-sm text-slate-500 mt-2 leading-relaxed">Pusat ibadah dan pembinaan umat muslim di Hekinan, Aichi, Jepang.</p>
       </div>
       <div>
-        <h3 class="font-bold" data-i18n="footer_links">Tautan</h3>
-        <ul class="mt-2 space-y-2 text-sm">
-          <li><a href="#sholat" class="hover:text-fig-primaryDark" data-i18n="nav_sholat">Sholat</a></li>
-          <li><a href="#kegiatan" class="hover:text-fig-primaryDark" data-i18n="nav_kegiatan">Kegiatan</a></li>
-          <li><a href="#info" class="hover:text-fig-primaryDark" data-i18n="nav_info">Info</a></li>
-          <li><a href="#donasi" class="hover:text-fig-primaryDark" data-i18n="nav_donasi">Donasi</a></li>
+        <h4 class="font-bold text-slate-900 mb-4">Navigasi</h4>
+        <ul class="space-y-2 text-sm text-slate-600">
+          <li><a href="#sholat" class="hover:text-fig-primary transition-colors">Jadwal Sholat</a></li>
+          <li><a href="#kegiatan" class="hover:text-fig-primary transition-colors">Galeri Kegiatan</a></li>
+          <li><a href="#info" class="hover:text-fig-primary transition-colors">Pengumuman</a></li>
         </ul>
       </div>
       <div>
-        <h3 class="font-bold" data-i18n="footer_follow">Ikuti Kami</h3>
-        <div class="mt-2 flex items-center gap-3 flex-wrap">
-          <a href="https://www.instagram.com/assunnahhekinan" target="_blank" rel="noopener" class="btn flex items-center gap-2 px-3 py-2 rounded-[12px] border hover:border-fig-primaryDark text-sm ring-focus">
-            <i data-lucide="instagram" class="w-4 h-4"></i>Instagram
-          </a>
-          <a href="https://www.youtube.com/@assunnahhekinan" target="_blank" rel="noopener" class="btn flex items-center gap-2 px-3 py-2 rounded-[12px] border hover:border-fig-primaryDark text-sm ring-focus">
-            <i data-lucide="youtube" class="w-4 h-4"></i>YouTube
-          </a>
-          <a href="https://www.tiktok.com/" target="_blank" rel="noopener" class="btn flex items-center gap-2 px-3 py-2 rounded-[12px] border hover:border-fig-primaryDark text-sm ring-focus">
-            <i data-lucide="music-2" class="w-4 h-4"></i>TikTok
-          </a>
-        </div>
+        <h4 class="font-bold text-slate-900 mb-4">Kontak</h4>
+        <ul class="space-y-2 text-sm text-slate-600">
+          <li class="flex items-start gap-2"><i data-lucide="map-pin" class="w-4 h-4 mt-0.5 shrink-0"></i> 1 Chome-8 Dojoyamamachi, Hekinan, Aichi 447-0864</li>
+          <li class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 shrink-0"></i> hekinanmosque@gmail.com</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold text-slate-900 mb-4">Sosial Media</h4>
+        <div class="flex gap-2">
+           <a href="https://www.instagram.com/assunnahhekinan" target="_blank" class="p-2 rounded-lg border border-slate-200 hover:border-pink-500 hover:text-pink-600 transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+           <a href="https://www.youtube.com/@assunnahhekinan" target="_blank" class="p-2 rounded-lg border border-slate-200 hover:border-red-500 hover:text-red-600 transition-colors"><i data-lucide="youtube" class="w-5 h-5"></i></a>
+           <a href="#" class="p-2 rounded-lg border border-slate-200 hover:border-black hover:text-black transition-colors"><i data-lucide="music-2" class="w-5 h-5"></i></a> </div>
       </div>
     </div>
-    <div class="mt-8 border-t border-slate-200 pt-6 text-xs text-slate-500 flex flex-col md:flex-row justify-between">
-      <p>© <span id="year"></span> <span data-i18n="brand">Masjid As-Sunnah Hekinan</span>.</p>
-      <p>Design by Abu Khayla.</p>
+    <div class="border-t border-slate-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400">
+      <p>© <span id="year"></span> Masjid As-Sunnah Hekinan. All rights reserved.</p>
+      <p>Designed with <span class="text-red-400">❤</span> by Abu Khayla.</p>
     </div>
   </div>
 </footer>
 
-<div id="dataModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-  <div class="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-soft">
-    <div class="flex items-start justify-between gap-4">
-      <h3 class="text-lg font-bold text-slate-900" data-i18n="data_title">Sumber Data</h3>
-      <!-- FIX: remove emoji -->
-      <button id="closeData" class="text-slate-500 hover:text-slate-700" aria-label="Tutup">×</button>
+<div id="dataModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-[100] transition-opacity duration-300">
+  <div class="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-2xl transform scale-100 transition-transform">
+    <div class="flex items-start justify-between gap-4 mb-6 border-b border-slate-100 pb-4">
+      <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+        <div class="p-2 bg-sky-100 rounded-lg text-fig-primary"><i data-lucide="database" class="w-5 h-5"></i></div>
+        Konfigurasi Data
+      </h3>
+      <button id="closeData" class="text-slate-400 hover:text-slate-700 transition-colors p-1" aria-label="Tutup"><i data-lucide="x" class="w-6 h-6"></i></button>
     </div>
 
-    <div class="grid md:grid-cols-2 gap-4 mt-4">
-      <div class="rounded-xl border border-slate-200 p-4">
-        <label class="text-sm font-semibold" data-i18n="data_kajian">CSV Kajian</label>
-        <!-- IMPROVE: prefill link -->
-        <input id="csvKajian" type="url" class="ring-focus mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary"
-               value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv">
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="space-y-2">
+        <label class="text-xs font-bold uppercase text-slate-500">CSV Kajian</label>
+        <input id="csvKajian" type="url" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm focus:border-fig-primary focus:ring-2 focus:ring-sky-100 outline-none transition-all">
       </div>
-      <div class="rounded-xl border border-slate-200 p-4">
-        <label class="text-sm font-semibold" data-i18n="data_pengumuman">CSV Pengumuman</label>
-        <input id="csvPengumuman" type="url" class="ring-focus mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary"
-               value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv">
+      <div class="space-y-2">
+        <label class="text-xs font-bold uppercase text-slate-500">CSV Pengumuman</label>
+        <input id="csvPengumuman" type="url" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm focus:border-fig-primary focus:ring-2 focus:ring-sky-100 outline-none transition-all">
       </div>
-      <div class="rounded-xl border border-slate-200 p-4">
-        <label class="text-sm font-semibold" data-i18n="data_artikel">CSV Artikel</label>
-        <input id="csvArtikel" type="url" class="ring-focus mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary"
-               value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv">
+      <div class="space-y-2 md:col-span-2">
+        <label class="text-xs font-bold uppercase text-slate-500">CSV Artikel</label>
+        <input id="csvArtikel" type="url" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm focus:border-fig-primary focus:ring-2 focus:ring-sky-100 outline-none transition-all">
       </div>
     </div>
 
-    <div class="mt-4 flex justify-end">
-      <button id="saveData" class="btn rounded-xl bg-fig-primary hover:bg-fig-primaryDark text-white px-4 py-2 text-sm font-semibold ring-focus" data-i18n="save">
-        Simpan
-      </button>
+    <div class="mt-6 flex justify-end">
+      <button id="saveData" class="rounded-xl bg-fig-primary hover:bg-fig-primaryDark text-white px-6 py-2.5 text-sm font-bold shadow-lg shadow-sky-200 transition-all active:scale-95">Simpan Perubahan</button>
     </div>
   </div>
 </div>
 
-<script>
-  // IMPROVE: i18n + Hijri + deadline countdown (tanpa ubah app.js)
-  (function () {
-    const $ = (q, el=document) => el.querySelector(q);
-    const $$ = (q, el=document) => Array.from(el.querySelectorAll(q));
-
-    const I18N = {
-      id: {
-        brand: "Masjid As-Sunnah Hekinan",
-        data_btn: "Data",
-        nav_sholat: "Sholat",
-        nav_kegiatan: "Kegiatan",
-        nav_info: "Info",
-        nav_donasi: "Donasi",
-        deadline_label: "Deadline:",
-        hero_title: "Dukung operasional masjid dan program ilmu",
-        hero_sub: "Donasi Anda membantu kebutuhan rutin seperti listrik, air, kebersihan, dan perawatan. Alur donasi dibuat singkat agar mudah ditunaikan.",
-        hero_cta: "Mulai Donasi",
-        hero_cta2: "Lihat Kajian & Info",
-        trust_1_t: "Amanah",
-        trust_1_s: "Rekening jelas, konfirmasi via WhatsApp.",
-        trust_2_t: "Cepat",
-        trust_2_s: "Pilih nominal, transfer, lalu konfirmasi.",
-        trust_3_t: "Terukur",
-        trust_3_s: "Progres target ditampilkan di halaman ini.",
-        deadline_box_t: "Deadline donasi",
-        deadline_note: "Batas waktu pembayaran akhir Mei 2026 (JST)",
-        micro_title: "Catatan singkat",
-        micro_body: "Nominal kecil tetap bermakna bila dilakukan konsisten. Ini membantu stabilitas operasional bulanan.",
-        cta_go_donate: "Ke Halaman Donasi",
-        sholat_title: "Jadwal Sholat",
-        loc_loading: "Mendeteksi lokasi…",
-        refresh: "Perbarui",
-        tz_note: "Waktu mengikuti zona perangkat Anda.",
-        kegiatan_title: "Kegiatan",
-        kegiatan_note: "Geser kiri/kanan atau pakai tombol.",
-        tab_pengumuman: "Pengumuman",
-        tab_artikel: "Artikel",
-        empty_pengumuman: "Belum ada pengumuman.",
-        empty_artikel: "Belum ada artikel.",
-        search_placeholder: "Cari artikel…",
-        donasi_title: "Progres Donasi",
-        collected: "Terkumpul",
-        target: "Target",
-        achieved: "tercapai",
-        amount_jpy: "Nominal (JPY)",
-        amount_idr: "Nominal (IDR)",
-        ph_jpy: "Masukkan JPY",
-        ph_idr: "Masukkan IDR",
-        cta_wa: "Konfirmasi via WhatsApp",
-        min_note: "Minimal 1.000 JPY atau 10.000 IDR.",
-        jp_bank: "Jepang — Yucho Bank",
-        id_bank: "Indonesia — Bank Syariah Indonesia",
-        an: "a.n.",
-        rek: "No. Rekening:",
-        copy: "Salin No. Rek",
-        faq_title: "FAQ",
-        faq_sub: "Jawaban singkat untuk pertanyaan yang paling sering ditanyakan.",
-        back_donate: "Kembali ke Donasi",
-        faq_q1: "Bagaimana cara konfirmasi setelah transfer?",
-        faq_a1: "Setelah transfer, klik tombol WhatsApp pada bagian donasi, lalu kirimkan bukti transfer. Admin akan membalas untuk konfirmasi.",
-        faq_q2: "Apakah boleh donasi dari luar Jepang?",
-        faq_a2: "Boleh. Silakan pilih rekening yang paling mudah (JPY atau IDR), lalu konfirmasi melalui WhatsApp.",
-        faq_q3: "Donasi digunakan untuk apa?",
-        faq_a3: "Untuk kebutuhan operasional dan perawatan fasilitas (misalnya listrik, air, kebersihan, dan perbaikan ringan) serta dukungan program kajian.",
-        faq_q4: "Apakah website menyimpan data pribadi?",
-        faq_a4: "Tidak. Website hanya menampilkan informasi dan mengambil konten dari Google Sheet (CSV). Konfirmasi dilakukan melalui WhatsApp.",
-        footer_links: "Tautan",
-        footer_follow: "Ikuti Kami",
-        data_title: "Sumber Data",
-        data_kajian: "CSV Kajian",
-        data_pengumuman: "CSV Pengumuman",
-        data_artikel: "CSV Artikel",
-        save: "Simpan",
-        countdown_done: "Deadline telah lewat."
-      },
-      en: {
-        brand: "Masjid As-Sunnah Hekinan",
-        data_btn: "Data",
-        nav_sholat: "Prayer Times",
-        nav_kegiatan: "Activities",
-        nav_info: "Info",
-        nav_donasi: "Donate",
-        deadline_label: "Deadline:",
-        hero_title: "Support the mosque’s operations and educational programs",
-        hero_sub: "Your donation supports recurring needs such as utilities, cleanliness, and maintenance. The flow is kept short and simple.",
-        hero_cta: "Donate Now",
-        hero_cta2: "View Lectures & Info",
-        trust_1_t: "Trusted",
-        trust_1_s: "Clear accounts, confirm via WhatsApp.",
-        trust_2_t: "Fast",
-        trust_2_s: "Choose amount, transfer, then confirm.",
-        trust_3_t: "Measurable",
-        trust_3_s: "Progress is shown on this page.",
-        deadline_box_t: "Donation deadline",
-        deadline_note: "Payment deadline: end of May 2026 (JST)",
-        micro_title: "Quick note",
-        micro_body: "Small amounts matter when given consistently. It supports monthly stability.",
-        cta_go_donate: "Go to Donation",
-        sholat_title: "Prayer Times",
-        loc_loading: "Detecting location…",
-        refresh: "Refresh",
-        tz_note: "Times follow your device timezone.",
-        kegiatan_title: "Activities",
-        kegiatan_note: "Swipe left/right or use the buttons.",
-        tab_pengumuman: "Announcements",
-        tab_artikel: "Articles",
-        empty_pengumuman: "No announcements yet.",
-        empty_artikel: "No articles yet.",
-        search_placeholder: "Search articles…",
-        donasi_title: "Donation Progress",
-        collected: "Collected",
-        target: "Target",
-        achieved: "achieved",
-        amount_jpy: "Amount (JPY)",
-        amount_idr: "Amount (IDR)",
-        ph_jpy: "Enter JPY",
-        ph_idr: "Enter IDR",
-        cta_wa: "Confirm via WhatsApp",
-        min_note: "Minimum 1,000 JPY or 10,000 IDR.",
-        jp_bank: "Japan — Yucho Bank",
-        id_bank: "Indonesia — Bank Syariah Indonesia",
-        an: "Account name:",
-        rek: "Account no.:",
-        copy: "Copy",
-        faq_title: "FAQ",
-        faq_sub: "Short answers to the most common questions.",
-        back_donate: "Back to Donate",
-        faq_q1: "How do I confirm after transferring?",
-        faq_a1: "After transferring, click the WhatsApp button and send your transfer proof. The admin will reply to confirm.",
-        faq_q2: "Can I donate from outside Japan?",
-        faq_a2: "Yes. Choose the easiest account (JPY or IDR), then confirm via WhatsApp.",
-        faq_q3: "What is the donation used for?",
-        faq_a3: "For operations and facility maintenance (utilities, cleanliness, minor repairs) and to support lectures.",
-        faq_q4: "Does the website store personal data?",
-        faq_a4: "No. The site only displays information and fetches content from Google Sheets (CSV). Confirmation is via WhatsApp.",
-        footer_links: "Links",
-        footer_follow: "Follow",
-        data_title: "Data Sources",
-        data_kajian: "Lectures CSV",
-        data_pengumuman: "Announcements CSV",
-        data_artikel: "Articles CSV",
-        save: "Save",
-        countdown_done: "The deadline has passed."
-      },
-      ja: {
-        brand: "Masjid As-Sunnah Hekinan",
-        data_btn: "データ",
-        nav_sholat: "礼拝時間",
-        nav_kegiatan: "活動",
-        nav_info: "お知らせ",
-        nav_donasi: "寄付",
-        deadline_label: "期限:",
-        hero_title: "モスク運営と学びの活動を支援してください",
-        hero_sub: "寄付は電気・水道・清掃・設備維持など日々の運営を支えます。手順を短くして、寄付しやすくしています。",
-        hero_cta: "寄付する",
-        hero_cta2: "講義・お知らせ",
-        trust_1_t: "信頼",
-        trust_1_s: "口座情報が明確、WhatsAppで確認可能。",
-        trust_2_t: "簡単",
-        trust_2_s: "金額選択→振込→確認。",
-        trust_3_t: "見える化",
-        trust_3_s: "目標の進捗を表示します。",
-        deadline_box_t: "寄付の期限",
-        deadline_note: "支払い期限：2026年5月末（JST）",
-        micro_title: "メモ",
-        micro_body: "少額でも継続すると大きな支えになります。月々の運営を安定させます。",
-        cta_go_donate: "寄付へ",
-        sholat_title: "礼拝時間",
-        loc_loading: "位置情報を取得中…",
-        refresh: "更新",
-        tz_note: "時間は端末のタイムゾーンに従います。",
-        kegiatan_title: "活動",
-        kegiatan_note: "左右にスワイプ、またはボタンで移動できます。",
-        tab_pengumuman: "お知らせ",
-        tab_artikel: "記事",
-        empty_pengumuman: "お知らせはまだありません。",
-        empty_artikel: "記事はまだありません。",
-        search_placeholder: "記事を検索…",
-        donasi_title: "寄付の進捗",
-        collected: "集まった額",
-        target: "目標",
-        achieved: "達成",
-        amount_jpy: "金額（JPY）",
-        amount_idr: "金額（IDR）",
-        ph_jpy: "JPYを入力",
-        ph_idr: "IDRを入力",
-        cta_wa: "WhatsAppで確認",
-        min_note: "最低 1,000 JPY または 10,000 IDR。",
-        jp_bank: "日本 — ゆうちょ銀行",
-        id_bank: "インドネシア — BSI",
-        an: "名義：",
-        rek: "口座番号：",
-        copy: "コピー",
-        faq_title: "よくある質問",
-        faq_sub: "よくある質問への短い回答です。",
-        back_donate: "寄付に戻る",
-        faq_q1: "振込後の確認は？",
-        faq_a1: "寄付欄のWhatsAppボタンを押し、振込明細を送ってください。管理者が返信して確認します。",
-        faq_q2: "日本以外から寄付できますか？",
-        faq_a2: "はい。JPYまたはIDRの口座を選び、WhatsAppで確認してください。",
-        faq_q3: "寄付は何に使われますか？",
-        faq_a3: "運営費と設備維持（電気・水道・清掃・軽微な修繕）および講義活動の支援に使われます。",
-        faq_q4: "個人情報は保存しますか？",
-        faq_a4: "いいえ。サイトは情報を表示し、Google Sheet（CSV）から取得するのみです。確認はWhatsAppで行います。",
-        footer_links: "リンク",
-        footer_follow: "フォロー",
-        data_title: "データソース",
-        data_kajian: "講義CSV",
-        data_pengumuman: "お知らせCSV",
-        data_artikel: "記事CSV",
-        save: "保存",
-        countdown_done: "期限を過ぎています。"
-      }
-    };
-
-    function safeIntlDate(locale, options, date){
-      try { return new Intl.DateTimeFormat(locale, options).format(date); }
-      catch(e) { return date.toLocaleDateString(); }
-    }
-    function formatHijri(localeBase, date){
-      const loc = localeBase + '-u-ca-islamic';
-      return safeIntlDate(loc, { day: 'numeric', month: 'long', year: 'numeric' }, date) + ' H';
-    }
-
-    const DEADLINE_ISO = '2026-05-31T23:59:59+09:00';
-    const deadlineDate = new Date(DEADLINE_ISO);
-
-    function renderDeadline(lang){
-      const dict = I18N[lang] || I18N.id;
-      const locale = lang === 'ja' ? 'ja-JP' : (lang === 'en' ? 'en-US' : 'id-ID');
-      const dateText = safeIntlDate(locale, { year:'numeric', month:'long', day:'numeric' }, deadlineDate);
-
-      const d1 = $('#deadlineDate'); if (d1) d1.textContent = dateText;
-      const d2 = $('#deadlineInline'); if (d2) d2.textContent = dateText;
-      const d3 = $('#deadlineInline2'); if (d3) d3.textContent = dateText;
-
-      const cd = $('#deadlineCountdown');
-      if (!cd) return;
-
-      const tick = () => {
-        const now = new Date();
-        const diff = deadlineDate.getTime() - now.getTime();
-        if (diff <= 0) { cd.textContent = dict.countdown_done; return; }
-
-        const totalSeconds = Math.floor(diff / 1000);
-        const days = Math.floor(totalSeconds / 86400);
-        const hours = Math.floor((totalSeconds % 86400) / 3600);
-        const mins = Math.floor((totalSeconds % 3600) / 60);
-
-        if (lang === 'ja') cd.textContent = `残り ${days}日 ${hours}時間 ${mins}分`;
-        else if (lang === 'en') cd.textContent = `Remaining ${days} days ${hours} hours ${mins} minutes`;
-        else cd.textContent = `Sisa ${days} hari ${hours} jam ${mins} menit`;
-      };
-      tick();
-      setInterval(tick, 60 * 1000);
-    }
-
-    function applyLang(lang){
-      const dict = I18N[lang] || I18N.id;
-      document.documentElement.lang = lang === 'ja' ? 'ja' : (lang === 'en' ? 'en' : 'id');
-
-      $$('[data-i18n]').forEach(el => {
-        const k = el.getAttribute('data-i18n');
-        if (dict[k] != null) el.textContent = dict[k];
-      });
-      $$('[data-i18n-placeholder]').forEach(el => {
-        const k = el.getAttribute('data-i18n-placeholder');
-        if (dict[k] != null) el.setAttribute('placeholder', dict[k]);
-      });
-
-      const now = new Date();
-      const locale = lang === 'ja' ? 'ja-JP' : (lang === 'en' ? 'en-US' : 'id-ID');
-      const greg = safeIntlDate(locale, { weekday:'long', year:'numeric', month:'long', day:'numeric' }, now);
-      const hijri = formatHijri(locale, now);
-
-      const dateLine = $('#dateLine'); if (dateLine) dateLine.textContent = greg;
-      const hijriLine = $('#hijriLine'); if (hijriLine) hijriLine.textContent = hijri;
-
-      renderDeadline(lang);
-
-      $$('[data-langbtn]').forEach(b => {
-        const on = b.getAttribute('data-langbtn') === lang;
-        b.classList.toggle('bg-fig-primary', on);
-        b.classList.toggle('text-white', on);
-        b.classList.toggle('bg-white', !on);
-        b.classList.toggle('text-slate-700', !on);
-        b.classList.toggle('border', !on);
-        b.classList.toggle('border-slate-200', !on);
-      });
-
-      localStorage.setItem('lang', lang);
-    }
-
-    $$('[data-langbtn]').forEach(btn => btn.addEventListener('click', () => applyLang(btn.getAttribute('data-langbtn'))));
-
-    // FIX: year
-    const y = document.getElementById('year');
-    if (y) y.textContent = new Date().getFullYear();
-
-    // IMPROVE: ensure lucide renders
-    document.addEventListener('DOMContentLoaded', () => {
-      if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
-    });
-
-    applyLang(localStorage.getItem('lang') || 'id');
-  })();
-</script>
-
 <script type="module" src="./app.js"></script>
-</body>
-</html>
-
-
-<!-- =========================
-FILE: kajian.html
-========================= -->
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Kajian — Masjid As-Sunnah Hekinan</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-</head>
-<body class="font-sans text-slate-800 bg-gradient-to-b from-sky-50 to-white">
-  <header class="sticky top-0 bg-white/80 backdrop-blur border-b border-slate-200 z-40">
-    <nav class="container mx-auto px-4 py-3 flex justify-between items-center gap-3">
-      <a href="index.html" class="flex gap-3 items-center hover:text-sky-700"><i data-lucide="arrow-left"></i><span data-i18n="back">Kembali</span></a>
-
-      <div class="leading-tight text-center">
-        <h1 class="font-extrabold text-lg md:text-xl text-slate-900" data-i18n="title">Kajian</h1>
-        <div class="text-xs text-slate-500" id="dateLine">&nbsp;</div>
-        <div class="text-xs text-slate-500" id="hijriLine">&nbsp;</div>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <!-- IMPROVE: language switcher -->
-        <div class="flex items-center gap-1 rounded-xl border border-slate-200 bg-white/70 p-1">
-          <button class="px-2.5 py-1 text-[11px] font-semibold rounded-lg ring-focus" data-langbtn="id">ID</button>
-          <button class="px-2.5 py-1 text-[11px] font-semibold rounded-lg ring-focus" data-langbtn="en">EN</button>
-          <button class="px-2.5 py-1 text-[11px] font-semibold rounded-lg ring-focus" data-langbtn="ja">JP</button>
-        </div>
-
-        <button id="openData" class="admin-only hidden rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600 flex items-center gap-2 ring-focus">
-          <i data-lucide="settings-2" class="w-4 h-4"></i> <span data-i18n="data">Data</span>
-        </button>
-      </div>
-    </nav>
-  </header>
-
-  <section class="container mx-auto px-4 py-10">
-    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow">
-      <h2 class="text-2xl font-extrabold flex items-center gap-2">
-        <i data-lucide="calendar" class="w-5 h-5 text-sky-700"></i> <span data-i18n="list">Daftar Kajian</span>
-      </h2>
-
-      <!-- FIX: text internal tidak ditampilkan ke umum (dipindah jadi komentar) -->
-      <!-- Halaman ini menampilkan kajian dari Google Sheet (CSV). Anda dapat menambahkan link YouTube/Zoom/Drive, plus poster (opsional). -->
-
-      <div class="mt-4 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
-        <div class="relative w-full md:max-w-md">
-          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-          <input id="searchKajian" type="search" data-i18n-placeholder="ph_search" placeholder="Cari judul / pemateri..."
-                 class="ring-focus w-full rounded-xl border border-slate-300 pl-10 pr-3 py-2 focus:border-sky-600 text-sm">
-        </div>
-        <div class="w-full md:w-64">
-          <label class="text-xs text-slate-500" data-i18n="filter">Filter platform</label>
-          <select id="filterPlatform" class="ring-focus mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600 text-sm">
-            <option value="" data-i18n="all">Semua Platform</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div id="kajianList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8"></div>
-    <p id="kajianEmpty" class="hidden text-sm text-slate-500 mt-4" data-i18n="empty">Belum ada kajian yang akan datang.</p>
-  </section>
-
-  <div id="dataModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="w-full max-w-2xl rounded-2xl bg-white p-6 shadow">
-      <div class="flex items-start justify-between gap-4">
-        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="database"></i> <span data-i18n="sources">Sumber Data</span></h3>
-        <button id="closeData" class="text-slate-500 hover:text-slate-700" aria-label="Tutup">×</button>
-      </div>
-      <div class="grid md:grid-cols-2 gap-4 mt-4">
-        <div class="rounded-xl border border-slate-200 p-4">
-          <label class="text-sm font-semibold">CSV Kajian</label>
-          <input id="csvKajian" type="url"
-                 class="ring-focus mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600"
-                 value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv">
-          <p class="text-xs text-slate-500 mt-2">Kolom minimal: <span class="font-mono">tanggal,waktu,judul,pemateri,platform,link,poster,catatan,status</span></p>
-        </div>
-
-        <div class="rounded-xl border border-slate-200 p-4">
-          <label class="text-sm font-semibold">CSV Pengumuman</label>
-          <input id="csvPengumuman" type="url"
-                 class="ring-focus mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600"
-                 value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv">
-          <p class="text-xs text-slate-500 mt-2">Kolom minimal: <span class="font-mono">title,date,desc,link</span></p>
-        </div>
-
-        <div class="rounded-xl border border-slate-200 p-4">
-          <label class="text-sm font-semibold">CSV Artikel</label>
-          <input id="csvArtikel" type="url"
-                 class="ring-focus mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600"
-                 value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv">
-          <p class="text-xs text-slate-500 mt-2">Kolom minimal: <span class="font-mono">title,tag,excerpt,link</span></p>
-        </div>
-      </div>
-      <div class="mt-4 flex justify-end">
-        <button id="saveData" class="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 text-sm font-semibold ring-focus" data-i18n="save">Simpan</button>
-      </div>
-    </div>
-  </div>
-
-  <footer class="bg-white">
-    <div class="container mx-auto px-4 py-10 text-center text-sm text-slate-500">
-      © <span id="year"></span> Masjid As-Sunnah Hekinan.
-    </div>
-  </footer>
-
-  <script>
-    // IMPROVE: i18n mini + hijri (static UI)
-    (function(){
-      const $ = (q, el=document)=>el.querySelector(q);
-      const $$=(q, el=document)=>Array.from(el.querySelectorAll(q));
-      const I18N={
-        id:{back:"Kembali",title:"Kajian",data:"Data",list:"Daftar Kajian",ph_search:"Cari judul / pemateri...",filter:"Filter platform",all:"Semua Platform",empty:"Belum ada kajian yang akan datang.",sources:"Sumber Data",save:"Simpan"},
-        en:{back:"Back",title:"Lectures",data:"Data",list:"Lecture List",ph_search:"Search title / speaker...",filter:"Platform filter",all:"All Platforms",empty:"No upcoming lectures yet.",sources:"Data Sources",save:"Save"},
-        ja:{back:"戻る",title:"講義",data:"データ",list:"講義一覧",ph_search:"タイトル / 講師を検索...",filter:"プラットフォーム",all:"すべて",empty:"予定された講義はまだありません。",sources:"データソース",save:"保存"}
-      };
-      function safeIntlDate(locale, options, date){
-        try{return new Intl.DateTimeFormat(locale, options).format(date);}catch(e){return date.toLocaleDateString();}
-      }
-      function hijri(localeBase,date){
-        const loc=localeBase+'-u-ca-islamic';
-        return safeIntlDate(loc,{day:'numeric',month:'long',year:'numeric'},date)+' H';
-      }
-      function apply(lang){
-        const d=I18N[lang]||I18N.id;
-        document.documentElement.lang = lang==='ja'?'ja':(lang==='en'?'en':'id');
-        $$('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n'); if(d[k]!=null) el.textContent=d[k];});
-        $$('[data-i18n-placeholder]').forEach(el=>{const k=el.getAttribute('data-i18n-placeholder'); if(d[k]!=null) el.setAttribute('placeholder',d[k]);});
-        const now=new Date();
-        const locale=lang==='ja'?'ja-JP':(lang==='en'?'en-US':'id-ID');
-        const greg=safeIntlDate(locale,{weekday:'long',year:'numeric',month:'long',day:'numeric'},now);
-        $('#dateLine').textContent=greg;
-        $('#hijriLine').textContent=hijri(locale,now);
-        $$('[data-langbtn]').forEach(b=>{
-          const on=b.getAttribute('data-langbtn')===lang;
-          b.classList.toggle('bg-sky-600',on);
-          b.classList.toggle('text-white',on);
-          b.classList.toggle('bg-white',!on);
-          b.classList.toggle('text-slate-700',!on);
-          b.classList.toggle('border',!on);
-          b.classList.toggle('border-slate-200',!on);
-        });
-        localStorage.setItem('lang',lang);
-      }
-      $$('[data-langbtn]').forEach(b=>b.addEventListener('click',()=>apply(b.getAttribute('data-langbtn'))));
-      const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
-      document.addEventListener('DOMContentLoaded',()=>{ if(window.lucide?.createIcons) window.lucide.createIcons(); });
-      apply(localStorage.getItem('lang')||'id');
-    })();
-  </script>
-
-  <script type="module">
-    import { boot } from './app.js'; boot();
-  </script>
-</body>
-</html>
-
-
-<!-- =========================
-FILE: pengumuman.html
-========================= -->
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Pengumuman — Masjid As-Sunnah Hekinan</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <script>
-    tailwind.config = {
-      theme: { extend: { colors: { fig: { primary:"#0EA5E9", primaryDark:"#0284C7", accent:"#F59E0B", success:"#10B981", text:"#0F172A", soft:"#F0F9FF" } } } }
-    }
-  </script>
-  <style>.ring-focus:focus{outline:none;box-shadow:0 0 0 4px rgba(14,165,233,.18)}</style>
-</head>
-<body class="font-sans text-slate-800 bg-gradient-to-b from-sky-50 to-white">
-  <header class="sticky top-0 bg-white/80 backdrop-blur border-b border-slate-200 z-40">
-    <nav class="container mx-auto px-4 py-3 flex justify-between items-center gap-3">
-      <a href="index.html#info" class="flex gap-3 items-center hover:text-sky-700"><i data-lucide="arrow-left"></i><span data-i18n="back">Kembali</span></a>
-
-      <div class="leading-tight text-center">
-        <h1 class="font-extrabold text-lg md:text-xl text-slate-900" data-i18n="title">Pengumuman</h1>
-        <div class="text-xs text-slate-500" id="dateLine">&nbsp;</div>
-        <div class="text-xs text-slate-500" id="hijriLine">&nbsp;</div>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <div class="flex items-center gap-1 rounded-xl border border-slate-200 bg-white/70 p-1">
-          <button class="px-2.5 py-1 text-[11px] font-semibold rounded-lg ring-focus" data-langbtn="id">ID</button>
-          <button class="px-2.5 py-1 text-[11px] font-semibold rounded-lg ring-focus" data-langbtn="en">EN</button>
-          <button class="px-2.5 py-1 text-[11px] font-semibold rounded-lg ring-focus" data-langbtn="ja">JP</button>
-        </div>
-
-        <button id="openData" class="admin-only hidden rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600 flex items-center gap-2 ring-focus">
-          <i data-lucide="settings-2" class="w-4 h-4"></i> <span data-i18n="data">Data</span>
-        </button>
-      </div>
-    </nav>
-  </header>
-
-  <section class="container mx-auto px-4 py-12">
-    <div id="board" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    <p id="boardEmpty" class="hidden text-sm text-slate-500" data-i18n="empty">Belum ada pengumuman.</p>
-  </section>
-
-  <div id="dataModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="w-full max-w-2xl rounded-2xl bg-white p-6 shadow">
-      <div class="flex items-start justify-between gap-4">
-        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="database"></i> <span data-i18n="sources">Sumber Data</span></h3>
-        <button id="closeData" class="text-slate-500 hover:text-slate-700" aria-label="Tutup">×</button>
-      </div>
-      <div class="grid md:grid-cols-2 gap-4 mt-4">
-        <div class="rounded-xl border border-slate-200 p-4">
-          <label class="text-sm font-semibold">CSV Kajian</label>
-          <input id="csvKajian" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600 ring-focus"
-                 value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv">
-        </div>
-        <div class="rounded-xl border border-slate-200 p-4">
-          <label class="text-sm font-semibold">CSV Pengumuman</label>
-          <input id="csvPengumuman" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600 ring-focus"
-                 value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv">
-        </div>
-        <div class="rounded-xl border border-slate-200 p-4">
-          <label class="text-sm font-semibold">CSV Artikel</label>
-          <input id="csvArtikel" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600 ring-focus"
-                 value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv">
-        </div>
-      </div>
-      <div class="mt-4 flex justify-end"><button id="saveData" class="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 text-sm font-semibold ring-focus" data-i18n="save">Simpan</button></div>
-    </div>
-  </div>
-
-  <footer class="bg-white">
-    <div class="container mx-auto px-4 py-10 text-sm text-slate-700 flex justify-between">
-      <span>© <span id="year"></span> Masjid As-Sunnah Hekinan.</span>
-      <span>Design by Abu Khayla.</span>
-    </div>
-  </footer>
-
-  <script>
-    (function(){
-      const $=(q,el=document)=>el.querySelector(q); const $$=(q,el=document)=>Array.from(el.querySelectorAll(q));
-      const I18N={id:{back:"Kembali",title:"Pengumuman",data:"Data",empty:"Belum ada pengumuman.",sources:"Sumber Data",save:"Simpan"},
-                  en:{back:"Back",title:"Announcements",data:"Data",empty:"No announcements yet.",sources:"Data Sources",save:"Save"},
-                  ja:{back:"戻る",title:"お知らせ",data:"データ",empty:"お知らせはまだありません。",sources:"データソース",save:"保存"}};
-      function safeIntlDate(locale, options, date){ try{return new Intl.DateTimeFormat(locale, options).format(date);}catch(e){return date.toLocaleDateString();} }
-      function hijri(localeBase,date){ const loc=localeBase+'-u-ca-islamic'; return safeIntlDate(loc,{day:'numeric',month:'long',year:'numeric'},date)+' H'; }
-      function apply(lang){
-        const d=I18N[lang]||I18N.id;
-        $$('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n'); if(d[k]!=null) el.textContent=d[k];});
-        const now=new Date(); const locale=lang==='ja'?'ja-JP':(lang==='en'?'en-US':'id-ID');
-        $('#dateLine').textContent=safeIntlDate(locale,{weekday:'long',year:'numeric',month:'long',day:'numeric'},now);
-        $('#hijriLine').textContent=hijri(locale,now);
-        $$('[data-langbtn]').forEach(b=>{
-          const on=b.getAttribute('data-langbtn')===lang;
-          b.classList.toggle('bg-sky-600',on); b.classList.toggle('text-white',on);
-          b.classList.toggle('bg-white',!on); b.classList.toggle('text-slate-700',!on);
-          b.classList.toggle('border',!on); b.classList.toggle('border-slate-200',!on);
-        });
-        localStorage.setItem('lang',lang);
-      }
-      $$('[data-langbtn]').forEach(b=>b.addEventListener('click',()=>apply(b.getAttribute('data-langbtn'))));
-      const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
-      document.addEventListener('DOMContentLoaded',()=>{ if(window.lucide?.createIcons) window.lucide.createIcons(); });
-      apply(localStorage.getItem('lang')||'id');
-    })();
-  </script>
-
-  <script type="module" src="./app.js"></script>
-</body>
-</html>
-
-
-<!-- =========================
-FILE: artikel.html
-========================= -->
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Artikel — Masjid As-Sunnah Hekinan</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <script>
-    tailwind.config = {
-      theme: { extend: { colors: { fig: { primary:"#0EA5E9", primaryDark:"#0284C7", accent:"#F59E0B", success:"#10B981", text:"#0F172A", soft:"#F0F9FF" } } } }
-    }
-  </script>
-  <style>.ring-focus:focus{outline:none;box-shadow:0 0 0 4px rgba(14,165,233,.18)}</style>
-</head>
-<body class="font-sans text-slate-800 bg-gradient-to-b from-sky-50 to-white">
-  <header class="sticky top-0 bg-white/80 backdrop-blur border-b border-slate-200 z-40">
-    <nav class="container mx-auto px-4 py-3 flex justify-between items-center gap-3">
-      <a href="index.html#info" class="flex gap-3 items-center hover:text-sky-700"><i data-lucide="arrow-left"></i><span data-i18n="back">Kembali</span></a>
-
-      <div class="leading-tight text-center">
-        <h1 class="font-extrabold text-lg md:text-xl text-slate-900" data-i18n="title">Artikel</h1>
-        <div class="text-xs text-slate-500" id="dateLine">&nbsp;</div>
-        <div class="text-xs text-slate-500" id="hijriLine">&nbsp;</div>
-      </div>
-
-      <div class="flex items-center gap-2 flex-wrap justify-end">
-        <div class="relative">
-          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-          <input id="searchArtikel" type="search" data-i18n-placeholder="ph" placeholder="Cari artikel…"
-                 class="ring-focus pl-9 pr-3 py-2 rounded-xl border border-slate-300 focus:border-sky-600 text-sm w-64 max-w-full">
-        </div>
-
-        <div class="flex items-center gap-1 rounded-xl border border-slate-200 bg-white/70 p-1">
-          <button class="px-2.5 py-1 text-[11px] font-semibold rounded-lg ring-focus" data-langbtn="id">ID</button>
-          <button class="px-2.5 py-1 text-[11px] font-semibold rounded-lg ring-focus" data-langbtn="en">EN</button>
-          <button class="px-2.5 py-1 text-[11px] font-semibold rounded-lg ring-focus" data-langbtn="ja">JP</button>
-        </div>
-
-        <button id="openData" class="admin-only hidden rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600 flex items-center gap-2 ring-focus">
-          <i data-lucide="settings-2" class="w-4 h-4"></i> <span data-i18n="data">Data</span>
-        </button>
-      </div>
-    </nav>
-  </header>
-
-  <section class="container mx-auto px-4 py-12">
-    <div id="artikelList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    <p id="artikelEmpty" class="hidden text-sm text-slate-500" data-i18n="empty">Belum ada artikel.</p>
-  </section>
-
-  <div id="dataModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="w-full max-w-2xl rounded-2xl bg-white p-6 shadow">
-      <div class="flex items-start justify-between gap-4">
-        <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2"><i data-lucide="database"></i> <span data-i18n="sources">Sumber Data</span></h3>
-        <button id="closeData" class="text-slate-500 hover:text-slate-700" aria-label="Tutup">×</button>
-      </div>
-      <div class="grid md:grid-cols-2 gap-4 mt-4">
-        <div class="rounded-xl border border-slate-200 p-4">
-          <label class="text-sm font-semibold">CSV Kajian</label>
-          <input id="csvKajian" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600 ring-focus"
-                 value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv">
-        </div>
-        <div class="rounded-xl border border-slate-200 p-4">
-          <label class="text-sm font-semibold">CSV Pengumuman</label>
-          <input id="csvPengumuman" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600 ring-focus"
-                 value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv">
-        </div>
-        <div class="rounded-xl border border-slate-200 p-4">
-          <label class="text-sm font-semibold">CSV Artikel</label>
-          <input id="csvArtikel" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-sky-600 ring-focus"
-                 value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv">
-        </div>
-      </div>
-      <div class="mt-4 flex justify-end"><button id="saveData" class="rounded-xl bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 text-sm font-semibold ring-focus" data-i18n="save">Simpan</button></div>
-    </div>
-  </div>
-
-  <footer class="bg-white">
-    <div class="container mx-auto px-4 py-10 text-sm text-slate-700 flex justify-between">
-      <span>© <span id="year"></span> Masjid As-Sunnah Hekinan.</span>
-      <span>Design by Abu Khayla.</span>
-    </div>
-  </footer>
-
-  <script>
-    (function(){
-      const $=(q,el=document)=>el.querySelector(q); const $$=(q,el=document)=>Array.from(el.querySelectorAll(q));
-      const I18N={id:{back:"Kembali",title:"Artikel",data:"Data",empty:"Belum ada artikel.",sources:"Sumber Data",save:"Simpan",ph:"Cari artikel…"},
-                  en:{back:"Back",title:"Articles",data:"Data",empty:"No articles yet.",sources:"Data Sources",save:"Save",ph:"Search articles…"},
-                  ja:{back:"戻る",title:"記事",data:"データ",empty:"記事はまだありません。",sources:"データソース",save:"保存",ph:"記事を検索…"}};
-      function safeIntlDate(locale, options, date){ try{return new Intl.DateTimeFormat(locale, options).format(date);}catch(e){return date.toLocaleDateString();} }
-      function hijri(localeBase,date){ const loc=localeBase+'-u-ca-islamic'; return safeIntlDate(loc,{day:'numeric',month:'long',year:'numeric'},date)+' H'; }
-      function apply(lang){
-        const d=I18N[lang]||I18N.id;
-        $$('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n'); if(d[k]!=null) el.textContent=d[k];});
-        $$('[data-i18n-placeholder]').forEach(el=>{const k=el.getAttribute('data-i18n-placeholder'); if(d[k]!=null) el.setAttribute('placeholder',d[k]);});
-        const now=new Date(); const locale=lang==='ja'?'ja-JP':(lang==='en'?'en-US':'id-ID');
-        $('#dateLine').textContent=safeIntlDate(locale,{weekday:'long',year:'numeric',month:'long',day:'numeric'},now);
-        $('#hijriLine').textContent=hijri(locale,now);
-        $$('[data-langbtn]').forEach(b=>{
-          const on=b.getAttribute('data-langbtn')===lang;
-          b.classList.toggle('bg-sky-600',on); b.classList.toggle('text-white',on);
-          b.classList.toggle('bg-white',!on); b.classList.toggle('text-slate-700',!on);
-          b.classList.toggle('border',!on); b.classList.toggle('border-slate-200',!on);
-        });
-        localStorage.setItem('lang',lang);
-      }
-      $$('[data-langbtn]').forEach(b=>b.addEventListener('click',()=>apply(b.getAttribute('data-langbtn'))));
-      const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
-      document.addEventListener('DOMContentLoaded',()=>{ if(window.lucide?.createIcons) window.lucide.createIcons(); });
-      apply(localStorage.getItem('lang')||'id');
-    })();
-  </script>
-
-  <script type="module" src="./app.js"></script>
-</body>
-</html>
-
-
-<!-- =========================
-FILE: kegiatan.html
-========================= -->
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Kegiatan — Masjid As-Sunnah Hekinan</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    .scrollx-snap{scroll-snap-type:x mandatory}
-    .snap-item{scroll-snap-align:start}
-    .hide-scrollbar{scrollbar-width:none;-ms-overflow-style:none}
-    .hide-scrollbar::-webkit-scrollbar{display:none}
-    .ring-focus:focus{outline:none;box-shadow:0 0 0 4px rgba(14,165,233,.18)}
-  </style>
-</head>
-<body class="font-sans text-slate-800 bg-gradient-to-b from-sky-50 to-white">
-  <header class="sticky top-0 bg-white/80 backdrop-blur border-b border-slate-200 z-40">
-    <nav class="container mx-auto px-4 py-3 flex justify-between items-center gap-3">
-      <a href="index.html" class="flex gap-3 items-center hover:text-sky-700"><i data-lucide="arrow-left"></i><span data-i18n="back">Kembali</span></a>
-
-      <div class="leading-tight text-center">
-        <h1 class="font-extrabold text-lg md:text-xl text-slate-900" data-i18n="title">Kegiatan</h1>
-        <div class="text-xs text-slate-500" id="dateLine">&nbsp;</div>
-        <div class="text-xs text-slate-500" id="hijriLine">&nbsp;</div>
-      </div>
-
-      <div class="flex items-center gap-1 rounded-xl border border-slate-200 bg-white/70 p-1">
-        <button class="px-2.5 py-1 text-[11px] font-semibold rounded-lg ring-focus" data-langbtn="id">ID</button>
-        <button class="px-2.5 py-1 text-[11px] font-semibold rounded-lg ring-focus" data-langbtn="en">EN</button>
-        <button class="px-2.5 py-1 text-[11px] font-semibold rounded-lg ring-focus" data-langbtn="ja">JP</button>
-      </div>
-    </nav>
-  </header>
-
-  <section class="container mx-auto px-4 py-12">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-extrabold" data-i18n="gallery">Galeri</h2>
-      <div class="hidden md:flex items-center gap-2">
-        <button id="kgPrev" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600 ring-focus" aria-label="Sebelumnya">&lt;</button>
-        <button id="kgNext" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-sky-600 ring-focus" aria-label="Berikutnya">&gt;</button>
-      </div>
-    </div>
-    <div class="relative">
-      <div id="kgTrack" class="scrollx-snap hide-scrollbar flex gap-4 overflow-x-auto rounded-2xl border border-slate-200 p-4">
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
-          <img src="./1.jpeg" class="w-full h-full object-cover" alt="Kegiatan 1">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
-          <img src="./2.jpeg" class="w-full h-full object-cover" alt="Kegiatan 2">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
-          <img src="./3.jpeg" class="w-full h-full object-cover" alt="Kegiatan 3">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-slate-100">
-          <img src="./4.jpeg" class="w-full h-full object-cover" alt="Kegiatan 4">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-white flex items-center justify-center">
-          <img src="./5.jpeg" class="max-w-full max-h-full object-contain" alt="Poster">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-white flex items-center justify-center">
-          <img src="./6.jpeg" class="max-w-full max-h-full object-contain" alt="Poster">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-xl overflow-hidden bg-white flex items-center justify-center">
-          <img src="./7.jpeg" class="max-w-full max-h-full object-contain" alt="Poster">
-        </figure>
-      </div>
-      <div class="md:hidden absolute inset-y-0 left-0 flex items-center">
-        <button id="kgPrevMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow ring-focus">&lt;</button>
-      </div>
-      <div class="md:hidden absolute inset-y-0 right-0 flex items-center">
-        <button id="kgNextMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow ring-focus">&gt;</button>
-      </div>
-    </div>
-  </section>
-
-  <footer class="bg-white">
-    <div class="container mx-auto px-4 py-10 text-sm text-slate-700 flex justify-between">
-      <span>© <span id="year"></span> Masjid As-Sunnah Hekinan.</span>
-      <span>Design by Abu Khayla.</span>
-    </div>
-  </footer>
-
-  <script>
-    (function(){
-      const $=(q,el=document)=>el.querySelector(q); const $$=(q,el=document)=>Array.from(el.querySelectorAll(q));
-      const I18N={id:{back:"Kembali",title:"Kegiatan",gallery:"Galeri"},
-                  en:{back:"Back",title:"Activities",gallery:"Gallery"},
-                  ja:{back:"戻る",title:"活動",gallery:"ギャラリー"}};
-      function safeIntlDate(locale, options, date){ try{return new Intl.DateTimeFormat(locale, options).format(date);}catch(e){return date.toLocaleDateString();} }
-      function hijri(localeBase,date){ const loc=localeBase+'-u-ca-islamic'; return safeIntlDate(loc,{day:'numeric',month:'long',year:'numeric'},date)+' H'; }
-      function apply(lang){
-        const d=I18N[lang]||I18N.id;
-        $$('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n'); if(d[k]!=null) el.textContent=d[k];});
-        const now=new Date(); const locale=lang==='ja'?'ja-JP':(lang==='en'?'en-US':'id-ID');
-        $('#dateLine').textContent=safeIntlDate(locale,{weekday:'long',year:'numeric',month:'long',day:'numeric'},now);
-        $('#hijriLine').textContent=hijri(locale,now);
-        $$('[data-langbtn]').forEach(b=>{
-          const on=b.getAttribute('data-langbtn')===lang;
-          b.classList.toggle('bg-sky-600',on); b.classList.toggle('text-white',on);
-          b.classList.toggle('bg-white',!on); b.classList.toggle('text-slate-700',!on);
-          b.classList.toggle('border',!on); b.classList.toggle('border-slate-200',!on);
-        });
-        localStorage.setItem('lang',lang);
-      }
-      $$('[data-langbtn]').forEach(b=>b.addEventListener('click',()=>apply(b.getAttribute('data-langbtn'))));
-      const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
-      document.addEventListener('DOMContentLoaded',()=>{ if(window.lucide?.createIcons) window.lucide.createIcons(); });
-      apply(localStorage.getItem('lang')||'id');
-    })();
-  </script>
-
-  <script type="module" src="./app.js"></script>
 </body>
 </html>
