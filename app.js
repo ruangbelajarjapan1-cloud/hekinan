@@ -7,33 +7,20 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
 
 // 📸 DAFTAR FOTO DARI GITHUB (Isi nama file di sini setelah diupload)
-// Pastikan file gambar ada di folder yang sama atau folder 'foto/'
 const LOCAL_IMAGES = [
-  "1.jpeg",
-  "2.jpeg",
-  "3.jpeg",
-  "4.jpeg",
-  "5.jpeg",
-  "6.jpeg",
-  "7.jpeg",
-  "foto/a.jpeg",
-  "foto/b.jpeg",
-  "foto/c.jpeg"
-  // Tambah nama file baru di sini, contoh: "foto/kegiatan_baru.jpg",
+  "1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg", "6.jpeg", "7.jpeg"
 ];
 
 const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
 const DEFAULT_PENGUMUMAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv";
 const DEFAULT_ARTIKEL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv";
 
-// ===== DATA BULAN HIJRIAH (ID) =====
 const HIJRI_MONTHS_ID = [
   "Muharram", "Shafar", "Rabiul Awal", "Rabiul Akhir",
   "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban",
   "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"
 ];
 
-// ===== HERO SLIDER =====
 function initHeroSlider() {
   const slides = $$(".hero-slide");
   if (slides.length < 2) return;
@@ -45,7 +32,6 @@ function initHeroSlider() {
   }, 5000);
 }
 
-// ===== BAHASA =====
 const TRANSLATIONS = {
   id: {
     nav_sholat: "Jadwal Sholat", nav_kegiatan: "Kegiatan", nav_info: "Info", nav_donasi: "Donasi",
@@ -54,7 +40,7 @@ const TRANSLATIONS = {
     hero_btn_wakaf: "Ikut Wakaf", hero_btn_sholat: "Jadwal Sholat",
     hadith_label: "Mutiara Hadits",
     sholat_title: "Jadwal Sholat",
-    gallery_title: "Galeri & Video", gallery_desc: "Dokumentasi kegiatan dan kebersamaan jamaah.", // Teks diganti
+    gallery_title: "Galeri & Video", gallery_desc: "Dokumentasi kegiatan dan kebersamaan jamaah.",
     tab_announcement: "Pengumuman", tab_article: "Artikel & Faedah",
     empty_data: "Belum ada data terbaru.", empty_search: "Tidak ditemukan.",
     donasi_badge: "Peluang Amal Jariyah", donasi_title: "Investasi Kekal Akhirat",
@@ -70,7 +56,7 @@ const TRANSLATIONS = {
     hero_btn_wakaf: "Donate Now", hero_btn_sholat: "Prayer Times",
     hadith_label: "Daily Hadith",
     sholat_title: "Prayer Times",
-    gallery_title: "Gallery & Video", gallery_desc: "Documentation of community activities.", // Teks diganti
+    gallery_title: "Gallery & Video", gallery_desc: "Documentation of community activities.",
     tab_announcement: "Announcements", tab_article: "Articles",
     empty_data: "No updates.", empty_search: "Not found.",
     donasi_badge: "Charity Opportunity", donasi_title: "Invest for Hereafter",
@@ -89,48 +75,34 @@ function setLang(lang) {
   renderHadith(); renderHijri(); 
 }
 
-// ===== SMART CAROUSEL (HYBRID: LOCAL FOTO + DRIVE VIDEO) =====
+// ===== SMART CAROUSEL =====
 async function initSmartCarousel() {
   const track = $("#kgTrack"); if (!track) return;
-  track.innerHTML = ""; // Bersihkan
+  track.innerHTML = "";
 
-  // 1. RENDER FOTO LOKAL (Dari array LOCAL_IMAGES)
   LOCAL_IMAGES.forEach(src => {
     const el = document.createElement("figure");
     el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-white relative group border border-slate-100";
-    el.innerHTML = `
-      <img src="${src}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="Kegiatan">
-    `;
+    el.innerHTML = `<img src="${src}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="Kegiatan">`;
     track.appendChild(el);
   });
 
-  // 2. RENDER VIDEO (Dari Google Drive Script - Background Fetch)
   try {
     const res = await fetch(APPS_SCRIPT_URL);
     const driveItems = await res.json();
-    
-    // Filter hanya VIDEO
     const videos = driveItems.filter(item => item.mime.includes("video"));
-    
     videos.forEach(item => {
       const el = document.createElement("figure");
       el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-black relative group border border-slate-100";
       el.innerHTML = `
         <iframe src="${item.videoUrl}" class="w-full h-full" allow="autoplay" style="border:none;" loading="lazy"></iframe>
-        <div class="absolute top-2 right-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1 font-bold z-10">
-          <i data-lucide="youtube" class="w-3 h-3"></i> Video
-        </div>
+        <div class="absolute top-2 right-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1 font-bold z-10"><i data-lucide="youtube" class="w-3 h-3"></i> Video</div>
       `;
       track.appendChild(el);
     });
-    window.lucide?.createIcons?.();
-  } catch (e) { 
-    console.log("Video tidak dapat dimuat (mungkin kosong/error)."); 
-  }
-
+  } catch (e) { console.log("Video empty/error."); }
   window.lucide?.createIcons?.();
 
-  // Slide Logic
   let interval; const speed = 4000;
   const getW = () => track.firstElementChild ? track.firstElementChild.offsetWidth + 16 : 300;
   const start = () => {
@@ -218,13 +190,10 @@ function renderHadith() {
   $("#hadithRiwayat").textContent = "Hadits Shahih";
 }
 
-// ===== HIJRI DATE (API INTEGRATED) =====
 let globalHijriData = null; 
-
 function renderHijri(apiData = null) {
   const el = $("#hijriDate"); if (!el) return;
   if (apiData) globalHijriData = apiData;
-
   if (globalHijriData) {
     const d = globalHijriData.day;
     const m = globalHijriData.month.number - 1; 
@@ -233,7 +202,6 @@ function renderHijri(apiData = null) {
     el.textContent = `${d} ${mName} ${y} H`;
     return;
   }
-
   const loc = currentLang === 'en' ? 'en-US' : 'id-ID';
   try {
     el.textContent = new Intl.DateTimeFormat(loc + '-u-ca-islamic-umalqura', {day:'numeric', month:'long', year:'numeric'}).format(new Date()).replace(/ AH| H/g, " H");
@@ -242,7 +210,6 @@ function renderHijri(apiData = null) {
   }
 }
 
-// ===== CSV & ADMIN =====
 const isAdmin = () => new URLSearchParams(location.search).get("admin") === "1" && localStorage.getItem("is_admin") === "1";
 function setupAdmin(){
   if(isAdmin()) $$(".admin-only").forEach(e=>e.classList.remove("hidden"));
@@ -298,14 +265,43 @@ async function renderSholat() {
 }
 
 function initDonasi() {
-  const fmt = (n,c) => new Intl.NumberFormat(currentLang==='en'?'en-US':'id-ID', {style:"currency",currency:c,maximumFractionDigits:0}).format(n);
-  const T = 42000000, K = 33800000, C = T-K;
-  if($("#targetLabel")) $("#targetLabel").textContent = fmt(T,"JPY"); if($("#kekuranganLabel")) $("#kekuranganLabel").textContent = new Intl.NumberFormat('id-ID').format(K);
-  const obs = new IntersectionObserver(e=>{ e.forEach(x=>{ if(x.isIntersecting) { $("#progressBar").style.width = Math.round((C/T)*100)+"%"; $("#terkumpulLabel").textContent = fmt(C,"JPY"); $("#percentLabel").textContent = Math.round((C/T)*100); }})});
-  if($("#donasi")) obs.observe($("#donasi"));
-  $$(".quick-jpy").forEach(b => b.addEventListener("click", ()=>$("#inputJPY").value=b.dataset.v));
-  $$(".quick-idr").forEach(b => b.addEventListener("click", ()=>$("#inputIDR").value=b.dataset.v));
-  $("#donasiBtn")?.addEventListener("click", () => window.open(`https://wa.me/818013909425?text=${encodeURIComponent(`Konfirmasi donasi: ${$("#inputJPY")?.value||0} JPY / ${$("#inputIDR")?.value||0} IDR`)}`,"_blank"));
+  // Format Uang Rapi (Tanpa JPJP)
+  const fmt = (n, c) => new Intl.NumberFormat(currentLang === 'en' ? 'en-US' : 'id-ID', {
+    style: "currency",
+    currency: c,
+    maximumFractionDigits: 0
+  }).format(n);
+
+  const T = 42000000;
+  const K = 33800000;
+  const C = T - K;
+
+  if ($("#targetLabel")) $("#targetLabel").textContent = fmt(T, "JPY");
+  if ($("#kekuranganLabel")) $("#kekuranganLabel").textContent = new Intl.NumberFormat('id-ID').format(K);
+  
+  const obs = new IntersectionObserver(e => {
+    e.forEach(x => {
+      if (x.isIntersecting) {
+        $("#progressBar").style.width = Math.round((C / T) * 100) + "%";
+        $("#terkumpulLabel").textContent = fmt(C, "JPY");
+        $("#percentLabel").textContent = Math.round((C / T) * 100);
+      }
+    })
+  });
+  
+  if ($("#donasi")) obs.observe($("#donasi"));
+
+  $$(".quick-jpy").forEach(b => b.addEventListener("click", () => $("#inputJPY").value = b.dataset.v));
+  $$(".quick-idr").forEach(b => b.addEventListener("click", () => $("#inputIDR").value = b.dataset.v));
+  
+  $("#donasiBtn")?.addEventListener("click", () => {
+    const j = $("#inputJPY")?.value;
+    const r = $("#inputIDR")?.value;
+    // Pesan WA Rapi
+    const msg = `Assalamu'alaikum, saya ingin konfirmasi donasi untuk Masjid As-Sunnah Hekinan sebesar: ${j ? j + ' JPY' : ''} ${r ? r + ' IDR' : ''}. Mohon dicek.`;
+    window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
+  });
+  
   $$("[data-copy]").forEach(b => b.addEventListener("click", () => { navigator.clipboard.writeText($(b.dataset.copy).innerText); alert("Copied!"); }));
 }
 
@@ -326,7 +322,7 @@ function boot() {
   if($("#year")) $("#year").textContent = new Date().getFullYear();
   
   renderSholat(); renderContent(); initCountdown(); initDonasi(); 
-  initSmartCarousel(); // <= HYBRID LOAD
+  initSmartCarousel(); 
   initHeroSlider(); setupAdmin(); initZakatCalculator();
   
   const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add("active")}),{threshold:0.1});
