@@ -34,24 +34,39 @@
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: #f1f5f9; }
   ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  
+  /* UTILITIES */
   .scrollx-snap { scroll-snap-type: x mandatory; }
   .snap-item { scroll-snap-align: center; }
   .hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
   .hide-scrollbar::-webkit-scrollbar { display: none; }
+  
+  /* TABS */
   .tab-slider { position: absolute; bottom: 0; height: 3px; width: 50%; background: #0EA5E9; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 3px 3px 0 0; }
   .tab-left .tab-slider { transform: translateX(0); }
   .tab-right .tab-slider { transform: translateX(100%); }
+  
+  /* ANIMATION */
   .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
   .reveal.active { opacity: 1; transform: translateY(0); }
+  
+  /* FONTS & BACKGROUND PATTERN */
   @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
   .font-arab { font-family: 'Amiri', serif; line-height: 2; }
-  body { overflow-x: hidden; }
+  
+  body { 
+    overflow-x: hidden;
+    background-color: #f8fafc;
+    /* Pola Geometris Halus (Arabesque) */
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230ea5e9' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  
   .hero-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.5s ease-in-out; }
   .hero-slide.active { opacity: 1; }
 </style>
 </head>
 
-<body class="font-sans text-fig-text bg-slate-50 pb-24 md:pb-0">
+<body class="font-sans text-fig-text pb-32 md:pb-0">
 
 <header class="hidden md:block sticky top-0 bg-white/95 backdrop-blur-md border-b border-slate-200 z-50 transition-all duration-300">
   <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -89,9 +104,9 @@
 
 <section id="hero" class="relative bg-slate-900 pt-10 pb-20 md:pt-20 md:pb-32 overflow-hidden min-h-[500px] flex items-center">
   <div id="heroSlider" class="absolute inset-0 z-0">
-    <img src="1.jpeg" class="hero-slide active" alt="Slide 1">
-    <img src="image_97f6ae.jpg" class="hero-slide" alt="Tampak Depan Masjid"> 
-    <img src="2.jpeg" class="hero-slide" alt="Slide 3">
+    <img src="1.jpeg" class="hero-slide active" alt="Masjid 1">
+    <img src="image_97f6ae.jpg" class="hero-slide" alt="Masjid 2"> 
+    <img src="2.jpeg" class="hero-slide" alt="Masjid 3">
     <div class="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-transparent"></div>
   </div>
   <div class="container mx-auto px-4 relative z-10">
@@ -103,20 +118,21 @@
         <span data-i18n="hero_title_1">Merajut Ukhuwah,</span> <br/>
         <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-emerald-400" data-i18n="hero_title_2">Membangun Peradaban.</span>
       </h1>
-      <p class="text-slate-300 text-lg mb-8 leading-relaxed max-w-lg" data-i18n="hero_desc">Pusat kegiatan ibadah, pendidikan anak, dan silaturahmi masyarakat muslim Indonesia di Aichi, Jepang.</p>
+      <p class="text-slate-300 text-lg mb-8 leading-relaxed max-w-lg" data-i18n="hero_desc">Pusat kegiatan ibadah, pendidikan anak, dan silaturahmi masyarakat muslim Indonesia di sekitar Hekinan, Aichi, Jepang.</p>
+      
       <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-        <a href="#donasi" class="rounded-full bg-fig-accent hover:bg-amber-700 text-white px-8 py-4 font-bold shadow-lg shadow-amber-900/20 transition-all flex items-center justify-center gap-2 border border-amber-500/30">
+        <a href="#donasi" class="rounded-full bg-fig-accent hover:bg-amber-700 text-white px-8 py-4 font-bold shadow-lg shadow-amber-900/20 transition-all flex items-center justify-center gap-2 border border-amber-500/30 transform active:scale-95">
           <i data-lucide="gift" class="w-5 h-5"></i> <span data-i18n="hero_btn_wakaf">Ikut Wakaf</span>
         </a>
-        <a href="#sholat" class="rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 px-8 py-4 font-bold transition-all flex items-center justify-center gap-2">
-          <i data-lucide="clock" class="w-5 h-5"></i> <span data-i18n="hero_btn_sholat">Jadwal Sholat</span>
+        <a href="https://qiblafinder.withgoogle.com/" target="_blank" class="rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 px-8 py-4 font-bold transition-all flex items-center justify-center gap-2">
+          <i data-lucide="compass" class="w-5 h-5"></i> <span data-i18n="hero_btn_kiblat">Arah Kiblat</span>
         </a>
       </div>
     </div>
   </div>
 </section>
 
-<section class="container mx-auto px-4 -mt-10 mb-10 relative z-20">
+<section class="container mx-auto px-4 -mt-10 mb-6 relative z-20">
   <div class="bg-white rounded-2xl p-6 shadow-xl border border-slate-100 reveal">
     <div class="flex items-start gap-4">
       <div class="hidden sm:block p-3 bg-sky-50 rounded-full"><i data-lucide="book-open" class="w-6 h-6 text-fig-primary"></i></div>
@@ -130,7 +146,7 @@
   </div>
 </section>
 
-<section id="sholat" class="container mx-auto px-4 py-8 relative z-10">
+<section id="sholat" class="container mx-auto px-4 py-6 relative z-10">
   <div class="rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-card reveal">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-2xl font-extrabold flex items-center gap-2 text-slate-900"><i data-lucide="sun" class="text-fig-accent"></i> <span data-i18n="sholat_title">Jadwal Sholat</span></h2>
@@ -141,7 +157,136 @@
   </div>
 </section>
 
-<section id="kegiatan" class="py-16 bg-slate-50 border-t border-slate-200">
+<section class="container mx-auto px-4 py-6">
+  <div class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 text-white shadow-lg relative overflow-hidden text-center reveal">
+    <div class="absolute top-0 left-0 w-full h-full opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\' fill-rule=\'evenodd\'%3E%3Ccircle cx=\'3\' cy=\'3\' r=\'3\'/%3E%3Ccircle cx=\'13\' cy=\'13\' r=\'3\'/%3E%3C/g%3E%3C/svg%3E');"></div>
+    
+    <div class="relative z-10">
+      <h3 class="text-xs font-bold uppercase tracking-widest text-emerald-100 mb-4 flex justify-center items-center gap-2">
+        <i data-lucide="sparkles" class="w-4 h-4"></i> Doa Harian
+      </h3>
+      <p id="doaArab" class="text-2xl md:text-3xl font-arab mb-3 leading-loose" dir="rtl">...</p>
+      <p id="doaArti" class="text-sm md:text-base italic text-emerald-50 mb-6 font-medium">...</p>
+      <button id="btnGantiDoa" class="text-xs font-bold bg-white/20 hover:bg-white/30 px-4 py-2 rounded-full transition-all border border-white/30 active:scale-95">
+        <i data-lucide="refresh-cw" class="w-3 h-3 inline mr-1"></i> Ganti Doa
+      </button>
+    </div>
+  </div>
+</section>
+
+<section id="donasi" class="bg-white py-16 border-t border-slate-200">
+  <div class="container mx-auto px-4">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-10 reveal">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100 text-amber-700 text-xs font-bold mb-4 border border-amber-200"><i data-lucide="gem" class="w-3 h-3 text-amber-600"></i> <span data-i18n="donasi_badge">Peluang Amal Jariyah</span></div>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4" data-i18n="donasi_title">Investasi Kekal Akhirat</h2>
+        <p class="text-slate-600 max-w-2xl mx-auto leading-relaxed italic">"Siapa yang membangun masjid karena Allah, maka Allah akan membangunkan baginya semisal itu di surga." (HR. Bukhari & Muslim)</p>
+      </div>
+
+      <div class="grid lg:grid-cols-5 gap-8 items-start">
+        
+        <div class="lg:col-span-3 rounded-[2rem] bg-slate-50 border border-slate-200 p-6 md:p-8 shadow-sm reveal">
+          <h3 class="font-bold text-lg text-slate-800 mb-6 flex items-center gap-2"><span class="bg-sky-100 p-2 rounded-lg text-fig-primary"><i data-lucide="trending-up" class="w-5 h-5"></i></span><span data-i18n="progress_title">Progres Pembangunan</span></h3>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm">
+              <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-2">Terkumpul</p>
+              <p id="terkumpulLabel" class="text-2xl md:text-3xl font-extrabold text-fig-primary truncate">0</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-amber-50 border border-amber-100 shadow-sm">
+              <p class="text-xs text-amber-600 font-semibold uppercase tracking-wider mb-2">Kekurangan</p>
+              <p id="kekuranganLabel" class="text-2xl md:text-3xl font-extrabold text-amber-600 truncate">0</p>
+            </div>
+          </div>
+
+          <div class="relative mb-8">
+            <div class="overflow-hidden h-3 mb-2 text-xs flex rounded-full bg-slate-200">
+              <div id="progressBar" class="flex flex-col text-center justify-center bg-fig-primary transition-all duration-1000 ease-out w-0 relative"></div>
+            </div>
+            <div class="flex justify-between text-xs text-slate-500 font-bold">
+              <span><span id="percentLabel">0</span>%</span><span>Target: <span id="targetLabel">0</span></span>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+             <div class="p-4 rounded-2xl border border-slate-200 bg-white flex flex-col gap-3 relative overflow-hidden">
+               <div class="flex items-center gap-3">
+                 <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-xl">🇯🇵</div>
+                 <div>
+                   <p class="font-bold text-slate-800">Yucho Bank (Jepang)</p>
+                   <p class="text-xs text-slate-500">a.n. Yoshimine Adelfa</p>
+                 </div>
+               </div>
+               <div class="flex items-center justify-between bg-slate-50 rounded-lg p-3 border border-slate-200 mt-1">
+                 <span id="rekYucho" class="font-mono font-bold text-slate-800 text-lg tracking-wide">12160-00457031</span>
+                 <button data-copy="#rekYucho" class="text-xs font-bold text-fig-primary hover:underline flex items-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i> Salin</button>
+               </div>
+             </div>
+
+             <div class="p-4 rounded-2xl border border-slate-200 bg-white flex flex-col gap-3 relative overflow-hidden">
+               <div class="flex items-center gap-3">
+                 <div class="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center text-xl">🇮🇩</div>
+                 <div>
+                   <p class="font-bold text-slate-800">BSI (Indonesia)</p>
+                   <p class="text-xs text-slate-500">a.n. Hidayah Cinta Hekinan</p>
+                 </div>
+               </div>
+               <div class="flex items-center justify-between bg-slate-50 rounded-lg p-3 border border-slate-200 mt-1">
+                 <span id="rekBsi" class="font-mono font-bold text-slate-800 text-lg tracking-wide">7329283768</span>
+                 <button data-copy="#rekBsi" class="text-xs font-bold text-fig-primary hover:underline flex items-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i> Salin</button>
+               </div>
+               <div class="flex items-center gap-2 mt-1">
+                 <span class="text-[10px] font-bold bg-slate-100 px-2 py-1 rounded text-slate-500">Bisa Transfer via:</span>
+                 <div class="flex gap-1">
+                   <span class="text-[10px] px-1.5 py-0.5 rounded border bg-white border-slate-200 text-blue-600 font-bold">Dana</span>
+                   <span class="text-[10px] px-1.5 py-0.5 rounded border bg-white border-slate-200 text-green-600 font-bold">GoPay</span>
+                   <span class="text-[10px] px-1.5 py-0.5 rounded border bg-white border-slate-200 text-purple-600 font-bold">OVO</span>
+                 </div>
+               </div>
+             </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-2 rounded-[2rem] bg-slate-900 text-white p-6 md:p-8 shadow-xl shadow-slate-200 reveal">
+           <h3 class="font-bold text-xl mb-4 relative z-10 text-white" data-i18n="confirm_title">Sudah Transfer?</h3>
+           <p class="text-slate-400 text-sm mb-6 relative z-10" data-i18n="confirm_desc">Konfirmasi agar tercatat oleh admin.</p>
+           
+           <div class="space-y-4 relative z-10">
+             <div>
+               <label class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Nominal (JPY)</label>
+               <input id="inputJPY" type="number" placeholder="0" class="w-full mt-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:bg-white/20 font-mono">
+               <div class="flex flex-wrap gap-2 mt-2">
+                 <button class="quick-jpy text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="1000">¥1k</button>
+                 <button class="quick-jpy text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="10000">¥10k</button>
+               </div>
+             </div>
+             
+             <div class="relative flex py-1 items-center">
+                <div class="flex-grow border-t border-white/10"></div>
+                <span class="flex-shrink-0 mx-4 text-xs text-slate-500" data-i18n="or">ATAU</span>
+                <div class="flex-grow border-t border-white/10"></div>
+            </div>
+
+             <div>
+               <label class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Nominal (IDR)</label>
+               <input id="inputIDR" type="number" placeholder="0" class="w-full mt-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:bg-white/20 font-mono">
+                <div class="flex flex-wrap gap-2 mt-2">
+                 <button class="quick-idr text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="50000">50rb</button>
+                 <button class="quick-idr text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="100000">100rb</button>
+               </div>
+             </div>
+           </div>
+
+           <button id="donasiBtn" class="mt-8 w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-500/20 transition-transform transform active:scale-95 flex items-center justify-center gap-2">
+             <i data-lucide="message-circle" class="w-5 h-5"></i> <span data-i18n="btn_confirm">Konfirmasi via WA</span>
+           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="kegiatan" class="py-16 bg-slate-50">
   <div class="container mx-auto px-4">
     <div class="flex items-center justify-between mb-8 reveal">
       <div>
@@ -149,8 +294,8 @@
         <p class="text-slate-500 mt-1" data-i18n="gallery_desc">Dokumentasi kegiatan dan kebersamaan jamaah.</p>
       </div>
       <div class="hidden md:flex gap-2">
-        <button id="kgPrev" class="p-2 rounded-full border bg-white hover:bg-slate-50"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-        <button id="kgNext" class="p-2 rounded-full border bg-white hover:bg-slate-50"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+        <button id="kgPrev" class="p-2 rounded-full border bg-white hover:bg-slate-100"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+        <button id="kgNext" class="p-2 rounded-full border bg-white hover:bg-slate-100"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
       </div>
     </div>
     <div class="relative reveal">
@@ -176,66 +321,6 @@
   </div>
 </section>
 
-<section id="donasi" class="bg-gradient-to-b from-slate-50 to-sky-50 py-20 border-t border-slate-200">
-  <div class="container mx-auto px-4">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-10 reveal">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100 text-amber-700 text-xs font-bold mb-4 border border-amber-200"><i data-lucide="gem" class="w-3 h-3 text-amber-600"></i> <span data-i18n="donasi_badge">Peluang Amal Jariyah</span></div>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4" data-i18n="donasi_title">Investasi Kekal Akhirat</h2>
-        <p class="text-slate-600 max-w-2xl mx-auto leading-relaxed italic">"Siapa yang membangun masjid karena Allah, maka Allah akan membangunkan baginya semisal itu di surga." (HR. Bukhari & Muslim)</p>
-      </div>
-      <div class="flex justify-center mb-12 reveal">
-        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col items-center">
-          <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2" data-i18n="deadline_label">Batas Waktu Wakaf (Tahap 1)</p>
-          <div class="flex gap-4 text-center">
-            <div><span id="cdDays" class="text-2xl font-bold text-slate-800">00</span><br><span class="text-[10px] text-slate-500">HARI</span></div><div class="text-slate-300 text-xl font-bold">:</div>
-            <div><span id="cdHours" class="text-2xl font-bold text-slate-800">00</span><br><span class="text-[10px] text-slate-500">JAM</span></div><div class="text-slate-300 text-xl font-bold">:</div>
-            <div><span id="cdMin" class="text-2xl font-bold text-slate-800">00</span><br><span class="text-[10px] text-slate-500">MENIT</span></div>
-          </div>
-          <p class="text-[10px] text-red-500 mt-2 font-medium">Deadline: 31 Mei 2026</p>
-        </div>
-      </div>
-      <div class="grid lg:grid-cols-5 gap-8 items-start">
-        <div class="lg:col-span-3 rounded-[2rem] bg-white border border-slate-200 p-6 md:p-8 shadow-xl reveal relative overflow-hidden">
-          <h3 class="font-bold text-lg text-slate-800 mb-6 flex items-center gap-2"><span class="bg-sky-100 p-2 rounded-lg text-fig-primary"><i data-lucide="trending-up" class="w-5 h-5"></i></span><span data-i18n="progress_title">Progres Pembangunan</span></h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 relative z-10">
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-              <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-2" data-i18n="collected">Terkumpul</p>
-              <p id="terkumpulLabel" class="text-2xl md:text-3xl font-extrabold text-fig-primary leading-none truncate">0</p>
-            </div>
-            <div class="p-4 rounded-2xl bg-amber-50 border border-amber-100">
-              <p class="text-xs text-amber-600 font-semibold uppercase tracking-wider mb-2" data-i18n="needed">Kekurangan</p>
-              <p id="kekuranganLabel" class="text-2xl md:text-3xl font-extrabold text-amber-600 leading-none truncate">0</p>
-            </div>
-          </div>
-          <div class="relative pt-2 mb-2 z-10">
-            <div class="overflow-hidden h-4 mb-3 text-xs flex rounded-full bg-slate-100 shadow-inner">
-              <div id="progressBar" class="flex flex-col text-center justify-center bg-gradient-to-r from-sky-400 to-sky-600 transition-all duration-1000 ease-out w-0 relative"></div>
-            </div>
-            <div class="flex justify-between text-[11px] text-slate-500 font-medium">
-              <span><span id="percentLabel">0</span>%</span><span>Target: <span id="targetLabel">0</span></span>
-            </div>
-          </div>
-          <div class="mt-8 space-y-4 relative z-10">
-             <div class="p-4 rounded-2xl border border-slate-200 bg-white flex flex-col sm:flex-row justify-between items-center gap-3"><div class="flex items-center gap-4"><div class="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-xl">🇯🇵</div><div><p class="font-bold text-slate-800">Yucho Bank (Jepang)</p><p class="text-xs text-slate-500">a.n. Yoshimine Adelfa</p></div></div><div class="flex items-center gap-2 bg-slate-50 rounded-lg p-1.5 border border-slate-200"><span id="rekYucho" class="font-mono font-bold text-slate-700 text-sm px-2">12160-00457031</span><button data-copy="#rekYucho" class="p-1.5 rounded-md bg-white hover:text-fig-primary shadow-sm border border-slate-200"><i data-lucide="copy" class="w-4 h-4"></i></button></div></div>
-             <div class="p-4 rounded-2xl border border-slate-200 bg-white flex flex-col sm:flex-row justify-between items-center gap-3"><div class="flex items-center gap-4"><div class="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-xl">🇮🇩</div><div><p class="font-bold text-slate-800">BSI (Indonesia)</p><p class="text-xs text-slate-500">a.n. Hidayah Cinta Hekinan</p></div></div><div class="flex items-center gap-2 bg-slate-50 rounded-lg p-1.5 border border-slate-200"><span id="rekBsi" class="font-mono font-bold text-slate-700 text-sm px-2">7329283768</span><button data-copy="#rekBsi" class="p-1.5 rounded-md bg-white hover:text-fig-primary shadow-sm border border-slate-200"><i data-lucide="copy" class="w-4 h-4"></i></button></div></div>
-          </div>
-        </div>
-        <div class="lg:col-span-2 rounded-[2rem] bg-fig-primary text-white p-6 md:p-8 shadow-xl shadow-sky-200 reveal relative overflow-hidden" style="transition-delay: 200ms;">
-           <h3 class="font-bold text-xl mb-4 relative z-10" data-i18n="confirm_title">Konfirmasi Donasi</h3>
-           <p class="text-sky-100 text-sm mb-6 relative z-10" data-i18n="confirm_desc">Masukkan nominal yang telah ditransfer.</p>
-           <div class="space-y-4 relative z-10">
-             <div><label class="text-xs font-semibold text-sky-100 uppercase tracking-wide">Nominal (JPY)</label><input id="inputJPY" type="number" placeholder="0" class="w-full mt-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:bg-white/20 font-mono"><div class="flex flex-wrap gap-2 mt-2"><button class="quick-jpy text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="1000">¥1k</button><button class="quick-jpy text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="10000">¥10k</button></div></div>
-             <div class="relative flex py-1 items-center"><div class="flex-grow border-t border-white/20"></div><span class="flex-shrink-0 mx-4 text-xs text-sky-200" data-i18n="or">ATAU</span><div class="flex-grow border-t border-white/20"></div></div>
-             <div><label class="text-xs font-semibold text-sky-100 uppercase tracking-wide">Nominal (IDR)</label><input id="inputIDR" type="number" placeholder="0" class="w-full mt-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:bg-white/20 font-mono"><div class="flex flex-wrap gap-2 mt-2"><button class="quick-idr text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="50000">50rb</button><button class="quick-idr text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="100000">100rb</button></div></div>
-           </div>
-           <button id="donasiBtn" class="mt-8 w-full bg-white text-fig-primary hover:bg-sky-50 font-bold py-4 rounded-xl shadow-lg transition-transform transform active:scale-95 flex items-center justify-center gap-2"><i data-lucide="message-circle" class="w-5 h-5"></i> <span data-i18n="btn_confirm">Konfirmasi WA</span></button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <footer class="bg-white border-t border-slate-200">
   <div class="container mx-auto px-4 py-12">
     <div class="grid md:grid-cols-4 gap-8 mb-8">
@@ -246,15 +331,17 @@
         <h4 class="font-bold text-slate-900 mb-4">Hubungi Kami</h4>
         <div class="space-y-3">
           <a href="https://wa.me/819097009803?text=Assalamu%27alaikum%2C%20saya%20ingin%20bertanya%20info%20Masjid%20As-Sunnah%20Hekinan." target="_blank" class="flex items-center gap-3 p-3 rounded-xl bg-green-50 border border-green-200 hover:bg-green-100 transition-colors text-green-800 text-sm group">
-            <div class="bg-green-200 p-1.5 rounded-full group-hover:bg-green-300 transition-colors"><i data-lucide="message-circle" class="w-4 h-4"></i></div><span class="font-semibold">Harry</span>
+            <div class="bg-green-200 p-1.5 rounded-full group-hover:bg-green-300 transition-colors"><i data-lucide="message-circle" class="w-4 h-4"></i></div>
+            <span class="font-semibold">Harry (WA)</span>
           </a>
           <a href="https://wa.me/818013909425?text=Assalamu%27alaikum%2C%20saya%20ingin%20bertanya%20info%20Masjid%20As-Sunnah%20Hekinan." target="_blank" class="flex items-center gap-3 p-3 rounded-xl bg-green-50 border border-green-200 hover:bg-green-100 transition-colors text-green-800 text-sm group">
-            <div class="bg-green-200 p-1.5 rounded-full group-hover:bg-green-300 transition-colors"><i data-lucide="message-circle" class="w-4 h-4"></i></div><span class="font-semibold">Tisna</span>
+            <div class="bg-green-200 p-1.5 rounded-full group-hover:bg-green-300 transition-colors"><i data-lucide="message-circle" class="w-4 h-4"></i></div>
+            <span class="font-semibold">Tisna (WA)</span>
           </a>
           <a href="https://www.instagram.com/masjidhekinan?igsh=MWV0dWJiczdpZ3owNw==" target="_blank" class="flex items-center gap-3 p-3 rounded-xl bg-pink-50 border border-pink-200 hover:bg-pink-100 transition-colors text-pink-700 text-sm group">
-            <div class="bg-pink-200 p-1.5 rounded-full group-hover:bg-pink-300 transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></div><span class="font-semibold">Instagram</span>
+            <div class="bg-pink-200 p-1.5 rounded-full group-hover:bg-pink-300 transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></div>
+            <span class="font-semibold">Instagram</span>
           </a>
-          <li class="flex items-center gap-2 text-sm text-slate-600 mt-4"><i data-lucide="mail" class="w-4 h-4 shrink-0"></i> hekinanmosque@gmail.com</li>
         </div>
       </div>
 
@@ -264,9 +351,15 @@
   </div>
 </footer>
 
-<button id="openZakat" class="fixed bottom-24 right-6 md:bottom-8 md:right-8 z-40 bg-slate-900 text-white p-4 rounded-full shadow-2xl hover:bg-slate-800 transition-all active:scale-95 flex items-center justify-center gap-2 border-2 border-slate-700" title="Kalkulator Zakat Mal">
+<button id="openZakat" class="fixed bottom-28 right-4 md:bottom-8 md:right-8 z-40 bg-slate-900 text-white p-4 rounded-full shadow-2xl hover:bg-slate-800 transition-all active:scale-95 flex items-center justify-center gap-2 border-2 border-slate-700" title="Kalkulator Zakat Mal">
   <i data-lucide="calculator" class="w-6 h-6"></i><span class="hidden md:inline font-bold text-sm">Hitung Zakat</span>
 </button>
+
+<div class="md:hidden fixed bottom-20 left-0 right-0 z-30 px-4 flex justify-center pointer-events-none">
+  <a href="#donasi" class="pointer-events-auto bg-fig-accent hover:bg-amber-600 text-white px-6 py-3 rounded-full font-bold shadow-lg shadow-amber-900/20 flex items-center gap-2 transform transition-transform active:scale-95 border-2 border-white">
+    <i data-lucide="heart" class="w-4 h-4 fill-current"></i> Donasi Sekarang
+  </a>
+</div>
 
 <div id="zakatModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
   <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl relative animate-[fadeUp_0.3s_ease-out]">
@@ -313,26 +406,14 @@
 
 <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50 px-6 py-2 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
   <div class="flex justify-between items-end">
-    <a href="#hero" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors pb-1">
-      <i data-lucide="home" class="w-6 h-6"></i><span class="text-[10px] font-medium">Home</span>
-    </a>
-    <a href="#sholat" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors pb-1">
-      <i data-lucide="clock" class="w-6 h-6"></i><span class="text-[10px] font-medium">Sholat</span>
-    </a>
-    
+    <a href="#hero" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors pb-1"><i data-lucide="home" class="w-6 h-6"></i><span class="text-[10px] font-medium">Home</span></a>
+    <a href="#sholat" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors pb-1"><i data-lucide="clock" class="w-6 h-6"></i><span class="text-[10px] font-medium">Sholat</span></a>
     <div class="relative flex flex-col items-center justify-end w-12">
-       <a href="#donasi" class="absolute -top-10 bg-fig-accent hover:bg-amber-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-amber-200 border-4 border-slate-50 transition-transform active:scale-95">
-         <i data-lucide="heart" class="w-6 h-6 fill-current"></i>
-       </a>
+       <a href="#donasi" class="absolute -top-10 bg-fig-accent hover:bg-amber-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-amber-200 border-4 border-slate-50 transition-transform active:scale-95"><i data-lucide="heart" class="w-6 h-6 fill-current"></i></a>
        <span class="text-[10px] font-medium text-slate-500 mb-1">Donasi</span>
     </div>
-
-    <a href="#kegiatan" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors pb-1">
-      <i data-lucide="image" class="w-6 h-6"></i><span class="text-[10px] font-medium">Galeri</span>
-    </a>
-    <a href="#info" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors pb-1">
-      <i data-lucide="info" class="w-6 h-6"></i><span class="text-[10px] font-medium">Info</span>
-    </a>
+    <a href="#kegiatan" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors pb-1"><i data-lucide="image" class="w-6 h-6"></i><span class="text-[10px] font-medium">Galeri</span></a>
+    <a href="#info" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors pb-1"><i data-lucide="info" class="w-6 h-6"></i><span class="text-[10px] font-medium">Info</span></a>
   </div>
 </nav>
 
