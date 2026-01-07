@@ -5,7 +5,7 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
 // ===== KONFIGURASI =====
 // ⚠️ GANTI URL DI BAWAH INI DENGAN URL DARI LANGKAH 1 (APPS SCRIPT)
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxwSOcoxPi5U-bk74d_lzpUZGs3FGAYVtl-hkFuoERdgON12ksITHFCZ88YUXGITKvt_Q/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
 
 // Link Spreadsheet Tetap (Backup/Data Manual)
 const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
