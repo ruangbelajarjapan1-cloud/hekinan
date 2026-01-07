@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<meta name="description" content="Pusat dakwah dan ibadah masyarakat muslim Indonesia di Hekinan, Jepang. Mari bantu pembangunan Masjid As-Sunnah Hekinan.">
+<meta name="description" content="Pusat dakwah dan ibadah masyarakat muslim Indonesia di Hekinan, Jepang.">
 <title>Masjid As-Sunnah Hekinan</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -14,29 +14,14 @@
     theme: {
       extend: {
         colors: {
-          fig: {
-            primary: "#0EA5E9",   
-            primaryDark: "#0284C7", 
-            accent: "#D97706",    
-            success: "#059669",
-            surface: "#FFFFFF",
-            text: "#0F172A",
-            soft: "#F0F9FF"
-          }
+          fig: { primary: "#0EA5E9", primaryDark: "#0284C7", accent: "#D97706", success: "#059669", surface: "#FFFFFF", text: "#0F172A", soft: "#F0F9FF" }
         },
         borderRadius: { fig: "20px" },
-        boxShadow: { 
-          soft: "0 10px 40px -10px rgba(14, 165, 233, 0.15)",
-          card: "0 4px 6px -1px rgba(0, 0, 0, 0.05)"
-        },
-        animation: {
-          'fade-up': 'fadeUp 0.8s ease-out forwards',
-        },
+        boxShadow: { soft: "0 10px 40px -10px rgba(14, 165, 233, 0.15)", card: "0 4px 6px -1px rgba(0, 0, 0, 0.05)" },
+        animation: { 'fade-up': 'fadeUp 0.8s ease-out forwards', 'fade-in': 'fadeIn 1.5s ease-in-out forwards' },
         keyframes: {
-          fadeUp: {
-            '0%': { opacity: '0', transform: 'translateY(20px)' },
-            '100%': { opacity: '1', transform: 'translateY(0)' },
-          }
+          fadeUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+          fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } }
         }
       }
     }
@@ -44,34 +29,29 @@
 </script>
 
 <style>
-  /* Scrollbar Custom */
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: #f1f5f9; }
   ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-  
-  /* Utilities */
   .scrollx-snap { scroll-snap-type: x mandatory; }
   .snap-item { scroll-snap-align: center; }
   .hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
   .hide-scrollbar::-webkit-scrollbar { display: none; }
-  
-  /* Animasi Tab & Reveal */
   .tab-slider { position: absolute; bottom: 0; height: 3px; width: 50%; background: #0EA5E9; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 3px 3px 0 0; }
   .tab-left .tab-slider { transform: translateX(0); }
   .tab-right .tab-slider { transform: translateX(100%); }
   .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
   .reveal.active { opacity: 1; transform: translateY(0); }
-  
-  /* Font Arab */
   @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
   .font-arab { font-family: 'Amiri', serif; line-height: 2; }
-
-  /* Mencegah scroll horizontal berlebih di HP */
   body { overflow-x: hidden; }
+  
+  /* Hero Slider Styles */
+  .hero-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.5s ease-in-out; }
+  .hero-slide.active { opacity: 1; }
 </style>
 </head>
 
-<body class="font-sans text-fig-text bg-slate-50 pb-20 md:pb-0">
+<body class="font-sans text-fig-text bg-slate-50 pb-24 md:pb-0">
 
 <header class="hidden md:block sticky top-0 bg-white/95 backdrop-blur-md border-b border-slate-200 z-50 transition-all duration-300">
   <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -82,13 +62,11 @@
         <span class="block text-xs font-medium text-slate-500">Hekinan, Japan</span>
       </div>
     </a>
-    
     <div class="flex items-center gap-6 text-sm font-medium text-slate-600">
       <a href="#sholat" class="hover:text-fig-primary transition-colors" data-i18n="nav_sholat">Jadwal Sholat</a>
       <a href="#kegiatan" class="hover:text-fig-primary transition-colors" data-i18n="nav_kegiatan">Kegiatan</a>
       <a href="#info" class="hover:text-fig-primary transition-colors" data-i18n="nav_info">Info</a>
     </div>
-
     <div class="flex items-center gap-3">
       <button id="langToggle" class="text-xs font-bold border border-slate-300 rounded-lg px-2 py-1 hover:bg-slate-50">ID | EN</button>
       <a href="#donasi" class="rounded-full bg-fig-primary hover:bg-fig-primaryDark text-white px-5 py-2 text-sm font-bold shadow-soft transition-all transform hover:-translate-y-0.5 items-center gap-2 flex">
@@ -101,59 +79,59 @@
   </nav>
 </header>
 
-<header class="md:hidden sticky top-0 bg-white/95 backdrop-blur-md border-b border-slate-200 z-50 px-4 py-3 flex justify-between items-center">
+<header class="md:hidden sticky top-0 bg-white/95 backdrop-blur-md border-b border-slate-200 z-50 px-4 py-3 flex justify-between items-center shadow-sm">
   <div class="flex gap-3 items-center">
     <img src="logohekinan.jpeg" class="h-8 w-auto rounded-lg" alt="Logo">
-    <span class="font-extrabold text-sm text-slate-800">Masjid As-Sunnah Hekinan</span>
+    <span class="font-extrabold text-sm text-slate-800">As-Sunnah Hekinan</span>
   </div>
   <button id="langToggleMob" class="text-xs font-bold border border-slate-300 rounded-lg px-2 py-1">ID | EN</button>
 </header>
 
-<section id="hero" class="relative bg-white pt-6 md:pt-10 pb-16 overflow-hidden">
-  <div class="container mx-auto px-4">
-    <div class="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-12">
-      <div class="w-full md:w-1/2 text-center md:text-left reveal active">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 text-fig-primaryDark text-xs font-bold mb-4 border border-sky-100">
-          <i data-lucide="moon" class="w-3 h-3"></i>
-          <span id="hijriDate">...</span>
-        </div>
+<section id="hero" class="relative bg-slate-900 pt-10 pb-20 md:pt-20 md:pb-32 overflow-hidden min-h-[500px] flex items-center">
+  <div id="heroSlider" class="absolute inset-0 z-0">
+    <img src="1.jpeg" class="hero-slide active" alt="Slide 1">
+    <img src="image_97f6ae.jpg" class="hero-slide" alt="Tampak Depan Masjid"> 
+    <img src="2.jpeg" class="hero-slide" alt="Slide 3">
+    <div class="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-transparent"></div>
+  </div>
 
-        <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-4">
-          <span data-i18n="hero_title_1">Merajut Ukhuwah,</span> <br/>
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-fig-primary to-blue-600" data-i18n="hero_title_2">Membangun Peradaban.</span>
-        </h1>
-        <p class="text-slate-600 text-base md:text-lg mb-8 leading-relaxed" data-i18n="hero_desc">
-          Selamat datang di laman resmi Masjid As-Sunnah Hekinan. Pusat kegiatan ibadah, pendidikan anak, dan silaturahmi masyarakat muslim di Aichi, Jepang.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-          <a href="#donasi" class="rounded-full bg-fig-accent hover:bg-amber-700 text-white px-8 py-3.5 font-bold shadow-lg shadow-amber-200 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
-            <i data-lucide="gift" class="w-5 h-5"></i> <span data-i18n="hero_btn_wakaf">Ikut Wakaf</span>
-          </a>
-          <a href="#sholat" class="rounded-full border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 px-8 py-3.5 font-bold transition-all flex items-center justify-center gap-2">
-            <i data-lucide="clock" class="w-5 h-5"></i> <span data-i18n="hero_btn_sholat">Jadwal Sholat</span>
-          </a>
-        </div>
+  <div class="container mx-auto px-4 relative z-10">
+    <div class="w-full md:w-2/3 lg:w-1/2 text-center md:text-left reveal active">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-sky-300 text-xs font-bold mb-6 border border-white/20">
+        <i data-lucide="moon" class="w-3 h-3"></i>
+        <span id="hijriDate">...</span>
       </div>
-      <div class="w-full md:w-1/2 relative reveal active" style="transition-delay: 100ms;">
-        <div class="absolute -inset-4 bg-gradient-to-r from-sky-100 to-indigo-50 rounded-full blur-3xl opacity-50 -z-10"></div>
-        <div class="rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white rotate-2 hover:rotate-0 transition-transform duration-500">
-            <img src="1.jpeg" alt="Masjid As-Sunnah Hekinan" class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700">
-        </div>
+
+      <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-lg">
+        <span data-i18n="hero_title_1">Merajut Ukhuwah,</span> <br/>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-emerald-400" data-i18n="hero_title_2">Membangun Peradaban.</span>
+      </h1>
+      <p class="text-slate-300 text-lg mb-8 leading-relaxed max-w-lg" data-i18n="hero_desc">
+        Pusat kegiatan ibadah, pendidikan anak, dan silaturahmi masyarakat muslim Indonesia di Aichi, Jepang.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+        <a href="#donasi" class="rounded-full bg-fig-accent hover:bg-amber-700 text-white px-8 py-4 font-bold shadow-lg shadow-amber-900/20 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2 border border-amber-500/30">
+          <i data-lucide="gift" class="w-5 h-5"></i> <span data-i18n="hero_btn_wakaf">Ikut Wakaf</span>
+        </a>
+        <a href="#sholat" class="rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 px-8 py-4 font-bold transition-all flex items-center justify-center gap-2">
+          <i data-lucide="clock" class="w-5 h-5"></i> <span data-i18n="hero_btn_sholat">Jadwal Sholat</span>
+        </a>
       </div>
     </div>
   </div>
 </section>
 
-<section class="container mx-auto px-4 -mt-6 mb-10 relative z-20">
-  <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 text-white shadow-xl reveal">
+<section class="container mx-auto px-4 -mt-10 mb-10 relative z-20">
+  <div class="bg-white rounded-2xl p-6 shadow-xl border border-slate-100 reveal">
     <div class="flex items-start gap-4">
-      <div class="hidden sm:block p-3 bg-white/10 rounded-full">
-        <i data-lucide="book-open" class="w-6 h-6 text-sky-300"></i>
+      <div class="hidden sm:block p-3 bg-sky-50 rounded-full">
+        <i data-lucide="book-open" class="w-6 h-6 text-fig-primary"></i>
       </div>
       <div class="flex-1">
-        <h3 class="text-xs font-bold text-sky-300 uppercase tracking-widest mb-2" data-i18n="hadith_label">Mutiara Hadits</h3>
-        <p id="hadithArab" class="text-xl md:text-2xl font-arab mb-3 text-right leading-loose" dir="rtl">...</p>
-        <p id="hadithTerjemah" class="text-sm md:text-base text-slate-300 italic">...</p>
+        <h3 class="text-xs font-bold text-fig-primary uppercase tracking-widest mb-2" data-i18n="hadith_label">Mutiara Hadits</h3>
+        <p id="hadithArab" class="text-xl md:text-2xl font-arab mb-3 text-right leading-loose text-slate-800" dir="rtl">...</p>
+        <p id="hadithTerjemah" class="text-sm md:text-base text-slate-600 italic">...</p>
         <p id="hadithRiwayat" class="text-xs text-slate-400 mt-2 font-bold">...</p>
       </div>
     </div>
@@ -162,19 +140,14 @@
 
 <section id="sholat" class="container mx-auto px-4 py-8 relative z-10">
   <div class="rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-card reveal">
-    <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-      <div>
-        <h2 class="text-2xl font-extrabold flex items-center gap-2 text-slate-800">
-          <i data-lucide="sun" class="text-fig-primary"></i> <span data-i18n="sholat_title">Jadwal Sholat</span>
-        </h2>
-        <p id="locLabel" class="text-sm text-slate-500 mt-1">...</p>
-      </div>
-      <button id="refreshSholat" class="group rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-fig-primary px-4 py-2 text-sm font-medium transition-all flex items-center gap-2">
-        <i data-lucide="refresh-cw" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-500"></i> <span data-i18n="btn_refresh">Perbarui</span>
-      </button>
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-extrabold flex items-center gap-2 text-slate-900">
+        <i data-lucide="sun" class="text-fig-accent"></i> <span data-i18n="sholat_title">Jadwal Sholat</span>
+      </h2>
+      <button id="refreshSholat" class="text-sm text-fig-primary hover:underline flex items-center gap-1"><i data-lucide="refresh-cw" class="w-3 h-3"></i> Update</button>
     </div>
     <div id="sholatGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3"></div>
-    <p class="mt-4 text-center text-xs text-slate-400" data-i18n="sholat_note">Waktu sholat dihitung berdasarkan lokasi perangkat Anda.</p>
+    <p class="mt-4 text-center text-xs text-slate-400" id="locLabel">Mendeteksi lokasi...</p>
   </div>
 </section>
 
@@ -182,37 +155,32 @@
   <div class="container mx-auto px-4">
     <div class="flex items-center justify-between mb-8 reveal">
       <div>
-        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900" data-i18n="gallery_title">Galeri Kegiatan</h2>
-        <p class="text-slate-500 mt-1" data-i18n="gallery_desc">Dokumentasi kebersamaan jamaah.</p>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900" data-i18n="gallery_title">Galeri & Video</h2>
+        <p class="text-slate-500 mt-1" data-i18n="gallery_desc">Dokumentasi kegiatan masjid.</p>
       </div>
-      <div class="hidden md:flex items-center gap-2">
-        <button id="kgPrev" class="rounded-full border border-slate-300 bg-white p-3 hover:border-fig-primary hover:text-fig-primary transition-colors"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-        <button id="kgNext" class="rounded-full border border-slate-300 bg-white p-3 hover:border-fig-primary hover:text-fig-primary transition-colors"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+      <div class="hidden md:flex gap-2">
+        <button id="kgPrev" class="p-2 rounded-full border bg-white hover:bg-slate-50"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+        <button id="kgNext" class="p-2 rounded-full border bg-white hover:bg-slate-50"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
       </div>
     </div>
 
     <div class="relative reveal">
-      <div id="kgTrack" class="scrollx-snap hide-scrollbar flex gap-4 overflow-x-auto pb-4 cursor-grab active:cursor-grabbing">
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 md:h-72 rounded-2xl overflow-hidden shadow-md group bg-white">
-          <img src="./1.jpeg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" alt="Kegiatan 1">
+      <div id="kgTrack" class="scrollx-snap hide-scrollbar flex gap-4 overflow-x-auto pb-4">
+        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-white">
+          <img src="1.jpeg" class="w-full h-full object-cover" loading="lazy">
         </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 md:h-72 rounded-2xl overflow-hidden shadow-md group bg-white">
-          <img src="./2.jpeg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" alt="Kegiatan 2">
+        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-white relative group">
+          <img src="image_97f6ae.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy">
+          <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+            <p class="text-white text-sm font-bold">Tampak Depan Masjid</p>
+          </div>
         </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 md:h-72 rounded-2xl overflow-hidden shadow-md group bg-white">
-          <img src="./3.jpeg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" alt="Kegiatan 3">
+         <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-white">
+          <img src="2.jpeg" class="w-full h-full object-cover" loading="lazy">
         </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 md:h-72 rounded-2xl overflow-hidden shadow-md group bg-white">
-          <img src="./4.jpeg" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" alt="Kegiatan 4">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 md:h-72 rounded-2xl overflow-hidden shadow-md group bg-white p-4 flex items-center justify-center">
-          <img src="./5.jpeg" class="max-w-full max-h-full object-contain" loading="lazy" alt="Poster 1">
-        </figure>
-      </div>
-      
-      <div class="md:hidden pointer-events-none absolute inset-0 flex justify-between items-center px-2">
-        <button id="kgPrevMob" class="pointer-events-auto rounded-full bg-white/90 p-2 shadow-lg text-slate-700"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-        <button id="kgNextMob" class="pointer-events-auto rounded-full bg-white/90 p-2 shadow-lg text-slate-700"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+        <div class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-black relative flex items-center justify-center">
+            <iframe class="w-full h-full" src="https://www.youtube.com/embed/jfKfPfyJRdk" title="Video Kajian" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
       </div>
     </div>
   </div>
@@ -225,16 +193,12 @@
       <button id="tabArtikel" class="flex-1 relative z-10 py-3 text-sm font-bold text-slate-600 transition-colors rounded-lg hover:text-fig-primary" data-i18n="tab_article">Artikel & Faedah</button>
       <span class="tab-slider absolute bottom-1 h-[calc(100%-8px)] w-[calc(50%-4px)] bg-white shadow-sm rounded-lg !transform transition-all"></span>
     </div>
-
     <div id="wrapPengumuman" class="grid md:grid-cols-2 gap-6 min-h-[200px]"></div>
     <p id="boardEmpty" class="hidden text-center text-slate-500 py-10" data-i18n="empty_data">Belum ada data terbaru.</p>
 
     <div id="wrapArtikel" class="hidden min-h-[200px]">
       <div class="flex justify-end mb-6">
-        <div class="relative w-full md:w-auto">
-          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-          <input id="searchArtikel" data-placeholder="search_placeholder" placeholder="Cari..." class="w-full md:w-64 pl-9 pr-4 py-2 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-sky-200 transition-all text-sm outline-none">
-        </div>
+        <input id="searchArtikel" data-placeholder="search_placeholder" placeholder="Cari..." class="w-full md:w-64 pl-4 pr-4 py-2 rounded-xl border border-slate-200 text-sm">
       </div>
       <div id="artikelList" class="grid md:grid-cols-2 gap-6"></div>
       <p id="artikelEmpty" class="hidden text-center text-slate-500 py-10" data-i18n="empty_search">Tidak ditemukan.</p>
@@ -372,10 +336,9 @@
         </ul>
       </div>
       <div>
-        <h4 class="font-bold text-slate-900 mb-4" data-i18n="footer_follow">Ikuti Kami</h4>
-        <div class="flex gap-2">
-           <a href="https://www.instagram.com/assunnahhekinan" target="_blank" class="p-2 rounded-lg border border-slate-200 hover:border-pink-500 hover:text-pink-600"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-           <a href="https://www.youtube.com/@assunnahhekinan" target="_blank" class="p-2 rounded-lg border border-slate-200 hover:border-red-500 hover:text-red-600"><i data-lucide="youtube" class="w-5 h-5"></i></a>
+        <h4 class="font-bold text-slate-900 mb-4" data-i18n="footer_follow">Lokasi</h4>
+        <div class="rounded-xl overflow-hidden shadow-sm border border-slate-200">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3269.954605175953!2d136.9908613!3d34.8833056!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6004855555555555%3A0x0!2zMzTCsDUzJzAwLjAiTiAxMzbCsDU5JzI3LjEiRQ!5e0!3m2!1sen!2sjp!4v1620000000000!5m2!1sen!2sjp" width="100%" height="100" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
         </div>
       </div>
     </div>
@@ -386,31 +349,15 @@
   </div>
 </footer>
 
-<div class="h-20 md:hidden"></div>
-
 <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50 px-6 py-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
   <div class="flex justify-between items-center">
-    <a href="#hero" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors">
-      <i data-lucide="home" class="w-6 h-6"></i>
-      <span class="text-[10px] font-medium">Home</span>
-    </a>
-    <a href="#sholat" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors">
-      <i data-lucide="clock" class="w-6 h-6"></i>
-      <span class="text-[10px] font-medium">Sholat</span>
-    </a>
+    <a href="#hero" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors"><i data-lucide="home" class="w-6 h-6"></i><span class="text-[10px] font-medium">Home</span></a>
+    <a href="#sholat" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors"><i data-lucide="clock" class="w-6 h-6"></i><span class="text-[10px] font-medium">Sholat</span></a>
     <div class="relative -top-6">
-      <a href="#donasi" class="flex items-center justify-center w-14 h-14 rounded-full bg-fig-accent text-white shadow-lg shadow-amber-200 transform active:scale-95 transition-transform border-4 border-slate-50">
-        <i data-lucide="heart" class="w-6 h-6 fill-current"></i>
-      </a>
+      <a href="#donasi" class="flex items-center justify-center w-14 h-14 rounded-full bg-fig-accent text-white shadow-lg shadow-amber-200 transform active:scale-95 transition-transform border-4 border-slate-50"><i data-lucide="heart" class="w-6 h-6 fill-current"></i></a>
     </div>
-    <a href="#kegiatan" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors">
-      <i data-lucide="image" class="w-6 h-6"></i>
-      <span class="text-[10px] font-medium">Galeri</span>
-    </a>
-    <a href="#info" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors">
-      <i data-lucide="info" class="w-6 h-6"></i>
-      <span class="text-[10px] font-medium">Info</span>
-    </a>
+    <a href="#kegiatan" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors"><i data-lucide="image" class="w-6 h-6"></i><span class="text-[10px] font-medium">Galeri</span></a>
+    <a href="#info" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors"><i data-lucide="info" class="w-6 h-6"></i><span class="text-[10px] font-medium">Info</span></a>
   </div>
 </nav>
 
