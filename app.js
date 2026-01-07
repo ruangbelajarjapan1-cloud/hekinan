@@ -331,13 +331,72 @@ function boot() {
   initCountdown();
   initDonasi();
   
-  // Carousel logic (simplest form)
-  const tr = $("#kgTrack");
-  if(tr) {
-    const go = d => tr.scrollBy({left: d*300, behavior:"smooth"});
-    $("#kgPrev")?.addEventListener("click", ()=>go(-1)); $("#kgNext")?.addEventListener("click", ()=>go(1));
-    $("#kgPrevMob")?.addEventListener("click", ()=>go(-1)); $("#kgNextMob")?.addEventListener("click", ()=>go(1));
-  }
+  // GANTI bagian Carousel Logic di app.js dengan ini:
+
+function initSmartCarousel() {
+  const track = $("#kgTrack");
+  if (!track) return;
+
+  let interval;
+  const cardWidth = track.firstElementChild ? track.firstElementChild.offsetWidth + 16 : 300; // Lebar kartu + gap
+  const speed = 3000; // Kecepatan slide (3 detik)
+
+  const startSlide = () => {
+    clearInterval(interval);
+    interval = setInterval(() => {
+      // Cek apakah sudah mentok kanan
+      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+        // Jika mentok, kembali ke awal dengan smooth
+        track.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        // Jika belum, geser ke kanan
+        track.scrollBy({ left: cardWidth, behavior: "smooth" });
+      }
+    }, speed);
+  };
+
+  const stopSlide = () => clearInterval(interval);
+
+  // Jalankan otomatis saat load
+  startSlide();
+
+  // UX Mobile: Berhenti saat disentuh jari (Touch)
+  track.addEventListener("touchstart", stopSlide, { passive: true });
+  track.addEventListener("touchend", startSlide, { passive: true });
+
+  // UX Desktop: Berhenti saat kursor mouse masuk (Hover)
+  track.addEventListener("mouseenter", stopSlide);
+  track.addEventListener("mouseleave", startSlide);
+
+  // Tombol Manual
+  $("#kgPrev")?.addEventListener("click", () => {
+    stopSlide(); // Stop dulu biar gak "berantem"
+    track.scrollBy({ left: -cardWidth, behavior: "smooth" });
+    startSlide(); // Jalan lagi
+  });
+  
+  $("#kgNext")?.addEventListener("click", () => {
+    stopSlide();
+    track.scrollBy({ left: cardWidth, behavior: "smooth" });
+    startSlide();
+  });
+  
+  // Tombol Mobile Manual
+  $("#kgPrevMob")?.addEventListener("click", () => {
+    stopSlide();
+    track.scrollBy({ left: -cardWidth, behavior: "smooth" });
+    startSlide();
+  });
+  
+  $("#kgNextMob")?.addEventListener("click", () => {
+    stopSlide();
+    track.scrollBy({ left: cardWidth, behavior: "smooth" });
+    startSlide();
+  });
+}
+
+// Panggil fungsi ini di dalam function boot()
+// initSmartCarousel();
   
   // Tabs
   $("#tabPengumuman")?.addEventListener("click", () => {
