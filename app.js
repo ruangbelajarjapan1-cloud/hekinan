@@ -6,9 +6,9 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 // ===== KONFIGURASI =====
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
 
-// 📸 DAFTAR FOTO DARI GITHUB (Isi nama file di sini setelah diupload)
+// 📸 DAFTAR FOTO DARI GITHUB
 const LOCAL_IMAGES = [
-  "1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg", "6.jpeg", "7.jpeg"
+  "1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg", "6.jpeg", "7.jpeg","assets/foto/a.jpeg","assets/foto/b.jpeg","assets/foto/a.jpeg"
 ];
 
 const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
@@ -75,15 +75,19 @@ function setLang(lang) {
   renderHadith(); renderHijri(); 
 }
 
-// ===== SMART CAROUSEL =====
+// ===== SMART CAROUSEL (DIPERBAIKI: FIT GAMBAR) =====
 async function initSmartCarousel() {
   const track = $("#kgTrack"); if (!track) return;
   track.innerHTML = "";
 
   LOCAL_IMAGES.forEach(src => {
     const el = document.createElement("figure");
-    el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-white relative group border border-slate-100";
-    el.innerHTML = `<img src="${src}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="Kegiatan">`;
+    // Gunakan 'object-contain' agar gambar tidak terpotong (fit)
+    // Tambahkan bg-gray-100 agar space kosong tidak terlalu putih
+    el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-gray-100 relative group border border-slate-200";
+    el.innerHTML = `
+      <img src="${src}" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="Kegiatan">
+    `;
     track.appendChild(el);
   });
 
@@ -163,7 +167,12 @@ function initZakatCalculator() {
     const nisab = goldPrice * 85;
     const totalNet = (cash + goldVal + assets) - debt;
     
-    const fmt = (n) => new Intl.NumberFormat('id-ID', {style:'currency', currency: currentZakatCurr, maximumFractionDigits:0}).format(n);
+    // FORMAT UANG MANUAL (TANPA JP GANDA)
+    const fmt = (n) => {
+        const symbol = currentZakatCurr === 'JPY' ? '¥' : 'Rp';
+        return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n);
+    };
+
     $("#zTotalNet").textContent = fmt(totalNet); $("#zNisab").textContent = fmt(nisab);
     const resultBox = $("#zResultBox"), statusEl = $("#zStatus"), amountEl = $("#zFinalAmount");
     resultBox.classList.remove("hidden");
@@ -265,25 +274,24 @@ async function renderSholat() {
 }
 
 function initDonasi() {
-  // Format Uang Rapi (Tanpa JPJP)
-  const fmt = (n, c) => new Intl.NumberFormat(currentLang === 'en' ? 'en-US' : 'id-ID', {
-    style: "currency",
-    currency: c,
-    maximumFractionDigits: 0
-  }).format(n);
+  // FORMAT UANG BERSIH (Tanpa JPJP)
+  const fmt = (n, c) => {
+    const symbol = c === 'JPY' ? '¥' : 'Rp';
+    return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n);
+  };
 
   const T = 42000000;
   const K = 33800000;
   const C = T - K;
 
   if ($("#targetLabel")) $("#targetLabel").textContent = fmt(T, "JPY");
+  if ($("#terkumpulLabel")) $("#terkumpulLabel").textContent = fmt(C, "JPY");
   if ($("#kekuranganLabel")) $("#kekuranganLabel").textContent = new Intl.NumberFormat('id-ID').format(K);
   
   const obs = new IntersectionObserver(e => {
     e.forEach(x => {
       if (x.isIntersecting) {
         $("#progressBar").style.width = Math.round((C / T) * 100) + "%";
-        $("#terkumpulLabel").textContent = fmt(C, "JPY");
         $("#percentLabel").textContent = Math.round((C / T) * 100);
       }
     })
@@ -297,7 +305,7 @@ function initDonasi() {
   $("#donasiBtn")?.addEventListener("click", () => {
     const j = $("#inputJPY")?.value;
     const r = $("#inputIDR")?.value;
-    // Pesan WA Rapi
+    // Pesan WA Otomatis
     const msg = `Assalamu'alaikum, saya ingin konfirmasi donasi untuk Masjid As-Sunnah Hekinan sebesar: ${j ? j + ' JPY' : ''} ${r ? r + ' IDR' : ''}. Mohon dicek.`;
     window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
   });
