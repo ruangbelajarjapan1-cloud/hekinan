@@ -34,7 +34,7 @@ const TRANSLATIONS = {
   id: {
     nav_sholat: "Jadwal Sholat", nav_kegiatan: "Kegiatan", nav_info: "Info", nav_donasi: "Donasi",
     hero_title_1: "Merajut Ukhuwah,", hero_title_2: "Membangun Peradaban.",
-    hero_desc: "Pusat kegiatan ibadah, pendidikan anak, dan silaturahmi masyarakat muslim di Aichi, Jepang.",
+    hero_desc: "Pusat kegiatan ibadah, pendidikan anak, dan silaturahmi masyarakat muslim di Aichi ken dan sekitarnya",
     hero_btn_wakaf: "Ikut Wakaf", hero_btn_sholat: "Jadwal Sholat",
     hadith_label: "Mutiara Hadits",
     sholat_title: "Jadwal Sholat",
