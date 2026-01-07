@@ -4,12 +4,18 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
 // ===== KONFIGURASI =====
-// URL Apps Script Anda (PASTIKAN SUDAH DEPLOY "ANYONE")
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec"; 
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
 
 const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
 const DEFAULT_PENGUMUMAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv";
 const DEFAULT_ARTIKEL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv";
+
+// ===== DATA BULAN HIJRIAH (ID) =====
+const HIJRI_MONTHS_ID = [
+  "Muharram", "Shafar", "Rabiul Awal", "Rabiul Akhir",
+  "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban",
+  "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"
+];
 
 // ===== HERO SLIDER =====
 function initHeroSlider() {
@@ -64,11 +70,12 @@ function setLang(lang) {
   const t = TRANSLATIONS[lang];
   $$("[data-i18n]").forEach(el => { const k = el.getAttribute("data-i18n"); if(t[k]) el.textContent = t[k]; });
   $$("[data-placeholder]").forEach(el => { const k = el.getAttribute("data-placeholder"); if(t[k]) el.placeholder = t[k]; });
-  renderHadith(); renderHijri();
+  renderHadith(); 
+  // Panggil ulang tanpa data API (akan pakai cache atau fallback sementara)
+  renderHijri(); 
 }
 
 // ===== SMART CAROUSEL (GALERI) =====
-// Perbaikan: Menambahkan referrerPolicy='no-referrer' agar gambar Google Drive tidak diblokir
 async function initSmartCarousel() {
   const track = $("#kgTrack"); if (!track) return;
   track.innerHTML = `<div class="flex items-center justify-center w-full h-64 text-slate-400 gap-2"><i data-lucide="loader" class="animate-spin"></i> Memuat Galeri...</div>`;
@@ -83,37 +90,32 @@ async function initSmartCarousel() {
   } catch (e) { console.error("Drive Error:", e); }
 
   track.innerHTML = "";
-  if (driveItems.length === 0) {
-    track.innerHTML = `<div class="w-full text-center text-slate-400 py-10">Belum ada foto. Pastikan Folder Drive 'Public'.</div>`;
-    return;
+  if (!driveItems || driveItems.length === 0) {
+    track.innerHTML = `<div class="w-full text-center text-slate-400 py-10 text-sm">Galeri kosong atau Loading...</div>`;
+    // Jangan return, biarkan kosong agar layout tetap rapi
+  } else {
+    driveItems.forEach(item => {
+      const isVideo = item.mime.includes("video");
+      const el = document.createElement("figure");
+      el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-white relative group border border-slate-100";
+      
+      if (isVideo) {
+        el.innerHTML = `
+          <iframe src="${item.videoUrl}" class="w-full h-full" allow="autoplay" style="border:none;" loading="lazy"></iframe>
+          <div class="absolute top-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1"><i data-lucide="video" class="w-3 h-3"></i> Video</div>
+        `;
+      } else {
+        el.innerHTML = `
+          <img src="${item.src}" referrerpolicy="no-referrer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="${item.name}"
+          onerror="this.parentElement.innerHTML='<div class=\\'flex flex-col items-center justify-center h-full text-slate-400 text-xs gap-1\\'><i data-lucide=\\'image-off\\' class=\\'w-6 h-6\\'></i>Gagal Muat</div>'; window.lucide?.createIcons?.();">
+          <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+            <p class="text-white text-xs truncate">${item.name}</p>
+          </div>
+        `;
+      }
+      track.appendChild(el);
+    });
   }
-
-  driveItems.forEach(item => {
-    const isVideo = item.mime.includes("video");
-    const el = document.createElement("figure");
-    el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-white relative group border border-slate-100";
-    
-    if (isVideo) {
-      el.innerHTML = `
-        <iframe src="${item.videoUrl}" class="w-full h-full" allow="autoplay" style="border:none;"></iframe>
-        <div class="absolute top-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1"><i data-lucide="video" class="w-3 h-3"></i> Video</div>
-      `;
-    } else {
-      // PERBAIKAN PENTING: referrerpolicy="no-referrer" dan error handler
-      el.innerHTML = `
-        <img src="${item.src}" 
-             referrerpolicy="no-referrer" 
-             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-             loading="lazy" 
-             alt="${item.name}"
-             onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'flex items-center justify-center h-full bg-slate-100 text-slate-400 text-xs\\'>Gagal muat</div>';">
-        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-          <p class="text-white text-xs truncate">${item.name}</p>
-        </div>
-      `;
-    }
-    track.appendChild(el);
-  });
   window.lucide?.createIcons?.();
 
   // Slide Logic
@@ -122,7 +124,7 @@ async function initSmartCarousel() {
   const start = () => {
     clearInterval(interval);
     interval = setInterval(() => {
-      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) track.scrollTo({ left: 0, behavior: "smooth" });
+      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 20) track.scrollTo({ left: 0, behavior: "smooth" });
       else track.scrollBy({ left: getW(), behavior: "smooth" });
     }, speed);
   };
@@ -134,96 +136,59 @@ async function initSmartCarousel() {
   $("#kgPrev")?.addEventListener("click", ()=>scroll(-1)); $("#kgNext")?.addEventListener("click", ()=>scroll(1));
 }
 
-// ===== ZAKAT CALCULATOR (TOGGLE MATA UANG) =====
+// ===== ZAKAT CALCULATOR =====
 function initZakatCalculator() {
   const openBtn = $("#openZakat");
   const modal = $("#zakatModal");
   const closeBtn = $("#closeZakat");
   const calcBtn = $("#calcBtn");
-  
   if(!openBtn || !modal) return;
 
-  // Elemen UI
   let currentZakatCurr = 'JPY';
-  const btnJPY = $("#currJPY");
-  const btnIDR = $("#currIDR");
-  const priceInput = $("#zGoldPrice");
-  const labelCurr = $("#zCurrLabel");
-  const linkJPY = $("#linkGoldJPY");
-  const linkIDR = $("#linkGoldIDR");
-
-  // Estimasi Awal (Update Manual User Lebih Akurat)
-  const DEFAULT_JPY = 14000; 
-  const DEFAULT_IDR = 1400000;
-
-  // Set Default
+  const btnJPY = $("#currJPY"), btnIDR = $("#currIDR");
+  const priceInput = $("#zGoldPrice"), labelCurr = $("#zCurrLabel");
+  const linkJPY = $("#linkGoldJPY"), linkIDR = $("#linkGoldIDR");
+  const DEFAULT_JPY = 14000, DEFAULT_IDR = 1400000;
   priceInput.value = DEFAULT_JPY;
 
   const setCurrency = (c) => {
-    currentZakatCurr = c;
-    labelCurr.textContent = c;
-    
+    currentZakatCurr = c; labelCurr.textContent = c;
+    const active = "flex-1 py-2 text-sm font-bold rounded-lg bg-white shadow-sm text-slate-800 transition-all border border-slate-200 ring-2 ring-sky-100";
+    const inactive = "flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 hover:bg-white/50 transition-all";
     if (c === 'JPY') {
-      btnJPY.className = "flex-1 py-2 text-sm font-bold rounded-lg bg-white shadow-sm text-slate-800 transition-all border border-slate-200";
-      btnIDR.className = "flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 hover:bg-white/50 transition-all";
-      priceInput.value = DEFAULT_JPY; 
-      linkJPY.classList.remove("hidden");
-      linkIDR.classList.add("hidden");
+      btnJPY.className = active; btnIDR.className = inactive;
+      priceInput.value = DEFAULT_JPY; linkJPY.classList.remove("hidden"); linkIDR.classList.add("hidden");
     } else {
-      btnIDR.className = "flex-1 py-2 text-sm font-bold rounded-lg bg-white shadow-sm text-slate-800 transition-all border border-slate-200";
-      btnJPY.className = "flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 hover:bg-white/50 transition-all";
-      priceInput.value = DEFAULT_IDR; 
-      linkIDR.classList.remove("hidden");
-      linkJPY.classList.add("hidden");
+      btnIDR.className = active; btnJPY.className = inactive;
+      priceInput.value = DEFAULT_IDR; linkIDR.classList.remove("hidden"); linkJPY.classList.add("hidden");
     }
     $("#zResultBox").classList.add("hidden");
   };
 
   btnJPY.addEventListener("click", () => setCurrency('JPY'));
   btnIDR.addEventListener("click", () => setCurrency('IDR'));
-
-  const toggle = (show) => {
-    if(show) { modal.classList.remove("hidden"); modal.classList.add("flex"); }
-    else { modal.classList.add("hidden"); modal.classList.remove("flex"); }
-  };
-
+  const toggle = (show) => { modal.classList.toggle("hidden", !show); modal.classList.toggle("flex", show); };
   openBtn.addEventListener("click", () => toggle(true));
   closeBtn.addEventListener("click", () => toggle(false));
   modal.addEventListener("click", (e) => { if(e.target===modal) toggle(false); });
 
   calcBtn.addEventListener("click", () => {
     const goldPrice = Number(priceInput.value || 0);
-    const cash = Number($("#zCash")?.value || 0);
-    const goldVal = Number($("#zGoldVal")?.value || 0);
-    const assets = Number($("#zAssets")?.value || 0);
-    const debt = Number($("#zDebt")?.value || 0);
-
+    const cash = Number($("#zCash")?.value || 0), goldVal = Number($("#zGoldVal")?.value || 0);
+    const assets = Number($("#zAssets")?.value || 0), debt = Number($("#zDebt")?.value || 0);
     const nisab = goldPrice * 85;
     const totalNet = (cash + goldVal + assets) - debt;
     
-    const fmt = (n) => new Intl.NumberFormat('id-ID', {
-      style:'currency', 
-      currency: currentZakatCurr, 
-      maximumFractionDigits:0
-    }).format(n);
-
-    $("#zTotalNet").textContent = fmt(totalNet);
-    $("#zNisab").textContent = fmt(nisab);
-    
-    const resultBox = $("#zResultBox");
-    const statusEl = $("#zStatus");
-    const amountEl = $("#zFinalAmount");
-    
+    const fmt = (n) => new Intl.NumberFormat('id-ID', {style:'currency', currency: currentZakatCurr, maximumFractionDigits:0}).format(n);
+    $("#zTotalNet").textContent = fmt(totalNet); $("#zNisab").textContent = fmt(nisab);
+    const resultBox = $("#zResultBox"), statusEl = $("#zStatus"), amountEl = $("#zFinalAmount");
     resultBox.classList.remove("hidden");
 
     if (totalNet >= nisab) {
-      const zakat = totalNet * 0.025;
-      statusEl.textContent = "WAJIB ZAKAT";
-      statusEl.className = "font-extrabold text-lg text-emerald-600 mb-1";
-      amountEl.textContent = fmt(zakat);
+      statusEl.textContent = "WAJIB ZAKAT"; statusEl.className = "font-extrabold text-lg text-emerald-600 mb-1";
+      amountEl.textContent = fmt(totalNet * 0.025);
     } else {
-      statusEl.textContent = "BELUM WAJIB";
-      statusEl.className = "font-extrabold text-lg text-slate-500 mb-1";
+      statusEl.textContent = "BELUM WAJIB"; statusEl.className = "font-extrabold text-lg text-slate-500 mb-1";
       amountEl.textContent = fmt(0);
     }
   });
@@ -240,10 +205,38 @@ function renderHadith() {
   $("#hadithArab").textContent = h.ar; $("#hadithTerjemah").textContent = currentLang === 'en' ? h.en : h.id;
   $("#hadithRiwayat").textContent = "Hadits Shahih";
 }
-function renderHijri() {
+
+// ===== HIJRI DATE (DIPERBAIKI) =====
+let globalHijriData = null; // Menyimpan data dari API
+
+function renderHijri(apiData = null) {
   const el = $("#hijriDate"); if (!el) return;
+
+  // Jika ada data baru dari API, simpan ke global
+  if (apiData) globalHijriData = apiData;
+
+  // PRIORITAS 1: Gunakan Data API (Paling Akurat)
+  if (globalHijriData) {
+    const d = globalHijriData.day;
+    const m = globalHijriData.month.number - 1; // API mulai dari 1, Array dari 0
+    const y = globalHijriData.year;
+    
+    // Gunakan nama bulan Indonesia jika bahasa ID
+    const mName = currentLang === 'id' ? HIJRI_MONTHS_ID[m] : globalHijriData.month.en;
+    
+    el.textContent = `${d} ${mName} ${y} H`;
+    return;
+  }
+
+  // PRIORITAS 2: Fallback ke hitungan lokal (Umm al-Qura) jika API belum load
   const loc = currentLang === 'en' ? 'en-US' : 'id-ID';
-  el.textContent = new Intl.DateTimeFormat(loc + '-u-ca-islamic', {day:'numeric', month:'long', year:'numeric'}).format(new Date()).replace(/ AH| H/g, " H");
+  try {
+    // Mencoba format Umm al-Qura (lebih akurat daripada default)
+    el.textContent = new Intl.DateTimeFormat(loc + '-u-ca-islamic-umalqura', {day:'numeric', month:'long', year:'numeric'}).format(new Date()).replace(/ AH| H/g, " H");
+  } catch (e) {
+    // Fallback terakhir (standard islamic)
+    el.textContent = new Intl.DateTimeFormat(loc + '-u-ca-islamic', {day:'numeric', month:'long', year:'numeric'}).format(new Date()).replace(/ AH| H/g, " H");
+  }
 }
 
 // ===== CSV & ADMIN =====
@@ -281,14 +274,22 @@ async function renderContent() {
   const aL = $("#artikelList"); if(aL) { const d = await loadCsv(getCsvUrl("artikel")); window.allArticles = d; const filter = (q) => { const f = d.filter(x=>(x.title||"").toLowerCase().includes(q)); aL.innerHTML = f.length ? f.map(x=>mkCard(x,true)).join("") : ""; $("#artikelEmpty")?.classList.toggle("hidden", f.length > 0); window.lucide?.createIcons?.(); }; filter(""); $("#searchArtikel")?.addEventListener("input", e=>filter(e.target.value.toLowerCase())); }
 }
 
+// ===== SHOLAT & HIJRI API =====
 async function renderSholat() {
   const g = $("#sholatGrid"); const l = $("#locLabel"); if(!g) return;
   g.innerHTML = `<p class="col-span-full text-center text-slate-400 py-4">...</p>`;
   let p = { lat: 34.884, lon: 136.993 }; 
   try { p = await new Promise(r => navigator.geolocation.getCurrentPosition(x=>r({lat:x.coords.latitude,lon:x.coords.longitude}),()=>r(p),{timeout:3000})); } catch{}
   if(l) l.textContent = `${p.lat.toFixed(3)}, ${p.lon.toFixed(3)}`;
+  
   try {
     const d = await fetch(`https://api.aladhan.com/v1/timings?latitude=${p.lat}&longitude=${p.lon}&method=2`).then(r=>r.json());
+    
+    // UPDATE HIJRI DARI API DISINI
+    if (d.data && d.data.date && d.data.date.hijri) {
+      renderHijri(d.data.date.hijri);
+    }
+
     const m = { Fajr:["Subuh","sunrise"], Sunrise:["Syuruq","sun"], Dhuhr:["Dzuhur","sun"], Asr:["Ashar","cloud-sun"], Maghrib:["Maghrib","moon"], Isha:["Isya","star"] };
     g.innerHTML=""; Object.keys(m).forEach(k => {
       g.innerHTML += `<div class="rounded-2xl border border-slate-100 p-4 text-center bg-slate-50 hover:bg-white hover:border-sky-200 transition-all"><i data-lucide="${m[k][1]}" class="w-5 h-5 mx-auto text-slate-400 mb-2"></i><div class="text-[10px] uppercase font-bold text-slate-400">${m[k][0]}</div><div class="mt-1 text-lg font-extrabold text-slate-800">${d.data.timings[k]}</div></div>`;
@@ -325,9 +326,7 @@ function boot() {
   $("#tabArtikel")?.addEventListener("click", () => { $("#wrapPengumuman").classList.add("hidden"); $("#wrapArtikel").classList.remove("hidden"); $("#tabs").classList.replace("tab-left","tab-right"); });
   if($("#year")) $("#year").textContent = new Date().getFullYear();
   
-  renderSholat(); renderContent(); initCountdown(); initDonasi(); initSmartCarousel(); initHeroSlider(); setupAdmin(); 
-  initZakatCalculator(); // ZAKAT INIT
-  
+  renderSholat(); renderContent(); initCountdown(); initDonasi(); initSmartCarousel(); initHeroSlider(); setupAdmin(); initZakatCalculator();
   const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add("active")}),{threshold:0.1});
   $$(".reveal").forEach(e=>obs.observe(e));
   window.lucide?.createIcons?.();
