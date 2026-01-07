@@ -6,6 +6,22 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 // ===== KONFIGURASI =====
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
 
+// 📸 DAFTAR FOTO DARI GITHUB (Isi nama file di sini setelah diupload)
+// Pastikan file gambar ada di folder yang sama atau folder 'foto/'
+const LOCAL_IMAGES = [
+  "1.jpeg",
+  "2.jpeg",
+  "3.jpeg",
+  "4.jpeg",
+  "5.jpeg",
+  "6.jpeg",
+  "7.jpeg",
+  "foto/a.jpeg",
+  "foto/b.jpeg",
+  "foto/c.jpeg"
+  // Tambah nama file baru di sini, contoh: "foto/kegiatan_baru.jpg",
+];
+
 const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
 const DEFAULT_PENGUMUMAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv";
 const DEFAULT_ARTIKEL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv";
@@ -38,7 +54,7 @@ const TRANSLATIONS = {
     hero_btn_wakaf: "Ikut Wakaf", hero_btn_sholat: "Jadwal Sholat",
     hadith_label: "Mutiara Hadits",
     sholat_title: "Jadwal Sholat",
-    gallery_title: "Galeri & Video", gallery_desc: "Dokumentasi otomatis dari Google Drive.",
+    gallery_title: "Galeri & Video", gallery_desc: "Dokumentasi kegiatan dan kebersamaan jamaah.", // Teks diganti
     tab_announcement: "Pengumuman", tab_article: "Artikel & Faedah",
     empty_data: "Belum ada data terbaru.", empty_search: "Tidak ditemukan.",
     donasi_badge: "Peluang Amal Jariyah", donasi_title: "Investasi Kekal Akhirat",
@@ -54,7 +70,7 @@ const TRANSLATIONS = {
     hero_btn_wakaf: "Donate Now", hero_btn_sholat: "Prayer Times",
     hadith_label: "Daily Hadith",
     sholat_title: "Prayer Times",
-    gallery_title: "Gallery & Video", gallery_desc: "Automated feed from Google Drive.",
+    gallery_title: "Gallery & Video", gallery_desc: "Documentation of community activities.", // Teks diganti
     tab_announcement: "Announcements", tab_article: "Articles",
     empty_data: "No updates.", empty_search: "Not found.",
     donasi_badge: "Charity Opportunity", donasi_title: "Invest for Hereafter",
@@ -73,59 +89,49 @@ function setLang(lang) {
   renderHadith(); renderHijri(); 
 }
 
-// ===== SMART CAROUSEL (GALERI DRIVE FIX) =====
+// ===== SMART CAROUSEL (HYBRID: LOCAL FOTO + DRIVE VIDEO) =====
 async function initSmartCarousel() {
   const track = $("#kgTrack"); if (!track) return;
-  track.innerHTML = `<div class="flex items-center justify-center w-full h-64 text-slate-400 gap-2"><i data-lucide="loader" class="animate-spin"></i> Memuat Galeri...</div>`;
-  window.lucide?.createIcons?.();
+  track.innerHTML = ""; // Bersihkan
 
-  let driveItems = [];
+  // 1. RENDER FOTO LOKAL (Dari array LOCAL_IMAGES)
+  LOCAL_IMAGES.forEach(src => {
+    const el = document.createElement("figure");
+    el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-white relative group border border-slate-100";
+    el.innerHTML = `
+      <img src="${src}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="Kegiatan">
+    `;
+    track.appendChild(el);
+  });
+
+  // 2. RENDER VIDEO (Dari Google Drive Script - Background Fetch)
   try {
-    if(APPS_SCRIPT_URL.includes("exec")) {
-      const res = await fetch(APPS_SCRIPT_URL);
-      driveItems = await res.json();
-    }
-  } catch (e) { console.error("Drive Error:", e); }
-
-  track.innerHTML = "";
-  if (!driveItems || driveItems.length === 0) {
-    track.innerHTML = `<div class="w-full text-center text-slate-400 py-10 text-sm">Galeri kosong atau Loading...</div>`;
-  } else {
-    driveItems.forEach(item => {
-      const isVideo = item.mime.includes("video");
+    const res = await fetch(APPS_SCRIPT_URL);
+    const driveItems = await res.json();
+    
+    // Filter hanya VIDEO
+    const videos = driveItems.filter(item => item.mime.includes("video"));
+    
+    videos.forEach(item => {
       const el = document.createElement("figure");
-      el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-white relative group border border-slate-100";
-      
-      if (isVideo) {
-        // VIDEO: Tetap pakai Iframe Preview (Sudah OK)
-        el.innerHTML = `
-          <iframe src="${item.videoUrl}" class="w-full h-full" allow="autoplay" style="border:none;" loading="lazy"></iframe>
-          <div class="absolute top-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1"><i data-lucide="video" class="w-3 h-3"></i> Video</div>
-        `;
-      } else {
-        // GAMBAR: FIX MENGGUNAKAN DIRECT LINK BY ID
-        // Kita abaikan item.src dan pakai item.id
-        const directLink = `https://drive.google.com/uc?export=view&id=${item.id}`;
-        
-        el.innerHTML = `
-          <img src="${directLink}" 
-               referrerpolicy="no-referrer" 
-               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
-               loading="lazy" 
-               alt="${item.name}"
-               onerror="this.parentElement.innerHTML='<div class=\\'flex flex-col items-center justify-center h-full text-slate-400 text-xs gap-1\\'><i data-lucide=\\'image-off\\' class=\\'w-6 h-6\\'></i>Gagal Muat</div>'; window.lucide?.createIcons?.();">
-          <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-            <p class="text-white text-xs truncate">${item.name}</p>
-          </div>
-        `;
-      }
+      el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-black relative group border border-slate-100";
+      el.innerHTML = `
+        <iframe src="${item.videoUrl}" class="w-full h-full" allow="autoplay" style="border:none;" loading="lazy"></iframe>
+        <div class="absolute top-2 right-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1 font-bold z-10">
+          <i data-lucide="youtube" class="w-3 h-3"></i> Video
+        </div>
+      `;
       track.appendChild(el);
     });
+    window.lucide?.createIcons?.();
+  } catch (e) { 
+    console.log("Video tidak dapat dimuat (mungkin kosong/error)."); 
   }
+
   window.lucide?.createIcons?.();
 
   // Slide Logic
-  let interval; const speed = 3500;
+  let interval; const speed = 4000;
   const getW = () => track.firstElementChild ? track.firstElementChild.offsetWidth + 16 : 300;
   const start = () => {
     clearInterval(interval);
@@ -320,7 +326,7 @@ function boot() {
   if($("#year")) $("#year").textContent = new Date().getFullYear();
   
   renderSholat(); renderContent(); initCountdown(); initDonasi(); 
-  initSmartCarousel(); 
+  initSmartCarousel(); // <= HYBRID LOAD
   initHeroSlider(); setupAdmin(); initZakatCalculator();
   
   const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add("active")}),{threshold:0.1});
