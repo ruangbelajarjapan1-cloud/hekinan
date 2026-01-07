@@ -4,10 +4,9 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
 // ===== KONFIGURASI =====
-// ⚠️ GANTI URL DI BAWAH INI DENGAN URL DARI LANGKAH 1 (APPS SCRIPT)
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
+// ⚠️ PASTIKAN URL APPS SCRIPT SUDAH BENAR SESUAI LANGKAH SEBELUMNYA
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec"; 
 
-// Link Spreadsheet Tetap (Backup/Data Manual)
 const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
 const DEFAULT_PENGUMUMAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv";
 const DEFAULT_ARTIKEL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv";
@@ -68,67 +67,41 @@ function setLang(lang) {
   renderHadith(); renderHijri();
 }
 
-// ===== SMART CAROUSEL (DRIVE INTEGRATED) =====
+// ===== SMART CAROUSEL (DRIVE) =====
 async function initSmartCarousel() {
-  const track = $("#kgTrack"); 
-  if (!track) return;
-
-  // 1. Loading State
-  track.innerHTML = `<div class="flex items-center justify-center w-full h-64 text-slate-400 gap-2"><i data-lucide="loader" class="animate-spin"></i> Memuat Galeri Drive...</div>`;
+  const track = $("#kgTrack"); if (!track) return;
+  track.innerHTML = `<div class="flex items-center justify-center w-full h-64 text-slate-400 gap-2"><i data-lucide="loader" class="animate-spin"></i> Memuat Galeri...</div>`;
   window.lucide?.createIcons?.();
 
-  // 2. Fetch Data dari Apps Script
   let driveItems = [];
   try {
     if(APPS_SCRIPT_URL.includes("exec")) {
       const res = await fetch(APPS_SCRIPT_URL);
       driveItems = await res.json();
     }
-  } catch (e) {
-    console.error("Gagal memuat Drive:", e);
-  }
+  } catch (e) { console.error("Drive Error:", e); }
 
-  // 3. Render HTML
-  track.innerHTML = ""; // Bersihkan loading
-  
-  // Jika kosong, tampilkan placeholder
+  track.innerHTML = "";
   if (driveItems.length === 0) {
-    track.innerHTML = `<div class="w-full text-center text-slate-400 py-10">Belum ada foto di folder Drive.</div>`;
+    track.innerHTML = `<div class="w-full text-center text-slate-400 py-10">Belum ada foto.</div>`;
     return;
   }
 
-  // Loop item dari Drive
   driveItems.forEach(item => {
     const isVideo = item.mime.includes("video");
     const el = document.createElement("figure");
     el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-white relative group border border-slate-100";
-    
     if (isVideo) {
-      // Tampilan Video (Iframe Preview)
-      el.innerHTML = `
-        <iframe src="${item.videoUrl}" class="w-full h-full" allow="autoplay" style="border:none;"></iframe>
-        <div class="absolute top-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1">
-          <i data-lucide="video" class="w-3 h-3"></i> Video
-        </div>
-      `;
+      el.innerHTML = `<iframe src="${item.videoUrl}" class="w-full h-full" allow="autoplay" style="border:none;"></iframe><div class="absolute top-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1"><i data-lucide="video" class="w-3 h-3"></i> Video</div>`;
     } else {
-      // Tampilan Gambar
-      el.innerHTML = `
-        <img src="${item.src}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="${item.name}">
-        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-          <p class="text-white text-xs truncate">${item.name}</p>
-        </div>
-      `;
+      el.innerHTML = `<img src="${item.src}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy"><div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity"><p class="text-white text-xs truncate">${item.name}</p></div>`;
     }
     track.appendChild(el);
   });
-  
   window.lucide?.createIcons?.();
 
-  // 4. Jalankan Logika Slide Otomatis
   let interval; const speed = 3500;
   const getW = () => track.firstElementChild ? track.firstElementChild.offsetWidth + 16 : 300;
-  
   const start = () => {
     clearInterval(interval);
     interval = setInterval(() => {
@@ -136,22 +109,72 @@ async function initSmartCarousel() {
       else track.scrollBy({ left: getW(), behavior: "smooth" });
     }, speed);
   };
-  
   const stop = () => clearInterval(interval);
   start();
-  
-  // Interaksi
-  track.addEventListener("touchstart", stop, { passive: true });
-  track.addEventListener("touchend", start, { passive: true });
-  track.addEventListener("mouseenter", stop); 
-  track.addEventListener("mouseleave", start);
-  
+  track.addEventListener("touchstart", stop, { passive: true }); track.addEventListener("touchend", start, { passive: true });
+  track.addEventListener("mouseenter", stop); track.addEventListener("mouseleave", start);
   const scroll = d => { stop(); track.scrollBy({ left: d * getW(), behavior: "smooth" }); start(); };
-  $("#kgPrev")?.addEventListener("click", ()=>scroll(-1)); 
-  $("#kgNext")?.addEventListener("click", ()=>scroll(1));
+  $("#kgPrev")?.addEventListener("click", ()=>scroll(-1)); $("#kgNext")?.addEventListener("click", ()=>scroll(1));
 }
 
-// ===== HADITS & HIJRI =====
+// ===== ZAKAT CALCULATOR (NEW) =====
+function initZakatCalculator() {
+  const openBtn = $("#openZakat");
+  const modal = $("#zakatModal");
+  const closeBtn = $("#closeZakat");
+  const calcBtn = $("#calcBtn");
+  
+  if(!openBtn || !modal) return;
+
+  const toggle = (show) => {
+    if(show) { modal.classList.remove("hidden"); modal.classList.add("flex"); }
+    else { modal.classList.add("hidden"); modal.classList.remove("flex"); }
+  };
+
+  openBtn.addEventListener("click", () => toggle(true));
+  closeBtn.addEventListener("click", () => toggle(false));
+  modal.addEventListener("click", (e) => { if(e.target===modal) toggle(false); });
+
+  calcBtn.addEventListener("click", () => {
+    // 1. Ambil Nilai
+    const goldPrice = Number($("#zGoldPrice")?.value || 0);
+    const cash = Number($("#zCash")?.value || 0);
+    const goldVal = Number($("#zGoldVal")?.value || 0);
+    const assets = Number($("#zAssets")?.value || 0);
+    const debt = Number($("#zDebt")?.value || 0);
+
+    // 2. Hitung Nishab (85 gram emas)
+    const nisab = goldPrice * 85;
+
+    // 3. Hitung Total Harta Bersih
+    const totalNet = (cash + goldVal + assets) - debt;
+
+    // 4. Logika Zakat
+    const resultBox = $("#zResultBox");
+    const statusEl = $("#zStatus");
+    const amountEl = $("#zFinalAmount");
+    
+    $("#zTotalNet").textContent = new Intl.NumberFormat('id-ID').format(totalNet);
+    $("#zNisab").textContent = new Intl.NumberFormat('id-ID').format(nisab);
+    
+    resultBox.classList.remove("hidden");
+
+    if (totalNet >= nisab) {
+      // Wajib Zakat
+      const zakat = totalNet * 0.025;
+      statusEl.textContent = "WAJIB ZAKAT";
+      statusEl.className = "font-extrabold text-lg text-emerald-600 mb-1";
+      amountEl.textContent = new Intl.NumberFormat('id-ID', {style:'currency', currency: (goldPrice > 100000 ? 'IDR' : 'JPY')}).format(zakat);
+    } else {
+      // Tidak Wajib
+      statusEl.textContent = "BELUM WAJIB";
+      statusEl.className = "font-extrabold text-lg text-slate-500 mb-1";
+      amountEl.textContent = "0";
+    }
+  });
+}
+
+// ===== UTILS LAINNYA =====
 const HADITHS = [
   { ar: "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ", id: "Sesungguhnya setiap amalan tergantung pada niatnya.", en: "Actions are but by intentions." },
   { ar: "خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ", id: "Sebaik-baik kalian adalah yang belajar Al-Qur'an dan mengajarkannya.", en: "The best of you learn Quran and teach it." }
@@ -168,7 +191,7 @@ function renderHijri() {
   el.textContent = new Intl.DateTimeFormat(loc + '-u-ca-islamic', {day:'numeric', month:'long', year:'numeric'}).format(new Date()).replace(/ AH| H/g, " H");
 }
 
-// ===== CSV PARSER =====
+// ===== CSV & ADMIN =====
 const isAdmin = () => new URLSearchParams(location.search).get("admin") === "1" && localStorage.getItem("is_admin") === "1";
 function setupAdmin(){
   if(isAdmin()) $$(".admin-only").forEach(e=>e.classList.remove("hidden"));
@@ -192,7 +215,6 @@ async function loadCsv(url) {
 }
 const getCsvUrl = (k) => isAdmin() && localStorage.getItem(`sheet_${k}`) || (k==="kajian"?DEFAULT_KAJIAN_CSV : k==="pengumuman"?DEFAULT_PENGUMUMAN_CSV : DEFAULT_ARTIKEL_CSV);
 
-// ===== CONTENT RENDER =====
 async function renderContent() {
   const mkCard = (x, isArt) => `
     <article class="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm hover:border-sky-200 flex flex-col h-full transition-all">
@@ -200,16 +222,10 @@ async function renderContent() {
       <p class="text-sm text-slate-600 mb-4 line-clamp-3 flex-grow">${(isArt?x.excerpt:x.desc)||""}</p>
       ${x.link ? `<a href="${x.link}" target="_blank" class="text-sm font-bold ${isArt?'text-fig-success':'text-fig-primary'} mt-auto flex items-center gap-1">${currentLang==='en'?'Read More':'Selengkapnya'} <i data-lucide="arrow-right" class="w-4 h-4"></i></a>` : ""}
     </article>`;
-    
   const pW = $("#wrapPengumuman"); if(pW) { const d = await loadCsv(getCsvUrl("pengumuman")); pW.innerHTML = d.length ? d.map(x=>mkCard(x,false)).join("") : ""; if(!d.length) $("#boardEmpty")?.classList.remove("hidden"); }
-  const aL = $("#artikelList"); if(aL) { 
-    const d = await loadCsv(getCsvUrl("artikel")); window.allArticles = d; 
-    const filter = (q) => { const f = d.filter(x=>(x.title||"").toLowerCase().includes(q)); aL.innerHTML = f.length ? f.map(x=>mkCard(x,true)).join("") : ""; $("#artikelEmpty")?.classList.toggle("hidden", f.length > 0); window.lucide?.createIcons?.(); };
-    filter(""); $("#searchArtikel")?.addEventListener("input", e=>filter(e.target.value.toLowerCase()));
-  }
+  const aL = $("#artikelList"); if(aL) { const d = await loadCsv(getCsvUrl("artikel")); window.allArticles = d; const filter = (q) => { const f = d.filter(x=>(x.title||"").toLowerCase().includes(q)); aL.innerHTML = f.length ? f.map(x=>mkCard(x,true)).join("") : ""; $("#artikelEmpty")?.classList.toggle("hidden", f.length > 0); window.lucide?.createIcons?.(); }; filter(""); $("#searchArtikel")?.addEventListener("input", e=>filter(e.target.value.toLowerCase())); }
 }
 
-// ===== UTILS =====
 async function renderSholat() {
   const g = $("#sholatGrid"); const l = $("#locLabel"); if(!g) return;
   g.innerHTML = `<p class="col-span-full text-center text-slate-400 py-4">...</p>`;
@@ -254,9 +270,9 @@ function boot() {
   $("#tabArtikel")?.addEventListener("click", () => { $("#wrapPengumuman").classList.add("hidden"); $("#wrapArtikel").classList.remove("hidden"); $("#tabs").classList.replace("tab-left","tab-right"); });
   if($("#year")) $("#year").textContent = new Date().getFullYear();
   
-  renderSholat(); renderContent(); initCountdown(); initDonasi(); 
-  initSmartCarousel(); // <= Sekarang mengambil dari Apps Script
-  initHeroSlider(); setupAdmin();
+  renderSholat(); renderContent(); initCountdown(); initDonasi(); initSmartCarousel(); initHeroSlider(); setupAdmin(); 
+  initZakatCalculator(); // <= Inisialisasi Kalkulator
+  
   const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add("active")}),{threshold:0.1});
   $$(".reveal").forEach(e=>obs.observe(e));
   window.lucide?.createIcons?.();
