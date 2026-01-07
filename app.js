@@ -6,7 +6,7 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 // ===== KONFIGURASI =====
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
 
-// 📸 DAFTAR FOTO DARI GITHUB
+// 📸 DAFTAR FOTO (GITHUB)
 const LOCAL_IMAGES = [
   "1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg", "6.jpeg", "7.jpeg","assets/foto/a.jpeg","assets/foto/b.jpeg","assets/foto/c.jpeg"
 ];
@@ -47,7 +47,7 @@ const TRANSLATIONS = {
     deadline_label: "Batas Waktu Wakaf (Tahap 1)",
     progress_title: "Progres Pembangunan", collected: "Terkumpul", needed: "Kekurangan",
     confirm_title: "Konfirmasi Donasi", confirm_desc: "Masukkan nominal yang telah ditransfer.",
-    or: "ATAU", btn_confirm: "Konfirmasi WA", footer_links: "Tautan", footer_follow: "Lokasi"
+    or: "ATAU", btn_confirm: "Konfirmasi via WA", footer_links: "Tautan", footer_follow: "Lokasi"
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
@@ -75,18 +75,33 @@ function setLang(lang) {
   renderHadith(); renderHijri(); 
 }
 
-// ===== SMART CAROUSEL (DIPERBAIKI: FIT GAMBAR & BACKGROUND) =====
+// ===== WIDGET DOA (NEW) =====
+const DAFTAR_DOA = [
+  { ar: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", id: "Ya Allah, bukalah untukku pintu-pintu rahmat-Mu. (Doa Masuk Masjid)" },
+  { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", id: "Ya Allah, sesungguhnya aku memohon keutamaan dari-Mu. (Doa Keluar Masjid)" },
+  { ar: "رَبِّ زِدْنِي عِلْمًا وَارْزُقْنِي فَهْمًا", id: "Ya Tuhanku, tambahkanlah ilmuku dan berilah aku karunia untuk dapat memahaminya." },
+  { ar: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ", id: "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat dan peliharalah kami dari siksa neraka." }
+];
+
+function initDoa() {
+  const elArab = $("#doaArab"), elArti = $("#doaArti"), btn = $("#btnGantiDoa");
+  if(!elArab) return;
+  const acakDoa = () => {
+    const r = DAFTAR_DOA[Math.floor(Math.random() * DAFTAR_DOA.length)];
+    elArab.textContent = r.ar; elArti.textContent = r.id;
+  };
+  acakDoa(); btn?.addEventListener("click", acakDoa);
+}
+
+// ===== SMART CAROUSEL =====
 async function initSmartCarousel() {
   const track = $("#kgTrack"); if (!track) return;
   track.innerHTML = "";
 
   LOCAL_IMAGES.forEach(src => {
     const el = document.createElement("figure");
-    // Gunakan 'object-contain' agar gambar pas di kotak, bg-slate-100 untuk background
     el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-slate-100 relative group border border-slate-200 flex items-center justify-center";
-    el.innerHTML = `
-      <img src="${src}" class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="Kegiatan">
-    `;
+    el.innerHTML = `<img src="${src}" class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="Kegiatan">`;
     track.appendChild(el);
   });
 
@@ -273,7 +288,7 @@ async function renderSholat() {
 }
 
 function initDonasi() {
-  // FORMAT UANG BERSIH (Tanpa JPJP)
+  // FORMAT UANG BERSIH
   const fmt = (n, c) => {
     const symbol = c === 'JPY' ? '¥' : 'Rp';
     return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n);
@@ -305,7 +320,7 @@ function initDonasi() {
   $("#donasiBtn")?.addEventListener("click", () => {
     const j = $("#inputJPY")?.value;
     const r = $("#inputIDR")?.value;
-    // Pesan WA Otomatis dengan Salam
+    // Pesan WA Otomatis
     const msg = `Assalamu'alaikum, saya ingin konfirmasi donasi untuk Masjid As-Sunnah Hekinan sebesar: ${j ? j + ' JPY' : ''} ${r ? r + ' IDR' : ''}. Mohon dicek.`;
     window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
   });
@@ -331,7 +346,7 @@ function boot() {
   
   renderSholat(); renderContent(); initCountdown(); initDonasi(); 
   initSmartCarousel(); 
-  initHeroSlider(); setupAdmin(); initZakatCalculator();
+  initHeroSlider(); setupAdmin(); initZakatCalculator(); initDoa();
   
   const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add("active")}),{threshold:0.1});
   $$(".reveal").forEach(e=>obs.observe(e));
