@@ -20,7 +20,9 @@
             success: "#10B981",
             surface: "#FFFFFF",
             text: "#0F172A",
-            soft: "#F0F9FF"
+            soft: "#F0F9FF",
+            empathy: "#FB7185", // IMPROVE: warna hangat untuk empati
+            warm: "#F97316", // IMPROVE: aksen hangat untuk urgency tanpa agresif
           }
         },
         borderRadius: { fig: "20px" },
@@ -35,186 +37,525 @@
 
 <style>
   html{scroll-behavior:smooth}
-  [data-lucide]{transition:transform .2s ease}
-  .card{transition:transform .15s ease,box-shadow .15s ease}
-  .card:hover{transform:translateY(-2px)}
-  #progressBar{transition:width 1s ease;background:linear-gradient(90deg,#0EA5E9,#38BDF8)}
-  .scrollx-snap{scroll-snap-type:x mandatory}
-  .snap-item{scroll-snap-align:start}
-  .hide-scrollbar{scrollbar-width:none;-ms-overflow-style:none}
-  .hide-scrollbar::-webkit-scrollbar{display:none}
-  .tab-slider{position:absolute;bottom:0;height:2px;width:50%;background:#0EA5E9;transition:transform .25s ease;pointer-events:none}
-  .tab-left .tab-slider{transform:translateX(0)}
-  .tab-right .tab-slider{transform:translateX(100%)}
+  [data-scrollbar]::-webkit-scrollbar{height:8px}
+  [data-scrollbar]::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:999px}
+
+  /* gradients + card softness */
+  .card{background:rgba(255,255,255,.86);backdrop-filter: blur(10px)}
+  .grad-blue{background:linear-gradient(135deg,#0EA5E9 0%,#38BDF8 100%)}
+  .grad-green{background:linear-gradient(135deg,#10B981 0%,#34D399 100%)}
+  .grad-amber{background:linear-gradient(135deg,#F59E0B 0%,#FBBF24 100%)}
+
+  /* tabs */
+  .tab-btn[aria-selected="true"]{background:#0EA5E9;color:#fff}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
+
+  /* IMPROVE: motion & trust micro-interactions (halus, tidak norak 😄) */
+  .reveal{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
+  .reveal.is-in{opacity:1;transform:none}
+  .cta-shine{position:relative;overflow:hidden}
+  .cta-shine:after{
+    content:"";
+    position:absolute;inset:-40% -60%;
+    background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,.35) 20%,transparent 45%);
+    transform:translateX(-60%) rotate(10deg);
+    animation:shine 6s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes shine{0%,70%{transform:translateX(-60%) rotate(10deg)} 100%{transform:translateX(60%) rotate(10deg)}}
+  .pulse-soft{animation:pulseSoft 2.4s ease-in-out infinite}
+  @keyframes pulseSoft{0%,100%{transform:scale(1)} 50%{transform:scale(1.02)}}
+  .badge{display:inline-flex;align-items:center;gap:.45rem;padding:.35rem .7rem;border:1px solid rgba(148,163,184,.55);border-radius:999px;background:rgba(255,255,255,.7);backdrop-filter:blur(8px)}
+  .shadow-soft-2{box-shadow:0 22px 60px -35px rgba(2,8,23,.35)}
+  .ring-focus:focus{outline:none;box-shadow:0 0 0 4px rgba(14,165,233,.18)}
 </style>
 </head>
 
 <body class="font-sans text-fig-text bg-gradient-to-b from-fig-soft to-white">
-<header class="sticky top-0 bg-white/80 backdrop-blur border-b border-slate-200 z-40">
-  <nav class="container mx-auto px-4 py-3 flex justify-between items-center">
-    <a href="#top" class="flex gap-3 items-center">
-      <img src="logohekinan.jpeg" class="h-10 w-auto rounded-[12px]" alt="Logo">
-      <span class="font-extrabold text-lg md:text-xl">Masjid As-Sunnah Hekinan</span>
-    </a>
-    <div class="flex items-center gap-3 text-sm">
-      <a href="#sholat" class="hover:text-fig-primaryDark flex items-center gap-1"><i data-lucide="moon-star" class="w-4 h-4"></i>Sholat</a>
-      <a href="#kegiatan" class="hover:text-fig-primaryDark flex items-center gap-1"><i data-lucide="images" class="w-4 h-4"></i>Kegiatan</a>
-      <a href="#info" class="hover:text-fig-primaryDark flex items-center gap-1"><i data-lucide="layers" class="w-4 h-4"></i>Info</a>
-      <a href="#donasi" class="rounded-[20px] bg-fig-primary hover:bg-fig-primaryDark text-white px-4 py-2 font-semibold shadow-soft">Donasi</a>
+<div id="top"></div> <!-- // FIX: anchor untuk link #top -->
 
-      <button id="openData" class="admin-only hidden rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark flex items-center gap-2">
-        <i data-lucide="settings-2" class="w-4 h-4"></i>⚙️ Data
+<!-- HEADER -->
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-slate-200">
+  <div class="container mx-auto px-4 py-3 flex items-center justify-between gap-4">
+    <a href="#top" class="flex items-center gap-3">
+      <img src="logohekinan.jpeg" alt="Masjid As-Sunnah Hekinan" class="h-9 w-9 rounded-xl object-cover"/>
+      <div class="leading-tight">
+        <p class="font-extrabold">Masjid As-Sunnah Hekinan</p>
+        <p class="text-xs text-slate-500">Jadwal • Kegiatan • Info • Donasi</p>
+      </div>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-2">
+      <a href="#sholat" class="px-4 py-2 rounded-fig hover:bg-fig-soft">Sholat</a>
+      <a href="#kegiatan" class="px-4 py-2 rounded-fig hover:bg-fig-soft">Kegiatan</a>
+      <a href="#info" class="px-4 py-2 rounded-fig hover:bg-fig-soft">Info</a>
+      <a href="#donasi" class="px-4 py-2 rounded-fig bg-fig-primary text-white hover:bg-fig-primaryDark shadow-soft">Donasi</a>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <button id="openData" class="admin-only hidden rounded-xl border border-slate-300 px-3 py-2 hover:border-fig-primary flex items-center gap-2">
+        <i data-lucide="settings-2" class="w-4 h-4"></i> Data
       </button>
+      <a href="#donasi" class="md:hidden rounded-xl bg-fig-primary text-white px-3 py-2 font-semibold shadow-soft">Donasi</a>
     </div>
-  </nav>
+  </div>
 </header>
 
+<!-- IMPROVE: HERO SECTION -->
+<section class="relative overflow-hidden">
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-fig-primary/15 blur-3xl"></div>
+    <div class="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-fig-empathy/15 blur-3xl"></div>
+  </div>
+
+  <div class="container mx-auto px-4 pt-10 pb-8 md:pt-14">
+    <div class="grid lg:grid-cols-12 gap-8 items-center">
+      <div class="lg:col-span-7">
+        <div class="inline-flex flex-wrap gap-2 mb-4">
+          <span class="badge"><i data-lucide="shield-check" class="w-4 h-4 text-fig-success"></i><span class="text-xs font-semibold">Amanah & terukur</span></span>
+          <span class="badge"><i data-lucide="receipt" class="w-4 h-4 text-fig-primary"></i><span class="text-xs font-semibold">Konfirmasi via WhatsApp</span></span>
+          <span class="badge"><i data-lucide="sparkles" class="w-4 h-4 text-fig-accent"></i><span class="text-xs font-semibold">Donasi cepat 1 menit</span></span>
+        </div>
+
+        <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">
+          Bantu operasional & program ilmu di
+          <span class="text-fig-primary">Masjid As-Sunnah Hekinan</span>
+        </h1>
+        <p class="mt-4 text-slate-700 max-w-2xl">
+          Donasi Anda menjaga masjid tetap hidup: listrik & air, perawatan fasilitas, dan kegiatan kajian.
+          Microcopy-nya simpel: <b>sedikit dari banyak orang = dampak besar</b>.
+        </p>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="#donasi" class="cta-shine pulse-soft rounded-[20px] bg-fig-primary hover:bg-fig-primaryDark text-white px-6 py-3 font-semibold shadow-soft inline-flex items-center gap-2">
+            <i data-lucide="heart-handshake" class="w-5 h-5"></i>Mulai Donasi
+          </a>
+          <a href="#info" class="rounded-[20px] bg-white hover:bg-slate-50 border border-slate-200 px-6 py-3 font-semibold inline-flex items-center gap-2">
+            <i data-lucide="newspaper" class="w-5 h-5 text-fig-accent"></i>Lihat Info & Artikel
+          </a>
+          <a href="#sholat" class="rounded-[20px] bg-white hover:bg-slate-50 border border-slate-200 px-6 py-3 font-semibold inline-flex items-center gap-2">
+            <i data-lucide="moon-star" class="w-5 h-5 text-fig-primary"></i>Cek Jadwal Sholat
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5">
+        <div class="rounded-[20px] bg-white border border-slate-200 p-6 shadow-soft-2 card" data-reveal>
+          <div class="flex items-start gap-3">
+            <div class="h-11 w-11 rounded-[14px] bg-fig-soft flex items-center justify-center">
+              <i data-lucide="hands" class="w-5 h-5 text-fig-primary"></i>
+            </div>
+            <div>
+              <p class="font-bold">Donasi paling “high impact” itu yang konsisten.</p>
+              <p class="text-sm text-slate-600 mt-1">Meski nominal kecil, rutinitasnya bikin operasional masjid stabil.</p>
+            </div>
+          </div>
+
+          <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="rounded-[16px] border border-slate-200 p-4">
+              <p class="text-sm font-bold flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-fig-success"></i>Alur jelas</p>
+              <p class="text-xs text-slate-600 mt-1">Pilih nominal → transfer → klik WhatsApp.</p>
+            </div>
+            <div class="rounded-[16px] border border-slate-200 p-4">
+              <p class="text-sm font-bold flex items-center gap-2"><i data-lucide="lock" class="w-4 h-4 text-fig-primary"></i>Privasi</p>
+              <p class="text-xs text-slate-600 mt-1">Data Anda tidak disimpan di website.</p>
+            </div>
+            <div class="rounded-[16px] border border-slate-200 p-4">
+              <p class="text-sm font-bold flex items-center gap-2"><i data-lucide="clock-3" class="w-4 h-4 text-fig-warm"></i>Urgency sehat</p>
+              <p id="monthCountdown" class="text-xs text-slate-600 mt-1">Memuat hitung mundur…</p>
+            </div>
+            <div class="rounded-[16px] border border-slate-200 p-4">
+              <p class="text-sm font-bold flex items-center gap-2"><i data-lucide="file-text" class="w-4 h-4 text-fig-accent"></i>Transparansi</p>
+              <p class="text-xs text-slate-600 mt-1">Update target & progres bisa ditampilkan di halaman ini.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- JADWAL SHOLAT -->
 <section id="sholat" class="container mx-auto px-4 py-10">
-  <div class="rounded-[20px] border border-slate-200 bg-white p-6 shadow-soft card">
-    <div class="flex justify-between items-center">
+  <div class="grid lg:grid-cols-12 gap-6 items-start">
+
+    <div class="lg:col-span-7">
+      <div class="rounded-fig border border-slate-200 p-6 shadow-soft bg-white card">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-extrabold flex items-center gap-2">
+              <i data-lucide="clock-3" class="text-fig-primary"></i> Jadwal Sholat
+            </h2>
+            <p class="text-sm text-slate-600 mt-1">Lokasi: Hekinan, Aichi (auto update)</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="refreshPrayer" class="rounded-xl border border-slate-300 px-3 py-2 hover:border-fig-primary text-sm flex items-center gap-2">
+              <i data-lucide="refresh-ccw" class="w-4 h-4"></i> Refresh
+            </button>
+          </div>
+        </div>
+
+        <div class="mt-6 grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="p-4 rounded-fig border border-slate-200">
+            <p class="text-sm text-slate-600">Subuh</p>
+            <p id="fajr" class="text-2xl font-bold">--:--</p>
+          </div>
+          <div class="p-4 rounded-fig border border-slate-200">
+            <p class="text-sm text-slate-600">Dzuhur</p>
+            <p id="dhuhr" class="text-2xl font-bold">--:--</p>
+          </div>
+          <div class="p-4 rounded-fig border border-slate-200">
+            <p class="text-sm text-slate-600">Ashar</p>
+            <p id="asr" class="text-2xl font-bold">--:--</p>
+          </div>
+          <div class="p-4 rounded-fig border border-slate-200">
+            <p class="text-sm text-slate-600">Maghrib</p>
+            <p id="maghrib" class="text-2xl font-bold">--:--</p>
+          </div>
+          <div class="p-4 rounded-fig border border-slate-200">
+            <p class="text-sm text-slate-600">Isya</p>
+            <p id="isha" class="text-2xl font-bold">--:--</p>
+          </div>
+          <div class="p-4 rounded-fig border border-slate-200 bg-fig-soft">
+            <p class="text-sm text-slate-600">Tanggal</p>
+            <p id="todayLabel" class="text-lg font-bold">--</p>
+            <p class="text-xs text-slate-500 mt-1">Sumber: API jadwal sholat</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SIDEBAR: lokasi + map -->
+    <div class="lg:col-span-5">
+      <div class="rounded-fig border border-slate-200 p-6 shadow-soft bg-white card">
+        <h3 class="text-lg font-extrabold flex items-center gap-2">
+          <i data-lucide="map-pin" class="text-fig-accent"></i> Lokasi Masjid
+        </h3>
+        <p class="text-sm text-slate-600 mt-2">
+          1 Chome-8 Dojoyamamachi, Hekinan, Aichi 447-0864
+        </p>
+        <a href="https://maps.app.goo.gl/4bkxC98j2pT1WcTi9" target="_blank" rel="noopener"
+           class="mt-4 inline-flex items-center gap-2 rounded-xl bg-fig-primary text-white px-4 py-2 hover:bg-fig-primaryDark shadow-soft">
+          <i data-lucide="navigation" class="w-4 h-4"></i> Buka Google Maps
+        </a>
+
+        <div class="mt-5 overflow-hidden rounded-fig border border-slate-200">
+          <iframe title="Google Maps" class="w-full h-56"
+            src="https://www.google.com/maps?q=Masjid%20As-Sunnah%20Hekinan&output=embed"
+            loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- KEGIATAN -->
+<section id="kegiatan" class="container mx-auto px-4 pb-10">
+  <div class="rounded-fig border border-slate-200 p-6 shadow-soft bg-white card">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
       <div>
-        <h2 class="text-2xl font-extrabold flex items-center gap-2"><i data-lucide="moon-star" class="text-fig-primary"></i>Jadwal Sholat</h2>
-        <p id="locLabel" class="text-sm text-slate-600 mt-1">Mendeteksi lokasi…</p>
+        <h2 class="text-2xl font-extrabold flex items-center gap-2">
+          <i data-lucide="calendar-check" class="text-fig-success"></i> Kegiatan
+        </h2>
+        <p class="text-sm text-slate-600 mt-1">Agenda kegiatan dan poster (jika ada).</p>
       </div>
-      <button id="refreshSholat" class="rounded-[12px] border border-slate-300 hover:border-fig-primaryDark px-3 py-2 text-sm flex items-center gap-2">
-        <i data-lucide="refresh-cw" class="w-4 h-4"></i>Perbarui
-      </button>
+      <a href="kegiatan.html" class="rounded-xl border border-slate-300 px-4 py-2 hover:border-fig-primary text-sm font-semibold inline-flex items-center gap-2">
+        <i data-lucide="external-link" class="w-4 h-4"></i>Lihat Semua
+      </a>
     </div>
-    <div id="sholatGrid" class="mt-6 grid grid-cols-2 md:grid-cols-6 gap-3"></div>
-    <p class="mt-3 text-xs text-slate-500">Waktu mengikuti zona perangkat Anda.</p>
+
+    <div id="kegiatanList" class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <p id="kegiatanEmpty" class="hidden text-sm text-slate-500 mt-4">Belum ada kegiatan.</p>
   </div>
 </section>
 
-<section id="kegiatan" class="bg-white border-y border-slate-200/70">
-  <div class="container mx-auto px-4 py-10">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-2"><i data-lucide="images" class="text-fig-accent"></i>Kegiatan</h2>
-      <div class="hidden md:flex items-center gap-2">
-        <button id="kgPrev" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">◀</button>
-        <button id="kgNext" class="rounded-[12px] border border-slate-300 px-3 py-2 hover:border-fig-primaryDark">▶</button>
+<!-- INFO -->
+<section id="info" class="container mx-auto px-4 pb-10">
+  <div class="rounded-fig border border-slate-200 p-6 shadow-soft bg-white card">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      <div>
+        <h2 class="text-2xl font-extrabold flex items-center gap-2">
+          <i data-lucide="megaphone" class="text-fig-accent"></i> Pengumuman & Artikel
+        </h2>
+        <p class="text-sm text-slate-600 mt-1">Update info, artikel, dan konten bermanfaat.</p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <a href="pengumuman.html" class="rounded-xl border border-slate-300 px-4 py-2 hover:border-fig-primary text-sm font-semibold inline-flex items-center gap-2">
+          <i data-lucide="bell" class="w-4 h-4"></i>Pengumuman
+        </a>
+        <a href="artikel.html" class="rounded-xl border border-slate-300 px-4 py-2 hover:border-fig-primary text-sm font-semibold inline-flex items-center gap-2">
+          <i data-lucide="newspaper" class="w-4 h-4"></i>Artikel
+        </a>
+        <a href="kajian.html" class="rounded-xl border border-slate-300 px-4 py-2 hover:border-fig-primary text-sm font-semibold inline-flex items-center gap-2">
+          <i data-lucide="video" class="w-4 h-4"></i>Kajian
+        </a>
       </div>
     </div>
 
-    <div class="relative">
-      <div id="kgTrack" class="scrollx-snap hide-scrollbar flex gap-4 overflow-x-auto rounded-[20px] border border-slate-200 p-4">
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
-          <img src="./1.jpeg" class="w-full h-full object-cover" alt="Kegiatan 1" loading="lazy">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
-          <img src="./2.jpeg" class="w-full h-full object-cover" alt="Kegiatan 2" loading="lazy">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
-          <img src="./3.jpeg" class="w-full h-full object-cover" alt="Kegiatan 3" loading="lazy">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-slate-100">
-          <img src="./4.jpeg" class="w-full h-full object-cover" alt="Kegiatan 4" loading="lazy">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-white flex items-center justify-center">
-          <img src="./5.jpeg" class="max-w-full max-h-full object-contain" alt="Poster">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-white flex items-center justify-center">
-          <img src="./6.jpeg" class="max-w-full max-h-full object-contain" alt="Poster">
-        </figure>
-        <figure class="snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[32%] h-64 md:h-80 rounded-[20px] overflow-hidden bg-white flex items-center justify-center">
-          <img src="./7.jpeg" class="max-w-full max-h-full object-contain" alt="Poster">
-        </figure>
+    <div class="mt-6">
+      <div class="flex gap-2 flex-wrap">
+        <button class="tab-btn px-4 py-2 rounded-xl border border-slate-200 text-sm font-semibold" aria-selected="true" data-tab="tabPengumuman">
+          Pengumuman
+        </button>
+        <button class="tab-btn px-4 py-2 rounded-xl border border-slate-200 text-sm font-semibold" aria-selected="false" data-tab="tabArtikel">
+          Artikel
+        </button>
       </div>
 
-      <div class="md:hidden absolute inset-y-0 left-0 flex items-center">
-        <button id="kgPrevMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow-soft">◀</button>
-      </div>
-      <div class="md:hidden absolute inset-y-0 right-0 flex items-center">
-        <button id="kgNextMob" class="m-2 rounded-full bg-white/80 hover:bg-white p-2 shadow-soft">▶</button>
-      </div>
-    </div>
-
-    <p class="mt-4 text-center text-xs text-slate-500">Geser kiri/kanan atau pakai tombol ◀ ▶.</p>
-  </div>
-</section>
-
-<section id="info" class="container mx-auto px-4 py-10">
-  <div id="tabs" class="relative tab-left">
-    <div class="flex gap-2">
-      <button id="tabPengumuman" class="flex-1 rounded-[12px] px-4 py-2 text-sm font-semibold border border-slate-300 bg-slate-50">Pengumuman</button>
-      <button id="tabArtikel" class="flex-1 rounded-[12px] px-4 py-2 text-sm font-semibold border border-slate-300 bg-slate-50">Artikel</button>
-    </div>
-    <span class="tab-slider"></span>
-  </div>
-
-  <div id="wrapPengumuman" class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-  <p id="boardEmpty" class="hidden text-sm text-slate-500">Belum ada pengumuman.</p>
-
-  <div id="wrapArtikel" class="mt-6 hidden">
-    <div class="flex justify-end">
-      <div class="relative">
-        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-        <input id="searchArtikel" placeholder="Cari artikel…" class="pl-9 pr-3 py-2 rounded-[12px] border border-slate-300 focus:border-fig-primary text-sm w-64 max-w-full">
-      </div>
-    </div>
-    <div id="artikelList" class="mt-4 grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    <p id="artikelEmpty" class="hidden text-sm text-slate-500">Belum ada artikel.</p>
-  </div>
-</section>
-
-<section id="donasi" class="container mx-auto px-4 pb-12">
-  <h2 class="text-2xl font-extrabold mb-4 flex items-center gap-2"><i data-lucide="heart-handshake" class="text-fig-success"></i>Progres Donasi</h2>
-
-  <div class="rounded-[20px] border border-slate-200 bg-fig-soft p-6 card shadow-soft">
-    <div class="flex justify-between items-end">
-      <div><p class="text-sm text-slate-600">Terkumpul</p><p id="terkumpulLabel" class="text-3xl font-bold">JPY 0</p></div>
-      <div class="text-right"><p class="text-sm text-slate-600">Target</p><p id="targetLabel" class="text-2xl font-bold">JPY 0</p></div>
-    </div>
-    <div class="mt-4 w-full bg-white rounded-full border border-slate-200 overflow-hidden"><div id="progressBar" class="h-3 w-0"></div></div>
-    <p class="mt-2 text-sm text-slate-600"><span id="percentLabel">0</span>% tercapai</p>
-
-    <div class="mt-6 rounded-[20px] border border-slate-200 bg-white p-5">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div>
-          <label class="text-sm font-semibold">Nominal (JPY)</label>
-          <input id="inputJPY" type="number" min="1000" step="1000" placeholder="Masukkan JPY"
-                 class="mt-1 w-full rounded-[12px] border border-slate-300 px-3 py-2 focus:border-fig-primary"/>
-          <div class="mt-2 flex flex-wrap gap-2 text-xs">
-            <button class="quick-jpy border rounded-[12px] px-3 py-1" data-v="1000">1.000</button>
-            <button class="quick-jpy border rounded-[12px] px-3 py-1" data-v="5000">5.000</button>
-            <button class="quick-jpy border rounded-[12px] px-3 py-1" data-v="10000">10.000</button>
-            <button class="quick-jpy border rounded-[12px] px-3 py-1" data-v="20000">20.000</button>
-          </div>
+      <div class="mt-5">
+        <div id="tabPengumuman" class="tab-panel active">
+          <div id="pengumumanList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+          <p id="pengumumanEmpty" class="hidden text-sm text-slate-500 mt-4">Belum ada pengumuman.</p>
         </div>
-        <div>
-          <label class="text-sm font-semibold">Nominal (IDR)</label>
-          <input id="inputIDR" type="number" min="10000" step="1000" placeholder="Masukkan IDR"
-                 class="mt-1 w-full rounded-[12px] border border-slate-300 px-3 py-2 focus:border-fig-primary"/>
-          <div class="mt-2 flex flex-wrap gap-2 text-xs">
-            <button class="quick-idr border rounded-[12px] px-3 py-1" data-v="50000">50.000</button>
-            <button class="quick-idr border rounded-[12px] px-3 py-1" data-v="100000">100.000</button>
-            <button class="quick-idr border rounded-[12px] px-3 py-1" data-v="200000">200.000</button>
-            <button class="quick-idr border rounded-[12px] px-3 py-1" data-v="500000">500.000</button>
-          </div>
+
+        <div id="tabArtikel" class="tab-panel">
+          <div id="artikelList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+          <p id="artikelEmpty" class="hidden text-sm text-slate-500 mt-4">Belum ada artikel.</p>
         </div>
       </div>
-      <button id="donasiBtn" class="mt-4 w-full rounded-[20px] bg-fig-primary hover:bg-fig-primaryDark text-white font-semibold px-6 py-3">
-        Konfirmasi via WhatsApp
-      </button>
-      <p class="mt-2 text-[11px] text-slate-500">Minimal 1.000 JPY atau 10.000 IDR.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DONASI (IMPROVE) -->
+<section id="donasi" class="container mx-auto px-4 pb-16">
+  <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-5">
+    <div>
+      <h2 class="text-2xl md:text-3xl font-extrabold flex items-center gap-2">
+        <i data-lucide="heart-handshake" class="text-fig-success"></i>Donasi / Infaq
+      </h2>
+      <p class="text-sm text-slate-700 mt-1 max-w-2xl">
+        Halaman ini didesain untuk <b>mengurangi keraguan</b> (trust) dan <b>memudahkan aksi</b> (conversion).
+        Karena tombol donasi yang malu-malu itu bukan strategi 😄
+      </p>
     </div>
 
-    <div class="mt-6 grid md:grid-cols-2 gap-6">
-      <div class="rounded-[20px] border border-slate-200 bg-white p-5">
-        <h3 class="font-bold">🇯🇵 Jepang — Yucho Bank</h3>
-        <p class="text-sm text-slate-700 mt-1">a.n. <b>Yoshimine Adelfa</b></p>
-        <p class="text-sm text-slate-700">No. Rekening: <span id="rekYucho">12160-00457031</span></p>
-        <button data-copy="#rekYucho" class="mt-2 text-xs border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark">Salin No. Rek</button>
+    <a href="#donasiForm" class="cta-shine rounded-[20px] bg-fig-primary hover:bg-fig-primaryDark text-white px-5 py-3 font-semibold shadow-soft inline-flex items-center gap-2 w-fit">
+      <i data-lucide="sparkles" class="w-5 h-5"></i>Saya Siap Donasi
+    </a>
+  </div>
+
+  <div class="grid lg:grid-cols-12 gap-6 items-start">
+    <!-- LEFT -->
+    <div class="lg:col-span-5 space-y-6">
+      <div class="rounded-[20px] border border-slate-200 bg-white p-6 shadow-soft card" data-reveal>
+        <h3 class="font-extrabold text-lg flex items-center gap-2">
+          <i data-lucide="book-heart" class="w-5 h-5 text-fig-empathy"></i>
+          Kenapa donasi ini penting?
+        </h3>
+        <p class="mt-3 text-slate-700 leading-relaxed">
+          Masjid bukan sekadar bangunan—ia tempat <b>shalat</b>, <b>belajar</b>, dan <b>menguatkan keluarga</b>.
+          Operasionalnya berjalan setiap hari: listrik, air, kebersihan, dan perawatan fasilitas.
+          Donasi Anda membantu semua itu tetap stabil, supaya program dakwah tidak tersendat.
+        </p>
+
+        <div class="mt-5 grid sm:grid-cols-2 gap-3">
+          <div class="rounded-[16px] bg-fig-soft border border-slate-200 p-4">
+            <p class="text-sm font-bold flex items-center gap-2"><i data-lucide="badge-check" class="w-4 h-4 text-fig-success"></i>Trust signal</p>
+            <p class="text-xs text-slate-700 mt-1">Rekening jelas + tombol salin + konfirmasi WA.</p>
+          </div>
+          <div class="rounded-[16px] bg-fig-soft border border-slate-200 p-4">
+            <p class="text-sm font-bold flex items-center gap-2"><i data-lucide="route" class="w-4 h-4 text-fig-primary"></i>Friction rendah</p>
+            <p class="text-xs text-slate-700 mt-1">Nominal cepat + CTA tunggal yang tegas.</p>
+          </div>
+        </div>
+
+        <div class="mt-5 rounded-[16px] border border-slate-200 p-4">
+          <p class="text-sm font-bold flex items-center gap-2">
+            <i data-lucide="timer" class="w-4 h-4 text-fig-warm"></i>Urgency yang sehat
+          </p>
+          <p class="text-xs text-slate-600 mt-1">
+            <span id="monthCountdown2">Memuat…</span> untuk mendekati akhir bulan (biasanya beban operasional terasa).
+          </p>
+        </div>
       </div>
-      <div class="rounded-[20px] border border-slate-200 bg-white p-5">
-        <h3 class="font-bold">🇮🇩 Indonesia — Bank Syariah Indonesia</h3>
-        <p class="text-sm text-slate-700 mt-1">a.n. <b>Hidayah Cinta Hekinan</b></p>
-        <p class="text-sm text-slate-700">No. Rekening: <span id="rekBsi">7329283768</span></p>
-        <button data-copy="#rekBsi" class="mt-2 text-xs border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark">Salin No. Rek</button>
+
+      <div class="rounded-[20px] border border-slate-200 bg-white p-6 shadow-soft card" data-reveal>
+        <h3 class="font-extrabold text-lg flex items-center gap-2">
+          <i data-lucide="pie-chart" class="w-5 h-5 text-fig-primary"></i>
+          Donasi Anda dipakai untuk apa?
+        </h3>
+        <p class="text-sm text-slate-600 mt-1">Berikut kategori umum (silakan sesuaikan dengan kebutuhan aktual masjid).</p>
+
+        <div class="mt-4 grid gap-3">
+          <div class="rounded-[16px] border border-slate-200 p-4 flex gap-3">
+            <div class="h-10 w-10 rounded-[14px] bg-fig-soft flex items-center justify-center">
+              <i data-lucide="zap" class="w-5 h-5 text-fig-accent"></i>
+            </div>
+            <div>
+              <p class="text-sm font-bold">Operasional harian</p>
+              <p class="text-xs text-slate-600 mt-1">Listrik, air, internet, kebersihan.</p>
+            </div>
+          </div>
+          <div class="rounded-[16px] border border-slate-200 p-4 flex gap-3">
+            <div class="h-10 w-10 rounded-[14px] bg-fig-soft flex items-center justify-center">
+              <i data-lucide="hammer" class="w-5 h-5 text-fig-primary"></i>
+            </div>
+            <div>
+              <p class="text-sm font-bold">Perawatan fasilitas</p>
+              <p class="text-xs text-slate-600 mt-1">Perbaikan ringan, karpet, sound, kebocoran, dll.</p>
+            </div>
+          </div>
+          <div class="rounded-[16px] border border-slate-200 p-4 flex gap-3">
+            <div class="h-10 w-10 rounded-[14px] bg-fig-soft flex items-center justify-center">
+              <i data-lucide="graduation-cap" class="w-5 h-5 text-fig-success"></i>
+            </div>
+            <div>
+              <p class="text-sm font-bold">Program ilmu</p>
+              <p class="text-xs text-slate-600 mt-1">Kajian, kelas, materi, dan kebutuhan penunjang.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5 flex flex-wrap gap-2">
+          <span class="badge"><i data-lucide="shield" class="w-4 h-4 text-fig-success"></i><span class="text-xs font-semibold">Amanah</span></span>
+          <span class="badge"><i data-lucide="eye" class="w-4 h-4 text-fig-primary"></i><span class="text-xs font-semibold">Transparan</span></span>
+          <span class="badge"><i data-lucide="hand-coins" class="w-4 h-4 text-fig-accent"></i><span class="text-xs font-semibold">Tepat sasaran</span></span>
+        </div>
+      </div>
+
+      <div class="rounded-[20px] border border-slate-200 bg-white p-6 shadow-soft card" data-reveal>
+        <h3 class="font-extrabold text-lg flex items-center gap-2">
+          <i data-lucide="message-circle-heart" class="w-5 h-5 text-fig-empathy"></i>
+          Testimoni (contoh — ganti dengan yang asli)
+        </h3>
+        <div class="mt-4 grid gap-3">
+          <figure class="rounded-[16px] border border-slate-200 p-4">
+            <blockquote class="text-sm text-slate-700 leading-relaxed">“Alhamdulillah, masjid ini jadi tempat kami belajar dan merasa punya keluarga di perantauan.”</blockquote>
+            <figcaption class="mt-2 text-xs text-slate-500">— Jamaah</figcaption>
+          </figure>
+          <figure class="rounded-[16px] border border-slate-200 p-4">
+            <blockquote class="text-sm text-slate-700 leading-relaxed">“Terima kasih untuk yang mendukung operasional. Hal-hal kecil seperti listrik dan kebersihan itu nyata biayanya.”</blockquote>
+            <figcaption class="mt-2 text-xs text-slate-500">— Pengurus</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="rounded-[20px] border border-slate-200 bg-white p-6 shadow-soft card" data-reveal>
+        <h3 class="font-extrabold text-lg flex items-center gap-2">
+          <i data-lucide="help-circle" class="w-5 h-5 text-fig-primary"></i>FAQ singkat
+        </h3>
+        <div class="mt-4 space-y-3 text-sm">
+          <details class="rounded-[16px] border border-slate-200 p-4">
+            <summary class="font-semibold cursor-pointer">Apakah saya akan dapat bukti?</summary>
+            <p class="mt-2 text-slate-700">Kirim bukti transfer via WhatsApp. Admin akan konfirmasi (dan jika perlu, dicatat untuk laporan internal).</p>
+          </details>
+          <details class="rounded-[16px] border border-slate-200 p-4">
+            <summary class="font-semibold cursor-pointer">Saya di Jepang / Indonesia, pilih yang mana?</summary>
+            <p class="mt-2 text-slate-700">Silakan pilih rekening yang paling mudah bagi Anda. Nilai donasi tetap bermanfaat untuk operasional masjid.</p>
+          </details>
+          <details class="rounded-[16px] border border-slate-200 p-4">
+            <summary class="font-semibold cursor-pointer">Apakah nominal kecil bermakna?</summary>
+            <p class="mt-2 text-slate-700">Ya. Yang bikin stabil adalah konsistensi. “Small but steady” itu KPI favorit operasional 😊</p>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="lg:col-span-7">
+      <div class="rounded-[20px] border border-slate-200 bg-fig-soft p-6 card shadow-soft" data-reveal>
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-sm text-slate-600">Progres donasi</p>
+            <p class="text-xs text-slate-500 mt-1">Update terakhir: <span id="donasiUpdatedAt">—</span></p>
+          </div>
+          <span class="badge"><i data-lucide="trending-up" class="w-4 h-4 text-fig-success"></i><span class="text-xs font-semibold">Real-time feel</span></span>
+        </div>
+
+        <div class="mt-4 flex justify-between items-end">
+          <div>
+            <p class="text-sm text-slate-600">Terkumpul</p>
+            <p id="terkumpulLabel" class="text-3xl font-bold">JPY 0</p>
+          </div>
+          <div class="text-right">
+            <p class="text-sm text-slate-600">Target</p>
+            <p id="targetLabel" class="text-2xl font-bold">JPY 0</p>
+          </div>
+        </div>
+
+        <div class="mt-4 w-full bg-white rounded-full border border-slate-200 overflow-hidden">
+          <div id="progressBar" class="h-3 w-0"></div>
+        </div>
+        <p class="mt-2 text-sm text-slate-600"><span id="percentLabel">0</span>% tercapai</p>
+
+        <div id="donasiForm" class="mt-6 rounded-[20px] border border-slate-200 bg-white p-5">
+          <p class="text-sm font-bold flex items-center gap-2">
+            <i data-lucide="mouse-pointer-click" class="w-4 h-4 text-fig-primary"></i>
+            Pilih nominal (biar cepat, tidak pakai drama)
+          </p>
+
+          <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="text-sm font-semibold">Nominal (JPY)</label>
+              <input id="inputJPY" type="number" min="1000" step="1000" placeholder="Masukkan JPY"
+                     class="ring-focus mt-1 w-full rounded-[12px] border border-slate-300 px-3 py-2 focus:border-fig-primary"/>
+              <div class="mt-2 flex flex-wrap gap-2 text-xs">
+                <button class="quick-jpy border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark" data-v="1000">1.000</button>
+                <button class="quick-jpy border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark" data-v="5000">5.000</button>
+                <button class="quick-jpy border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark" data-v="10000">10.000</button>
+                <button class="quick-jpy border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark" data-v="20000">20.000</button>
+              </div>
+            </div>
+
+            <div>
+              <label class="text-sm font-semibold">Nominal (IDR)</label>
+              <input id="inputIDR" type="number" min="10000" step="1000" placeholder="Masukkan IDR"
+                     class="ring-focus mt-1 w-full rounded-[12px] border border-slate-300 px-3 py-2 focus:border-fig-primary"/>
+              <div class="mt-2 flex flex-wrap gap-2 text-xs">
+                <button class="quick-idr border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark" data-v="50000">50.000</button>
+                <button class="quick-idr border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark" data-v="100000">100.000</button>
+                <button class="quick-idr border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark" data-v="200000">200.000</button>
+                <button class="quick-idr border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark" data-v="500000">500.000</button>
+              </div>
+            </div>
+          </div>
+
+          <button id="donasiBtn" class="cta-shine mt-4 w-full rounded-[20px] bg-fig-primary hover:bg-fig-primaryDark text-white font-semibold px-6 py-3">
+            Konfirmasi via WhatsApp
+          </button>
+          <p class="mt-2 text-[11px] text-slate-500">Minimal 1.000 JPY atau 10.000 IDR.</p>
+
+          <div class="mt-4 rounded-[16px] bg-fig-soft border border-slate-200 p-4 text-xs text-slate-700">
+            <p class="font-bold flex items-center gap-2"><i data-lucide="info" class="w-4 h-4 text-fig-primary"></i>Tips</p>
+            <p class="mt-1">Setelah transfer, kirim screenshot bukti transfer. Admin akan balas konfirmasi.</p>
+          </div>
+        </div>
+
+        <div class="mt-6 grid md:grid-cols-2 gap-6">
+          <div class="rounded-[20px] border border-slate-200 bg-white p-5">
+            <h3 class="font-bold">🇯🇵 Jepang — Yucho Bank</h3>
+            <p class="text-sm text-slate-700 mt-1">a.n. <b>Yoshimine Adelfa</b></p>
+            <p class="text-sm text-slate-700">No. Rekening: <span id="rekYucho">12160-00457031</span></p>
+            <button data-copy="#rekYucho" class="mt-2 text-xs border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark">Salin No. Rek</button>
+          </div>
+          <div class="rounded-[20px] border border-slate-200 bg-white p-5">
+            <h3 class="font-bold">🇮🇩 Indonesia — Bank Syariah Indonesia</h3>
+            <p class="text-sm text-slate-700 mt-1">a.n. <b>Hidayah Cinta Hekinan</b></p>
+            <p class="text-sm text-slate-700">No. Rekening: <span id="rekBsi">7329283768</span></p>
+            <button data-copy="#rekBsi" class="mt-2 text-xs border rounded-[12px] px-3 py-1 hover:border-fig-primaryDark">Salin No. Rek</button>
+          </div>
+        </div>
+
+        <div class="mt-6 rounded-[20px] border border-slate-200 bg-white p-5">
+          <h3 class="font-bold flex items-center gap-2"><i data-lucide="share-2" class="w-4 h-4 text-fig-accent"></i>Bantu sebar kebaikan (opsional)</h3>
+          <p class="text-sm text-slate-600 mt-1">Satu share ke grup keluarga/teman itu sering jadi “donasi kedua” yang paling besar dampaknya.</p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            <button id="copyShareText" class="text-sm rounded-[12px] border px-4 py-2 hover:border-fig-primaryDark">Salin teks ajakan</button>
+            <a href="#info" class="text-sm rounded-[12px] border px-4 py-2 hover:border-fig-primaryDark">Lihat kegiatan & info</a>
+          </div>
+          <p id="shareToast" class="hidden mt-2 text-xs text-fig-success">Teks ajakan tersalin ✅</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer class="bg-white">
   <div class="container mx-auto px-4 py-10">
     <div class="grid md:grid-cols-3 gap-8">
@@ -235,7 +576,7 @@
       </div>
       <div>
         <h3 class="font-bold">Ikuti Kami</h3>
-        <div class="mt-2 flex items-center gap-3">
+        <div class="mt-2 flex items-center gap-3 flex-wrap">
           <a href="https://www.instagram.com/assunnahhekinan" target="_blank" rel="noopener" class="flex items-center gap-2 px-3 py-2 rounded-[12px] border hover:border-fig-primaryDark text-sm">
             <i data-lucide="instagram" class="w-4 h-4"></i>Instagram
           </a>
@@ -255,6 +596,24 @@
   </div>
 </footer>
 
+<!-- IMPROVE: Sticky CTA bar (mobile-first, selalu ada jalan pulang ke tombol donasi) -->
+<div id="stickyDonateBar" class="fixed bottom-0 inset-x-0 z-40 md:hidden hidden">
+  <div class="mx-auto max-w-3xl px-4 pb-4">
+    <div class="rounded-[20px] bg-white/90 backdrop-blur border border-slate-200 shadow-soft p-3 flex items-center gap-3">
+      <div class="flex-1">
+        <p class="text-xs text-slate-500">Progres donasi</p>
+        <div class="mt-1 h-2 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+          <div id="progressBarMini" class="h-2 w-0" style="background:linear-gradient(90deg,#0EA5E9,#38BDF8)"></div>
+        </div>
+      </div>
+      <a href="#donasiForm" class="cta-shine rounded-[16px] bg-fig-primary hover:bg-fig-primaryDark text-white px-4 py-3 font-semibold shadow-soft inline-flex items-center gap-2">
+        <i data-lucide="heart" class="w-4 h-4"></i>Donasi
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- DATA MODAL -->
 <div id="dataModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
   <div class="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-soft">
     <div class="flex items-start justify-between gap-4">
@@ -267,15 +626,18 @@
     <div class="grid md:grid-cols-2 gap-4 mt-4">
       <div class="rounded-xl border border-slate-200 p-4">
         <label class="text-sm font-semibold">CSV Kajian</label>
-        <input id="csvKajian" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary">
+        <input id="csvKajian" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary"
+               value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv">
       </div>
       <div class="rounded-xl border border-slate-200 p-4">
         <label class="text-sm font-semibold">CSV Pengumuman</label>
-        <input id="csvPengumuman" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary">
+        <input id="csvPengumuman" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary"
+               value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv">
       </div>
       <div class="rounded-xl border border-slate-200 p-4">
         <label class="text-sm font-semibold">CSV Artikel</label>
-        <input id="csvArtikel" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary">
+        <input id="csvArtikel" type="url" class="mt-2 w-full rounded-xl border border-slate-300 px-3 py-2 focus:border-fig-primary"
+               value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv">
       </div>
     </div>
 
@@ -285,6 +647,96 @@
   </div>
 </div>
 
-<script type="module" src="./app.js"></script>
+<script type="module">
+  // FIX: boot() dipanggil seperti halaman lain (kajian/pengumuman/artikel),
+  // tapi dibuat aman dengan dynamic import supaya halaman tetap jalan walau app.js bermasalah.
+  const $ = (q, el=document) => el.querySelector(q);
+  const $$ = (q, el=document) => Array.from(el.querySelectorAll(q));
+
+  (async () => {
+    try {
+      const mod = await import('./app.js');
+      if (typeof mod.boot === 'function') mod.boot();
+      else if (typeof mod.default === 'function') mod.default();
+      else console.warn('[FIX] app.js ter-load tapi tidak ada boot().');
+    } catch (e) {
+      console.warn('[FIX] app.js gagal di-load. Halaman tetap menampilkan UI, tapi data dinamis mungkin tidak muncul.', e);
+    }
+
+    // IMPROVE: enhancement layer (tidak mengubah logika utama, hanya UX)
+    try { window.lucide?.createIcons?.(); } catch (e) {}
+
+    // 1) Scroll reveal (fade/slide halus)
+    const revealEls = $$('[data-reveal]');
+    if (revealEls.length) {
+      const io = new IntersectionObserver((entries) => {
+        for (const en of entries) {
+          if (en.isIntersecting) {
+            en.target.classList.add('is-in');
+            io.unobserve(en.target);
+          }
+        }
+      }, { threshold: 0.12 });
+      revealEls.forEach(el => { el.classList.add('reveal'); io.observe(el); });
+    }
+
+    // 2) Urgency sehat: hitung mundur ke akhir bulan (tanpa gimmick scarcity palsu)
+    const setCountdown = () => {
+      const now = new Date();
+      const end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+      const diff = end.getTime() - now.getTime();
+      const days = Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+      const label = days === 0 ? 'Hari ini terakhir bulan ini.' : `Sisa ${days} hari menuju akhir bulan ini.`;
+      const el1 = $('#monthCountdown'); if (el1) el1.textContent = label;
+      const el2 = $('#monthCountdown2'); if (el2) el2.textContent = label;
+    };
+    setCountdown();
+    setInterval(setCountdown, 60 * 1000);
+
+    // 3) Mini progress bar di sticky CTA (mengikuti progressBar utama)
+    const syncMiniProgress = () => {
+      const main = $('#progressBar');
+      const mini = $('#progressBarMini');
+      if (!main || !mini) return;
+      mini.style.width = main.style.width || (getComputedStyle(main).width);
+    };
+    syncMiniProgress();
+    const pb = $('#progressBar');
+    if (pb) {
+      const mo = new MutationObserver(syncMiniProgress);
+      mo.observe(pb, { attributes: true, attributeFilter: ['style','class'] });
+    }
+
+    // 4) Sticky donate bar: muncul saat section donasi belum terlihat (mobile only)
+    const sticky = $('#stickyDonateBar');
+    const donasi = $('#donasi');
+    if (sticky && donasi) {
+      const io2 = new IntersectionObserver((entries) => {
+        const inView = entries[0]?.isIntersecting;
+        sticky.classList.toggle('hidden', !!inView);
+      }, { threshold: 0.2 });
+      io2.observe(donasi);
+    }
+
+    // 5) Copy text ajakan (untuk share) — element baru, aman tidak konflik
+    const shareBtn = $('#copyShareText');
+    const toast = $('#shareToast');
+    if (shareBtn) {
+      shareBtn.addEventListener('click', async () => {
+        const msg = `Assalamu’alaikum. Mari dukung operasional & program ilmu di Masjid As-Sunnah Hekinan. Info & donasi: ${location.href.split('#')[0]}#donasi`;
+        try {
+          await navigator.clipboard.writeText(msg);
+          if (toast) {
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2500);
+          }
+        } catch (e) {
+          // fallback: tidak memblokir user
+          alert('Maaf, browser tidak mengizinkan copy otomatis. Silakan salin manual:\\n\\n' + msg);
+        }
+      });
+    }
+  })();
+</script>
 </body>
 </html>
