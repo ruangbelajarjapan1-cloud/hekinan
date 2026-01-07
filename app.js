@@ -36,8 +36,9 @@ const TRANSLATIONS = {
   id: {
     nav_sholat: "Jadwal Sholat", nav_kegiatan: "Kegiatan", nav_info: "Info", nav_donasi: "Donasi",
     hero_title_1: "Merajut Ukhuwah,", hero_title_2: "Membangun Peradaban.",
-    hero_desc: "Pusat kegiatan ibadah, pendidikan anak, dan silaturahmi masyarakat muslim di Aichi, Jepang.",
-    hero_btn_wakaf: "Ikut Wakaf", hero_btn_sholat: "Jadwal Sholat",
+    // UPDATE DESKRIPSI HERO ID
+    hero_desc: "Pusat kegiatan ibadah, pendidikan anak, dan silaturahmi masyarakat muslim Indonesia di sekitar Hekinan Aichi ken Jepang.",
+    hero_btn_wakaf: "Ikut Wakaf", hero_btn_sholat: "Jadwal Sholat", hero_btn_kiblat: "Arah Kiblat",
     hadith_label: "Mutiara Hadits",
     sholat_title: "Jadwal Sholat",
     gallery_title: "Galeri & Video", gallery_desc: "Dokumentasi kegiatan dan kebersamaan jamaah.",
@@ -47,13 +48,17 @@ const TRANSLATIONS = {
     deadline_label: "Batas Waktu Wakaf (Tahap 1)",
     progress_title: "Progres Pembangunan", collected: "Terkumpul", needed: "Kekurangan",
     confirm_title: "Konfirmasi Donasi", confirm_desc: "Masukkan nominal yang telah ditransfer.",
-    or: "ATAU", btn_confirm: "Konfirmasi via WA", footer_links: "Tautan", footer_follow: "Lokasi"
+    or: "ATAU", btn_confirm: "Konfirmasi via WA", footer_links: "Tautan", footer_follow: "Lokasi",
+    // TAMBAHAN TRANSLASI TOMBOL
+    btn_zakat: "Hitung Zakat",
+    btn_donate_now: "Donasi Sekarang"
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
     hero_title_1: "Weaving Brotherhood,", hero_title_2: "Building Civilization.",
-    hero_desc: "A center for worship, education, and gathering for the Muslim community in Aichi, Japan.",
-    hero_btn_wakaf: "Donate Now", hero_btn_sholat: "Prayer Times",
+    // UPDATE DESKRIPSI HERO EN
+    hero_desc: "Center for worship, children's education, and gathering for the Indonesian Muslim community around Hekinan, Aichi Prefecture, Japan.",
+    hero_btn_wakaf: "Donate Now", hero_btn_sholat: "Prayer Times", hero_btn_kiblat: "Qibla Finder",
     hadith_label: "Daily Hadith",
     sholat_title: "Prayer Times",
     gallery_title: "Gallery & Video", gallery_desc: "Documentation of community activities.",
@@ -63,7 +68,10 @@ const TRANSLATIONS = {
     deadline_label: "Donation Deadline",
     progress_title: "Construction Progress", collected: "Collected", needed: "Remaining",
     confirm_title: "Confirm Donation", confirm_desc: "Enter transferred amount.",
-    or: "OR", btn_confirm: "Confirm via WA", footer_links: "Links", footer_follow: "Location"
+    or: "OR", btn_confirm: "Confirm via WA", footer_links: "Links", footer_follow: "Location",
+    // TAMBAHAN TRANSLASI TOMBOL EN
+    btn_zakat: "Zakat Calculator",
+    btn_donate_now: "Donate Now"
   }
 };
 let currentLang = localStorage.getItem("lang") || "id";
@@ -75,7 +83,7 @@ function setLang(lang) {
   renderHadith(); renderHijri(); 
 }
 
-// ===== WIDGET DOA (NEW) =====
+// ===== WIDGET DOA =====
 const DAFTAR_DOA = [
   { ar: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", id: "Ya Allah, bukalah untukku pintu-pintu rahmat-Mu. (Doa Masuk Masjid)" },
   { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", id: "Ya Allah, sesungguhnya aku memohon keutamaan dari-Mu. (Doa Keluar Masjid)" },
