@@ -34,7 +34,7 @@ const TRANSLATIONS = {
   id: {
     nav_sholat: "Jadwal Sholat", nav_kegiatan: "Kegiatan", nav_info: "Info", nav_donasi: "Donasi",
     hero_title_1: "Merajut Ukhuwah,", hero_title_2: "Membangun Peradaban.",
-    hero_desc: "Pusat kegiatan ibadah, pendidikan anak, dan silaturahmi masyarakat muslim di Aichi ken dan sekitarnya",
+    hero_desc: "Pusat kegiatan ibadah, pendidikan anak, dan silaturahmi masyarakat muslim di Aichi, Jepang.",
     hero_btn_wakaf: "Ikut Wakaf", hero_btn_sholat: "Jadwal Sholat",
     hadith_label: "Mutiara Hadits",
     sholat_title: "Jadwal Sholat",
@@ -70,12 +70,10 @@ function setLang(lang) {
   const t = TRANSLATIONS[lang];
   $$("[data-i18n]").forEach(el => { const k = el.getAttribute("data-i18n"); if(t[k]) el.textContent = t[k]; });
   $$("[data-placeholder]").forEach(el => { const k = el.getAttribute("data-placeholder"); if(t[k]) el.placeholder = t[k]; });
-  renderHadith(); 
-  // Panggil ulang tanpa data API (akan pakai cache atau fallback sementara)
-  renderHijri(); 
+  renderHadith(); renderHijri(); 
 }
 
-// ===== SMART CAROUSEL (GALERI) =====
+// ===== SMART CAROUSEL (GALERI DRIVE FIX) =====
 async function initSmartCarousel() {
   const track = $("#kgTrack"); if (!track) return;
   track.innerHTML = `<div class="flex items-center justify-center w-full h-64 text-slate-400 gap-2"><i data-lucide="loader" class="animate-spin"></i> Memuat Galeri...</div>`;
@@ -92,7 +90,6 @@ async function initSmartCarousel() {
   track.innerHTML = "";
   if (!driveItems || driveItems.length === 0) {
     track.innerHTML = `<div class="w-full text-center text-slate-400 py-10 text-sm">Galeri kosong atau Loading...</div>`;
-    // Jangan return, biarkan kosong agar layout tetap rapi
   } else {
     driveItems.forEach(item => {
       const isVideo = item.mime.includes("video");
@@ -100,14 +97,23 @@ async function initSmartCarousel() {
       el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-white relative group border border-slate-100";
       
       if (isVideo) {
+        // VIDEO: Tetap pakai Iframe Preview (Sudah OK)
         el.innerHTML = `
           <iframe src="${item.videoUrl}" class="w-full h-full" allow="autoplay" style="border:none;" loading="lazy"></iframe>
           <div class="absolute top-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1"><i data-lucide="video" class="w-3 h-3"></i> Video</div>
         `;
       } else {
+        // GAMBAR: FIX MENGGUNAKAN DIRECT LINK BY ID
+        // Kita abaikan item.src dan pakai item.id
+        const directLink = `https://drive.google.com/uc?export=view&id=${item.id}`;
+        
         el.innerHTML = `
-          <img src="${item.src}" referrerpolicy="no-referrer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="${item.name}"
-          onerror="this.parentElement.innerHTML='<div class=\\'flex flex-col items-center justify-center h-full text-slate-400 text-xs gap-1\\'><i data-lucide=\\'image-off\\' class=\\'w-6 h-6\\'></i>Gagal Muat</div>'; window.lucide?.createIcons?.();">
+          <img src="${directLink}" 
+               referrerpolicy="no-referrer" 
+               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+               loading="lazy" 
+               alt="${item.name}"
+               onerror="this.parentElement.innerHTML='<div class=\\'flex flex-col items-center justify-center h-full text-slate-400 text-xs gap-1\\'><i data-lucide=\\'image-off\\' class=\\'w-6 h-6\\'></i>Gagal Muat</div>'; window.lucide?.createIcons?.();">
           <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
             <p class="text-white text-xs truncate">${item.name}</p>
           </div>
@@ -206,35 +212,26 @@ function renderHadith() {
   $("#hadithRiwayat").textContent = "Hadits Shahih";
 }
 
-// ===== HIJRI DATE (DIPERBAIKI) =====
-let globalHijriData = null; // Menyimpan data dari API
+// ===== HIJRI DATE (API INTEGRATED) =====
+let globalHijriData = null; 
 
 function renderHijri(apiData = null) {
   const el = $("#hijriDate"); if (!el) return;
-
-  // Jika ada data baru dari API, simpan ke global
   if (apiData) globalHijriData = apiData;
 
-  // PRIORITAS 1: Gunakan Data API (Paling Akurat)
   if (globalHijriData) {
     const d = globalHijriData.day;
-    const m = globalHijriData.month.number - 1; // API mulai dari 1, Array dari 0
+    const m = globalHijriData.month.number - 1; 
     const y = globalHijriData.year;
-    
-    // Gunakan nama bulan Indonesia jika bahasa ID
     const mName = currentLang === 'id' ? HIJRI_MONTHS_ID[m] : globalHijriData.month.en;
-    
     el.textContent = `${d} ${mName} ${y} H`;
     return;
   }
 
-  // PRIORITAS 2: Fallback ke hitungan lokal (Umm al-Qura) jika API belum load
   const loc = currentLang === 'en' ? 'en-US' : 'id-ID';
   try {
-    // Mencoba format Umm al-Qura (lebih akurat daripada default)
     el.textContent = new Intl.DateTimeFormat(loc + '-u-ca-islamic-umalqura', {day:'numeric', month:'long', year:'numeric'}).format(new Date()).replace(/ AH| H/g, " H");
   } catch (e) {
-    // Fallback terakhir (standard islamic)
     el.textContent = new Intl.DateTimeFormat(loc + '-u-ca-islamic', {day:'numeric', month:'long', year:'numeric'}).format(new Date()).replace(/ AH| H/g, " H");
   }
 }
@@ -274,7 +271,6 @@ async function renderContent() {
   const aL = $("#artikelList"); if(aL) { const d = await loadCsv(getCsvUrl("artikel")); window.allArticles = d; const filter = (q) => { const f = d.filter(x=>(x.title||"").toLowerCase().includes(q)); aL.innerHTML = f.length ? f.map(x=>mkCard(x,true)).join("") : ""; $("#artikelEmpty")?.classList.toggle("hidden", f.length > 0); window.lucide?.createIcons?.(); }; filter(""); $("#searchArtikel")?.addEventListener("input", e=>filter(e.target.value.toLowerCase())); }
 }
 
-// ===== SHOLAT & HIJRI API =====
 async function renderSholat() {
   const g = $("#sholatGrid"); const l = $("#locLabel"); if(!g) return;
   g.innerHTML = `<p class="col-span-full text-center text-slate-400 py-4">...</p>`;
@@ -284,12 +280,9 @@ async function renderSholat() {
   
   try {
     const d = await fetch(`https://api.aladhan.com/v1/timings?latitude=${p.lat}&longitude=${p.lon}&method=2`).then(r=>r.json());
-    
-    // UPDATE HIJRI DARI API DISINI
     if (d.data && d.data.date && d.data.date.hijri) {
       renderHijri(d.data.date.hijri);
     }
-
     const m = { Fajr:["Subuh","sunrise"], Sunrise:["Syuruq","sun"], Dhuhr:["Dzuhur","sun"], Asr:["Ashar","cloud-sun"], Maghrib:["Maghrib","moon"], Isha:["Isya","star"] };
     g.innerHTML=""; Object.keys(m).forEach(k => {
       g.innerHTML += `<div class="rounded-2xl border border-slate-100 p-4 text-center bg-slate-50 hover:bg-white hover:border-sky-200 transition-all"><i data-lucide="${m[k][1]}" class="w-5 h-5 mx-auto text-slate-400 mb-2"></i><div class="text-[10px] uppercase font-bold text-slate-400">${m[k][0]}</div><div class="mt-1 text-lg font-extrabold text-slate-800">${d.data.timings[k]}</div></div>`;
@@ -326,7 +319,10 @@ function boot() {
   $("#tabArtikel")?.addEventListener("click", () => { $("#wrapPengumuman").classList.add("hidden"); $("#wrapArtikel").classList.remove("hidden"); $("#tabs").classList.replace("tab-left","tab-right"); });
   if($("#year")) $("#year").textContent = new Date().getFullYear();
   
-  renderSholat(); renderContent(); initCountdown(); initDonasi(); initSmartCarousel(); initHeroSlider(); setupAdmin(); initZakatCalculator();
+  renderSholat(); renderContent(); initCountdown(); initDonasi(); 
+  initSmartCarousel(); 
+  initHeroSlider(); setupAdmin(); initZakatCalculator();
+  
   const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add("active")}),{threshold:0.1});
   $$(".reveal").forEach(e=>obs.observe(e));
   window.lucide?.createIcons?.();
