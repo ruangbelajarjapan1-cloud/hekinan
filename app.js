@@ -8,7 +8,7 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZW
 
 // 📸 DAFTAR FOTO DARI GITHUB
 const LOCAL_IMAGES = [
-  "1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg", "6.jpeg", "7.jpeg","assets/foto/a.jpeg","assets/foto/b.jpeg","assets/foto/a.jpeg"
+  "1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg", "6.jpeg", "7.jpeg","assets/foto/a.jpeg","assets/foto/b.jpeg","assets/foto/c.jpeg"
 ];
 
 const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
@@ -75,18 +75,17 @@ function setLang(lang) {
   renderHadith(); renderHijri(); 
 }
 
-// ===== SMART CAROUSEL (DIPERBAIKI: FIT GAMBAR) =====
+// ===== SMART CAROUSEL (DIPERBAIKI: FIT GAMBAR & BACKGROUND) =====
 async function initSmartCarousel() {
   const track = $("#kgTrack"); if (!track) return;
   track.innerHTML = "";
 
   LOCAL_IMAGES.forEach(src => {
     const el = document.createElement("figure");
-    // Gunakan 'object-contain' agar gambar tidak terpotong (fit)
-    // Tambahkan bg-gray-100 agar space kosong tidak terlalu putih
-    el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-gray-100 relative group border border-slate-200";
+    // Gunakan 'object-contain' agar gambar pas di kotak, bg-slate-100 untuk background
+    el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-slate-100 relative group border border-slate-200 flex items-center justify-center";
     el.innerHTML = `
-      <img src="${src}" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="Kegiatan">
+      <img src="${src}" class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="Kegiatan">
     `;
     track.appendChild(el);
   });
@@ -286,7 +285,8 @@ function initDonasi() {
 
   if ($("#targetLabel")) $("#targetLabel").textContent = fmt(T, "JPY");
   if ($("#terkumpulLabel")) $("#terkumpulLabel").textContent = fmt(C, "JPY");
-  if ($("#kekuranganLabel")) $("#kekuranganLabel").textContent = new Intl.NumberFormat('id-ID').format(K);
+  // Perbaikan: Tambahkan simbol pada kekurangan
+  if ($("#kekuranganLabel")) $("#kekuranganLabel").textContent = fmt(K, "JPY");
   
   const obs = new IntersectionObserver(e => {
     e.forEach(x => {
@@ -305,7 +305,7 @@ function initDonasi() {
   $("#donasiBtn")?.addEventListener("click", () => {
     const j = $("#inputJPY")?.value;
     const r = $("#inputIDR")?.value;
-    // Pesan WA Otomatis
+    // Pesan WA Otomatis dengan Salam
     const msg = `Assalamu'alaikum, saya ingin konfirmasi donasi untuk Masjid As-Sunnah Hekinan sebesar: ${j ? j + ' JPY' : ''} ${r ? r + ' IDR' : ''}. Mohon dicek.`;
     window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
   });
