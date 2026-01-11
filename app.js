@@ -3,12 +3,19 @@
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
-// ===== KONFIGURASI =====
+// ==========================================
+// 💰 KONFIGURASI DONASI (UBAH DISINI SAJA)
+// ==========================================
+const TARGET_DONASI = 42000000;       // Target Total (42 Juta Yen)
+const TERKUMPUL_SAAT_INI = 15407179;  // Update angka ini jika ada donasi masuk!
+
+// ===== KONFIGURASI LAINNYA =====
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
 
 // 📸 DAFTAR FOTO (GITHUB)
 const LOCAL_IMAGES = [
-  "1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg", "6.jpeg", "7.jpeg","assets/foto/a.jpeg","assets/foto/b.jpeg","assets/foto/c.jpeg"
+  "1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg", "6.jpeg", "7.jpeg",
+  "assets/foto/a.jpeg", "assets/foto/b.jpeg", "assets/foto/c.jpeg"
 ];
 
 const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
@@ -36,7 +43,6 @@ const TRANSLATIONS = {
   id: {
     nav_sholat: "Jadwal Sholat", nav_kegiatan: "Kegiatan", nav_info: "Info", nav_donasi: "Donasi",
     hero_title_1: "Merajut Ukhuwah,", hero_title_2: "Membangun Peradaban.",
-    // UPDATE DESKRIPSI HERO ID
     hero_desc: "Pusat kegiatan ibadah, pendidikan anak, dan silaturahmi masyarakat muslim Indonesia di sekitar Hekinan Aichi ken Jepang.",
     hero_btn_wakaf: "Ikut Wakaf", hero_btn_sholat: "Jadwal Sholat", hero_btn_kiblat: "Arah Kiblat",
     hadith_label: "Mutiara Hadits",
@@ -49,14 +55,12 @@ const TRANSLATIONS = {
     progress_title: "Progres Pembangunan", collected: "Terkumpul", needed: "Kekurangan",
     confirm_title: "Konfirmasi Donasi", confirm_desc: "Masukkan nominal yang telah ditransfer.",
     or: "ATAU", btn_confirm: "Konfirmasi via WA", footer_links: "Tautan", footer_follow: "Lokasi",
-    // TAMBAHAN TRANSLASI TOMBOL
     btn_zakat: "Hitung Zakat",
     btn_donate_now: "Donasi Sekarang"
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
     hero_title_1: "Weaving Brotherhood,", hero_title_2: "Building Civilization.",
-    // UPDATE DESKRIPSI HERO EN
     hero_desc: "Center for worship, children's education, and gathering for the Indonesian Muslim community around Hekinan, Aichi Prefecture, Japan.",
     hero_btn_wakaf: "Donate Now", hero_btn_sholat: "Prayer Times", hero_btn_kiblat: "Qibla Finder",
     hadith_label: "Daily Hadith",
@@ -69,7 +73,6 @@ const TRANSLATIONS = {
     progress_title: "Construction Progress", collected: "Collected", needed: "Remaining",
     confirm_title: "Confirm Donation", confirm_desc: "Enter transferred amount.",
     or: "OR", btn_confirm: "Confirm via WA", footer_links: "Links", footer_follow: "Location",
-    // TAMBAHAN TRANSLASI TOMBOL EN
     btn_zakat: "Zakat Calculator",
     btn_donate_now: "Donate Now"
   }
@@ -302,13 +305,15 @@ function initDonasi() {
     return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n);
   };
 
-  const T = 42000000;
-  const K = 33800000;
-  const C = T - K;
+  // ============================================
+  // LOGIKA HITUNGAN BARU (LEBIH MUDAH)
+  // ============================================
+  const T = TARGET_DONASI;
+  const C = TERKUMPUL_SAAT_INI;
+  const K = T - C; // Kekurangan dihitung otomatis
 
   if ($("#targetLabel")) $("#targetLabel").textContent = fmt(T, "JPY");
   if ($("#terkumpulLabel")) $("#terkumpulLabel").textContent = fmt(C, "JPY");
-  // Perbaikan: Tambahkan simbol pada kekurangan
   if ($("#kekuranganLabel")) $("#kekuranganLabel").textContent = fmt(K, "JPY");
   
   const obs = new IntersectionObserver(e => {
