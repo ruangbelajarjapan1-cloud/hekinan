@@ -14,9 +14,9 @@ const TERKUMPUL_SAAT_INI = 15407179;  // Update angka ini jika ada donasi masuk!
 // ==========================================
 // Contoh Link: https://www.youtube.com/watch?v=VIDEO_ID
 const YOUTUBE_VIDEOS = [
-  "jfKfPfyJRdk", // Ganti dengan ID video kajian terbaru
-  "dQw4w9WgXcQ", // Ganti dengan ID video lain
-  "LXb3EKWsInQ"  // Ganti dengan ID video lain
+  "H0rfdiFnNSY", // Ganti dengan ID video kajian terbaru
+  "oQjqwQb6atA", // Ganti dengan ID video lain
+  "Tv73kEGTrEA"  // Ganti dengan ID video lain
 ];
 
 // ===== KONFIGURASI LAINNYA =====
