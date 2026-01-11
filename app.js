@@ -9,6 +9,16 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const TARGET_DONASI = 42000000;       // Target Total (42 Juta Yen)
 const TERKUMPUL_SAAT_INI = 15407179;  // Update angka ini jika ada donasi masuk!
 
+// ==========================================
+// 🎥 DAFTAR VIDEO YOUTUBE (Isi ID Video Saja)
+// ==========================================
+// Contoh Link: https://www.youtube.com/watch?v=VIDEO_ID
+const YOUTUBE_VIDEOS = [
+  "jfKfPfyJRdk", // Ganti dengan ID video kajian terbaru
+  "dQw4w9WgXcQ", // Ganti dengan ID video lain
+  "LXb3EKWsInQ"  // Ganti dengan ID video lain
+];
+
 // ===== KONFIGURASI LAINNYA =====
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
 
@@ -47,7 +57,7 @@ const TRANSLATIONS = {
     hero_btn_wakaf: "Ikut Wakaf", hero_btn_sholat: "Jadwal Sholat", hero_btn_kiblat: "Arah Kiblat",
     hadith_label: "Mutiara Hadits",
     sholat_title: "Jadwal Sholat",
-    gallery_title: "Galeri & Video", gallery_desc: "Dokumentasi kegiatan dan kebersamaan jamaah.",
+    gallery_title: "Galeri Foto", gallery_desc: "Dokumentasi kegiatan dan kebersamaan jamaah.",
     tab_announcement: "Pengumuman", tab_article: "Artikel & Faedah",
     empty_data: "Belum ada data terbaru.", empty_search: "Tidak ditemukan.",
     donasi_badge: "Peluang Amal Jariyah", donasi_title: "Investasi Kekal Akhirat",
@@ -65,7 +75,7 @@ const TRANSLATIONS = {
     hero_btn_wakaf: "Donate Now", hero_btn_sholat: "Prayer Times", hero_btn_kiblat: "Qibla Finder",
     hadith_label: "Daily Hadith",
     sholat_title: "Prayer Times",
-    gallery_title: "Gallery & Video", gallery_desc: "Documentation of community activities.",
+    gallery_title: "Photo Gallery", gallery_desc: "Documentation of community activities.",
     tab_announcement: "Announcements", tab_article: "Articles",
     empty_data: "No updates.", empty_search: "Not found.",
     donasi_badge: "Charity Opportunity", donasi_title: "Invest for Hereafter",
@@ -86,6 +96,25 @@ function setLang(lang) {
   renderHadith(); renderHijri(); 
 }
 
+// ===== RENDER VIDEO KAJIAN (YOUTUBE) =====
+function initVideoKajian() {
+  const grid = $("#videoGrid");
+  if (!grid || !YOUTUBE_VIDEOS.length) return;
+  
+  grid.innerHTML = ""; // Clear loading text
+  
+  YOUTUBE_VIDEOS.forEach(id => {
+    const card = document.createElement("div");
+    card.className = "rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white group";
+    card.innerHTML = `
+      <div class="relative w-full pt-[56.25%] bg-black">
+        <iframe src="https://www.youtube.com/embed/${id}" title="Video Kajian" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
 // ===== WIDGET DOA =====
 const DAFTAR_DOA = [
   { ar: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", id: "Ya Allah, bukalah untukku pintu-pintu rahmat-Mu. (Doa Masuk Masjid)" },
@@ -104,7 +133,7 @@ function initDoa() {
   acakDoa(); btn?.addEventListener("click", acakDoa);
 }
 
-// ===== SMART CAROUSEL =====
+// ===== SMART CAROUSEL (FOTO & VIDEO HYBRID) =====
 async function initSmartCarousel() {
   const track = $("#kgTrack"); if (!track) return;
   track.innerHTML = "";
@@ -116,6 +145,7 @@ async function initSmartCarousel() {
     track.appendChild(el);
   });
 
+  // Tetap ambil video dari Drive jika ada, untuk backup
   try {
     const res = await fetch(APPS_SCRIPT_URL);
     const driveItems = await res.json();
@@ -125,11 +155,12 @@ async function initSmartCarousel() {
       el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-black relative group border border-slate-100";
       el.innerHTML = `
         <iframe src="${item.videoUrl}" class="w-full h-full" allow="autoplay" style="border:none;" loading="lazy"></iframe>
-        <div class="absolute top-2 right-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1 font-bold z-10"><i data-lucide="youtube" class="w-3 h-3"></i> Video</div>
+        <div class="absolute top-2 right-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1 font-bold z-10"><i data-lucide="video" class="w-3 h-3"></i> Drive</div>
       `;
       track.appendChild(el);
     });
-  } catch (e) { console.log("Video empty/error."); }
+  } catch (e) { console.log("Video Drive empty/error."); }
+  
   window.lucide?.createIcons?.();
 
   let interval; const speed = 4000;
@@ -359,6 +390,7 @@ function boot() {
   
   renderSholat(); renderContent(); initCountdown(); initDonasi(); 
   initSmartCarousel(); 
+  initVideoKajian(); // RENDER YOUTUBE
   initHeroSlider(); setupAdmin(); initZakatCalculator(); initDoa();
   
   const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add("active")}),{threshold:0.1});
