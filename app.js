@@ -12,11 +12,9 @@ const TERKUMPUL_SAAT_INI = 15407179;
 // ==========================================
 // 🎥 VIDEO AJAKAN DONASI (VIDEO UTAMA)
 // ==========================================
-// Bisa isi 1 video atau lebih. Pisahkan dengan koma.
 const VIDEO_DONASI_LIST = [
-  "belum ditampilkan",  // Video Utama 1
-  "belum ditampilkan",  // Video Utama 2 (Contoh)
-  // "ID_VIDEO_LAIN", 
+  "belum rilis", 
+  "belum rilis"
 ];
 
 // ==========================================
@@ -62,7 +60,7 @@ const TRANSLATIONS = {
     hero_btn_wakaf: "Ikut Wakaf", hero_btn_sholat: "Jadwal Sholat", hero_btn_kiblat: "Arah Kiblat",
     hadith_label: "Mutiara Hadits",
     sholat_title: "Jadwal Sholat",
-    gallery_title: "Galeri & Video", gallery_desc: "Dokumentasi kegiatan dan kebersamaan jamaah.",
+    gallery_title: "Galeri Foto", gallery_desc: "Dokumentasi kegiatan dan kebersamaan jamaah.",
     tab_announcement: "Pengumuman", tab_article: "Artikel & Faedah",
     empty_data: "Belum ada data terbaru.", empty_search: "Tidak ditemukan.",
     donasi_badge: "Peluang Amal Jariyah", donasi_title: "Investasi Kekal Akhirat",
@@ -70,8 +68,15 @@ const TRANSLATIONS = {
     progress_title: "Progres Pembangunan", collected: "Terkumpul", needed: "Kekurangan",
     confirm_title: "Konfirmasi Donasi", confirm_desc: "Masukkan nominal yang telah ditransfer.",
     or: "ATAU", btn_confirm: "Konfirmasi via WA", footer_links: "Tautan", footer_follow: "Lokasi",
-    btn_zakat: "Hitung Zakat", btn_donate_now: "Donasi Sekarang",
-    video_appeal_title: "Mengapa Kita Perlu Membangun?" 
+    
+    // TEXT YANG SEBELUMNYA HILANG
+    btn_zakat: "Hitung Zakat", 
+    btn_donate_now: "Donasi Sekarang",
+    video_appeal_title: "Mengapa Kita Perlu Membangun Masjid?",
+    video_appeal_desc: "Simak pesan berikut ini.",
+    view_all: "Lihat Semua",
+    view_channel: "Lihat Channel YouTube",
+    contact_title: "Hubungi Kami"
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
@@ -80,7 +85,7 @@ const TRANSLATIONS = {
     hero_btn_wakaf: "Donate Now", hero_btn_sholat: "Prayer Times", hero_btn_kiblat: "Qibla Finder",
     hadith_label: "Daily Hadith",
     sholat_title: "Prayer Times",
-    gallery_title: "Gallery & Video", gallery_desc: "Documentation of community activities.",
+    gallery_title: "Photo Gallery", gallery_desc: "Documentation of community activities.",
     tab_announcement: "Announcements", tab_article: "Articles",
     empty_data: "No updates.", empty_search: "Not found.",
     donasi_badge: "Charity Opportunity", donasi_title: "Invest for Hereafter",
@@ -88,8 +93,15 @@ const TRANSLATIONS = {
     progress_title: "Construction Progress", collected: "Collected", needed: "Remaining",
     confirm_title: "Confirm Donation", confirm_desc: "Enter transferred amount.",
     or: "OR", btn_confirm: "Confirm via WA", footer_links: "Links", footer_follow: "Location",
-    btn_zakat: "Zakat Calculator", btn_donate_now: "Donate Now",
-    video_appeal_title: "Why We Need to Build?"
+    
+    // TEXT YANG SEBELUMNYA HILANG
+    btn_zakat: "Zakat Calculator", 
+    btn_donate_now: "Donate Now",
+    video_appeal_title: "Why Do We Need to Build a Mosque?",
+    video_appeal_desc: "Watch the following message.",
+    view_all: "View All",
+    view_channel: "Visit YouTube Channel",
+    contact_title: "Contact Us"
   }
 };
 let currentLang = localStorage.getItem("lang") || "id";
@@ -105,10 +117,7 @@ function setLang(lang) {
 function initVideoAjakan() {
   const container = $("#videoAjakanContainer");
   if (!container || !VIDEO_DONASI_LIST.length) return;
-  
   container.innerHTML = "";
-
-  // JIKA 1 VIDEO: TAMPIL BESAR (Full Width)
   if (VIDEO_DONASI_LIST.length === 1) {
     container.className = "max-w-4xl mx-auto reveal";
     container.innerHTML = `
@@ -116,19 +125,12 @@ function initVideoAjakan() {
         <iframe src="https://www.youtube.com/embed/${VIDEO_DONASI_LIST[0]}?rel=0" title="Video Ajakan Wakaf" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>
       </div>
     `;
-  } 
-  // JIKA > 1 VIDEO: TAMPIL SLIDER (Horizontal Scroll)
-  else {
+  } else {
     container.className = "max-w-full mx-auto reveal flex gap-4 overflow-x-auto pb-4 snap-x hide-scrollbar px-4";
-    
     VIDEO_DONASI_LIST.forEach(id => {
       const item = document.createElement("div");
-      // Responsive Card Width
       item.className = "snap-center shrink-0 w-[85%] sm:w-[60%] md:w-[45%] relative pt-[48%] sm:pt-[33%] md:pt-[25%] rounded-xl overflow-hidden shadow-lg border border-slate-200 bg-black";
-      
-      item.innerHTML = `
-        <iframe src="https://www.youtube.com/embed/${id}?rel=0" title="Video Ajakan" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>
-      `;
+      item.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?rel=0" title="Video Ajakan" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>`;
       container.appendChild(item);
     });
   }
@@ -142,11 +144,7 @@ function initVideoKajian() {
   YOUTUBE_VIDEOS.forEach(id => {
     const card = document.createElement("div");
     card.className = "rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white group hover:-translate-y-1 transition-transform duration-300";
-    card.innerHTML = `
-      <div class="relative w-full pt-[56.25%] bg-black">
-        <iframe src="https://www.youtube.com/embed/${id}" title="Video Kajian" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>
-      </div>
-    `;
+    card.innerHTML = `<div class="relative w-full pt-[56.25%] bg-black"><iframe src="https://www.youtube.com/embed/${id}" title="Video Kajian" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe></div>`;
     grid.appendChild(card);
   });
 }
