@@ -4,23 +4,30 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
 // ==========================================
-// 💰 KONFIGURASI DONASI (UBAH DISINI SAJA)
+// 💰 KONFIGURASI DONASI
 // ==========================================
-const TARGET_DONASI = 42000000;       // Target Total (42 Juta Yen)
-const TERKUMPUL_SAAT_INI = 15407179;  // Update angka ini jika ada donasi masuk!
+const TARGET_DONASI = 42000000;       
+const TERKUMPUL_SAAT_INI = 15407179;  
 
 // ==========================================
-// 🎥 DAFTAR VIDEO YOUTUBE (Isi ID Video Saja)
+// 🎥 VIDEO AJAKAN DONASI (VIDEO UTAMA)
 // ==========================================
-// Contoh Link: https://www.youtube.com/watch?v=VIDEO_ID
+// Bisa isi 1 video atau lebih. Pisahkan dengan koma.
+const VIDEO_DONASI_LIST = [
+  "belum ditampilkan",  // Video Utama 1
+  "belum ditampilkan",  // Video Utama 2 (Contoh)
+  // "ID_VIDEO_LAIN", 
+];
+
+// ==========================================
+// 🎥 DAFTAR VIDEO KAJIAN (GRID BAWAH)
+// ==========================================
 const YOUTUBE_VIDEOS = [
   "H0rfdiFnNSY", // Ganti dengan ID video kajian terbaru
   "oQjqwQb6atA", // Ganti dengan ID video lain
   "Tv73kEGTrEA"  // Ganti dengan ID video lain
 ];
 
-// ===== KONFIGURASI LAINNYA =====
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
 
 // 📸 DAFTAR FOTO (GITHUB)
 const LOCAL_IMAGES = [
@@ -28,15 +35,13 @@ const LOCAL_IMAGES = [
   "assets/foto/a.jpeg", "assets/foto/b.jpeg", "assets/foto/c.jpeg"
 ];
 
+// ===== KONFIGURASI LAINNYA =====
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
 const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
 const DEFAULT_PENGUMUMAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv";
 const DEFAULT_ARTIKEL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv";
 
-const HIJRI_MONTHS_ID = [
-  "Muharram", "Shafar", "Rabiul Awal", "Rabiul Akhir",
-  "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban",
-  "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"
-];
+const HIJRI_MONTHS_ID = ["Muharram", "Shafar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"];
 
 function initHeroSlider() {
   const slides = $$(".hero-slide");
@@ -57,7 +62,7 @@ const TRANSLATIONS = {
     hero_btn_wakaf: "Ikut Wakaf", hero_btn_sholat: "Jadwal Sholat", hero_btn_kiblat: "Arah Kiblat",
     hadith_label: "Mutiara Hadits",
     sholat_title: "Jadwal Sholat",
-    gallery_title: "Galeri Foto", gallery_desc: "Dokumentasi kegiatan dan kebersamaan jamaah.",
+    gallery_title: "Galeri & Video", gallery_desc: "Dokumentasi kegiatan dan kebersamaan jamaah.",
     tab_announcement: "Pengumuman", tab_article: "Artikel & Faedah",
     empty_data: "Belum ada data terbaru.", empty_search: "Tidak ditemukan.",
     donasi_badge: "Peluang Amal Jariyah", donasi_title: "Investasi Kekal Akhirat",
@@ -65,8 +70,8 @@ const TRANSLATIONS = {
     progress_title: "Progres Pembangunan", collected: "Terkumpul", needed: "Kekurangan",
     confirm_title: "Konfirmasi Donasi", confirm_desc: "Masukkan nominal yang telah ditransfer.",
     or: "ATAU", btn_confirm: "Konfirmasi via WA", footer_links: "Tautan", footer_follow: "Lokasi",
-    btn_zakat: "Hitung Zakat",
-    btn_donate_now: "Donasi Sekarang"
+    btn_zakat: "Hitung Zakat", btn_donate_now: "Donasi Sekarang",
+    video_appeal_title: "Mengapa Kita Perlu Membangun?" 
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
@@ -75,7 +80,7 @@ const TRANSLATIONS = {
     hero_btn_wakaf: "Donate Now", hero_btn_sholat: "Prayer Times", hero_btn_kiblat: "Qibla Finder",
     hadith_label: "Daily Hadith",
     sholat_title: "Prayer Times",
-    gallery_title: "Photo Gallery", gallery_desc: "Documentation of community activities.",
+    gallery_title: "Gallery & Video", gallery_desc: "Documentation of community activities.",
     tab_announcement: "Announcements", tab_article: "Articles",
     empty_data: "No updates.", empty_search: "Not found.",
     donasi_badge: "Charity Opportunity", donasi_title: "Invest for Hereafter",
@@ -83,8 +88,8 @@ const TRANSLATIONS = {
     progress_title: "Construction Progress", collected: "Collected", needed: "Remaining",
     confirm_title: "Confirm Donation", confirm_desc: "Enter transferred amount.",
     or: "OR", btn_confirm: "Confirm via WA", footer_links: "Links", footer_follow: "Location",
-    btn_zakat: "Zakat Calculator",
-    btn_donate_now: "Donate Now"
+    btn_zakat: "Zakat Calculator", btn_donate_now: "Donate Now",
+    video_appeal_title: "Why We Need to Build?"
   }
 };
 let currentLang = localStorage.getItem("lang") || "id";
@@ -96,16 +101,47 @@ function setLang(lang) {
   renderHadith(); renderHijri(); 
 }
 
-// ===== RENDER VIDEO KAJIAN (YOUTUBE) =====
+// ===== RENDER VIDEO AJAKAN (MULTI-SUPPORT) =====
+function initVideoAjakan() {
+  const container = $("#videoAjakanContainer");
+  if (!container || !VIDEO_DONASI_LIST.length) return;
+  
+  container.innerHTML = "";
+
+  // JIKA 1 VIDEO: TAMPIL BESAR (Full Width)
+  if (VIDEO_DONASI_LIST.length === 1) {
+    container.className = "max-w-4xl mx-auto reveal";
+    container.innerHTML = `
+      <div class="relative w-full pt-[56.25%] rounded-2xl overflow-hidden shadow-2xl border-4 border-white/50 group">
+        <iframe src="https://www.youtube.com/embed/${VIDEO_DONASI_LIST[0]}?rel=0" title="Video Ajakan Wakaf" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>
+      </div>
+    `;
+  } 
+  // JIKA > 1 VIDEO: TAMPIL SLIDER (Horizontal Scroll)
+  else {
+    container.className = "max-w-full mx-auto reveal flex gap-4 overflow-x-auto pb-4 snap-x hide-scrollbar px-4";
+    
+    VIDEO_DONASI_LIST.forEach(id => {
+      const item = document.createElement("div");
+      // Responsive Card Width
+      item.className = "snap-center shrink-0 w-[85%] sm:w-[60%] md:w-[45%] relative pt-[48%] sm:pt-[33%] md:pt-[25%] rounded-xl overflow-hidden shadow-lg border border-slate-200 bg-black";
+      
+      item.innerHTML = `
+        <iframe src="https://www.youtube.com/embed/${id}?rel=0" title="Video Ajakan" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>
+      `;
+      container.appendChild(item);
+    });
+  }
+}
+
+// ===== RENDER VIDEO KAJIAN (GRID) =====
 function initVideoKajian() {
   const grid = $("#videoGrid");
   if (!grid || !YOUTUBE_VIDEOS.length) return;
-  
-  grid.innerHTML = ""; // Clear loading text
-  
+  grid.innerHTML = ""; 
   YOUTUBE_VIDEOS.forEach(id => {
     const card = document.createElement("div");
-    card.className = "rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white group";
+    card.className = "rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white group hover:-translate-y-1 transition-transform duration-300";
     card.innerHTML = `
       <div class="relative w-full pt-[56.25%] bg-black">
         <iframe src="https://www.youtube.com/embed/${id}" title="Video Kajian" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>
@@ -122,7 +158,6 @@ const DAFTAR_DOA = [
   { ar: "رَبِّ زِدْنِي عِلْمًا وَارْزُقْنِي فَهْمًا", id: "Ya Tuhanku, tambahkanlah ilmuku dan berilah aku karunia untuk dapat memahaminya." },
   { ar: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ", id: "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat dan peliharalah kami dari siksa neraka." }
 ];
-
 function initDoa() {
   const elArab = $("#doaArab"), elArti = $("#doaArti"), btn = $("#btnGantiDoa");
   if(!elArab) return;
@@ -133,19 +168,16 @@ function initDoa() {
   acakDoa(); btn?.addEventListener("click", acakDoa);
 }
 
-// ===== SMART CAROUSEL (FOTO & VIDEO HYBRID) =====
+// ===== SMART CAROUSEL =====
 async function initSmartCarousel() {
   const track = $("#kgTrack"); if (!track) return;
   track.innerHTML = "";
-
   LOCAL_IMAGES.forEach(src => {
     const el = document.createElement("figure");
     el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-slate-100 relative group border border-slate-200 flex items-center justify-center";
     el.innerHTML = `<img src="${src}" class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="Kegiatan">`;
     track.appendChild(el);
   });
-
-  // Tetap ambil video dari Drive jika ada, untuk backup
   try {
     const res = await fetch(APPS_SCRIPT_URL);
     const driveItems = await res.json();
@@ -153,16 +185,11 @@ async function initSmartCarousel() {
     videos.forEach(item => {
       const el = document.createElement("figure");
       el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-black relative group border border-slate-100";
-      el.innerHTML = `
-        <iframe src="${item.videoUrl}" class="w-full h-full" allow="autoplay" style="border:none;" loading="lazy"></iframe>
-        <div class="absolute top-2 right-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1 font-bold z-10"><i data-lucide="video" class="w-3 h-3"></i> Drive</div>
-      `;
+      el.innerHTML = `<iframe src="${item.videoUrl}" class="w-full h-full" allow="autoplay" style="border:none;" loading="lazy"></iframe><div class="absolute top-2 right-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1 font-bold z-10"><i data-lucide="video" class="w-3 h-3"></i> Drive</div>`;
       track.appendChild(el);
     });
-  } catch (e) { console.log("Video Drive empty/error."); }
-  
+  } catch (e) { console.log("Video empty/error."); }
   window.lucide?.createIcons?.();
-
   let interval; const speed = 4000;
   const getW = () => track.firstElementChild ? track.firstElementChild.offsetWidth + 16 : 300;
   const start = () => {
@@ -182,145 +209,60 @@ async function initSmartCarousel() {
 
 // ===== ZAKAT CALCULATOR =====
 function initZakatCalculator() {
-  const openBtn = $("#openZakat");
-  const modal = $("#zakatModal");
-  const closeBtn = $("#closeZakat");
-  const calcBtn = $("#calcBtn");
+  const openBtn = $("#openZakat"); const modal = $("#zakatModal"); const closeBtn = $("#closeZakat"); const calcBtn = $("#calcBtn");
   if(!openBtn || !modal) return;
-
   let currentZakatCurr = 'JPY';
-  const btnJPY = $("#currJPY"), btnIDR = $("#currIDR");
-  const priceInput = $("#zGoldPrice"), labelCurr = $("#zCurrLabel");
+  const btnJPY = $("#currJPY"), btnIDR = $("#currIDR"), priceInput = $("#zGoldPrice"), labelCurr = $("#zCurrLabel");
   const linkJPY = $("#linkGoldJPY"), linkIDR = $("#linkGoldIDR");
   const DEFAULT_JPY = 14000, DEFAULT_IDR = 1400000;
   priceInput.value = DEFAULT_JPY;
-
   const setCurrency = (c) => {
     currentZakatCurr = c; labelCurr.textContent = c;
     const active = "flex-1 py-2 text-sm font-bold rounded-lg bg-white shadow-sm text-slate-800 transition-all border border-slate-200 ring-2 ring-sky-100";
     const inactive = "flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 hover:bg-white/50 transition-all";
-    if (c === 'JPY') {
-      btnJPY.className = active; btnIDR.className = inactive;
-      priceInput.value = DEFAULT_JPY; linkJPY.classList.remove("hidden"); linkIDR.classList.add("hidden");
-    } else {
-      btnIDR.className = active; btnJPY.className = inactive;
-      priceInput.value = DEFAULT_IDR; linkIDR.classList.remove("hidden"); linkJPY.classList.add("hidden");
-    }
+    if (c === 'JPY') { btnJPY.className = active; btnIDR.className = inactive; priceInput.value = DEFAULT_JPY; linkJPY.classList.remove("hidden"); linkIDR.classList.add("hidden"); } 
+    else { btnIDR.className = active; btnJPY.className = inactive; priceInput.value = DEFAULT_IDR; linkIDR.classList.remove("hidden"); linkJPY.classList.add("hidden"); }
     $("#zResultBox").classList.add("hidden");
   };
-
-  btnJPY.addEventListener("click", () => setCurrency('JPY'));
-  btnIDR.addEventListener("click", () => setCurrency('IDR'));
+  btnJPY.addEventListener("click", () => setCurrency('JPY')); btnIDR.addEventListener("click", () => setCurrency('IDR'));
   const toggle = (show) => { modal.classList.toggle("hidden", !show); modal.classList.toggle("flex", show); };
-  openBtn.addEventListener("click", () => toggle(true));
-  closeBtn.addEventListener("click", () => toggle(false));
+  openBtn.addEventListener("click", () => toggle(true)); closeBtn.addEventListener("click", () => toggle(false));
   modal.addEventListener("click", (e) => { if(e.target===modal) toggle(false); });
-
   calcBtn.addEventListener("click", () => {
-    const goldPrice = Number(priceInput.value || 0);
-    const cash = Number($("#zCash")?.value || 0), goldVal = Number($("#zGoldVal")?.value || 0);
-    const assets = Number($("#zAssets")?.value || 0), debt = Number($("#zDebt")?.value || 0);
-    const nisab = goldPrice * 85;
-    const totalNet = (cash + goldVal + assets) - debt;
-    
-    // FORMAT UANG MANUAL (TANPA JP GANDA)
-    const fmt = (n) => {
-        const symbol = currentZakatCurr === 'JPY' ? '¥' : 'Rp';
-        return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n);
-    };
-
+    const goldPrice = Number(priceInput.value || 0), cash = Number($("#zCash")?.value || 0), goldVal = Number($("#zGoldVal")?.value || 0), assets = Number($("#zAssets")?.value || 0), debt = Number($("#zDebt")?.value || 0);
+    const nisab = goldPrice * 85, totalNet = (cash + goldVal + assets) - debt;
+    const fmt = (n) => { const symbol = currentZakatCurr === 'JPY' ? '¥' : 'Rp'; return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n); };
     $("#zTotalNet").textContent = fmt(totalNet); $("#zNisab").textContent = fmt(nisab);
     const resultBox = $("#zResultBox"), statusEl = $("#zStatus"), amountEl = $("#zFinalAmount");
     resultBox.classList.remove("hidden");
-
-    if (totalNet >= nisab) {
-      statusEl.textContent = "WAJIB ZAKAT"; statusEl.className = "font-extrabold text-lg text-emerald-600 mb-1";
-      amountEl.textContent = fmt(totalNet * 0.025);
-    } else {
-      statusEl.textContent = "BELUM WAJIB"; statusEl.className = "font-extrabold text-lg text-slate-500 mb-1";
-      amountEl.textContent = fmt(0);
-    }
+    if (totalNet >= nisab) { statusEl.textContent = "WAJIB ZAKAT"; statusEl.className = "font-extrabold text-lg text-emerald-600 mb-1"; amountEl.textContent = fmt(totalNet * 0.025); } 
+    else { statusEl.textContent = "BELUM WAJIB"; statusEl.className = "font-extrabold text-lg text-slate-500 mb-1"; amountEl.textContent = fmt(0); }
   });
 }
 
 // ===== UTILS =====
-const HADITHS = [
-  { ar: "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ", id: "Sesungguhnya setiap amalan tergantung pada niatnya.", en: "Actions are but by intentions." },
-  { ar: "خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ", id: "Sebaik-baik kalian adalah yang belajar Al-Qur'an dan mengajarkannya.", en: "The best of you learn Quran and teach it." }
-];
-function renderHadith() {
-  const day = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-  const h = HADITHS[day % HADITHS.length];
-  $("#hadithArab").textContent = h.ar; $("#hadithTerjemah").textContent = currentLang === 'en' ? h.en : h.id;
-  $("#hadithRiwayat").textContent = "Hadits Shahih";
-}
-
+const HADITHS = [{ ar: "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ", id: "Sesungguhnya setiap amalan tergantung pada niatnya.", en: "Actions are but by intentions." }, { ar: "خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ", id: "Sebaik-baik kalian adalah yang belajar Al-Qur'an dan mengajarkannya.", en: "The best of you learn Quran and teach it." }];
+function renderHadith() { const day = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000); const h = HADITHS[day % HADITHS.length]; $("#hadithArab").textContent = h.ar; $("#hadithTerjemah").textContent = currentLang === 'en' ? h.en : h.id; $("#hadithRiwayat").textContent = "Hadits Shahih"; }
 let globalHijriData = null; 
-function renderHijri(apiData = null) {
-  const el = $("#hijriDate"); if (!el) return;
-  if (apiData) globalHijriData = apiData;
-  if (globalHijriData) {
-    const d = globalHijriData.day;
-    const m = globalHijriData.month.number - 1; 
-    const y = globalHijriData.year;
-    const mName = currentLang === 'id' ? HIJRI_MONTHS_ID[m] : globalHijriData.month.en;
-    el.textContent = `${d} ${mName} ${y} H`;
-    return;
-  }
-  const loc = currentLang === 'en' ? 'en-US' : 'id-ID';
-  try {
-    el.textContent = new Intl.DateTimeFormat(loc + '-u-ca-islamic-umalqura', {day:'numeric', month:'long', year:'numeric'}).format(new Date()).replace(/ AH| H/g, " H");
-  } catch (e) {
-    el.textContent = new Intl.DateTimeFormat(loc + '-u-ca-islamic', {day:'numeric', month:'long', year:'numeric'}).format(new Date()).replace(/ AH| H/g, " H");
-  }
-}
+function renderHijri(apiData = null) { const el = $("#hijriDate"); if (!el) return; if (apiData) globalHijriData = apiData; if (globalHijriData) { const d = globalHijriData.day; const m = globalHijriData.month.number - 1; const y = globalHijriData.year; const mName = currentLang === 'id' ? HIJRI_MONTHS_ID[m] : globalHijriData.month.en; el.textContent = `${d} ${mName} ${y} H`; return; } const loc = currentLang === 'en' ? 'en-US' : 'id-ID'; try { el.textContent = new Intl.DateTimeFormat(loc + '-u-ca-islamic-umalqura', {day:'numeric', month:'long', year:'numeric'}).format(new Date()).replace(/ AH| H/g, " H"); } catch (e) { el.textContent = new Intl.DateTimeFormat(loc + '-u-ca-islamic', {day:'numeric', month:'long', year:'numeric'}).format(new Date()).replace(/ AH| H/g, " H"); } }
 
+// ===== CSV & ADMIN =====
 const isAdmin = () => new URLSearchParams(location.search).get("admin") === "1" && localStorage.getItem("is_admin") === "1";
-function setupAdmin(){
-  if(isAdmin()) $$(".admin-only").forEach(e=>e.classList.remove("hidden"));
-  document.addEventListener("keydown",e=>{ if(e.ctrlKey&&e.altKey&&e.key.toLowerCase()==='a'){ if(prompt("Kode:")==="as-sunnah-2025"){localStorage.setItem("is_admin","1"); location.reload();} }});
-  $("#openData")?.addEventListener("click", (e) => { e.preventDefault(); $("#dataModal").classList.remove("hidden"); $("#dataModal").classList.add("flex"); });
-  $("#closeData")?.addEventListener("click", () => { $("#dataModal").classList.add("hidden"); $("#dataModal").classList.remove("flex"); });
-  $("#saveData")?.addEventListener("click", () => {
-    ["kajian","pengumuman","artikel"].forEach(k => { const v = $(`#csv${k.charAt(0).toUpperCase()+k.slice(1)}`)?.value; v ? localStorage.setItem(`sheet_${k}`, v) : localStorage.removeItem(`sheet_${k}`); });
-    location.reload();
-  });
-}
-async function loadCsv(url) {
-  try {
-    const t = await fetch(url, {cache:"no-store"}).then(r=>r.text());
-    const r=[]; let i=0,c="",row=[],q=false;
-    while(i<t.length){ let char=t[i]; if(char==='"'){if(q&&t[i+1]==='"'){c+='"';i+=2;continue;}q=!q;i++;continue;} if(!q&&char===','){row.push(c);c="";i++;continue;} if(!q&&(char==='\n'||char==='\r')){if(c||row.length){row.push(c);r.push(row);row=[];c="";}if(char==='\r'&&t[i+1]==='\n')i++;i++;continue;} c+=char;i++; }
-    if(c||row.length){row.push(c);r.push(row);}
-    const h=r[0].map(x=>x.trim().toLowerCase());
-    return r.slice(1).map(v=>{const o={};h.forEach((k,x)=>o[k]=v[x]?.trim()||"");return o;});
-  } catch { return []; }
-}
+function setupAdmin(){ if(isAdmin()) $$(".admin-only").forEach(e=>e.classList.remove("hidden")); document.addEventListener("keydown",e=>{ if(e.ctrlKey&&e.altKey&&e.key.toLowerCase()==='a'){ if(prompt("Kode:")==="as-sunnah-2025"){localStorage.setItem("is_admin","1"); location.reload();} }}); $("#openData")?.addEventListener("click", (e) => { e.preventDefault(); $("#dataModal").classList.remove("hidden"); $("#dataModal").classList.add("flex"); }); $("#closeData")?.addEventListener("click", () => { $("#dataModal").classList.add("hidden"); $("#dataModal").classList.remove("flex"); }); $("#saveData")?.addEventListener("click", () => { ["kajian","pengumuman","artikel"].forEach(k => { const v = $(`#csv${k.charAt(0).toUpperCase()+k.slice(1)}`)?.value; v ? localStorage.setItem(`sheet_${k}`, v) : localStorage.removeItem(`sheet_${k}`); }); location.reload(); }); }
+async function loadCsv(url) { try { const t = await fetch(url, {cache:"no-store"}).then(r=>r.text()); const r=[]; let i=0,c="",row=[],q=false; while(i<t.length){ let char=t[i]; if(char==='"'){if(q&&t[i+1]==='"'){c+='"';i+=2;continue;}q=!q;i++;continue;} if(!q&&char===','){row.push(c);c="";i++;continue;} if(!q&&(char==='\n'||char==='\r')){if(c||row.length){row.push(c);r.push(row);row=[];c="";}if(char==='\r'&&t[i+1]==='\n')i++;i++;continue;} c+=char;i++; } if(c||row.length){row.push(c);r.push(row);} const h=r[0].map(x=>x.trim().toLowerCase()); return r.slice(1).map(v=>{const o={};h.forEach((k,x)=>o[k]=v[x]?.trim()||"");return o;}); } catch { return []; } }
 const getCsvUrl = (k) => isAdmin() && localStorage.getItem(`sheet_${k}`) || (k==="kajian"?DEFAULT_KAJIAN_CSV : k==="pengumuman"?DEFAULT_PENGUMUMAN_CSV : DEFAULT_ARTIKEL_CSV);
+async function renderContent() { const mkCard = (x, isArt) => ` <article class="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm hover:border-sky-200 flex flex-col h-full transition-all"> <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2">${x.title||""}</h3> <p class="text-sm text-slate-600 mb-4 line-clamp-3 flex-grow">${(isArt?x.excerpt:x.desc)||""}</p> ${x.link ? `<a href="${x.link}" target="_blank" class="text-sm font-bold ${isArt?'text-fig-success':'text-fig-primary'} mt-auto flex items-center gap-1">${currentLang==='en'?'Read More':'Selengkapnya'} <i data-lucide="arrow-right" class="w-4 h-4"></i></a>` : ""} </article>`; const pW = $("#wrapPengumuman"); if(pW) { const d = await loadCsv(getCsvUrl("pengumuman")); pW.innerHTML = d.length ? d.map(x=>mkCard(x,false)).join("") : ""; if(!d.length) $("#boardEmpty")?.classList.remove("hidden"); } const aL = $("#artikelList"); if(aL) { const d = await loadCsv(getCsvUrl("artikel")); window.allArticles = d; const filter = (q) => { const f = d.filter(x=>(x.title||"").toLowerCase().includes(q)); aL.innerHTML = f.length ? f.map(x=>mkCard(x,true)).join("") : ""; $("#artikelEmpty")?.classList.toggle("hidden", f.length > 0); window.lucide?.createIcons?.(); }; filter(""); $("#searchArtikel")?.addEventListener("input", e=>filter(e.target.value.toLowerCase())); } }
 
-async function renderContent() {
-  const mkCard = (x, isArt) => `
-    <article class="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm hover:border-sky-200 flex flex-col h-full transition-all">
-      <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2">${x.title||""}</h3>
-      <p class="text-sm text-slate-600 mb-4 line-clamp-3 flex-grow">${(isArt?x.excerpt:x.desc)||""}</p>
-      ${x.link ? `<a href="${x.link}" target="_blank" class="text-sm font-bold ${isArt?'text-fig-success':'text-fig-primary'} mt-auto flex items-center gap-1">${currentLang==='en'?'Read More':'Selengkapnya'} <i data-lucide="arrow-right" class="w-4 h-4"></i></a>` : ""}
-    </article>`;
-  const pW = $("#wrapPengumuman"); if(pW) { const d = await loadCsv(getCsvUrl("pengumuman")); pW.innerHTML = d.length ? d.map(x=>mkCard(x,false)).join("") : ""; if(!d.length) $("#boardEmpty")?.classList.remove("hidden"); }
-  const aL = $("#artikelList"); if(aL) { const d = await loadCsv(getCsvUrl("artikel")); window.allArticles = d; const filter = (q) => { const f = d.filter(x=>(x.title||"").toLowerCase().includes(q)); aL.innerHTML = f.length ? f.map(x=>mkCard(x,true)).join("") : ""; $("#artikelEmpty")?.classList.toggle("hidden", f.length > 0); window.lucide?.createIcons?.(); }; filter(""); $("#searchArtikel")?.addEventListener("input", e=>filter(e.target.value.toLowerCase())); }
-}
-
+// ===== CORE LOGIC =====
 async function renderSholat() {
   const g = $("#sholatGrid"); const l = $("#locLabel"); if(!g) return;
   g.innerHTML = `<p class="col-span-full text-center text-slate-400 py-4">...</p>`;
   let p = { lat: 34.884, lon: 136.993 }; 
   try { p = await new Promise(r => navigator.geolocation.getCurrentPosition(x=>r({lat:x.coords.latitude,lon:x.coords.longitude}),()=>r(p),{timeout:3000})); } catch{}
   if(l) l.textContent = `${p.lat.toFixed(3)}, ${p.lon.toFixed(3)}`;
-  
   try {
     const d = await fetch(`https://api.aladhan.com/v1/timings?latitude=${p.lat}&longitude=${p.lon}&method=2`).then(r=>r.json());
-    if (d.data && d.data.date && d.data.date.hijri) {
-      renderHijri(d.data.date.hijri);
-    }
+    if (d.data && d.data.date && d.data.date.hijri) renderHijri(d.data.date.hijri);
     const m = { Fajr:["Subuh","sunrise"], Sunrise:["Syuruq","sun"], Dhuhr:["Dzuhur","sun"], Asr:["Ashar","cloud-sun"], Maghrib:["Maghrib","moon"], Isha:["Isya","star"] };
     g.innerHTML=""; Object.keys(m).forEach(k => {
       g.innerHTML += `<div class="rounded-2xl border border-slate-100 p-4 text-center bg-slate-50 hover:bg-white hover:border-sky-200 transition-all"><i data-lucide="${m[k][1]}" class="w-5 h-5 mx-auto text-slate-400 mb-2"></i><div class="text-[10px] uppercase font-bold text-slate-400">${m[k][0]}</div><div class="mt-1 text-lg font-extrabold text-slate-800">${d.data.timings[k]}</div></div>`;
@@ -330,45 +272,20 @@ async function renderSholat() {
 }
 
 function initDonasi() {
-  // FORMAT UANG BERSIH
-  const fmt = (n, c) => {
-    const symbol = c === 'JPY' ? '¥' : 'Rp';
-    return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n);
-  };
-
-  // ============================================
-  // LOGIKA HITUNGAN BARU (LEBIH MUDAH)
-  // ============================================
-  const T = TARGET_DONASI;
-  const C = TERKUMPUL_SAAT_INI;
-  const K = T - C; // Kekurangan dihitung otomatis
-
+  const fmt = (n, c) => { const symbol = c === 'JPY' ? '¥' : 'Rp'; return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n); };
+  const T = TARGET_DONASI, C = TERKUMPUL_SAAT_INI, K = T - C;
   if ($("#targetLabel")) $("#targetLabel").textContent = fmt(T, "JPY");
   if ($("#terkumpulLabel")) $("#terkumpulLabel").textContent = fmt(C, "JPY");
   if ($("#kekuranganLabel")) $("#kekuranganLabel").textContent = fmt(K, "JPY");
-  
-  const obs = new IntersectionObserver(e => {
-    e.forEach(x => {
-      if (x.isIntersecting) {
-        $("#progressBar").style.width = Math.round((C / T) * 100) + "%";
-        $("#percentLabel").textContent = Math.round((C / T) * 100);
-      }
-    })
-  });
-  
+  const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { $("#progressBar").style.width = Math.round((C / T) * 100) + "%"; $("#percentLabel").textContent = Math.round((C / T) * 100); } }) });
   if ($("#donasi")) obs.observe($("#donasi"));
-
   $$(".quick-jpy").forEach(b => b.addEventListener("click", () => $("#inputJPY").value = b.dataset.v));
   $$(".quick-idr").forEach(b => b.addEventListener("click", () => $("#inputIDR").value = b.dataset.v));
-  
   $("#donasiBtn")?.addEventListener("click", () => {
-    const j = $("#inputJPY")?.value;
-    const r = $("#inputIDR")?.value;
-    // Pesan WA Otomatis
+    const j = $("#inputJPY")?.value, r = $("#inputIDR")?.value;
     const msg = `Assalamu'alaikum, saya ingin konfirmasi donasi untuk Masjid As-Sunnah Hekinan sebesar: ${j ? j + ' JPY' : ''} ${r ? r + ' IDR' : ''}. Mohon dicek.`;
     window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
   });
-  
   $$("[data-copy]").forEach(b => b.addEventListener("click", () => { navigator.clipboard.writeText($(b.dataset.copy).innerText); alert("Copied!"); }));
 }
 
@@ -387,12 +304,9 @@ function boot() {
   $("#tabPengumuman")?.addEventListener("click", () => { $("#wrapPengumuman").classList.remove("hidden"); $("#wrapArtikel").classList.add("hidden"); $("#tabs").classList.replace("tab-right","tab-left"); });
   $("#tabArtikel")?.addEventListener("click", () => { $("#wrapPengumuman").classList.add("hidden"); $("#wrapArtikel").classList.remove("hidden"); $("#tabs").classList.replace("tab-left","tab-right"); });
   if($("#year")) $("#year").textContent = new Date().getFullYear();
-  
   renderSholat(); renderContent(); initCountdown(); initDonasi(); 
-  initSmartCarousel(); 
-  initVideoKajian(); // RENDER YOUTUBE
+  initSmartCarousel(); initVideoKajian(); initVideoAjakan(); // Init Video Features
   initHeroSlider(); setupAdmin(); initZakatCalculator(); initDoa();
-  
   const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add("active")}),{threshold:0.1});
   $$(".reveal").forEach(e=>obs.observe(e));
   window.lucide?.createIcons?.();
