@@ -12,7 +12,7 @@ const TERKUMPUL_SAAT_INI = 15407179;
 // ==========================================
 // 📣 POPUP POSTER (Iklan/Pengumuman)
 // ==========================================
-// ✅ PERBAIKAN: Sesuaikan path dengan lokasi folder assets/foto
+// ✅ PASTI BENAR: Sesuai struktur folder di GitHub Anda (assets/foto/)
 const POPUP_IMAGE = "assets/foto/wakaf.png"; 
 
 // ==========================================
@@ -116,18 +116,28 @@ function setLang(lang) {
   renderHadith(); renderHijri(); 
 }
 
-// ===== POPUP PROMO (INSTANT + SCROLL DONASI) =====
+// ===== POPUP PROMO (INSTANT + FIX) =====
 function initPopup() {
   const popup = $("#popupPromo");
   const img = $("#popupPromo img");
   const donateBtn = $("#popupDonateBtn");
   
-  // Jika konfigurasi path kosong, jangan jalankan
   if (!popup || !img || !POPUP_IMAGE) return;
 
+  // Set gambar
   img.src = POPUP_IMAGE;
 
-  // Tampilkan Popup
+  // Hapus onerror bawaan HTML agar bisa di-handle JS dengan lebih baik
+  img.removeAttribute("onerror"); 
+  
+  // Jika gambar error (tidak ketemu), sembunyikan popup
+  img.onerror = function() {
+    console.log("Gagal memuat popup: " + POPUP_IMAGE);
+    popup.classList.add("hidden");
+    popup.classList.remove("flex");
+  };
+
+  // Tampilkan Popup Langsung
   popup.classList.remove("hidden");
   popup.classList.add("flex");
 
@@ -139,7 +149,6 @@ function initPopup() {
   $("#closePopupBtn")?.addEventListener("click", close);
   $("#closePopupBackdrop")?.addEventListener("click", close);
 
-  // Tombol Donasi di Popup
   donateBtn?.addEventListener("click", () => {
     close(); 
     $("#donasi")?.scrollIntoView({ behavior: "smooth" }); 
