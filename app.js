@@ -7,30 +7,35 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 // 💰 KONFIGURASI DONASI
 // ==========================================
 const TARGET_DONASI = 42000000;       
-const TERKUMPUL_SAAT_INI = 8200000;  
+const TERKUMPUL_SAAT_INI = 15407179;  
+
+// ==========================================
+// 📣 POPUP POSTER (Iklan/Pengumuman)
+// ==========================================
+// Ganti nama file gambar di sini. Jika kosong "", popup tidak muncul.
+const POPUP_IMAGE = "assets/foto/wakaf.png"; 
 
 // ==========================================
 // 🎥 VIDEO AJAKAN DONASI (VIDEO UTAMA)
 // ==========================================
 const VIDEO_DONASI_LIST = [
-  "belum rilis", 
-  "belum rilis"
+  "jfKfPfyJRdk", 
+  "dQw4w9WgXcQ"
 ];
 
 // ==========================================
 // 🎥 DAFTAR VIDEO KAJIAN (GRID BAWAH)
 // ==========================================
 const YOUTUBE_VIDEOS = [
-  "H0rfdiFnNSY", // Ganti dengan ID video kajian terbaru
-  "oQjqwQb6atA", // Ganti dengan ID video lain
-  "Tv73kEGTrEA"  // Ganti dengan ID video lain
+  "dQw4w9WgXcQ", 
+  "LXb3EKWsInQ",
+  "jfKfPfyJRdk"
 ];
-
 
 // 📸 DAFTAR FOTO (GITHUB)
 const LOCAL_IMAGES = [
   "1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg", "6.jpeg", "7.jpeg",
-  "assets/foto/a.jpeg", "assets/foto/b.jpeg", "assets/foto/c.jpeg", "assets/foto/wakaf.png"
+  "assets/foto/a.jpeg", "assets/foto/b.jpeg", "assets/foto/c.jpeg","assets/foto/wakaf.png"
 ];
 
 // ===== KONFIGURASI LAINNYA =====
@@ -68,8 +73,6 @@ const TRANSLATIONS = {
     progress_title: "Progres Pembangunan", collected: "Terkumpul", needed: "Kekurangan",
     confirm_title: "Konfirmasi Donasi", confirm_desc: "Masukkan nominal yang telah ditransfer.",
     or: "ATAU", btn_confirm: "Konfirmasi via WA", footer_links: "Tautan", footer_follow: "Lokasi",
-    
-    // TEXT YANG SEBELUMNYA HILANG
     btn_zakat: "Hitung Zakat", 
     btn_donate_now: "Donasi Sekarang",
     video_appeal_title: "Mengapa Kita Perlu Membangun Masjid?",
@@ -93,8 +96,6 @@ const TRANSLATIONS = {
     progress_title: "Construction Progress", collected: "Collected", needed: "Remaining",
     confirm_title: "Confirm Donation", confirm_desc: "Enter transferred amount.",
     or: "OR", btn_confirm: "Confirm via WA", footer_links: "Links", footer_follow: "Location",
-    
-    // TEXT YANG SEBELUMNYA HILANG
     btn_zakat: "Zakat Calculator", 
     btn_donate_now: "Donate Now",
     video_appeal_title: "Why Do We Need to Build a Mosque?",
@@ -111,6 +112,33 @@ function setLang(lang) {
   $$("[data-i18n]").forEach(el => { const k = el.getAttribute("data-i18n"); if(t[k]) el.textContent = t[k]; });
   $$("[data-placeholder]").forEach(el => { const k = el.getAttribute("data-placeholder"); if(t[k]) el.placeholder = t[k]; });
   renderHadith(); renderHijri(); 
+}
+
+// ===== POPUP PROMO =====
+function initPopup() {
+  const popup = $("#popupPromo");
+  const img = $("#popupPromo img");
+  
+  // Jika tidak ada elemen atau tidak ada gambar diset, stop
+  if (!popup || !img || !POPUP_IMAGE) return;
+
+  // Set gambar
+  img.src = POPUP_IMAGE;
+
+  // Tampilkan popup dengan sedikit delay
+  setTimeout(() => {
+    popup.classList.remove("hidden");
+    popup.classList.add("flex");
+  }, 1500);
+
+  // Fungsi tutup
+  const close = () => {
+    popup.classList.add("hidden");
+    popup.classList.remove("flex");
+  };
+
+  $("#closePopupBtn")?.addEventListener("click", close);
+  $("#closePopupBackdrop")?.addEventListener("click", close);
 }
 
 // ===== RENDER VIDEO AJAKAN (MULTI-SUPPORT) =====
@@ -304,7 +332,7 @@ function boot() {
   if($("#year")) $("#year").textContent = new Date().getFullYear();
   renderSholat(); renderContent(); initCountdown(); initDonasi(); 
   initSmartCarousel(); initVideoKajian(); initVideoAjakan(); // Init Video Features
-  initHeroSlider(); setupAdmin(); initZakatCalculator(); initDoa();
+  initHeroSlider(); setupAdmin(); initZakatCalculator(); initDoa(); initPopup();
   const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add("active")}),{threshold:0.1});
   $$(".reveal").forEach(e=>obs.observe(e));
   window.lucide?.createIcons?.();
