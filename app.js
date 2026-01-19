@@ -75,6 +75,7 @@ const TRANSLATIONS = {
     or: "ATAU", btn_confirm: "Konfirmasi via WA", footer_links: "Tautan", footer_follow: "Lokasi",
     btn_zakat: "Hitung Zakat", 
     btn_donate_now: "Donasi Sekarang",
+    btn_popup_wakaf: "Ikut Wakaf Sekarang",
     video_appeal_title: "Mengapa Kita Perlu Membangun Masjid?",
     video_appeal_desc: "Simak pesan berikut ini.",
     view_all: "Lihat Semua",
@@ -98,6 +99,7 @@ const TRANSLATIONS = {
     or: "OR", btn_confirm: "Confirm via WA", footer_links: "Links", footer_follow: "Location",
     btn_zakat: "Zakat Calculator", 
     btn_donate_now: "Donate Now",
+    btn_popup_wakaf: "Donate Now",
     video_appeal_title: "Why Do We Need to Build a Mosque?",
     video_appeal_desc: "Watch the following message.",
     view_all: "View All",
@@ -114,16 +116,17 @@ function setLang(lang) {
   renderHadith(); renderHijri(); 
 }
 
-// ===== POPUP PROMO (INSTANT) =====
+// ===== POPUP PROMO (INSTANT + SCROLL DONASI) =====
 function initPopup() {
   const popup = $("#popupPromo");
   const img = $("#popupPromo img");
+  const donateBtn = $("#popupDonateBtn");
   
   if (!popup || !img || !POPUP_IMAGE) return;
 
   img.src = POPUP_IMAGE;
 
-  // LANGSUNG TAMPILKAN (TANPA DELAY)
+  // LANGSUNG TAMPILKAN
   popup.classList.remove("hidden");
   popup.classList.add("flex");
 
@@ -134,6 +137,12 @@ function initPopup() {
 
   $("#closePopupBtn")?.addEventListener("click", close);
   $("#closePopupBackdrop")?.addEventListener("click", close);
+
+  // Tombol Donasi di Popup
+  donateBtn?.addEventListener("click", () => {
+    close(); // Tutup popup dulu
+    $("#donasi")?.scrollIntoView({ behavior: "smooth" }); // Scroll ke bawah
+  });
 }
 
 // ===== RENDER VIDEO AJAKAN (MULTI-SUPPORT) =====
