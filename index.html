@@ -210,7 +210,7 @@
             <div class="overflow-hidden h-3 mb-2 text-xs flex rounded-full bg-slate-200">
               <div id="progressBar" class="flex flex-col text-center justify-center bg-fig-primary transition-all duration-1000 ease-out w-0 relative"></div>
             </div>
-            <div class="flex justify-between text-[11px] text-slate-500 font-medium">
+            <div class="flex justify-between text-[11px] text-slate-500 font-bold">
               <span><span id="percentLabel">0</span>%</span><span>Target: <span id="targetLabel">0</span></span>
             </div>
           </div>
@@ -340,12 +340,16 @@
 
 <div id="popupPromo" class="fixed inset-0 z-[60] hidden items-center justify-center p-4">
   <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" id="closePopupBackdrop"></div>
-  <div class="relative w-full max-w-lg rounded-2xl bg-white p-2 shadow-2xl transform scale-95 transition-all animate-[fadeUp_0.3s_ease-out]">
+  <div class="relative w-full max-w-lg rounded-2xl bg-white p-4 shadow-2xl transform scale-95 transition-all animate-[fadeUp_0.3s_ease-out]">
     <button id="closePopupBtn" class="absolute -top-3 -right-3 bg-red-600 text-white p-2 rounded-full shadow-lg hover:bg-red-700 z-10">
       <i data-lucide="x" class="w-5 h-5"></i>
     </button>
-    <img src="poster.jpg" alt="Info" class="w-full h-auto rounded-xl" 
+    <img src="poster.jpg" alt="Info" class="w-full h-auto rounded-xl mb-4 shadow-sm" 
          onerror="this.style.display='none'; document.getElementById('popupPromo').style.display='none'">
+    
+    <button id="popupDonateBtn" class="w-full bg-fig-accent hover:bg-amber-600 text-white font-bold py-3 rounded-xl shadow-md transition-transform transform active:scale-95 flex items-center justify-center gap-2">
+      <i data-lucide="heart" class="w-5 h-5 fill-current"></i> <span data-i18n="btn_popup_wakaf">Ikut Wakaf Sekarang</span>
+    </button>
   </div>
 </div>
 
@@ -391,19 +395,6 @@
     </div>
   </div>
 </div>
-
-<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50 px-6 py-2 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
-  <div class="flex justify-between items-end">
-    <a href="#hero" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors pb-1"><i data-lucide="home" class="w-6 h-6"></i><span class="text-[10px] font-medium">Home</span></a>
-    <a href="#sholat" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors pb-1"><i data-lucide="clock" class="w-6 h-6"></i><span class="text-[10px] font-medium">Sholat</span></a>
-    <div class="relative flex flex-col items-center justify-end w-12">
-       <a href="#donasi" class="absolute -top-10 bg-fig-accent hover:bg-amber-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-amber-200 border-4 border-slate-50 transition-transform active:scale-95"><i data-lucide="heart" class="w-6 h-6 fill-current"></i></a>
-       <span class="text-[10px] font-medium text-slate-500 mb-1" data-i18n="nav_donasi">Donasi</span>
-    </div>
-    <a href="#kegiatan" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors pb-1"><i data-lucide="image" class="w-6 h-6"></i><span class="text-[10px] font-medium">Galeri</span></a>
-    <a href="#info" class="flex flex-col items-center gap-1 text-slate-500 hover:text-fig-primary active:text-fig-primary transition-colors pb-1"><i data-lucide="info" class="w-6 h-6"></i><span class="text-[10px] font-medium">Info</span></a>
-  </div>
-</nav>
 
 <div id="dataModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-[100]">
   <div class="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-2xl">
