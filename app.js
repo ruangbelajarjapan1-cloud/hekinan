@@ -13,7 +13,7 @@ const TERKUMPUL_SAAT_INI = 15407179;
 // 📣 POPUP POSTER (Iklan/Pengumuman)
 // ==========================================
 // Ganti nama file gambar di sini. Jika kosong "", popup tidak muncul.
-const POPUP_IMAGE = "assets/foto/wakaf.png"; 
+const POPUP_IMAGE = "wakaf.png"; 
 
 // ==========================================
 // 🎥 VIDEO AJAKAN DONASI (VIDEO UTAMA)
