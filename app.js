@@ -35,7 +35,7 @@ const YOUTUBE_VIDEOS = [
 // 📸 DAFTAR FOTO (GITHUB)
 const LOCAL_IMAGES = [
   "1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg", "6.jpeg", "7.jpeg",
-  "assets/foto/a.jpeg", "assets/foto/b.jpeg", "assets/foto/c.jpeg","assets/foto/wakaf.png"
+  "assets/foto/a.jpeg", "assets/foto/b.jpeg", "assets/foto/c.jpeg", "assets/foto/wakaf.png"
 ];
 
 // ===== KONFIGURASI LAINNYA =====
@@ -114,24 +114,19 @@ function setLang(lang) {
   renderHadith(); renderHijri(); 
 }
 
-// ===== POPUP PROMO =====
+// ===== POPUP PROMO (INSTANT) =====
 function initPopup() {
   const popup = $("#popupPromo");
   const img = $("#popupPromo img");
   
-  // Jika tidak ada elemen atau tidak ada gambar diset, stop
   if (!popup || !img || !POPUP_IMAGE) return;
 
-  // Set gambar
   img.src = POPUP_IMAGE;
 
-  // Tampilkan popup dengan sedikit delay
-  setTimeout(() => {
-    popup.classList.remove("hidden");
-    popup.classList.add("flex");
-  }, 1500);
+  // LANGSUNG TAMPILKAN (TANPA DELAY)
+  popup.classList.remove("hidden");
+  popup.classList.add("flex");
 
-  // Fungsi tutup
   const close = () => {
     popup.classList.add("hidden");
     popup.classList.remove("flex");
