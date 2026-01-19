@@ -6,21 +6,21 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 // ==========================================
 // 💰 KONFIGURASI DONASI
 // ==========================================
-const TARGET_DONASI = 42000000;       
-const TERKUMPUL_SAAT_INI = 15407179;  
+const TARGET_DONASI = 42000000;
+const TERKUMPUL_SAAT_INI = 15407179;
 
 // ==========================================
 // 📣 POPUP POSTER (Iklan/Pengumuman)
 // ==========================================
-// Ganti nama file gambar di sini. Jika kosong "", popup tidak muncul.
-const POPUP_IMAGE = "wakaf.png"; 
+// ✅ PERBAIKAN: Sesuaikan path dengan lokasi folder assets/foto
+const POPUP_IMAGE = "assets/foto/wakaf.png"; 
 
 // ==========================================
 // 🎥 VIDEO AJAKAN DONASI (VIDEO UTAMA)
 // ==========================================
 const VIDEO_DONASI_LIST = [
-  "jfKfPfyJ", 
-  "dQw4w9WQ"
+  "jfKfPfyJRdk", 
+  "dQw4w9WgXcQ"
 ];
 
 // ==========================================
@@ -122,11 +122,12 @@ function initPopup() {
   const img = $("#popupPromo img");
   const donateBtn = $("#popupDonateBtn");
   
+  // Jika konfigurasi path kosong, jangan jalankan
   if (!popup || !img || !POPUP_IMAGE) return;
 
   img.src = POPUP_IMAGE;
 
-  // LANGSUNG TAMPILKAN
+  // Tampilkan Popup
   popup.classList.remove("hidden");
   popup.classList.add("flex");
 
@@ -140,8 +141,8 @@ function initPopup() {
 
   // Tombol Donasi di Popup
   donateBtn?.addEventListener("click", () => {
-    close(); // Tutup popup dulu
-    $("#donasi")?.scrollIntoView({ behavior: "smooth" }); // Scroll ke bawah
+    close(); 
+    $("#donasi")?.scrollIntoView({ behavior: "smooth" }); 
   });
 }
 
