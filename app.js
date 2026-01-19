@@ -19,8 +19,8 @@ const POPUP_IMAGE = "wakaf.png";
 // 🎥 VIDEO AJAKAN DONASI (VIDEO UTAMA)
 // ==========================================
 const VIDEO_DONASI_LIST = [
-  "jfKfPfyJRdk", 
-  "dQw4w9WgXcQ"
+  "jfKfPfyJ", 
+  "dQw4w9WQ"
 ];
 
 // ==========================================
