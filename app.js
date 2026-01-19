@@ -30,7 +30,7 @@ const YOUTUBE_VIDEOS = [
 // 📸 DAFTAR FOTO (GITHUB)
 const LOCAL_IMAGES = [
   "1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg", "6.jpeg", "7.jpeg",
-  "assets/foto/a.jpeg", "assets/foto/b.jpeg", "assets/foto/c.jpeg"
+  "assets/foto/a.jpeg", "assets/foto/b.jpeg", "assets/foto/c.jpeg", "assets/foto/wakaf.png"
 ];
 
 // ===== KONFIGURASI LAINNYA =====
