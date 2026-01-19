@@ -27,9 +27,9 @@ const VIDEO_DONASI_LIST = [
 // 🎥 DAFTAR VIDEO KAJIAN (GRID BAWAH)
 // ==========================================
 const YOUTUBE_VIDEOS = [
-  "dQw4w9WgXcQ", 
-  "LXb3EKWsInQ",
-  "jfKfPfyJRdk"
+  "OvQjcl65BR8", 
+  "zEu4jVpgB_8",
+  "oQjqwQb6atA"
 ];
 
 // 📸 DAFTAR FOTO (GITHUB)
