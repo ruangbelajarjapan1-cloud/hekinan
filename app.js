@@ -7,20 +7,20 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 // 💰 KONFIGURASI DONASI
 // ==========================================
 const TARGET_DONASI = 42000000;
-const TERKUMPUL_SAAT_INI = 9132333;
+const TERKUMPUL_SAAT_INI = 9132333; // Data terbaru Anda
 
 // ==========================================
 // 📣 POPUP POSTER (Iklan/Pengumuman)
 // ==========================================
-// ✅ PASTI BENAR: Sesuai struktur folder di GitHub Anda (assets/foto/)
+// Sesuai screenshot GitHub Anda:
 const POPUP_IMAGE = "assets/foto/1e.png"; 
 
 // ==========================================
 // 🎥 VIDEO AJAKAN DONASI (VIDEO UTAMA)
 // ==========================================
 const VIDEO_DONASI_LIST = [
-  "jfKfPfk", 
-  "dQw4wcQ"
+  "jfKfPfyJRdk", 
+  "dQw4w9WgXcQ"
 ];
 
 // ==========================================
@@ -33,9 +33,13 @@ const YOUTUBE_VIDEOS = [
 ];
 
 // 📸 DAFTAR FOTO (GITHUB)
+// Saya rapikan path-nya sesuai struktur folder assets/foto/
 const LOCAL_IMAGES = [
-  "1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "5.jpeg", "6.jpeg", "7.jpeg",
-  "assets/foto/a.jpeg", "assets/foto/b.jpeg", "assets/foto/c.jpeg", "assets/foto/wakaf.png"
+  "assets/foto/1e.png", // Menambahkan poster ke galeri juga
+  "assets/foto/a.jpeg", 
+  "assets/foto/b.jpeg", 
+  "assets/foto/c.jpeg", 
+  "assets/foto/wakaf.png"
 ];
 
 // ===== KONFIGURASI LAINNYA =====
@@ -116,7 +120,7 @@ function setLang(lang) {
   renderHadith(); renderHijri(); 
 }
 
-// ===== POPUP PROMO (INSTANT + FIX) =====
+// ===== POPUP PROMO (VERSI PAKSA MUNCUL) =====
 function initPopup() {
   const popup = $("#popupPromo");
   const img = $("#popupPromo img");
@@ -127,17 +131,7 @@ function initPopup() {
   // Set gambar
   img.src = POPUP_IMAGE;
 
-  // Hapus onerror bawaan HTML agar bisa di-handle JS dengan lebih baik
-  img.removeAttribute("onerror"); 
-  
-  // Jika gambar error (tidak ketemu), sembunyikan popup
-  img.onerror = function() {
-    console.log("Gagal memuat popup: " + POPUP_IMAGE);
-    popup.classList.add("hidden");
-    popup.classList.remove("flex");
-  };
-
-  // Tampilkan Popup Langsung
+  // PENTING: Paksa muncul tanpa peduli error gambar (agar kita tahu layoutnya jalan)
   popup.classList.remove("hidden");
   popup.classList.add("flex");
 
@@ -155,7 +149,7 @@ function initPopup() {
   });
 }
 
-// ===== RENDER VIDEO AJAKAN (MULTI-SUPPORT) =====
+// ===== RENDER VIDEO AJAKAN =====
 function initVideoAjakan() {
   const container = $("#videoAjakanContainer");
   if (!container || !VIDEO_DONASI_LIST.length) return;
