@@ -13,7 +13,7 @@ const TERKUMPUL_SAAT_INI = 9132333;
 // 📣 POPUP POSTER (Iklan/Pengumuman)
 // ==========================================
 // ✅ PASTI BENAR: Sesuai struktur folder di GitHub Anda (assets/foto/)
-const POPUP_IMAGE = "assets/foto/wakaf.png"; 
+const POPUP_IMAGE = "assets/foto/1e.png"; 
 
 // ==========================================
 // 🎥 VIDEO AJAKAN DONASI (VIDEO UTAMA)
