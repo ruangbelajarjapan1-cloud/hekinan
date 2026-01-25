@@ -7,7 +7,7 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 // 💰 KONFIGURASI DONASI
 // ==========================================
 const TARGET_DONASI = 42000000;
-const TERKUMPUL_SAAT_INI = 15407179;
+const TERKUMPUL_SAAT_INI = 9132333;
 
 // ==========================================
 // 📣 POPUP POSTER (Iklan/Pengumuman)
@@ -19,8 +19,8 @@ const POPUP_IMAGE = "assets/foto/wakaf.png";
 // 🎥 VIDEO AJAKAN DONASI (VIDEO UTAMA)
 // ==========================================
 const VIDEO_DONASI_LIST = [
-  "jfKfPfydk", 
-  "dQw4w9WcQ"
+  "jfKfPfk", 
+  "dQw4wcQ"
 ];
 
 // ==========================================
