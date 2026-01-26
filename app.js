@@ -16,7 +16,7 @@ const TERKUMPUL_SAAT_INI = 9132333;
 // Pisahkan dengan koma. Gambar akan berganti otomatis.
 const POPUP_IMAGES_LIST = [
   "assets/foto/1e.png",      // Gambar 1
-  // "assets/foto/1i.png", // Gambar 2 (Aktifkan jika ada file-nya)
+  // "assets/foto/001.jpg", // Gambar 2 (Aktifkan jika ada file-nya)
   // "assets/foto/poster3.jpeg" // Gambar 3
 ];
 
