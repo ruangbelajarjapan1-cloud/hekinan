@@ -40,7 +40,7 @@ const YOUTUBE_VIDEOS = [
 // 📸 DAFTAR FOTO
 const LOCAL_IMAGES = [
   "1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "6.jpeg", "7.jpeg",
-  "assets/foto/a.jpeg", "assets/foto/b.jpeg", "assets/foto/c.jpeg", "assets/foto/1i.png"
+  "assets/foto/a.jpeg", "assets/foto/b.jpeg", "assets/foto/c.jpeg", "assets/foto/1i.png","assets/foto/001.jpg"
 ];
 
 // ===== KONFIGURASI LAINNYA =====
