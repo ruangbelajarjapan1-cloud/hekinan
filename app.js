@@ -7,7 +7,7 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 // 💰 KONFIGURASI DONASI
 // ==========================================
 const TARGET_DONASI = 42000000;
-const TERKUMPUL_SAAT_INI = 9132333;
+const TERKUMPUL_SAAT_INI = 9434667;
 
 // ==========================================
 // 📣 POPUP POSTER (MULTI GAMBAR)
