@@ -546,6 +546,16 @@ function initCountdown() {
 }
 
 function boot() {
+  // --- LOGIKA JUMAT BERKAH ---
+  const hariIni = new Date().getDay(); // 0 = Minggu, 1 = Senin, ... 5 = Jumat
+  const bannerJumat = $("#jumatBanner");
+  
+  // Jika hari ini Jumat (5), tampilkan banner
+  if (hariIni === 5 && bannerJumat) {
+    bannerJumat.classList.remove("hidden");
+  }
+  // ---------------------------
+
   setLang(currentLang);
   $("#langToggle")?.addEventListener("click", ()=>setLang(currentLang==="id"?"en":"id"));
   $("#langToggleMob")?.addEventListener("click", ()=>setLang(currentLang==="id"?"en":"id"));
