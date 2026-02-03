@@ -85,7 +85,18 @@ const TRANSLATIONS = {
     video_appeal_desc: "Simak pesan berikut ini.",
     view_all: "Lihat Semua",
     view_channel: "Lihat Channel YouTube",
-    contact_title: "Hubungi Kami"
+    contact_title: "Hubungi Kami",
+    // --- Tambahan Fitur Komitmen ---
+    reminder_label: "Belum bisa transfer sekarang?",
+    reminder_btn: "Buat Komitmen Rutin",
+    reminder_date_label: "Mulai Tanggal:",
+    reminder_freq_label: "Frekuensi:",
+    freq_once: "Sekali Saja",
+    freq_monthly: "Rutin Tiap Bulan",
+    btn_save_reminder: "Pasang Pengingat",
+    reminder_note: "*Akan membuka Google Calendar Anda.",
+    reminder_title: "✨ Komitmen Wakaf Masjid Hekinan",
+    reminder_desc: "Pengingat sedekah rutin. Rekening: Yucho 12160-00457031 / BSI 7329283768. Semoga berkah!"
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
@@ -109,7 +120,17 @@ const TRANSLATIONS = {
     video_appeal_desc: "Watch the following message.",
     view_all: "View All",
     view_channel: "Visit YouTube Channel",
-    contact_title: "Contact Us"
+    contact_title: "Contact Us",// --- Commitment Feature Additions ---
+    reminder_label: "Can't transfer right now?",
+    reminder_btn: "Make a Commitment",
+    reminder_date_label: "Start Date:",
+    reminder_freq_label: "Frequency:",
+    freq_once: "One Time",
+    freq_monthly: "Monthly (Recurring)",
+    btn_save_reminder: "Set Reminder",
+    reminder_note: "*Opens Google Calendar.",
+    reminder_title: "✨ Donation Commitment Hekinan Mosque",
+    reminder_desc: "Routine charity reminder. Bank: Yucho 12160-00457031 / BSI 7329283768. Jazakumullah Khairan!"
   }
 };
 let currentLang = localStorage.getItem("lang") || "id";
