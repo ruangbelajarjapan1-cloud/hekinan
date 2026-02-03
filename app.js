@@ -7,7 +7,7 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 // 💰 KONFIGURASI DONASI
 // ==========================================
 const TARGET_DONASI = 42000000;
-const TERKUMPUL_SAAT_INI = 9434667;
+const TERKUMPUL_SAAT_INI = 9519843;
 
 // ==========================================
 // 📣 POPUP POSTER (MULTI GAMBAR)
@@ -441,6 +441,48 @@ function initDonasi() {
     });
   }
   // --- SELESAI LOGIKA PENGINGAT ---
+  // ===== LOGIKA PENGINGAT / KOMITMEN =====
+  const btnRemind = $("#btnSetReminder");
+  const inputDate = $("#dateReminder");
+  
+  // 1. Set default tanggal ke besok hari
+  if (inputDate) {
+    const besok = new Date(); besok.setDate(besok.getDate() + 1);
+    inputDate.value = besok.toISOString().split('T')[0];
+  }
+
+  // 2. Fungsi Tombol Klik
+  if (btnRemind && inputDate) {
+    btnRemind.addEventListener("click", () => {
+      const tgl = inputDate.value;
+      if (!tgl) return; // Stop jika tanggal kosong
+
+      // Cek pilihan frekuensi (sekali / bulanan)
+      const freq = document.querySelector('input[name="freq"]:checked').value;
+      
+      // Ambil teks sesuai bahasa yang sedang aktif
+      const t = TRANSLATIONS[currentLang] || TRANSLATIONS["id"];
+
+      // Format Tanggal untuk Google Calendar (YYYYMMDD)
+      const dateStr = tgl.replace(/-/g, "");
+      
+      // Siapkan Data Link
+      const title = encodeURIComponent(t.reminder_title);
+      const desc = encodeURIComponent(t.reminder_desc);
+      const loc = encodeURIComponent("https://assunnahhekinan.org");
+      
+      // Template Dasar Link Google Calendar
+      let gCalLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${desc}&location=${loc}&dates=${dateStr}/${dateStr}`;
+
+      // JIKA MEMILIH BULANAN: Tambahkan aturan berulang (Recurrence Rule)
+      if (freq === 'monthly') {
+        gCalLink += `&recur=RRULE:FREQ=MONTHLY`;
+      }
+
+      // Buka Calendar di Tab Baru
+      window.open(gCalLink, "_blank");
+    });
+  }
 }
 
 function initCountdown() {
