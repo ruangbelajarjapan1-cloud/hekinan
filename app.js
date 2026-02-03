@@ -294,78 +294,54 @@ async function initSmartCarousel() {
   $("#kgPrev")?.addEventListener("click", () => scroll(-1)); $("#kgNext")?.addEventListener("click", () => scroll(1));
 }
 
-// --- ZAKAT CALCULATOR ---
 function initZakatCalculator() {
-  const openBtn = $("#openZakat"); const modal = $("#zakatModal"); const closeBtn = $("#closeZakat"); const calcBtn = $("#calcBtn");
-  if (!openBtn || !modal) return;
+  const openBtn = $("#openZakat");
+  const modal = $("#zakatModal");
+  const closeBtn = $("#closeZakat");
+  const calcBtn = $("#calcBtn");
+
+  // Jika tombol tidak ditemukan di HTML, fungsi ini berhenti tanpa error
+  if (!openBtn || !modal) return; 
 
   let currentZakatCurr = 'JPY';
-  const btnJPY = $("#currJPY"), btnIDR = $("#currIDR"), priceInput = $("#zGoldPrice"), labelCurr = $("#zCurrLabel");
-  const linkJPY = $("#linkGoldJPY"), linkIDR = $("#linkGoldIDR");
-  const DEFAULT_JPY = 14000, DEFAULT_IDR = 1400000;
   
-  if(priceInput) priceInput.value = DEFAULT_JPY; 
-
-  const setCurrency = (c) => {
-    currentZakatCurr = c; 
-    if(labelCurr) labelCurr.textContent = c;
-    const active = "flex-1 py-2 text-sm font-bold rounded-lg bg-white shadow-sm text-slate-800 transition-all border border-slate-200 ring-2 ring-sky-100";
-    const inactive = "flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 hover:bg-white/50 transition-all";
-    if (c === 'JPY') { 
-        if(btnJPY) btnJPY.className = active; 
-        if(btnIDR) btnIDR.className = inactive; 
-        if(priceInput) priceInput.value = DEFAULT_JPY; 
-        if(linkJPY) linkJPY.classList.remove("hidden"); 
-        if(linkIDR) linkIDR.classList.add("hidden"); 
-    } else { 
-        if(btnIDR) btnIDR.className = active; 
-        if(btnJPY) btnJPY.className = inactive; 
-        if(priceInput) priceInput.value = DEFAULT_IDR; 
-        if(linkIDR) linkIDR.classList.remove("hidden"); 
-        if(linkJPY) linkJPY.classList.add("hidden"); 
-    }
-    $("#zResultBox")?.classList.add("hidden");
+  openBtn.onclick = () => { 
+    modal.classList.remove("hidden"); 
+    modal.classList.add("flex"); 
   };
 
-  btnJPY?.addEventListener("click", () => setCurrency('JPY'));
-  btnIDR?.addEventListener("click", () => setCurrency('IDR'));
+  if (closeBtn) {
+    closeBtn.onclick = () => { 
+      modal.classList.add("hidden"); 
+      modal.classList.remove("flex"); 
+    };
+  }
 
-  const toggle = (show) => { modal.classList.toggle("hidden", !show); modal.classList.toggle("flex", show); };
-  openBtn.addEventListener("click", () => toggle(true));
-  closeBtn?.addEventListener("click", () => toggle(false));
-  modal.addEventListener("click", (e) => { if (e.target === modal) toggle(false); });
-
-  calcBtn?.addEventListener("click", () => {
-    const goldPrice = Number(priceInput?.value || 0);
-    const cash = Number($("#zCash")?.value || 0);
-    const goldVal = Number($("#zGoldVal")?.value || 0);
-    const assets = Number($("#zAssets")?.value || 0);
-    const debt = Number($("#zDebt")?.value || 0);
-    
-    const nisab = goldPrice * 85;
-    const totalNet = (cash + goldVal + assets) - debt;
-    
-    const fmt = (n) => { const symbol = currentZakatCurr === 'JPY' ? '¥' : 'Rp'; return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n); };
-    
-    $("#zTotalNet").textContent = fmt(totalNet);
-    $("#zNisab").textContent = fmt(nisab);
-    
-    const resultBox = $("#zResultBox");
-    const statusEl = $("#zStatus");
-    const amountEl = $("#zFinalAmount");
-    
-    if(resultBox) resultBox.classList.remove("hidden");
-    
-    if (totalNet >= nisab) { 
-        statusEl.textContent = "WAJIB ZAKAT"; 
-        statusEl.className = "font-extrabold text-lg text-emerald-600 mb-1"; 
-        amountEl.textContent = fmt(totalNet * 0.025); 
-    } else { 
-        statusEl.textContent = "BELUM WAJIB"; 
-        statusEl.className = "font-extrabold text-lg text-slate-500 mb-1"; 
-        amountEl.textContent = fmt(0); 
-    }
-  });
+  if (calcBtn) {
+    calcBtn.onclick = () => {
+      const goldPrice = Number($("#zGoldPrice")?.value || 0);
+      const cash = Number($("#zCash")?.value || 0);
+      const goldVal = Number($("#zGoldVal")?.value || 0);
+      const debt = Number($("#zDebt")?.value || 0);
+      
+      const nisab = goldPrice * 85;
+      const totalNet = (cash + goldVal) - debt;
+      
+      const fmt = (n) => (currentZakatCurr === 'JPY' ? '¥' : 'Rp ') + new Intl.NumberFormat('id-ID').format(n);
+      
+      if ($("#zTotalNet")) $("#zTotalNet").textContent = fmt(totalNet);
+      if ($("#zNisab")) $("#zNisab").textContent = fmt(nisab);
+      
+      $("#zResultBox")?.classList.remove("hidden");
+      
+      const isWajib = totalNet >= nisab;
+      if ($("#zStatus")) {
+        $("#zStatus").textContent = isWajib ? "WAJIB ZAKAT" : "BELUM WAJIB";
+        $("#zStatus").className = isWajib ? "text-center font-extrabold text-lg my-1 text-emerald-600" : "text-center font-extrabold text-lg my-1 text-slate-500";
+      }
+      if ($("#zFinalAmount")) $("#zFinalAmount").textContent = isWajib ? fmt(Math.floor(totalNet * 0.025)) : fmt(0);
+    };
+  }
 }
 
 // --- DONASI LOGIC ---
