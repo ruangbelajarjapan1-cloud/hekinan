@@ -13,11 +13,9 @@ const TERKUMPUL_SAAT_INI = 9519843;
 // 📣 POPUP POSTER (MULTI GAMBAR)
 // ==========================================
 // Masukkan daftar gambar poster di sini.
-// Pisahkan dengan koma. Gambar akan berganti otomatis.
 const POPUP_IMAGES_LIST = [
   "assets/foto/1e.png",      // Gambar 1
- "assets/foto/001.jpg", // Gambar 2 (Aktifkan jika ada file-nya)
- "assets/foto/poster3.jpeg" // Gambar 3
+  // "assets/foto/001.jpg", // Gambar 2
 ];
 
 // ==========================================
@@ -62,6 +60,9 @@ function initHeroSlider() {
   }, 5000);
 }
 
+// ==========================================
+// 🌍 BAHASA / TRANSLATIONS
+// ==========================================
 const TRANSLATIONS = {
   id: {
     nav_sholat: "Jadwal Sholat", nav_kegiatan: "Kegiatan", nav_info: "Info", nav_donasi: "Donasi",
@@ -86,7 +87,8 @@ const TRANSLATIONS = {
     view_all: "Lihat Semua",
     view_channel: "Lihat Channel YouTube",
     contact_title: "Hubungi Kami",
-    // --- Tambahan Fitur Komitmen ---
+    
+    // --- FITUR KOMITMEN ---
     reminder_label: "Belum bisa transfer sekarang?",
     reminder_btn: "Buat Komitmen Rutin",
     reminder_date_label: "Mulai Tanggal:",
@@ -96,7 +98,15 @@ const TRANSLATIONS = {
     btn_save_reminder: "Pasang Pengingat",
     reminder_note: "*Akan membuka Google Calendar Anda.",
     reminder_title: "✨ Komitmen Wakaf Masjid Hekinan",
-    reminder_desc: "Pengingat sedekah rutin. Rekening: Yucho 12160-00457031 / BSI 7329283768. Semoga berkah!"
+    reminder_desc: "Pengingat sedekah rutin. Rekening: Yucho 12160-00457031 / BSI 7329283768. Semoga berkah!",
+    
+    // --- WIDGET ORANG BAIK (BARU) ---
+    search_title: "Dicari:",
+    search_people: "Orang Baik!",
+    search_desc_1: "Jika 1 orang berwakaf",
+    search_desc_2: "maka pelunasan masjid ini akan segera terwujud. Jadilah salah satu dari mereka!",
+    joined_label: "Orang Telah Bergabung",
+    btn_join_movement: "Gabung Gerakan Ini"
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
@@ -120,7 +130,9 @@ const TRANSLATIONS = {
     video_appeal_desc: "Watch the following message.",
     view_all: "View All",
     view_channel: "Visit YouTube Channel",
-    contact_title: "Contact Us",// --- Commitment Feature Additions ---
+    contact_title: "Contact Us",
+
+    // --- COMMITMENT FEATURE ---
     reminder_label: "Can't transfer right now?",
     reminder_btn: "Make a Commitment",
     reminder_date_label: "Start Date:",
@@ -130,9 +142,18 @@ const TRANSLATIONS = {
     btn_save_reminder: "Set Reminder",
     reminder_note: "*Opens Google Calendar.",
     reminder_title: "✨ Donation Commitment Hekinan Mosque",
-    reminder_desc: "Routine charity reminder. Bank: Yucho 12160-00457031 / BSI 7329283768. Jazakumullah Khairan!"
+    reminder_desc: "Routine charity reminder. Bank: Yucho 12160-00457031 / BSI 7329283768. Jazakumullah Khairan!",
+
+    // --- GOOD PEOPLE WIDGET (NEW) ---
+    search_title: "Wanted:",
+    search_people: "Good People!",
+    search_desc_1: "If 1 person donates",
+    search_desc_2: "then this mosque will be fully paid off soon. Be one of them!",
+    joined_label: "People Have Joined",
+    btn_join_movement: "Join This Movement"
   }
 };
+
 let currentLang = localStorage.getItem("lang") || "id";
 function setLang(lang) {
   currentLang = lang; localStorage.setItem("lang", lang);
@@ -142,23 +163,19 @@ function setLang(lang) {
   renderHadith(); renderHijri(); 
 }
 
-// ===== POPUP PROMO (MULTI-SLIDE & AUTO) =====
 // ===== POPUP PROMO (MULTI-SLIDE & VIRAL SHARE) =====
 function initPopup() {
   const popup = $("#popupPromo");
   const imgEl = $("#popupPromo img");
   const donateBtn = $("#popupDonateBtn");
-  const shareBtn = $("#popupShareBtn"); // Definisi tombol share
+  const shareBtn = $("#popupShareBtn"); 
   
-  // Cek ketersediaan elemen
   if (!popup || !imgEl) return;
-  // Jika tidak ada list gambar, sembunyikan popup
   if (!POPUP_IMAGES_LIST || POPUP_IMAGES_LIST.length === 0) return;
 
   let currentIndex = 0;
   let slideInterval;
 
-  // Fungsi Tampil Gambar
   const showImage = (index) => {
     if (index >= POPUP_IMAGES_LIST.length) currentIndex = 0;
     else if (index < 0) currentIndex = POPUP_IMAGES_LIST.length - 1;
@@ -166,7 +183,6 @@ function initPopup() {
     imgEl.src = POPUP_IMAGES_LIST[currentIndex];
   };
 
-  // Reset Style
   imgEl.onerror = null; 
   imgEl.removeAttribute("onerror");
   popup.style.removeProperty('display'); 
@@ -174,19 +190,16 @@ function initPopup() {
   imgEl.style.display = 'block';
   popup.classList.remove("hidden");
 
-  // Mulai Slide
   showImage(0);
 
-  // Navigasi Slide (Panah Kiri/Kanan)
   if (POPUP_IMAGES_LIST.length > 1) {
     const navContainer = document.createElement("div");
-    navContainer.className = "absolute inset-0 flex justify-between items-center px-2 pointer-events-none top-0 h-[200px]"; // Batasi tinggi area klik panah agar tidak menutupi tombol bawah
+    navContainer.className = "absolute inset-0 flex justify-between items-center px-2 pointer-events-none top-0 h-[200px]"; 
     navContainer.innerHTML = `
       <button id="popPrevBtn" class="pointer-events-auto bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors backdrop-blur-sm"><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
       <button id="popNextBtn" class="pointer-events-auto bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors backdrop-blur-sm"><i data-lucide="chevron-right" class="w-6 h-6"></i></button>
     `;
     
-    // Masukkan navigasi sebelum gambar
     const relativeContainer = popup.querySelector(".relative");
     if(relativeContainer) {
       relativeContainer.appendChild(navContainer);
@@ -195,7 +208,6 @@ function initPopup() {
 
     const nextSlide = () => showImage(currentIndex + 1);
     const prevSlide = () => showImage(currentIndex - 1);
-
     $("#popNextBtn")?.addEventListener("click", (e) => { e.stopPropagation(); nextSlide(); resetInterval(); });
     $("#popPrevBtn")?.addEventListener("click", (e) => { e.stopPropagation(); prevSlide(); resetInterval(); });
 
@@ -204,7 +216,6 @@ function initPopup() {
     startInterval();
   }
 
-  // Fungsi Tutup
   const close = () => {
     popup.classList.add("hidden");
     popup.style.display = 'none';
@@ -214,21 +225,14 @@ function initPopup() {
   $("#closePopupBtn")?.addEventListener("click", close);
   $("#closePopupBackdrop")?.addEventListener("click", close);
 
-  // LOGIKA TOMBOL DONASI
   donateBtn?.addEventListener("click", () => {
     close(); 
     $("#donasi")?.scrollIntoView({ behavior: "smooth" }); 
   });
 
-  // LOGIKA TOMBOL SHARE (VIRAL LOOP)
   shareBtn?.addEventListener("click", () => {
-    // Teks Viral (Copywriting yang mengajak)
     const text = "Assalamu'alaikum. Mohon bantuannya untuk pembangunan *Masjid As-Sunnah Hekinan (Jepang)*. \n\nMari cari pahala jariyah dengan menyebarkan info ini atau ikut berwakaf. \n\nCek progres & donasi di sini: 👇\nhttps://assunnahhekinan.org";
-    
-    // Buka WhatsApp
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
-    
-    // Opsional: Tutup popup setelah share agar user melihat website
     close();
   });
 }
@@ -392,7 +396,8 @@ async function renderSholat() {
 function initDonasi() {
   const fmt = (n, c) => { const symbol = c === 'JPY' ? '¥' : 'Rp'; return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n); };
   const T = TARGET_DONASI, C = TERKUMPUL_SAAT_INI, K = T - C;
-  // --- LOGIKA WIDGET "ORANG BAIK" (Paste di dalam initDonasi) ---
+
+  // --- LOGIKA WIDGET "ORANG BAIK" ---
   const NOMINAL_SATUAN = 1000; // Asumsi 1 orang = ¥1.000
   
   // Hitung Jumlah Orang
@@ -412,12 +417,12 @@ function initDonasi() {
       // Update Progress Bar Orang
       const barOrang = $("#progressOrang");
       if(barOrang) {
-          // Gunakan timeout kecil agar animasi jalan saat loading
           setTimeout(() => {
               barOrang.style.width = persenOrang + "%";
           }, 500);
       }
   }
+
   // Render angka donasi
   if ($("#targetLabel")) $("#targetLabel").textContent = fmt(T, "JPY");
   if ($("#terkumpulLabel")) $("#terkumpulLabel").textContent = fmt(C, "JPY");
@@ -458,7 +463,6 @@ function initDonasi() {
       if (!tgl) return; // Stop jika tanggal kosong
 
       // Cek pilihan frekuensi (sekali / bulanan)
-      // Menggunakan try-catch atau fallback jika elemen radio belum ter-render sempurna
       let freq = 'once';
       const freqEl = document.querySelector('input[name="freq"]:checked');
       if (freqEl) freq = freqEl.value;
@@ -487,6 +491,7 @@ function initDonasi() {
     });
   }
 }
+
 function initCountdown() {
   const end = new Date("2026-05-31T23:59:59").getTime();
   setInterval(() => {
