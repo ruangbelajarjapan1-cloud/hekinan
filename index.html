@@ -235,6 +235,28 @@
              <div><label class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Nominal (IDR)</label><input id="inputIDR" type="number" placeholder="0" class="w-full mt-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:bg-white/20 font-mono"><div class="flex flex-wrap gap-2 mt-2"><button class="quick-idr text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="50000">50rb</button><button class="quick-idr text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="100000">100rb</button></div></div>
            </div>
            <button id="donasiBtn" class="mt-8 w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-500/20 transition-transform transform active:scale-95 flex items-center justify-center gap-2"><i data-lucide="message-circle" class="w-5 h-5"></i> <span data-i18n="btn_confirm">Konfirmasi via WA</span></button>
+          <div class="mt-6 pt-6 border-t border-white/10 text-center">
+  <p class="text-xs text-slate-400 mb-3">Belum bisa transfer sekarang?</p>
+  
+  <details class="group relative">
+    <summary class="list-none cursor-pointer inline-flex items-center gap-2 text-xs font-bold text-sky-300 hover:text-sky-200 transition-colors bg-white/5 px-4 py-2 rounded-full border border-sky-500/30">
+      <i data-lucide="calendar-clock" class="w-4 h-4"></i>
+      <span>Ingatkan Saya Saat Gajian</span>
+      <i data-lucide="chevron-down" class="w-3 h-3 group-open:rotate-180 transition-transform"></i>
+    </summary>
+    
+    <div class="mt-3 bg-white/10 p-4 rounded-xl border border-white/10 text-left animate-[fadeUp_0.3s_ease-out]">
+      <label class="text-[10px] text-slate-300 uppercase font-bold tracking-wider">Pilih Tanggal Pengingat:</label>
+      <div class="flex gap-2 mt-2">
+        <input id="dateReminder" type="date" class="flex-1 bg-slate-800 text-white text-sm rounded-lg px-3 py-2 border border-slate-600 focus:border-sky-500 outline-none" style="color-scheme: dark;">
+        <button id="btnSetReminder" class="bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-lg font-bold text-xs transition-colors shadow-lg">
+          Simpan
+        </button>
+      </div>
+      <p class="text-[10px] text-slate-400 mt-2 italic">*Akan membuka Google Calendar Anda.</p>
+    </div>
+  </details>
+</div>
         </div>
       </div>
     </div>
@@ -414,3 +436,4 @@
 <script type="module" src="./app.js"></script>
 </body>
 </html>
+
