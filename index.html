@@ -190,7 +190,7 @@
 
           <div class="relative z-10">
             <h3 class="text-xl md:text-2xl font-bold mb-2 text-sky-300">
-              <span data-i18n="search_title">Dicari:</span> <span id="targetOrang">0</span> <span data-i18n="search_people">Orang Baik!</span>
+              <span data-i18n="search_title">Mencari:</span> <span id="targetOrang">0</span> <span data-i18n="search_people">Orang Baik Lagi!</span>
             </h3>
             <p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-xl mb-6">
               <span data-i18n="search_desc_1">Jika 1 orang berwakaf</span> <span class="font-bold text-white bg-white/20 px-2 py-0.5 rounded">¥1.000</span> (atau Rp100rb), <span data-i18n="search_desc_2">maka pelunasan masjid ini akan segera terwujud. Jadilah salah satu dari mereka!</span>
@@ -198,7 +198,7 @@
 
             <div class="flex items-end gap-2 mb-2">
               <span id="terkumpulOrang" class="text-4xl md:text-5xl font-extrabold text-white">0</span>
-              <span class="text-sm md:text-base text-emerald-400 font-bold mb-1.5 pb-1" data-i18n="joined_label">Orang Telah Bergabung</span>
+              <span class="text-sm md:text-base text-emerald-400 font-bold mb-1.5 pb-1" data-i18n="joined_label">Orang Lagi Dibutuhkan</span>
             </div>
 
             <div class="w-full bg-slate-700 rounded-full h-4 overflow-hidden shadow-inner border border-slate-600 mb-6">
@@ -209,8 +209,7 @@
             
             <div class="flex flex-wrap items-center gap-4 justify-between">
               <div class="text-xs text-slate-400 font-mono">
-                <span>0 Orang</span> | 
-                <span>Target: <span id="labelTargetOrang">0</span></span>
+                <span data-i18n="target_complete">Menuju Lunas</span>
               </div>
               
               <button onclick="document.getElementById('rekeningArea').scrollIntoView({behavior: 'smooth'})" class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-full font-bold text-sm shadow-lg shadow-emerald-500/30 transition-all flex items-center gap-2 transform active:scale-95">
@@ -279,25 +278,43 @@
              <div><label class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Nominal (IDR)</label><input id="inputIDR" type="number" placeholder="0" class="w-full mt-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:bg-white/20 font-mono"><div class="flex flex-wrap gap-2 mt-2"><button class="quick-idr text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="50000">50rb</button><button class="quick-idr text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="100000">100rb</button></div></div>
            </div>
            
+           <div class="mt-4 pt-4 border-t border-white/10">
+             <label class="flex items-start gap-3 cursor-pointer group">
+               <div class="relative flex items-center">
+                 <input type="checkbox" id="checkDedikasi" class="peer sr-only">
+                 <div class="w-5 h-5 border-2 border-slate-500 rounded peer-checked:bg-emerald-500 peer-checked:border-emerald-500 transition-all"></div>
+                 <i data-lucide="check" class="absolute w-3 h-3 text-white opacity-0 peer-checked:opacity-100 left-1 top-1 transition-opacity"></i>
+               </div>
+               <span class="text-xs text-slate-300 group-hover:text-white transition-colors select-none leading-tight">
+                 Niatkan pahala untuk <strong class="text-emerald-400">Orang Tua / Almarhum?</strong>
+               </span>
+             </label>
+
+             <div id="boxNamaDedikasi" class="hidden mt-3 animate-[fadeUp_0.3s_ease-out]">
+               <label class="text-[10px] text-slate-400 uppercase font-bold tracking-wide">Nama Orang Tua / Almarhum</label>
+               <div class="relative mt-1">
+                 <i data-lucide="heart-handshake" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500"></i>
+                 <input id="inputNamaDedikasi" type="text" placeholder="Contoh: Bpk. Fulan bin Fulan" 
+                        class="w-full bg-white/10 border border-white/20 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-emerald-500 focus:bg-white/20 transition-all">
+               </div>
+             </div>
+           </div>
+
            <button id="donasiBtn" class="mt-8 w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-500/20 transition-transform transform active:scale-95 flex items-center justify-center gap-2"><i data-lucide="message-circle" class="w-5 h-5"></i> <span data-i18n="btn_confirm">Konfirmasi via WA</span></button>
            
            <div class="mt-8 pt-6 border-t border-white/10 text-center">
              <p class="text-xs text-slate-400 mb-3" data-i18n="reminder_label">Belum bisa transfer sekarang?</p>
-             
              <details class="group relative">
                <summary class="list-none cursor-pointer inline-flex items-center gap-2 text-xs font-bold text-sky-300 hover:text-sky-200 transition-colors bg-white/5 px-4 py-2 rounded-full border border-sky-500/30 select-none">
                  <i data-lucide="calendar-clock" class="w-4 h-4"></i>
                  <span data-i18n="reminder_btn">Buat Komitmen Rutin</span>
                  <i data-lucide="chevron-down" class="w-3 h-3 group-open:rotate-180 transition-transform"></i>
                </summary>
-               
                <div class="mt-4 bg-slate-800/80 p-5 rounded-2xl border border-white/10 text-left animate-[fadeUp_0.3s_ease-out] shadow-xl backdrop-blur-md">
-                 
                  <div class="mb-4">
                    <label class="block text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1" data-i18n="reminder_date_label">Mulai Tanggal:</label>
                    <input id="dateReminder" type="date" class="w-full bg-slate-900 text-white text-sm rounded-xl px-3 py-2 border border-slate-600 focus:border-sky-500 outline-none transition-colors appearance-none" style="color-scheme: dark;">
                  </div>
-
                  <div class="mb-5">
                    <label class="block text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1" data-i18n="reminder_freq_label">Frekuensi:</label>
                    <div class="flex bg-slate-900 rounded-xl p-1 border border-slate-600">
@@ -311,7 +328,6 @@
                      </label>
                    </div>
                  </div>
-
                  <button id="btnSetReminder" class="w-full bg-sky-600 hover:bg-sky-500 text-white py-3 rounded-xl font-bold text-sm transition-transform active:scale-95 shadow-lg flex items-center justify-center gap-2">
                    <i data-lucide="bell-plus" class="w-4 h-4"></i> <span data-i18n="btn_save_reminder">Pasang Pengingat</span>
                  </button>
@@ -437,14 +453,13 @@
           <i data-lucide="heart" class="w-5 h-5 fill-current"></i> 
           <span data-i18n="btn_popup_wakaf">Ikut Wakaf Sekarang</span>
         </button>
-
         <button id="popupShareBtn" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-md transition-transform transform active:scale-95 flex items-center justify-center gap-2 border-2 border-emerald-400/50">
           <i data-lucide="share-2" class="w-5 h-5"></i> 
           <span>Bantu Share ke WA</span>
         </button>
     </div>
     <p class="text-[10px] text-center text-slate-400 mt-3 italic">
-        "Barangsiapa menunjukkan kebaikan, baginya pahala seperti orang yang melakukannya." (HR. Muslim)
+        "Barangsiapa menunjukkan kebaikan, baginya pahala seperti pelakunya." (HR. Muslim)
     </p>
   </div>
 </div>
