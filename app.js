@@ -11,10 +11,10 @@ window.globalContentData = []; // Penyimpanan data artikel agar tombol tidak err
 const TARGET_DONASI = 42000000;
 const TERKUMPUL_SAAT_INI = 9519843;
 
-const POPUP_IMAGES_LIST = ["assets/foto/1e.png"]; 
+const POPUP_IMAGES_LIST = ["assets/foto/1e.png","assets/foto/001.jpg","assets/foto/poster3.jpeg"]; 
 const VIDEO_DONASI_LIST = ["jfKfPRdk", "dQwgXcQ"];
 const YOUTUBE_VIDEOS = ["OvQjcl65BR8", "zEu4jVpgB_8", "oQjqwQb6atA"];
-const LOCAL_IMAGES = ["1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "6.jpeg", "7.jpeg", "assets/foto/a.jpeg", "assets/foto/b.jpeg"];
+const LOCAL_IMAGES = ["1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "6.jpeg", "7.jpeg", "assets/foto/a.jpeg", "assets/foto/b.jpeg","assets/foto/poster3.jpeg"];
 
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
 const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
