@@ -252,6 +252,44 @@
         <button id="btnSetReminder" class="bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-lg font-bold text-xs transition-colors shadow-lg">
           Simpan
         </button>
+        <div class="mt-8 pt-6 border-t border-white/10 text-center">
+  <p class="text-xs text-slate-400 mb-3" data-i18n="reminder_label">Belum bisa transfer sekarang?</p>
+  
+  <details class="group relative">
+    <summary class="list-none cursor-pointer inline-flex items-center gap-2 text-xs font-bold text-sky-300 hover:text-sky-200 transition-colors bg-white/5 px-4 py-2 rounded-full border border-sky-500/30 select-none">
+      <i data-lucide="calendar-clock" class="w-4 h-4"></i>
+      <span data-i18n="reminder_btn">Buat Komitmen Rutin</span>
+      <i data-lucide="chevron-down" class="w-3 h-3 group-open:rotate-180 transition-transform"></i>
+    </summary>
+    
+    <div class="mt-4 bg-slate-800/80 p-5 rounded-2xl border border-white/10 text-left animate-[fadeUp_0.3s_ease-out] shadow-xl backdrop-blur-md">
+      
+      <div class="mb-4">
+        <label class="block text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1" data-i18n="reminder_date_label">Mulai Tanggal:</label>
+        <input id="dateReminder" type="date" class="w-full bg-slate-900 text-white text-sm rounded-xl px-3 py-2 border border-slate-600 focus:border-sky-500 outline-none transition-colors appearance-none" style="color-scheme: dark;">
+      </div>
+
+      <div class="mb-5">
+        <label class="block text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1" data-i18n="reminder_freq_label">Frekuensi:</label>
+        <div class="flex bg-slate-900 rounded-xl p-1 border border-slate-600">
+          <label class="flex-1 cursor-pointer">
+            <input type="radio" name="freq" value="once" class="peer hidden" checked>
+            <span class="block text-center text-xs py-2 rounded-lg text-slate-400 peer-checked:bg-slate-700 peer-checked:text-white peer-checked:font-bold transition-all" data-i18n="freq_once">Sekali</span>
+          </label>
+          <label class="flex-1 cursor-pointer">
+            <input type="radio" name="freq" value="monthly" class="peer hidden">
+            <span class="block text-center text-xs py-2 rounded-lg text-slate-400 peer-checked:bg-sky-600 peer-checked:text-white peer-checked:font-bold transition-all" data-i18n="freq_monthly">Bulanan</span>
+          </label>
+        </div>
+      </div>
+
+      <button id="btnSetReminder" class="w-full bg-sky-600 hover:bg-sky-500 text-white py-3 rounded-xl font-bold text-sm transition-transform active:scale-95 shadow-lg flex items-center justify-center gap-2">
+        <i data-lucide="bell-plus" class="w-4 h-4"></i> <span data-i18n="btn_save_reminder">Pasang Pengingat</span>
+      </button>
+      <p class="text-[10px] text-slate-500 mt-3 text-center italic" data-i18n="reminder_note">*Akan membuka Google Calendar.</p>
+    </div>
+  </details>
+</div>
       </div>
       <p class="text-[10px] text-slate-400 mt-2 italic">*Akan membuka Google Calendar Anda.</p>
     </div>
@@ -436,4 +474,5 @@
 <script type="module" src="./app.js"></script>
 </body>
 </html>
+
 
