@@ -16,8 +16,8 @@ const TERKUMPUL_SAAT_INI = 9519843;
 // Pisahkan dengan koma. Gambar akan berganti otomatis.
 const POPUP_IMAGES_LIST = [
   "assets/foto/1e.png",      // Gambar 1
-  // "assets/foto/001.jpg", // Gambar 2 (Aktifkan jika ada file-nya)
-  // "assets/foto/poster3.jpeg" // Gambar 3
+ "assets/foto/001.jpg", // Gambar 2 (Aktifkan jika ada file-nya)
+ "assets/foto/poster3.jpeg" // Gambar 3
 ];
 
 // ==========================================
@@ -484,7 +484,7 @@ function initDonasi() {
     });
   }
 }
-
+}
 function initCountdown() {
   const end = new Date("2026-05-31T23:59:59").getTime();
   setInterval(() => {
@@ -492,7 +492,7 @@ function initCountdown() {
     $("#cdDays").innerText = Math.floor(gap/86400000); $("#cdHours").innerText = Math.floor((gap%86400000)/3600000); $("#cdMin").innerText = Math.floor((gap%3600000)/60000);
   }, 1000);
 }
-}
+
 function boot() {
   setLang(currentLang);
   $("#langToggle")?.addEventListener("click", ()=>setLang(currentLang==="id"?"en":"id"));
