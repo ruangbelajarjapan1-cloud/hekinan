@@ -86,7 +86,25 @@ const TRANSLATIONS = {
     search_desc_2: "maka pelunasan masjid ini akan segera terwujud. Jadilah salah satu dari mereka!",
     joined_label: "Orang Lagi Dibutuhkan",
     btn_join_movement: "Gabung Gerakan Ini",
-    target_complete: "Menuju Lunas"
+    // ... (kode sebelumnya) ...
+    target_complete: "Menuju Lunas",
+    
+    // --- FITUR DEDIKASI & PESAN WA ---
+    dedication_check: "Niatkan pahala untuk",
+    dedication_target: "Orang Tua / Almarhum?",
+    dedication_label: "Nama Orang Tua / Almarhum",
+    dedication_placeholder: "Contoh: Bpk. Fulan bin Fulan",
+    
+    // Status Tombol & Alert
+    alert_nominal: "Mohon masukkan nominal donasi.",
+    btn_loading: "Membuka WhatsApp...",
+    btn_copied: "Tersalin",
+    
+    // Isi Pesan WhatsApp
+    wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi pembangunan Masjid As-Sunnah Hekinan.",
+    wa_dedication: "🎁 Pahala diniatkan atas nama:",
+    wa_closing: "Mohon dicek. Jazakumullah khairan."
+  
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
@@ -128,7 +146,24 @@ const TRANSLATIONS = {
     search_desc_2: "then this mosque will be fully paid off soon. Be one of them!",
     joined_label: "People Still Needed",
     btn_join_movement: "Join This Movement",
-    target_complete: "Towards Completion"
+    // ... (kode sebelumnya) ...
+    target_complete: "Towards Completion",
+
+    // --- DEDICATION & WA MESSAGE ---
+    dedication_check: "Intend reward for",
+    dedication_target: "Parents / Deceased?",
+    dedication_label: "Name of Parents / Deceased",
+    dedication_placeholder: "Ex: Mr. Fulan bin Fulan",
+    
+    // Button & Alert
+    alert_nominal: "Please enter donation amount.",
+    btn_loading: "Opening WhatsApp...",
+    btn_copied: "Copied",
+    
+    // WhatsApp Message Body
+    wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque construction.",
+    wa_dedication: "🎁 Reward intended for:",
+    wa_closing: "Please check. Jazakumullah Khairan."
   }
 };
 
@@ -371,11 +406,12 @@ async function renderSholat() {
 }
 
 // ===== FUNGSI DONASI (DIPERBAIKI: HAPUS DUPLIKAT VARIABEL & UPDATE LOGIKA) =====
+// ===== FUNGSI DONASI (FINAL BILINGUAL) =====
 function initDonasi() {
   const fmt = (n, c) => { const symbol = c === 'JPY' ? '¥' : 'Rp'; return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n); };
   const T = TARGET_DONASI, C = TERKUMPUL_SAAT_INI, K = T - C;
   
-  // Update Label Donasi
+  // Update Label Angka
   if ($("#targetLabel")) $("#targetLabel").textContent = fmt(T, "JPY");
   if ($("#terkumpulLabel")) $("#terkumpulLabel").textContent = fmt(C, "JPY");
   if ($("#kekuranganLabel")) $("#kekuranganLabel").textContent = fmt(K, "JPY");
@@ -384,32 +420,27 @@ function initDonasi() {
   const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { setTimeout(() => { $("#progressBar").style.width = Math.round((C / T) * 100) + "%"; $("#percentLabel").textContent = Math.round((C / T) * 100); }, 300); } }) });
   if ($("#donasi")) obs.observe($("#donasi"));
   
-  // Tombol Cepat (Quick Buttons)
+  // Tombol Cepat
   $$(".quick-jpy").forEach(b => b.addEventListener("click", () => $("#inputJPY").value = b.dataset.v));
   $$(".quick-idr").forEach(b => b.addEventListener("click", () => $("#inputIDR").value = b.dataset.v));
   
-  // Tombol Salin Rekening
-  $$("[data-copy]").forEach(b => b.addEventListener("click", () => { navigator.clipboard.writeText($(b.dataset.copy).innerText); alert("Copied!"); }));
-
-  // --- LOGIKA WIDGET "MENCARI ORANG BAIK" (MENGHITUNG SISA) ---
+  // --- LOGIKA WIDGET "MENCARI ORANG BAIK" ---
   const NOMINAL_SATUAN = 1000; 
   const targetOrang = Math.ceil(T / NOMINAL_SATUAN);
-  const sisaOrang = Math.ceil(K / NOMINAL_SATUAN); // Sisa kekurangan orang
+  const sisaOrang = Math.ceil(K / NOMINAL_SATUAN); 
   const persenJalan = Math.min(((T - K) / T) * 100, 100);
 
-  // Tampilkan Sisa (Bukan Total Target)
   if ($("#targetOrang")) $("#targetOrang").textContent = new Intl.NumberFormat('id-ID').format(sisaOrang); 
-  if ($("#labelTargetOrang")) $("#labelTargetOrang").textContent = new Intl.NumberFormat('id-ID').format(targetOrang); // Di sini baru total
+  if ($("#labelTargetOrang")) $("#labelTargetOrang").textContent = new Intl.NumberFormat('id-ID').format(targetOrang);
   
   const elOrang = $("#terkumpulOrang");
   if (elOrang) {
-      elOrang.textContent = new Intl.NumberFormat('id-ID').format(sisaOrang); // Angka besar menampilkan sisa kebutuhan
+      elOrang.textContent = new Intl.NumberFormat('id-ID').format(sisaOrang);
       const barOrang = $("#progressOrang");
-      // Bar tetap mengisi progress dana (biar terlihat positif)
       if(barOrang) { setTimeout(() => { barOrang.style.width = persenJalan + "%"; }, 500); }
   }
 
-  // --- LOGIKA WAKAF DEDIKASI (CHECKBOX) ---
+  // --- LOGIKA WAKAF DEDIKASI ---
   const checkDedikasi = $("#checkDedikasi");
   const boxDedikasi = $("#boxNamaDedikasi");
   
@@ -420,25 +451,62 @@ function initDonasi() {
     });
   }
 
-  // --- LOGIKA TOMBOL KONFIRMASI WA ---
-  $("#donasiBtn")?.addEventListener("click", () => {
-    const j = $("#inputJPY")?.value;
-    const r = $("#inputIDR")?.value;
-    const isDedikasi = checkDedikasi?.checked;
-    const namaDedikasi = $("#inputNamaDedikasi")?.value;
+  // --- TOMBOL KONFIRMASI WA (BILINGUAL) ---
+  const btnWA = $("#donasiBtn");
+  if(btnWA) {
+    btnWA.addEventListener("click", () => {
+      const j = $("#inputJPY")?.value;
+      const r = $("#inputIDR")?.value;
+      const isDedikasi = checkDedikasi?.checked;
+      const namaDedikasi = $("#inputNamaDedikasi")?.value;
+      
+      // Ambil teks sesuai bahasa aktif
+      const t = TRANSLATIONS[currentLang] || TRANSLATIONS["id"];
 
-    if (!j && !r) { alert("Mohon masukkan nominal donasi."); return; }
-    
-    let msg = `Assalamu'alaikum, saya ingin konfirmasi donasi pembangunan Masjid As-Sunnah Hekinan.`;
-    msg += `\n\n💰 Nominal: ${j ? j + ' JPY' : ''} ${r ? r + ' IDR' : ''}`;
-    
-    if (isDedikasi && namaDedikasi) { msg += `\n🎁 Pahala diniatkan atas nama: *${namaDedikasi}*`; }
+      if (!j && !r) { alert(t.alert_nominal); return; }
+      
+      // EFEK VISUAL: Loading Sebentar
+      const originalText = btnWA.innerHTML;
+      btnWA.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> ${t.btn_loading}`;
+      btnWA.classList.add("opacity-75", "cursor-wait");
 
-    msg += `\n\nMohon dicek. Jazakumullah khairan.`;
-    window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
-  });
+      // Pesan WA Dinamis (Sesuai Bahasa)
+      let msg = t.wa_opening;
+      msg += `\n\n💰 Nominal: ${j ? j + ' JPY' : ''} ${r ? r + ' IDR' : ''}`;
+      
+      if (isDedikasi && namaDedikasi) { msg += `\n${t.wa_dedication} *${namaDedikasi}*`; }
 
-  // --- LOGIKA PENGINGAT / KOMITMEN (REMINDER) ---
+      msg += `\n\n${t.wa_closing}`;
+      
+      setTimeout(() => {
+          window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
+          btnWA.innerHTML = originalText;
+          btnWA.classList.remove("opacity-75", "cursor-wait");
+          window.lucide?.createIcons?.();
+      }, 1000);
+    });
+  }
+  
+  // --- TOMBOL SALIN REKENING (BILINGUAL) ---
+  $$("[data-copy]").forEach(b => b.addEventListener("click", () => { 
+      navigator.clipboard.writeText($(b.dataset.copy).innerText);
+      const t = TRANSLATIONS[currentLang] || TRANSLATIONS["id"];
+      
+      const originalText = b.innerHTML;
+      const originalClass = b.className;
+      
+      b.className = "text-xs font-bold text-emerald-600 flex items-center gap-1 transition-all duration-300";
+      b.innerHTML = `<i data-lucide="check-circle" class="w-3 h-3"></i> ${t.btn_copied}`;
+      window.lucide?.createIcons?.();
+
+      setTimeout(() => {
+          b.className = originalClass;
+          b.innerHTML = originalText;
+          window.lucide?.createIcons?.();
+      }, 2000);
+  }));
+
+  // --- LOGIKA PENGINGAT / KOMITMEN ---
   const btnRemind = $("#btnSetReminder");
   const inputDate = $("#dateReminder");
   
