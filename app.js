@@ -434,12 +434,12 @@ function boot() {
   $("#langToggleMob")?.addEventListener("click", () => setLang(currentLang === "id" ? "en" : "id"));
 
   // Init Tabs
-  $("#tabPengumuman")?.addEventListener("click", () => { $("#wrapPengumuman").classList.remove("hidden"); $("#wrapArtikel").classList.add("hidden"); $("#tabs").classList.replace("tab-right", "tab-left"); });
-  $("#tabArtikel")?.addEventListener("click", () => { $("#wrapPengumuman").classList.add("hidden"); $("#wrapArtikel").classList.remove("hidden"); $("#tabs").classList.replace("tab-left", "tab-right"); });
+  $("#tabPengumuman")?.addEventListener("click", () => { $("#wrapPengumuman").classList.remove("hidden"); $("#wrapArtikel").classList.add("hidden"); $("#tabs").classList.replace("tab-right","tab-left"); });
+  $("#tabArtikel")?.addEventListener("click", () => { $("#wrapPengumuman").classList.add("hidden"); $("#wrapArtikel").classList.remove("hidden"); $("#tabs").classList.replace("tab-left","tab-right"); });
   
   if ($("#year")) $("#year").textContent = new Date().getFullYear();
 
-  // Load Fitur
+  // Load Semua Fitur (PASTIKAN SEMUA ADA DI SINI)
   renderSholat();
   renderContent();
   initCountdown();
@@ -449,7 +449,7 @@ function boot() {
   initVideoAjakan();
   initHeroSlider();
   setupAdmin();
-  initZakatCalculator();
+  initZakatCalculator(); // <--- INI KUNCI AGAR ZAKAT BERFUNGSI
   initDoa();
   initPopup();
 
@@ -464,7 +464,7 @@ function boot() {
 // Listener Utama
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 
-// Event Listener Modal (Pastikan diluar boot agar global)
+// Event Listener Modal Artikel (Pastikan tetap ada di paling bawah luar boot)
 document.addEventListener("DOMContentLoaded", () => {
   const modal = $("#articleModal"); 
   const close = () => { if (modal) { modal.classList.add("hidden"); modal.classList.remove("flex"); } };
