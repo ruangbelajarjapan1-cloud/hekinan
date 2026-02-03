@@ -397,51 +397,31 @@ async function renderSholat() {
 function initDonasi() {
   const fmt = (n, c) => { const symbol = c === 'JPY' ? '¥' : 'Rp'; return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n); };
   const T = TARGET_DONASI, C = TERKUMPUL_SAAT_INI, K = T - C;
+  
+  // Render angka donasi
   if ($("#targetLabel")) $("#targetLabel").textContent = fmt(T, "JPY");
   if ($("#terkumpulLabel")) $("#terkumpulLabel").textContent = fmt(C, "JPY");
   if ($("#kekuranganLabel")) $("#kekuranganLabel").textContent = fmt(K, "JPY");
+  
+  // Progress Bar Animation
   const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { $("#progressBar").style.width = Math.round((C / T) * 100) + "%"; $("#percentLabel").textContent = Math.round((C / T) * 100); } }) });
   if ($("#donasi")) obs.observe($("#donasi"));
+  
+  // Quick Amount Buttons
   $$(".quick-jpy").forEach(b => b.addEventListener("click", () => $("#inputJPY").value = b.dataset.v));
   $$(".quick-idr").forEach(b => b.addEventListener("click", () => $("#inputIDR").value = b.dataset.v));
+  
+  // Tombol Konfirmasi WA
   $("#donasiBtn")?.addEventListener("click", () => {
     const j = $("#inputJPY")?.value, r = $("#inputIDR")?.value;
     const msg = `Assalamu'alaikum, saya ingin konfirmasi donasi untuk Masjid As-Sunnah Hekinan sebesar: ${j ? j + ' JPY' : ''} ${r ? r + ' IDR' : ''}. Mohon dicek.`;
     window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
   });
-  $$("[data-copy]").forEach(b => b.addEventListener("click", () => { navigator.clipboard.writeText($(b.dataset.copy).innerText); alert("Copied!"); }));
-  // --- MULAI LOGIKA PENGINGAT ---
-  const btnRemind = $("#btnSetReminder");
-  const inputDate = $("#dateReminder");
-
-  if (btnRemind && inputDate) {
-    // Set default tanggal ke besok
-    const besok = new Date();
-    besok.setDate(besok.getDate() + 1);
-    inputDate.value = besok.toISOString().split('T')[0];
-
-    btnRemind.addEventListener("click", () => {
-      const tgl = inputDate.value;
-      if (!tgl) return alert("Pilih tanggal dulu ya!");
-
-      // Format Waktu untuk Google Calendar (YYYYMMDD)
-      const dateStr = tgl.replace(/-/g, "");
-      
-      // Detail Event
-      const title = encodeURIComponent("✨ Komitmen Wakaf Masjid Hekinan");
-      const details = encodeURIComponent("Assalamu'alaikum! Ini pengingat untuk sedekah/wakaf ke Masjid As-Sunnah Hekinan.\n\nRekening:\nYucho: 12160-00457031 (Yoshimine Adelfa)\nBSI: 7329283768 (Hidayah Cinta Hekinan)\n\nSemoga berkah rezekinya! 🤲");
-      const location = encodeURIComponent("https://assunnahhekinan.org");
-      
-      // Buat Link Google Calendar
-      // Format dates: YYYYMMDD/YYYYMMDD (Event seharian)
-      const gCalLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&dates=${dateStr}/${dateStr}`;
-
-      // Buka di tab baru
-      window.open(gCalLink, "_blank");
-    });
   
-  // --- SELESAI LOGIKA PENGINGAT ---
-  // ===== LOGIKA PENGINGAT / KOMITMEN =====
+  // Tombol Copy Rekening
+  $$("[data-copy]").forEach(b => b.addEventListener("click", () => { navigator.clipboard.writeText($(b.dataset.copy).innerText); alert("Copied!"); }));
+
+  // ===== LOGIKA PENGINGAT / KOMITMEN (VERSI FINAL) =====
   const btnRemind = $("#btnSetReminder");
   const inputDate = $("#dateReminder");
   
@@ -458,7 +438,10 @@ function initDonasi() {
       if (!tgl) return; // Stop jika tanggal kosong
 
       // Cek pilihan frekuensi (sekali / bulanan)
-      const freq = document.querySelector('input[name="freq"]:checked').value;
+      // Menggunakan try-catch atau fallback jika elemen radio belum ter-render sempurna
+      let freq = 'once';
+      const freqEl = document.querySelector('input[name="freq"]:checked');
+      if (freqEl) freq = freqEl.value;
       
       // Ambil teks sesuai bahasa yang sedang aktif
       const t = TRANSLATIONS[currentLang] || TRANSLATIONS["id"];
@@ -483,7 +466,6 @@ function initDonasi() {
       window.open(gCalLink, "_blank");
     });
   }
-}
 }
 function initCountdown() {
   const end = new Date("2026-05-31T23:59:59").getTime();
