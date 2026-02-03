@@ -439,7 +439,7 @@ function initDonasi() {
       // Buka di tab baru
       window.open(gCalLink, "_blank");
     });
-  }
+  
   // --- SELESAI LOGIKA PENGINGAT ---
   // ===== LOGIKA PENGINGAT / KOMITMEN =====
   const btnRemind = $("#btnSetReminder");
@@ -492,7 +492,7 @@ function initCountdown() {
     $("#cdDays").innerText = Math.floor(gap/86400000); $("#cdHours").innerText = Math.floor((gap%86400000)/3600000); $("#cdMin").innerText = Math.floor((gap%3600000)/60000);
   }, 1000);
 }
-
+}
 function boot() {
   setLang(currentLang);
   $("#langToggle")?.addEventListener("click", ()=>setLang(currentLang==="id"?"en":"id"));
