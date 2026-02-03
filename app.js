@@ -389,6 +389,37 @@ function initDonasi() {
     window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
   });
   $$("[data-copy]").forEach(b => b.addEventListener("click", () => { navigator.clipboard.writeText($(b.dataset.copy).innerText); alert("Copied!"); }));
+  // --- MULAI LOGIKA PENGINGAT ---
+  const btnRemind = $("#btnSetReminder");
+  const inputDate = $("#dateReminder");
+
+  if (btnRemind && inputDate) {
+    // Set default tanggal ke besok
+    const besok = new Date();
+    besok.setDate(besok.getDate() + 1);
+    inputDate.value = besok.toISOString().split('T')[0];
+
+    btnRemind.addEventListener("click", () => {
+      const tgl = inputDate.value;
+      if (!tgl) return alert("Pilih tanggal dulu ya!");
+
+      // Format Waktu untuk Google Calendar (YYYYMMDD)
+      const dateStr = tgl.replace(/-/g, "");
+      
+      // Detail Event
+      const title = encodeURIComponent("✨ Komitmen Wakaf Masjid Hekinan");
+      const details = encodeURIComponent("Assalamu'alaikum! Ini pengingat untuk sedekah/wakaf ke Masjid As-Sunnah Hekinan.\n\nRekening:\nYucho: 12160-00457031 (Yoshimine Adelfa)\nBSI: 7329283768 (Hidayah Cinta Hekinan)\n\nSemoga berkah rezekinya! 🤲");
+      const location = encodeURIComponent("https://assunnahhekinan.org");
+      
+      // Buat Link Google Calendar
+      // Format dates: YYYYMMDD/YYYYMMDD (Event seharian)
+      const gCalLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&dates=${dateStr}/${dateStr}`;
+
+      // Buka di tab baru
+      window.open(gCalLink, "_blank");
+    });
+  }
+  // --- SELESAI LOGIKA PENGINGAT ---
 }
 
 function initCountdown() {
