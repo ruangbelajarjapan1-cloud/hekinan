@@ -31,7 +31,9 @@ const HADITHS = [
 
 const DAFTAR_DOA = [
   { ar: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", id: "Ya Allah, bukalah untukku pintu-pintu rahmat-Mu. (Doa Masuk Masjid)" },
-  { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", id: "Ya Allah, sesungguhnya aku memohon keutamaan dari-Mu. (Doa Keluar Masjid)" }
+  { ar: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", id: "Ya Allah, sesungguhnya aku memohon keutamaan dari-Mu. (Doa Keluar Masjid)" },
+  { ar: "رَبِّ زِدْنِي عِلْمًا وَارْزُقْنِي فَهْمًا", id: "Ya Tuhanku, tambahkanlah ilmuku dan berilah aku karunia untuk dapat memahaminya." },
+  { ar: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ", id: "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat dan peliharalah kami dari siksa neraka." }
 ];
 
 const TRANSLATIONS = {
@@ -356,43 +358,7 @@ function initVideoAjakan() { const container = $("#videoAjakanContainer"); if (!
 function initVideoKajian() { const grid = $("#videoGrid"); if (!grid || !YOUTUBE_VIDEOS.length) return; grid.innerHTML = ""; YOUTUBE_VIDEOS.forEach(id => { const card = document.createElement("div"); card.className = "rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white group hover:-translate-y-1 transition-transform duration-300"; card.innerHTML = `<div class="relative w-full pt-[56.25%] bg-black"><iframe src="https://www.youtube.com/embed/${id}" title="Video Kajian" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe></div>`; grid.appendChild(card); }); }
 function initDoa() { const elArab = $("#doaArab"), elArti = $("#doaArti"), btn = $("#btnGantiDoa"); if (!elArab) return; const acakDoa = () => { const r = DAFTAR_DOA[Math.floor(Math.random() * DAFTAR_DOA.length)]; elArab.textContent = r.ar; elArti.textContent = r.id; }; acakDoa(); btn?.addEventListener("click", acakDoa); }
 
-async function initSmartCarousel() {
-  const track = $("#kgTrack"); if (!track) return;
-  track.innerHTML = "";
-  LOCAL_IMAGES.forEach(src => {
-    const el = document.createElement("figure");
-    el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-slate-100 relative group border border-slate-200 flex items-center justify-center";
-    el.innerHTML = `<img src="${src}" class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="Kegiatan">`;
-    track.appendChild(el);
-  });
-  try {
-    const res = await fetch(APPS_SCRIPT_URL);
-    const driveItems = await res.json();
-    const videos = driveItems.filter(item => item.mime.includes("video"));
-    videos.forEach(item => {
-      const el = document.createElement("figure");
-      el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-black relative group border border-slate-100";
-      el.innerHTML = `<iframe src="${item.videoUrl}" class="w-full h-full" allow="autoplay" style="border:none;" loading="lazy"></iframe><div class="absolute top-2 right-2 bg-red-600 text-white text-[10px] px-2 py-1 rounded-md flex items-center gap-1 font-bold z-10"><i data-lucide="video" class="w-3 h-3"></i> Drive</div>`;
-      track.appendChild(el);
-    });
-  } catch (e) { console.log("Video empty/error."); }
-  window.lucide?.createIcons?.();
-  let interval; const speed = 4000;
-  const getW = () => track.firstElementChild ? track.firstElementChild.offsetWidth + 16 : 300;
-  const start = () => {
-    clearInterval(interval);
-    interval = setInterval(() => {
-      if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 20) track.scrollTo({ left: 0, behavior: "smooth" });
-      else track.scrollBy({ left: getW(), behavior: "smooth" });
-    }, speed);
-  };
-  const stop = () => clearInterval(interval);
-  start();
-  track.addEventListener("touchstart", stop, { passive: true }); track.addEventListener("touchend", start, { passive: true });
-  track.addEventListener("mouseenter", stop); track.addEventListener("mouseleave", start);
-  const scroll = d => { stop(); track.scrollBy({ left: d * getW(), behavior: "smooth" }); start(); };
-  $("#kgPrev")?.addEventListener("click", () => scroll(-1)); $("#kgNext")?.addEventListener("click", () => scroll(1));
-}
+async function renderSholat() { const g = $("#sholatGrid"); const l = $("#locLabel"); if (!g) return; g.innerHTML = `<p class="col-span-full text-center text-slate-400 py-4">...</p>`; let p = { lat: 34.884, lon: 136.993 }; try { p = await new Promise(r => navigator.geolocation.getCurrentPosition(x => r({ lat: x.coords.latitude, lon: x.coords.longitude }), () => r(p), { timeout: 3000 })); } catch {} if (l) l.textContent = `${p.lat.toFixed(3)}, ${p.lon.toFixed(3)}`; try { const d = await fetch(`https://api.aladhan.com/v1/timings?latitude=${p.lat}&longitude=${p.lon}&method=2`).then(r => r.json()); if (d.data && d.data.date && d.data.date.hijri) renderHijri(d.data.date.hijri); const m = { Fajr: ["Subuh", "sunrise"], Sunrise: ["Syuruq", "sun"], Dhuhr: ["Dzuhur", "sun"], Asr: ["Ashar", "cloud-sun"], Maghrib: ["Maghrib", "moon"], Isha: ["Isya", "star"] }; g.innerHTML = ""; Object.keys(m).forEach(k => { g.innerHTML += `<div class="rounded-2xl border border-slate-100 p-4 text-center bg-slate-50 hover:bg-white hover:border-sky-200 transition-all"><i data-lucide="${m[k][1]}" class="w-5 h-5 mx-auto text-slate-400 mb-2"></i><div class="text-[10px] uppercase font-bold text-slate-400">${m[k][0]}</div><div class="mt-1 text-lg font-extrabold text-slate-800">${d.data.timings[k]}</div></div>`; }); window.lucide?.createIcons?.(); } catch { g.innerHTML = "Error"; } }
 
 function initDonasi() {
   const fmt = (n, c) => { const symbol = c === 'JPY' ? '¥' : 'Rp'; return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n); };
