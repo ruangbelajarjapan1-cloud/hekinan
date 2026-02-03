@@ -392,7 +392,32 @@ async function renderSholat() {
 function initDonasi() {
   const fmt = (n, c) => { const symbol = c === 'JPY' ? '¥' : 'Rp'; return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n); };
   const T = TARGET_DONASI, C = TERKUMPUL_SAAT_INI, K = T - C;
+  // --- LOGIKA WIDGET "ORANG BAIK" (Paste di dalam initDonasi) ---
+  const NOMINAL_SATUAN = 1000; // Asumsi 1 orang = ¥1.000
   
+  // Hitung Jumlah Orang
+  const targetOrang = Math.ceil(T / NOMINAL_SATUAN);
+  const orangBergabung = Math.floor(C / NOMINAL_SATUAN);
+  const persenOrang = Math.min((orangBergabung / targetOrang) * 100, 100); // Max 100%
+
+  // Update Tampilan HTML
+  if ($("#targetOrang")) $("#targetOrang").textContent = new Intl.NumberFormat('id-ID').format(targetOrang);
+  if ($("#labelTargetOrang")) $("#labelTargetOrang").textContent = new Intl.NumberFormat('id-ID').format(targetOrang);
+  
+  // Efek Animasi Angka Naik
+  const elOrang = $("#terkumpulOrang");
+  if (elOrang) {
+      elOrang.textContent = new Intl.NumberFormat('id-ID').format(orangBergabung);
+      
+      // Update Progress Bar Orang
+      const barOrang = $("#progressOrang");
+      if(barOrang) {
+          // Gunakan timeout kecil agar animasi jalan saat loading
+          setTimeout(() => {
+              barOrang.style.width = persenOrang + "%";
+          }, 500);
+      }
+  }
   // Render angka donasi
   if ($("#targetLabel")) $("#targetLabel").textContent = fmt(T, "JPY");
   if ($("#terkumpulLabel")) $("#terkumpulLabel").textContent = fmt(C, "JPY");
