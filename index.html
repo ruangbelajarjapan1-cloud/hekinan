@@ -20,10 +20,10 @@
         },
         borderRadius: { fig: "20px" },
         boxShadow: { soft: "0 10px 40px -10px rgba(14, 165, 233, 0.15)", card: "0 4px 6px -1px rgba(0, 0, 0, 0.05)" },
-        animation: { 'fade-up': 'fadeUp 0.8s ease-out forwards', 'fade-in': 'fadeIn 1.5s ease-in-out forwards' },
+        animation: { 'fade-up': 'fadeUp 0.8s ease-out forwards', 'shimmer': 'shimmer 2s infinite' },
         keyframes: {
           fadeUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-          fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } }
+          shimmer: { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(100%)' } }
         }
       }
     }
@@ -95,8 +95,7 @@
 <section id="hero" class="relative bg-slate-900 pt-10 pb-20 md:pt-20 md:pb-32 overflow-hidden min-h-[500px] flex items-center">
   <div id="heroSlider" class="absolute inset-0 z-0">
     <img src="1.jpeg" class="hero-slide active" alt="Slide 1">
-    <img src="image_97f6ae.jpg" class="hero-slide" alt="Tampak Depan Masjid"> 
-    <img src="2.jpeg" class="hero-slide" alt="Slide 3">
+    <img src="2.jpeg" class="hero-slide" alt="Slide 2">
     <div class="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-transparent"></div>
   </div>
   <div class="container mx-auto px-4 relative z-10">
@@ -176,44 +175,53 @@
 <section id="donasi" class="bg-white py-16 border-t border-slate-200">
   <div class="container mx-auto px-4">
     <div class="max-w-5xl mx-auto">
+      
       <div class="text-center mb-10 reveal">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100 text-amber-700 text-xs font-bold mb-4 border border-amber-200"><i data-lucide="gem" class="w-3 h-3 text-amber-600"></i> <span data-i18n="donasi_badge">Peluang Amal Jariyah</span></div>
         <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4" data-i18n="donasi_title">Investasi Kekal Akhirat</h2>
         <p class="text-slate-600 max-w-2xl mx-auto leading-relaxed italic">"Siapa yang membangun masjid karena Allah, maka Allah akan membangunkan baginya semisal itu di surga." (HR. Bukhari & Muslim)</p>
       </div>
-      <div class="flex justify-center mb-12 reveal">
-        <div class="mb-8 reveal">
-  <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden border border-slate-700">
-    <div class="absolute top-0 right-0 opacity-10 transform translate-x-10 -translate-y-10">
-      <i data-lucide="users" class="w-48 h-48"></i>
-    </div>
 
-    <div class="relative z-10">
-      <h3 class="text-xl md:text-2xl font-bold mb-2 text-sky-300">
-        Dicari: <span id="targetOrang">0</span> Orang Baik!
-      </h3>
-      <p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-xl mb-6">
-        Jika 1 orang berwakaf <span class="font-bold text-white bg-white/20 px-2 py-0.5 rounded">¥1.000</span> (atau Rp100rb), maka pelunasan masjid ini akan segera terwujud. Jadilah salah satu dari mereka!
-      </p>
+      <div class="mb-10 reveal">
+        <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden border border-slate-700">
+          <div class="absolute top-0 right-0 opacity-10 transform translate-x-10 -translate-y-10">
+            <i data-lucide="users" class="w-48 h-48"></i>
+          </div>
 
-      <div class="flex items-end gap-2 mb-2">
-        <span id="terkumpulOrang" class="text-4xl md:text-5xl font-extrabold text-white">0</span>
-        <span class="text-sm md:text-base text-emerald-400 font-bold mb-1.5 pb-1">Orang Telah Bergabung</span>
-      </div>
+          <div class="relative z-10">
+            <h3 class="text-xl md:text-2xl font-bold mb-2 text-sky-300">
+              <span data-i18n="search_title">Dicari:</span> <span id="targetOrang">0</span> <span data-i18n="search_people">Orang Baik!</span>
+            </h3>
+            <p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-xl mb-6">
+              <span data-i18n="search_desc_1">Jika 1 orang berwakaf</span> <span class="font-bold text-white bg-white/20 px-2 py-0.5 rounded">¥1.000</span> (atau Rp100rb), <span data-i18n="search_desc_2">maka pelunasan masjid ini akan segera terwujud. Jadilah salah satu dari mereka!</span>
+            </p>
 
-      <div class="w-full bg-slate-700 rounded-full h-4 overflow-hidden shadow-inner border border-slate-600">
-        <div id="progressOrang" class="bg-gradient-to-r from-sky-400 to-emerald-400 h-full rounded-full transition-all duration-1000 ease-out w-0 relative">
-            <div class="absolute inset-0 bg-white/20 animate-[shimmer_2s_infinite]"></div>
+            <div class="flex items-end gap-2 mb-2">
+              <span id="terkumpulOrang" class="text-4xl md:text-5xl font-extrabold text-white">0</span>
+              <span class="text-sm md:text-base text-emerald-400 font-bold mb-1.5 pb-1" data-i18n="joined_label">Orang Telah Bergabung</span>
+            </div>
+
+            <div class="w-full bg-slate-700 rounded-full h-4 overflow-hidden shadow-inner border border-slate-600 mb-6">
+              <div id="progressOrang" class="bg-gradient-to-r from-sky-400 to-emerald-400 h-full rounded-full transition-all duration-1000 ease-out w-0 relative">
+                  <div class="absolute inset-0 bg-white/20 animate-[shimmer_2s_infinite]"></div>
+              </div>
+            </div>
+            
+            <div class="flex flex-wrap items-center gap-4 justify-between">
+              <div class="text-xs text-slate-400 font-mono">
+                <span>0 Orang</span> | 
+                <span>Target: <span id="labelTargetOrang">0</span></span>
+              </div>
+              
+              <button onclick="document.getElementById('rekeningArea').scrollIntoView({behavior: 'smooth'})" class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-full font-bold text-sm shadow-lg shadow-emerald-500/30 transition-all flex items-center gap-2 transform active:scale-95">
+                <span data-i18n="btn_join_movement">Gabung Gerakan Ini</span> <i data-lucide="arrow-down" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-      
-      <div class="flex justify-between mt-2 text-xs text-slate-400 font-mono">
-        <span>0 Orang</span>
-        <span>Target: <span id="labelTargetOrang">0</span></span>
-      </div>
-    </div>
-  </div>
-</div>
+
+      <div class="flex justify-center mb-12 reveal">
         <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col items-center">
           <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2" data-i18n="deadline_label">Batas Waktu Wakaf (Tahap 1)</p>
           <div class="flex gap-4 text-center">
@@ -226,6 +234,7 @@
       </div>
       
       <div class="grid lg:grid-cols-5 gap-8 items-start">
+        
         <div class="lg:col-span-3 rounded-[2rem] bg-slate-50 border border-slate-200 p-6 md:p-8 shadow-sm reveal">
           <h3 class="font-bold text-lg text-slate-800 mb-6 flex items-center gap-2"><span class="bg-sky-100 p-2 rounded-lg text-fig-primary"><i data-lucide="trending-up" class="w-5 h-5"></i></span><span data-i18n="progress_title">Progres Pembangunan</span></h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 relative z-10">
@@ -246,7 +255,8 @@
               <span><span id="percentLabel">0</span>%</span><span>Target: <span id="targetLabel">0</span></span>
             </div>
           </div>
-          <div class="space-y-4">
+
+          <div id="rekeningArea" class="space-y-4">
              <div class="p-4 rounded-2xl border border-slate-200 bg-white flex flex-col gap-3 relative overflow-hidden">
                <div class="flex items-center gap-3"><div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-xl">🇯🇵</div><div><p class="font-bold text-slate-800">Yucho Bank (Jepang)</p><p class="text-xs text-slate-500">a.n. Yoshimine Adelfa</p></div></div>
                <div class="flex items-center justify-between bg-slate-50 rounded-lg p-3 border border-slate-200 mt-1"><span id="rekYucho" class="font-mono font-bold text-slate-800 text-lg tracking-wide">12160-00457031</span><button data-copy="#rekYucho" class="text-xs font-bold text-fig-primary hover:underline flex items-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i> Salin</button></div>
@@ -258,75 +268,57 @@
              </div>
           </div>
         </div>
+
         <div class="lg:col-span-2 rounded-[2rem] bg-slate-900 text-white p-6 md:p-8 shadow-xl shadow-slate-200 reveal">
            <h3 class="font-bold text-xl mb-4 relative z-10 text-white" data-i18n="confirm_title">Konfirmasi Donasi</h3>
            <p class="text-sky-100 text-sm mb-6 relative z-10" data-i18n="confirm_desc">Masukkan nominal yang telah ditransfer.</p>
+           
            <div class="space-y-4 relative z-10">
              <div><label class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Nominal (JPY)</label><input id="inputJPY" type="number" placeholder="0" class="w-full mt-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:bg-white/20 font-mono"><div class="flex flex-wrap gap-2 mt-2"><button class="quick-jpy text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="1000">¥1k</button><button class="quick-jpy text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="10000">¥10k</button></div></div>
              <div class="relative flex py-1 items-center"><div class="flex-grow border-t border-white/10"></div><span class="flex-shrink-0 mx-4 text-xs text-slate-500" data-i18n="or">ATAU</span><div class="flex-grow border-t border-white/10"></div></div>
              <div><label class="text-xs font-semibold text-slate-400 uppercase tracking-wide">Nominal (IDR)</label><input id="inputIDR" type="number" placeholder="0" class="w-full mt-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:bg-white/20 font-mono"><div class="flex flex-wrap gap-2 mt-2"><button class="quick-idr text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="50000">50rb</button><button class="quick-idr text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1 rounded-lg transition-colors" data-v="100000">100rb</button></div></div>
            </div>
+           
            <button id="donasiBtn" class="mt-8 w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-500/20 transition-transform transform active:scale-95 flex items-center justify-center gap-2"><i data-lucide="message-circle" class="w-5 h-5"></i> <span data-i18n="btn_confirm">Konfirmasi via WA</span></button>
-          <div class="mt-6 pt-6 border-t border-white/10 text-center">
-  <p class="text-xs text-slate-400 mb-3">Belum bisa transfer sekarang?</p>
-  
-  <details class="group relative">
-    <summary class="list-none cursor-pointer inline-flex items-center gap-2 text-xs font-bold text-sky-300 hover:text-sky-200 transition-colors bg-white/5 px-4 py-2 rounded-full border border-sky-500/30">
-      <i data-lucide="calendar-clock" class="w-4 h-4"></i>
-      <span>Ingatkan Saya Saat Gajian</span>
-      <i data-lucide="chevron-down" class="w-3 h-3 group-open:rotate-180 transition-transform"></i>
-    </summary>
-    
-    <div class="mt-3 bg-white/10 p-4 rounded-xl border border-white/10 text-left animate-[fadeUp_0.3s_ease-out]">
-      <label class="text-[10px] text-slate-300 uppercase font-bold tracking-wider">Pilih Tanggal Pengingat:</label>
-      <div class="flex gap-2 mt-2">
-        <input id="dateReminder" type="date" class="flex-1 bg-slate-800 text-white text-sm rounded-lg px-3 py-2 border border-slate-600 focus:border-sky-500 outline-none" style="color-scheme: dark;">
-        <button id="btnSetReminder" class="bg-sky-600 hover:bg-sky-500 text-white px-4 py-2 rounded-lg font-bold text-xs transition-colors shadow-lg">
-          Simpan
-        </button>
-        <div class="mt-8 pt-6 border-t border-white/10 text-center">
-  <p class="text-xs text-slate-400 mb-3" data-i18n="reminder_label">Belum bisa transfer sekarang?</p>
-  
-  <details class="group relative">
-    <summary class="list-none cursor-pointer inline-flex items-center gap-2 text-xs font-bold text-sky-300 hover:text-sky-200 transition-colors bg-white/5 px-4 py-2 rounded-full border border-sky-500/30 select-none">
-      <i data-lucide="calendar-clock" class="w-4 h-4"></i>
-      <span data-i18n="reminder_btn">Buat Komitmen Rutin</span>
-      <i data-lucide="chevron-down" class="w-3 h-3 group-open:rotate-180 transition-transform"></i>
-    </summary>
-    
-    <div class="mt-4 bg-slate-800/80 p-5 rounded-2xl border border-white/10 text-left animate-[fadeUp_0.3s_ease-out] shadow-xl backdrop-blur-md">
-      
-      <div class="mb-4">
-        <label class="block text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1" data-i18n="reminder_date_label">Mulai Tanggal:</label>
-        <input id="dateReminder" type="date" class="w-full bg-slate-900 text-white text-sm rounded-xl px-3 py-2 border border-slate-600 focus:border-sky-500 outline-none transition-colors appearance-none" style="color-scheme: dark;">
-      </div>
+           
+           <div class="mt-8 pt-6 border-t border-white/10 text-center">
+             <p class="text-xs text-slate-400 mb-3" data-i18n="reminder_label">Belum bisa transfer sekarang?</p>
+             
+             <details class="group relative">
+               <summary class="list-none cursor-pointer inline-flex items-center gap-2 text-xs font-bold text-sky-300 hover:text-sky-200 transition-colors bg-white/5 px-4 py-2 rounded-full border border-sky-500/30 select-none">
+                 <i data-lucide="calendar-clock" class="w-4 h-4"></i>
+                 <span data-i18n="reminder_btn">Buat Komitmen Rutin</span>
+                 <i data-lucide="chevron-down" class="w-3 h-3 group-open:rotate-180 transition-transform"></i>
+               </summary>
+               
+               <div class="mt-4 bg-slate-800/80 p-5 rounded-2xl border border-white/10 text-left animate-[fadeUp_0.3s_ease-out] shadow-xl backdrop-blur-md">
+                 
+                 <div class="mb-4">
+                   <label class="block text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1" data-i18n="reminder_date_label">Mulai Tanggal:</label>
+                   <input id="dateReminder" type="date" class="w-full bg-slate-900 text-white text-sm rounded-xl px-3 py-2 border border-slate-600 focus:border-sky-500 outline-none transition-colors appearance-none" style="color-scheme: dark;">
+                 </div>
 
-      <div class="mb-5">
-        <label class="block text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1" data-i18n="reminder_freq_label">Frekuensi:</label>
-        <div class="flex bg-slate-900 rounded-xl p-1 border border-slate-600">
-          <label class="flex-1 cursor-pointer">
-            <input type="radio" name="freq" value="once" class="peer hidden" checked>
-            <span class="block text-center text-xs py-2 rounded-lg text-slate-400 peer-checked:bg-slate-700 peer-checked:text-white peer-checked:font-bold transition-all" data-i18n="freq_once">Sekali</span>
-          </label>
-          <label class="flex-1 cursor-pointer">
-            <input type="radio" name="freq" value="monthly" class="peer hidden">
-            <span class="block text-center text-xs py-2 rounded-lg text-slate-400 peer-checked:bg-sky-600 peer-checked:text-white peer-checked:font-bold transition-all" data-i18n="freq_monthly">Bulanan</span>
-          </label>
-        </div>
-      </div>
+                 <div class="mb-5">
+                   <label class="block text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1" data-i18n="reminder_freq_label">Frekuensi:</label>
+                   <div class="flex bg-slate-900 rounded-xl p-1 border border-slate-600">
+                     <label class="flex-1 cursor-pointer">
+                       <input type="radio" name="freq" value="once" class="peer hidden" checked>
+                       <span class="block text-center text-xs py-2 rounded-lg text-slate-400 peer-checked:bg-slate-700 peer-checked:text-white peer-checked:font-bold transition-all" data-i18n="freq_once">Sekali</span>
+                     </label>
+                     <label class="flex-1 cursor-pointer">
+                       <input type="radio" name="freq" value="monthly" class="peer hidden">
+                       <span class="block text-center text-xs py-2 rounded-lg text-slate-400 peer-checked:bg-sky-600 peer-checked:text-white peer-checked:font-bold transition-all" data-i18n="freq_monthly">Bulanan</span>
+                     </label>
+                   </div>
+                 </div>
 
-      <button id="btnSetReminder" class="w-full bg-sky-600 hover:bg-sky-500 text-white py-3 rounded-xl font-bold text-sm transition-transform active:scale-95 shadow-lg flex items-center justify-center gap-2">
-        <i data-lucide="bell-plus" class="w-4 h-4"></i> <span data-i18n="btn_save_reminder">Pasang Pengingat</span>
-      </button>
-      <p class="text-[10px] text-slate-500 mt-3 text-center italic" data-i18n="reminder_note">*Akan membuka Google Calendar.</p>
-    </div>
-  </details>
-</div>
-      </div>
-      <p class="text-[10px] text-slate-400 mt-2 italic">*Akan membuka Google Calendar Anda.</p>
-    </div>
-  </details>
-</div>
+                 <button id="btnSetReminder" class="w-full bg-sky-600 hover:bg-sky-500 text-white py-3 rounded-xl font-bold text-sm transition-transform active:scale-95 shadow-lg flex items-center justify-center gap-2">
+                   <i data-lucide="bell-plus" class="w-4 h-4"></i> <span data-i18n="btn_save_reminder">Pasang Pengingat</span>
+                 </button>
+                 <p class="text-[10px] text-slate-500 mt-3 text-center italic" data-i18n="reminder_note">*Akan membuka Google Calendar.</p>
+               </div>
+             </details>
+           </div>
         </div>
       </div>
     </div>
@@ -432,18 +424,14 @@
 
 <div id="popupPromo" class="fixed inset-0 z-[60] hidden items-center justify-center p-4">
   <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" id="closePopupBackdrop"></div>
-  
   <div class="relative w-full max-w-md rounded-2xl bg-white p-5 shadow-2xl transform scale-95 transition-all animate-[fadeUp_0.3s_ease-out]">
-    
     <button id="closePopupBtn" class="absolute -top-3 -right-3 bg-slate-800 text-white p-2 rounded-full shadow-lg hover:bg-slate-700 z-10 border-2 border-white">
       <i data-lucide="x" class="w-5 h-5"></i>
     </button>
-    
     <div class="relative overflow-hidden rounded-xl mb-4 bg-slate-100 min-h-[200px]">
         <img src="poster.jpg" alt="Info" class="w-full h-auto object-cover" 
              onerror="this.style.display='none';">
     </div>
-    
     <div class="flex flex-col gap-3">
         <button id="popupDonateBtn" class="w-full bg-fig-accent hover:bg-amber-600 text-white font-bold py-3.5 rounded-xl shadow-md transition-transform transform active:scale-95 flex items-center justify-center gap-2">
           <i data-lucide="heart" class="w-5 h-5 fill-current"></i> 
@@ -455,53 +443,9 @@
           <span>Bantu Share ke WA</span>
         </button>
     </div>
-    
     <p class="text-[10px] text-center text-slate-400 mt-3 italic">
-        "Barangsiapa menunjukkan kebaikan, baginya pahala seperti pelakunya." (HR. Muslim)
+        "Barangsiapa menunjukkan kebaikan, baginya pahala seperti orang yang melakukannya." (HR. Muslim)
     </p>
-  </div>
-</div>
-
-<div id="zakatModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-  <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl relative animate-[fadeUp_0.3s_ease-out]">
-    <div class="flex justify-between items-center mb-6">
-      <h3 class="text-xl font-extrabold text-slate-900 flex items-center gap-2"><i data-lucide="calculator" class="text-fig-accent"></i> Kalkulator Zakat</h3>
-      <button id="closeZakat" class="p-2 rounded-full hover:bg-slate-100 text-slate-500"><i data-lucide="x" class="w-5 h-5"></i></button>
-    </div>
-    <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
-      <div class="flex bg-slate-100 p-1 rounded-xl mb-4">
-        <button id="currJPY" class="flex-1 py-2 text-sm font-bold rounded-lg bg-white shadow-sm text-slate-800 transition-all">JPY (¥)</button>
-        <button id="currIDR" class="flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 hover:bg-white/50 transition-all">IDR (Rp)</button>
-      </div>
-      <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
-        <label class="text-xs font-bold uppercase text-amber-700 block mb-1">Harga Emas (per gram)</label>
-        <div class="relative mb-2">
-          <input id="zGoldPrice" type="number" class="w-full rounded-lg border-amber-200 bg-white px-3 py-2 text-sm font-bold text-amber-900 focus:ring-2 focus:ring-amber-500 outline-none">
-          <span id="zCurrLabel" class="absolute right-3 top-2 text-xs text-amber-500 font-bold">JPY</span>
-        </div>
-        <div class="flex gap-2">
-          <a id="linkGoldJPY" href="https://gold.tanaka.co.jp/retail/rate_schedule/" target="_blank" class="flex-1 text-center bg-white border border-amber-200 text-[10px] text-amber-700 py-1.5 rounded-lg hover:bg-amber-100 font-bold">🇯🇵 Harga Tanaka</a>
-          <a id="linkGoldIDR" href="https://www.logammulia.com/id/harga-emas-hari-ini" target="_blank" class="flex-1 text-center bg-white border border-amber-200 text-[10px] text-amber-700 py-1.5 rounded-lg hover:bg-amber-100 font-bold hidden">🇮🇩 Harga Antam</a>
-        </div>
-      </div>
-      <div class="space-y-3">
-        <div><label class="text-xs font-semibold text-slate-500">Uang Tunai</label><input id="zCash" type="number" placeholder="0" class="w-full rounded-lg border-slate-300 px-3 py-2 text-sm focus:border-fig-primary outline-none"></div>
-        <div><label class="text-xs font-semibold text-slate-500">Nilai Emas/Perak</label><input id="zGoldVal" type="number" placeholder="0" class="w-full rounded-lg border-slate-300 px-3 py-2 text-sm focus:border-fig-primary outline-none"></div>
-        <div><label class="text-xs font-semibold text-slate-500">Aset Perniagaan</label><input id="zAssets" type="number" placeholder="0" class="w-full rounded-lg border-slate-300 px-3 py-2 text-sm focus:border-fig-primary outline-none"></div>
-        <div><label class="text-xs font-semibold text-red-500">Hutang Jatuh Tempo</label><input id="zDebt" type="number" placeholder="0" class="w-full rounded-lg border-red-200 px-3 py-2 text-sm focus:border-red-500 outline-none"></div>
-      </div>
-      <div class="pt-4 border-t border-slate-100">
-        <button id="calcBtn" class="w-full rounded-xl bg-slate-900 text-white py-3 font-bold hover:bg-slate-800 transition-all mb-4">Hitung Zakat</button>
-        <div id="zResultBox" class="hidden rounded-xl bg-slate-50 p-4 text-center border border-slate-200">
-          <p class="text-xs text-slate-500 mb-1">Total Harta Bersih: <span id="zTotalNet" class="font-bold text-slate-800">0</span></p>
-          <p class="text-xs text-slate-500 mb-3">Nishab (85g Emas): <span id="zNisab" class="font-bold text-amber-600">0</span></p>
-          <div id="zStatus" class="font-extrabold text-lg text-slate-900 mb-1">WAJIB ZAKAT</div>
-          <p class="text-xs text-slate-500">Zakat (2.5%):</p>
-          <div id="zFinalAmount" class="text-2xl font-black text-fig-primary mt-1">0</div>
-        </div>
-      </div>
-      <p class="text-[10px] text-center text-slate-400 italic">Syarat: Harta telah mencapai Haul (1 tahun Hijriah).</p>
-    </div>
   </div>
 </div>
 
@@ -523,7 +467,3 @@
 <script type="module" src="./app.js"></script>
 </body>
 </html>
-
-
-
-
