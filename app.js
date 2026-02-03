@@ -14,13 +14,13 @@ const TERKUMPUL_SAAT_INI = 9519843;
 // ==========================================
 const POPUP_IMAGES_LIST = [
   "assets/foto/1e.png",      
-  // "assets/foto/001.jpg", 
+  "assets/foto/001.jpg", 
 ];
 
 // ==========================================
 // 🎥 VIDEO & FOTO
 // ==========================================
-const VIDEO_DONASI_LIST = ["jfKfPRdk", "dQwgXcQ"];
+const VIDEO_DONASI_LIST = ["jfPRdk", "dQXcQ"];
 const YOUTUBE_VIDEOS = ["OvQjcl65BR8", "zEu4jVpgB_8", "oQjqwQb6atA"];
 const LOCAL_IMAGES = ["1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "6.jpeg", "7.jpeg", "assets/foto/a.jpeg", "assets/foto/b.jpeg"];
 
