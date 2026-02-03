@@ -518,10 +518,59 @@
     </div>
   </div>
 </div>
+  <div id="zakatModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-[100]">
+  <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl animate-[fadeUp_0.3s_ease-out]">
+    <div class="flex items-center justify-between mb-6 border-b pb-4">
+      <h3 class="text-xl font-bold text-slate-900">Kalkulator Zakat Mal</h3>
+      <button id="closeZakat" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-6 h-6"></i></button>
+    </div>
+    
+    <div class="space-y-4">
+      <div class="flex gap-2 mb-4">
+        <button id="currJPY" onclick="document.getElementById('zGoldPrice').value=14000; document.getElementById('zCurrLabel').textContent='JPY'" class="flex-1 py-2 text-xs font-bold rounded-lg bg-sky-50 text-sky-700 border border-sky-200">JPY (Yen)</button>
+        <button id="currIDR" onclick="document.getElementById('zGoldPrice').value=1400000; document.getElementById('zCurrLabel').textContent='IDR'" class="flex-1 py-2 text-xs font-bold rounded-lg bg-slate-50 text-slate-600 border border-slate-200">IDR (Rupiah)</button>
+      </div>
+
+      <div>
+        <label class="text-[10px] font-bold text-slate-400 uppercase">Harga Emas per Gram (<span id="zCurrLabel">JPY</span>)</label>
+        <input id="zGoldPrice" type="number" value="14000" class="w-full border rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-sky-500 outline-none">
+      </div>
+      <div>
+        <label class="text-[10px] font-bold text-slate-400 uppercase">Total Uang Simpanan (Tabungan/Cash)</label>
+        <input id="zCash" type="number" placeholder="0" class="w-full border rounded-xl px-4 py-2 text-sm">
+      </div>
+      <div>
+        <label class="text-[10px] font-bold text-slate-400 uppercase">Emas/Perak (Nilai Uangnya)</label>
+        <input id="zGoldVal" type="number" placeholder="0" class="w-full border rounded-xl px-4 py-2 text-sm">
+      </div>
+      <div>
+        <label class="text-[10px] font-bold text-slate-400 uppercase">Hutang Jatuh Tempo (Pengurang)</label>
+        <input id="zDebt" type="number" placeholder="0" class="w-full border rounded-xl px-4 py-2 text-sm">
+      </div>
+
+      <button id="calcBtn" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition-all mt-2">Hitung Sekarang</button>
+
+      <div id="zResultBox" class="hidden mt-4 p-4 rounded-xl bg-slate-50 border-2 border-dashed border-slate-200">
+        <p class="text-[10px] font-bold text-slate-400 uppercase text-center">Hasil Perhitungan</p>
+        <div id="zStatus" class="text-center font-extrabold text-lg my-1"></div>
+        <div class="flex justify-between text-sm border-t pt-2 mt-2">
+          <span>Total Bersih:</span> <span id="zTotalNet" class="font-bold"></span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span>Nisab (85gr):</span> <span id="zNisab" class="font-bold"></span>
+        </div>
+        <div class="flex justify-between text-lg font-black text-emerald-600 border-t mt-2 pt-2">
+          <span>Zakat:</span> <span id="zFinalAmount"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script type="module" src="./app.js"></script>
 </body>
 </html>
+
 
 
 
