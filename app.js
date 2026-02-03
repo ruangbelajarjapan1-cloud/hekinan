@@ -143,28 +143,30 @@ function setLang(lang) {
 }
 
 // ===== POPUP PROMO (MULTI-SLIDE & AUTO) =====
+// ===== POPUP PROMO (MULTI-SLIDE & VIRAL SHARE) =====
 function initPopup() {
   const popup = $("#popupPromo");
   const imgEl = $("#popupPromo img");
   const donateBtn = $("#popupDonateBtn");
+  const shareBtn = $("#popupShareBtn"); // Definisi tombol share
   
-  // Cek ketersediaan elemen dan daftar gambar
-  if (!popup || !imgEl || !POPUP_IMAGES_LIST || POPUP_IMAGES_LIST.length === 0) return;
+  // Cek ketersediaan elemen
+  if (!popup || !imgEl) return;
+  // Jika tidak ada list gambar, sembunyikan popup
+  if (!POPUP_IMAGES_LIST || POPUP_IMAGES_LIST.length === 0) return;
 
   let currentIndex = 0;
   let slideInterval;
 
-  // Fungsi Menampilkan Gambar berdasarkan Index
+  // Fungsi Tampil Gambar
   const showImage = (index) => {
-    // Pastikan index berputar (loop)
     if (index >= POPUP_IMAGES_LIST.length) currentIndex = 0;
     else if (index < 0) currentIndex = POPUP_IMAGES_LIST.length - 1;
     else currentIndex = index;
-
     imgEl.src = POPUP_IMAGES_LIST[currentIndex];
   };
 
-  // Reset Style agar popup muncul (mengatasi masalah 'jarang muncul')
+  // Reset Style
   imgEl.onerror = null; 
   imgEl.removeAttribute("onerror");
   popup.style.removeProperty('display'); 
@@ -172,53 +174,33 @@ function initPopup() {
   imgEl.style.display = 'block';
   popup.classList.remove("hidden");
 
-  // Inisialisasi Gambar Pertama
+  // Mulai Slide
   showImage(0);
 
-  // Jika Gambar Lebih dari 1, Buat Tombol Navigasi & Auto Slide
+  // Navigasi Slide (Panah Kiri/Kanan)
   if (POPUP_IMAGES_LIST.length > 1) {
-    // Buat Container Tombol (Overlay di atas gambar)
     const navContainer = document.createElement("div");
-    navContainer.className = "absolute inset-0 flex justify-between items-center px-2 pointer-events-none"; // pointer-events-none agar klik tembus ke gambar, tapi tombol aktif
+    navContainer.className = "absolute inset-0 flex justify-between items-center px-2 pointer-events-none top-0 h-[200px]"; // Batasi tinggi area klik panah agar tidak menutupi tombol bawah
     navContainer.innerHTML = `
       <button id="popPrevBtn" class="pointer-events-auto bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors backdrop-blur-sm"><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
       <button id="popNextBtn" class="pointer-events-auto bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors backdrop-blur-sm"><i data-lucide="chevron-right" class="w-6 h-6"></i></button>
     `;
     
-    // Masukkan navigasi ke dalam popup (sebelum gambar)
+    // Masukkan navigasi sebelum gambar
     const relativeContainer = popup.querySelector(".relative");
     if(relativeContainer) {
       relativeContainer.appendChild(navContainer);
-      // Refresh icon lucide
       window.lucide?.createIcons?.();
     }
 
-    // Logic Tombol Next/Prev
     const nextSlide = () => showImage(currentIndex + 1);
     const prevSlide = () => showImage(currentIndex - 1);
 
-    $("#popNextBtn")?.addEventListener("click", (e) => {
-      e.stopPropagation(); // Agar tidak menutup popup saat klik panah
-      nextSlide();
-      resetInterval();
-    });
+    $("#popNextBtn")?.addEventListener("click", (e) => { e.stopPropagation(); nextSlide(); resetInterval(); });
+    $("#popPrevBtn")?.addEventListener("click", (e) => { e.stopPropagation(); prevSlide(); resetInterval(); });
 
-    $("#popPrevBtn")?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      prevSlide();
-      resetInterval();
-    });
-
-    // Auto Slide setiap 3.5 detik
-    const startInterval = () => {
-      slideInterval = setInterval(nextSlide, 3500);
-    };
-    
-    const resetInterval = () => {
-      clearInterval(slideInterval);
-      startInterval();
-    };
-
+    const startInterval = () => { slideInterval = setInterval(nextSlide, 3500); };
+    const resetInterval = () => { clearInterval(slideInterval); startInterval(); };
     startInterval();
   }
 
@@ -226,15 +208,28 @@ function initPopup() {
   const close = () => {
     popup.classList.add("hidden");
     popup.style.display = 'none';
-    if(slideInterval) clearInterval(slideInterval); // Matikan auto slide saat ditutup
+    if(slideInterval) clearInterval(slideInterval);
   };
 
   $("#closePopupBtn")?.addEventListener("click", close);
   $("#closePopupBackdrop")?.addEventListener("click", close);
 
+  // LOGIKA TOMBOL DONASI
   donateBtn?.addEventListener("click", () => {
     close(); 
     $("#donasi")?.scrollIntoView({ behavior: "smooth" }); 
+  });
+
+  // LOGIKA TOMBOL SHARE (VIRAL LOOP)
+  shareBtn?.addEventListener("click", () => {
+    // Teks Viral (Copywriting yang mengajak)
+    const text = "Assalamu'alaikum. Mohon bantuannya untuk pembangunan *Masjid As-Sunnah Hekinan (Jepang)*. \n\nMari cari pahala jariyah dengan menyebarkan info ini atau ikut berwakaf. \n\nCek progres & donasi di sini: 👇\nhttps://assunnahhekinan.org";
+    
+    // Buka WhatsApp
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    
+    // Opsional: Tutup popup setelah share agar user melihat website
+    close();
   });
 }
 
