@@ -54,15 +54,39 @@ const TRANSLATIONS = {
     joined_label: "Orang Lagi Dibutuhkan", btn_join_movement: "Gabung Gerakan Ini", target_complete: "Menuju Lunas",
     dedication_check: "Niatkan pahala untuk", dedication_target: "Orang Tua / yang sudah meninggal rahimahumullahu ?", dedication_label: "Nama Orang Tua / yang sudah meninggal rahimahumullahu ", dedication_placeholder: "Contoh: Bpk. Fulan bin Fulan",
     alert_nominal: "Mohon masukkan nominal donasi.", btn_loading: "Membuka WhatsApp...", btn_copied: "Tersalin",
-    wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi pembangunan Masjid As-Sunnah Hekinan.", wa_dedication: "🎁 Pahala diniatkan atas nama:", wa_closing: "Mohon dicek. Jazakumullah khairan.",// --- TAMBAHAN RAMADHAN (ID) ---
-    rmd_title: "Komitmen Wakaf Harian",
-    rmd_subtitle: "Pilih nominal sedekah rutin per hari selama Ramadhan:",
-    rmd_custom: "Nominal Lainnya",
-    rmd_btn_confirm: "Konfirmasi via WA",
-    rmd_name_label: "Nama Anda",
-    rmd_name_ph: "Hamba Allah...",
-    rmd_wa_intro: "Assalamu'alaikum Admin. Bismillah, saya ingin komitmen *Wakaf Rutin M² Surga* (Pelunasan Masjid Hekinan).",
-    rmd_wa_closing: "Mohon dicatat. Jazakumullah khairan."
+    wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi pembangunan Masjid As-Sunnah Hekinan.", wa_dedication: "🎁 Pahala diniatkan atas nama:", // ... (kode lama) ...
+    wa_closing: "Mohon dicek. Jazakumullah khairan.",
+
+    // --- KAMUS RAMADHAN (INDONESIA) ---
+    nav_ramadhan: "Ramadhan",
+    rmd_popup_badge: "Program Spesial",
+    rmd_popup_title: "Ikut Ramadhan Challenge",
+    rmd_popup_btn_join: "Ikut Wakaf Ramadhan",
+    rmd_popup_btn_share: "Bantu Share ke WA",
+    rmd_popup_footer: "Target: Pelunasan Masjid sebelum Mei 2026",
+    
+    // Halaman Ramadhan.html
+    rmd_page_back: "Kembali",
+    rmd_page_deadline: "Deadline Pelunasan: 31 Mei 2026",
+    rmd_hero_title: "Wakaf M² Surga",
+    rmd_hero_desc: "Siapa yang membebaskan lahan untuk masjid di dunia, Allah bangunkan istana baginya di surga.",
+    rmd_progress_label: "Perjalanan Ramadhan",
+    rmd_progress_wait: "Menunggu Ramadhan...",
+    
+    rmd_card_title: "Paket M² Surga",
+    rmd_card_subtitle: "Investasi pembebasan lahan Masjid As-Sunnah Hekinan.",
+    rmd_benefit_1: "Pahala jariyah yang terus mengalir",
+    rmd_benefit_2: "Membantu pelunasan sebelum Mei 2026",
+    rmd_benefit_3: "Didoakan ribuan jamaah",
+    rmd_btn_open: "Ambil Bagian Wakaf",
+    rmd_click_note: "Klik tombol di atas untuk memilih nominal wakaf harian Anda.",
+    
+    rmd_modal_title: "Komitmen Wakaf Harian",
+    rmd_modal_subtitle: "Pilih nominal sedekah rutin per hari selama Ramadhan:",
+    rmd_opt_custom: "Nominal Lainnya",
+    rmd_label_name: "Nama Anda",
+    rmd_ph_name: "Hamba Allah...",
+    rmd_btn_send: "Konfirmasi via WA"
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
@@ -84,17 +108,39 @@ const TRANSLATIONS = {
     joined_label: "People Still Needed", btn_join_movement: "Join This Movement", target_complete: "Towards Completion",
     dedication_check: "Intend reward for", dedication_target: "Parents / Deceased?", dedication_label: "Name of Parents / Deceased", dedication_placeholder: "Ex: Mr. Fulan bin Fulan",
     alert_nominal: "Please enter donation amount.", btn_loading: "Opening WhatsApp...", btn_copied: "Copied",
-    wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque construction.", wa_dedication: "🎁 Reward intended for:", wa_closing: "Please check. Jazakumullah Khairan.",
+    wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque construction.", wa_dedication: "🎁 Reward intended for:", // ... (kode lama) ...
+    wa_closing: "Please check. Jazakumullah Khairan.",
 
-    // --- TAMBAHAN RAMADHAN (EN) ---
-    rmd_title: "Daily Waqf Commitment",
-    rmd_subtitle: "Choose daily charity amount during Ramadan:",
-    rmd_custom: "Other Amount",
-    rmd_btn_confirm: "Confirm via WA",
-    rmd_name_label: "Your Name",
-    rmd_name_ph: "Servant of Allah...",
-    rmd_wa_intro: "Assalamu'alaikum Admin. Bismillah, I want to commit to *Daily Waqf M² Paradise* (Hekinan Mosque Repayment).",
-    rmd_wa_closing: "Please record this. Jazakumullah Khairan."
+    // --- KAMUS RAMADHAN (ENGLISH) ---
+    nav_ramadhan: "Ramadan",
+    rmd_popup_badge: "Special Program",
+    rmd_popup_title: "Join Ramadan Challenge",
+    rmd_popup_btn_join: "Join Waqf Challenge",
+    rmd_popup_btn_share: "Share to WhatsApp",
+    rmd_popup_footer: "Target: Mosque Repayment by May 2026",
+
+    // Page Ramadhan.html
+    rmd_page_back: "Back",
+    rmd_page_deadline: "Deadline: May 31, 2026",
+    rmd_hero_title: "Waqf M² Paradise",
+    rmd_hero_desc: "Whoever clears land for a mosque in this world, Allah builds a palace for them in Paradise.",
+    rmd_progress_label: "Ramadan Journey",
+    rmd_progress_wait: "Waiting for Ramadan...",
+    
+    rmd_card_title: "M² Paradise Package",
+    rmd_card_subtitle: "Investment for land acquisition of As-Sunnah Hekinan Mosque.",
+    rmd_benefit_1: "Continuous charity rewards (Jariyah)",
+    rmd_benefit_2: "Help repay before May 2026",
+    rmd_benefit_3: "Prayed for by thousands of congregants",
+    rmd_btn_open: "Take Part in Waqf",
+    rmd_click_note: "Click the button above to choose your daily waqf amount.",
+    
+    rmd_modal_title: "Daily Waqf Commitment",
+    rmd_modal_subtitle: "Choose daily charity amount during Ramadan:",
+    rmd_opt_custom: "Other Amount",
+    rmd_label_name: "Your Name",
+    rmd_ph_name: "Servant of Allah...",
+    rmd_btn_send: "Confirm via WA"
   }
 };
 
