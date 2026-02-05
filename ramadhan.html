@@ -6,6 +6,7 @@
   <title>Ramadhan Challenge — Masjid As-Sunnah Hekinan</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  
   <script>
     tailwind.config = {
       theme: {
@@ -17,12 +18,11 @@
           animation: {
             'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             'float': 'float 6s ease-in-out infinite',
+            'pop-in': 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
           },
           keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-10px)' },
-            }
+            float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+            popIn: { '0%': { opacity: '0', transform: 'scale(0.8)' }, '100%': { opacity: '1', transform: 'scale(1)' } }
           }
         }
       }
@@ -30,10 +30,7 @@
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&display=swap" rel="stylesheet">
   <style>
-    .bg-grid-pattern {
-        background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
-        background-size: 20px 20px;
-    }
+    .bg-grid-pattern { background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px; }
   </style>
 </head>
 <body class="font-sans text-slate-800 bg-slate-50 pb-20 overflow-x-hidden">
@@ -61,16 +58,13 @@
     <div class="absolute inset-0 opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');"></div>
     <div class="absolute inset-0 bg-gradient-to-b from-emerald-900/50 to-emerald-800/90"></div>
     <div class="absolute top-0 left-1/4 w-64 h-64 bg-amber-400/20 rounded-full blur-[100px] animate-pulse-slow"></div>
-    <div class="absolute bottom-0 right-1/4 w-64 h-64 bg-emerald-400/10 rounded-full blur-[100px]"></div>
     <div class="absolute top-10 right-10 opacity-20 animate-float"><i data-lucide="moon" class="w-32 h-32 text-amber-200"></i></div>
     
     <div class="container mx-auto px-4 relative z-10 text-center">
       <span class="inline-flex items-center gap-2 py-1 px-4 rounded-full bg-red-600/90 border border-red-400 text-[10px] md:text-xs font-bold text-white mb-6 animate-bounce">
         <i data-lucide="alert-circle" class="w-3 h-3"></i> <span data-i18n="rmd_page_deadline">Deadline: 31 Mei 2026</span>
       </span>
-      <h1 class="text-3xl md:text-5xl font-extrabold mb-4 font-arab leading-relaxed text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500 drop-shadow-sm" data-i18n="rmd_hero_title">
-        Wakaf M² Surga
-      </h1>
+      <h1 class="text-3xl md:text-5xl font-extrabold mb-4 font-arab leading-relaxed text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500 drop-shadow-sm" data-i18n="rmd_hero_title">Wakaf M² Surga</h1>
       <p class="text-emerald-100 max-w-xl mx-auto text-base md:text-lg mb-8 px-2 leading-relaxed" data-i18n="rmd_hero_desc">
         "Barangsiapa membangun masjid karena Allah, maka Allah akan membangunkan baginya rumah (istana) di surga." <br><span class="text-xs opacity-75 font-mono mt-1 block">(HR Bukhari & Muslim)</span>
       </p>
@@ -99,26 +93,19 @@
 
   <section class="container mx-auto px-4 -mt-10 relative z-20">
     <div class="max-w-xl mx-auto">
-      
       <div class="bg-white rounded-3xl shadow-[0_25px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden border-2 border-amber-400/40 relative transform hover:-translate-y-1 transition-all duration-300">
-        
         <div class="absolute top-0 right-0 w-24 h-24 overflow-hidden z-10 pointer-events-none">
             <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-bold py-1 px-10 absolute top-5 right-[-35px] rotate-45 shadow-md tracking-widest">BEST</div>
         </div>
-
         <div class="bg-purple-50/50 bg-grid-pattern p-8 text-center border-b border-purple-100 relative">
           <div class="w-24 h-24 mx-auto bg-white rounded-full p-1 shadow-xl shadow-purple-200/50 mb-4 border-4 border-amber-100 relative group">
              <div class="absolute inset-0 bg-amber-400 rounded-full opacity-0 group-hover:opacity-20 transition-opacity animate-pulse"></div>
              <img src="logohekinan.jpeg" alt="Logo Masjid" class="w-full h-full object-cover rounded-full">
-             <div class="absolute bottom-0 right-0 bg-blue-500 text-white p-1 rounded-full border-2 border-white shadow-sm" title="Terverifikasi">
-                <i data-lucide="check" class="w-3 h-3 stroke-[4]"></i>
-             </div>
+             <div class="absolute bottom-0 right-0 bg-blue-500 text-white p-1 rounded-full border-2 border-white shadow-sm" title="Terverifikasi"><i data-lucide="check" class="w-3 h-3 stroke-[4]"></i></div>
           </div>
-
           <h2 class="text-2xl font-extrabold text-slate-900 mb-1" data-i18n="rmd_card_title">Paket M² Surga</h2>
           <p class="text-sm text-slate-500 font-medium" data-i18n="rmd_card_subtitle">Investasi pembebasan lahan Masjid As-Sunnah Hekinan.</p>
         </div>
-
         <div class="p-6 md:p-8 bg-white relative">
           <ul class="space-y-4 mb-8">
             <li class="flex items-start gap-3 text-sm md:text-base text-slate-700 p-3 rounded-xl bg-slate-50 border border-slate-100 hover:bg-emerald-50 hover:border-emerald-100 transition-colors">
@@ -134,19 +121,14 @@
                 <span data-i18n="rmd_benefit_3">Didoakan oleh ribuan jamaah & malaikat</span>
             </li>
           </ul>
-
           <button onclick="window.openRamadhanPopup()" class="group relative w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-lg py-4 rounded-2xl shadow-lg shadow-emerald-500/40 transition-all transform active:scale-95 flex items-center justify-center gap-2 overflow-hidden">
             <div class="absolute top-0 -left-[100%] w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 group-hover:animate-[shimmer_1s_infinite]"></div>
             <span class="relative z-10" data-i18n="rmd_btn_open">Ambil Bagian Wakaf</span>
             <i data-lucide="arrow-right" class="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform"></i>
           </button>
-          
-          <p class="text-center text-[10px] text-slate-400 mt-4 flex justify-center items-center gap-1">
-            <i data-lucide="lock" class="w-3 h-3"></i> Amanah & Transparan
-          </p>
+          <p class="text-center text-[10px] text-slate-400 mt-4 flex justify-center items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i> Amanah & Transparan</p>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -155,22 +137,21 @@
         <h3 class="text-xl font-bold text-slate-800 mb-2">Mengapa Wakaf di Ramadhan?</h3>
         <div class="h-1 w-16 bg-amber-500 mx-auto rounded-full"></div>
     </div>
-
     <div class="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
-        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex gap-4 items-center hover:shadow-md transition-shadow hover:border-amber-200 group">
-            <div class="bg-emerald-50 p-3 rounded-full text-emerald-600 shrink-0 group-hover:bg-emerald-100 group-hover:scale-110 transition-all"><i data-lucide="zap" class="w-6 h-6"></i></div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex gap-4 items-center hover:shadow-md transition-shadow group">
+            <div class="bg-emerald-50 p-3 rounded-full text-emerald-600 shrink-0 group-hover:bg-emerald-100 transition-all"><i data-lucide="zap" class="w-6 h-6"></i></div>
             <div><h4 class="font-bold text-slate-800 text-sm">Pahala Berlipat Ganda</h4><p class="text-xs text-slate-500 mt-1">Sunnah jadi wajib, wajib jadi 70x lipat.</p></div>
         </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex gap-4 items-center hover:shadow-md transition-shadow hover:border-amber-200 group">
-            <div class="bg-purple-50 p-3 rounded-full text-purple-600 shrink-0 group-hover:bg-purple-100 group-hover:scale-110 transition-all"><i data-lucide="clock" class="w-6 h-6"></i></div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex gap-4 items-center hover:shadow-md transition-shadow group">
+            <div class="bg-purple-50 p-3 rounded-full text-purple-600 shrink-0 group-hover:bg-purple-100 transition-all"><i data-lucide="clock" class="w-6 h-6"></i></div>
             <div><h4 class="font-bold text-slate-800 text-sm">Mengejar Deadline Mei</h4><p class="text-xs text-slate-500 mt-1">Menyelamatkan aset umat sebelum jatuh tempo.</p></div>
         </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex gap-4 items-center hover:shadow-md transition-shadow hover:border-amber-200 group">
-            <div class="bg-blue-50 p-3 rounded-full text-blue-600 shrink-0 group-hover:bg-blue-100 group-hover:scale-110 transition-all"><i data-lucide="gift" class="w-6 h-6"></i></div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex gap-4 items-center hover:shadow-md transition-shadow group">
+            <div class="bg-blue-50 p-3 rounded-full text-blue-600 shrink-0 group-hover:bg-blue-100 transition-all"><i data-lucide="gift" class="w-6 h-6"></i></div>
             <div><h4 class="font-bold text-slate-800 text-sm">Hadiah Orang Tua</h4><p class="text-xs text-slate-500 mt-1">Wakaf atas nama orang tua yang sudah wafat.</p></div>
         </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex gap-4 items-center hover:shadow-md transition-shadow hover:border-amber-200 group">
-            <div class="bg-amber-50 p-3 rounded-full text-amber-600 shrink-0 group-hover:bg-amber-100 group-hover:scale-110 transition-all"><i data-lucide="shield-check" class="w-6 h-6"></i></div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex gap-4 items-center hover:shadow-md transition-shadow group">
+            <div class="bg-amber-50 p-3 rounded-full text-amber-600 shrink-0 group-hover:bg-amber-100 transition-all"><i data-lucide="shield-check" class="w-6 h-6"></i></div>
             <div><h4 class="font-bold text-slate-800 text-sm">Naungan di Akhirat</h4><p class="text-xs text-slate-500 mt-1">Sedekah akan menjadi naungan di hari kiamat.</p></div>
         </div>
     </div>
@@ -180,85 +161,108 @@
     <div id="modalBackdrop" class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity cursor-pointer"></div>
     <div class="relative w-full max-w-md bg-white rounded-2xl shadow-2xl transform scale-95 transition-all animate-[fadeUp_0.3s_ease-out] flex flex-col max-h-[90vh]">
       
-      <div class="p-6 bg-emerald-600 rounded-t-2xl text-center relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]"></div>
-        <button id="btnCloseModal" class="absolute top-4 right-4 text-white/70 hover:text-white transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
-        <div class="w-16 h-16 mx-auto bg-white p-1 rounded-full flex items-center justify-center mb-3 border-2 border-white/50 text-white relative z-10 shadow-lg">
-            <img src="logohekinan.jpeg" class="w-full h-full rounded-full object-cover">
-        </div>
-        <h3 class="font-extrabold text-2xl text-white relative z-10" data-i18n="rmd_modal_title">Komitmen Wakaf</h3>
-        <p class="text-emerald-100 text-sm relative z-10" data-i18n="rmd_modal_subtitle">Pilih nominal sedekah rutin</p>
+      <div id="viewForm" class="flex flex-col h-full">
+          <div class="p-6 bg-emerald-600 rounded-t-2xl text-center relative overflow-hidden shrink-0">
+            <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]"></div>
+            <button id="btnCloseModal" class="absolute top-4 right-4 text-white/70 hover:text-white transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+            <div class="w-16 h-16 mx-auto bg-white p-1 rounded-full flex items-center justify-center mb-3 border-2 border-white/50 text-white relative z-10 shadow-lg">
+                <img src="logohekinan.jpeg" class="w-full h-full rounded-full object-cover">
+            </div>
+            <h3 class="font-extrabold text-2xl text-white relative z-10" data-i18n="rmd_modal_title">Komitmen Wakaf</h3>
+            <p class="text-emerald-100 text-sm relative z-10" data-i18n="rmd_modal_subtitle">Pilih nominal sedekah rutin</p>
+          </div>
+
+          <div class="p-6 overflow-y-auto bg-slate-50 grow">
+            <div class="space-y-3">
+              <label class="relative flex items-center p-4 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-emerald-500 transition-all group shadow-sm">
+                <input type="radio" name="nominalWakaf" value="1000" class="peer sr-only">
+                <div class="w-5 h-5 rounded-full border-2 border-slate-300 peer-checked:bg-emerald-500 peer-checked:border-emerald-500 mr-4 shrink-0 transition-all"></div>
+                <div class="flex-1"><span class="block font-bold text-slate-800 text-lg">¥1.000 <span class="text-sm font-normal text-slate-400">/hari</span></span></div>
+                <div class="absolute inset-0 border-2 border-emerald-500 rounded-xl opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></div>
+              </label>
+              <label class="relative flex items-center p-4 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-emerald-500 transition-all group shadow-sm">
+                <div class="absolute -top-2.5 right-4 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm z-10">POPULER</div>
+                <input type="radio" name="nominalWakaf" value="5000" class="peer sr-only">
+                <div class="w-5 h-5 rounded-full border-2 border-slate-300 peer-checked:bg-emerald-500 peer-checked:border-emerald-500 mr-4 shrink-0 transition-all"></div>
+                <div class="flex-1"><span class="block font-bold text-slate-800 text-lg">¥5.000 <span class="text-sm font-normal text-slate-400">/hari</span></span></div>
+                <div class="absolute inset-0 border-2 border-emerald-500 rounded-xl opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></div>
+              </label>
+              <label class="relative flex flex-col p-4 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-emerald-500 transition-all group shadow-sm">
+                <div class="flex items-center">
+                  <input type="radio" name="nominalWakaf" value="custom" id="radioCustom" class="peer sr-only">
+                  <div class="w-5 h-5 rounded-full border-2 border-slate-300 peer-checked:bg-emerald-500 peer-checked:border-emerald-500 mr-4 shrink-0 transition-all"></div>
+                  <span class="font-bold text-slate-800" data-i18n="rmd_opt_custom">Nominal Lainnya</span>
+                </div>
+                <div id="customInputBox" class="hidden mt-3 ml-9 animate-[fadeUp_0.2s_ease-out]">
+                  <div class="relative"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold">¥</span><input type="number" id="inputCustomNominal" placeholder="2000" class="w-full bg-slate-50 border border-slate-300 rounded-lg py-2 pl-8 pr-3 text-sm focus:outline-none focus:border-emerald-500"></div>
+                </div>
+                <div class="absolute inset-0 border-2 border-emerald-500 rounded-xl opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></div>
+              </label>
+            </div>
+
+            <div id="impactBox" class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-3 hidden transition-all">
+                <div class="bg-amber-100 p-1.5 rounded-full text-amber-600 mt-0.5 shrink-0"><i data-lucide="lightbulb" class="w-4 h-4"></i></div>
+                <p class="text-xs text-slate-600 leading-relaxed"><span id="impactText" class="font-bold text-amber-700 text-sm"></span></p>
+            </div>
+
+            <div class="mt-6">
+              <label class="block text-xs font-bold text-slate-500 uppercase mb-2" data-i18n="rmd_label_name">Nama Anda</label>
+              <div class="relative">
+                <i data-lucide="user" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500"></i>
+                <input id="inputNamaPeserta" type="text" data-placeholder="rmd_ph_name" placeholder="Hamba Allah..." class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:border-emerald-500 bg-white">
+              </div>
+              
+              <div class="mt-4 pt-3 border-t border-slate-100">
+                <label class="flex items-start gap-3 cursor-pointer group select-none">
+                    <div class="relative mt-0.5">
+                        <input type="checkbox" id="checkDedikasi" class="peer sr-only">
+                        <div class="w-9 h-5 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-pink-500"></div>
+                    </div>
+                    <div class="flex-1">
+                        <span class="block text-xs font-bold text-slate-700 group-hover:text-pink-600 transition-colors">Niatkan pahala untuk Orang Tua?</span>
+                        <span class="text-[10px] text-slate-400">Wakaf atas nama Ayah/Ibu (yang masih hidup/wafat).</span>
+                    </div>
+                </label>
+                <div id="boxDedikasi" class="hidden mt-3 animate-[fadeUp_0.3s_ease-out]">
+                    <div class="relative">
+                        <i data-lucide="heart-handshake" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pink-500"></i>
+                        <input id="inputDedikasi" type="text" placeholder="Contoh: Alm. Bpk Fulan" class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-pink-200 focus:outline-none focus:border-pink-500 bg-pink-50/20 text-sm">
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-5 bg-white border-t border-slate-100 rounded-b-2xl shrink-0">
+            <button id="btnConfirmWakaf" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition-transform transform active:scale-95 flex items-center justify-center gap-2">
+              <i data-lucide="message-circle" class="w-5 h-5"></i> <span data-i18n="rmd_btn_send">Konfirmasi via WA</span>
+            </button>
+          </div>
       </div>
 
-      <div class="p-6 overflow-y-auto bg-slate-50">
-        <div class="space-y-3">
-          <label class="relative flex items-center p-4 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-emerald-500 transition-all group shadow-sm">
-            <input type="radio" name="nominalWakaf" value="1000" class="peer sr-only">
-            <div class="w-5 h-5 rounded-full border-2 border-slate-300 peer-checked:bg-emerald-500 peer-checked:border-emerald-500 mr-4 shrink-0 transition-all"></div>
-            <div class="flex-1"><span class="block font-bold text-slate-800 text-lg">¥1.000 <span class="text-sm font-normal text-slate-400">/day</span></span></div>
-            <div class="absolute inset-0 border-2 border-emerald-500 rounded-xl opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></div>
-          </label>
-          <label class="relative flex items-center p-4 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-emerald-500 transition-all group shadow-sm">
-            <div class="absolute -top-2.5 right-4 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm z-10">POPULER</div>
-            <input type="radio" name="nominalWakaf" value="5000" class="peer sr-only">
-            <div class="w-5 h-5 rounded-full border-2 border-slate-300 peer-checked:bg-emerald-500 peer-checked:border-emerald-500 mr-4 shrink-0 transition-all"></div>
-            <div class="flex-1"><span class="block font-bold text-slate-800 text-lg">¥5.000 <span class="text-sm font-normal text-slate-400">/day</span></span></div>
-            <div class="absolute inset-0 border-2 border-emerald-500 rounded-xl opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></div>
-          </label>
-          <label class="relative flex flex-col p-4 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-emerald-500 transition-all group shadow-sm">
-            <div class="flex items-center">
-              <input type="radio" name="nominalWakaf" value="custom" id="radioCustom" class="peer sr-only">
-              <div class="w-5 h-5 rounded-full border-2 border-slate-300 peer-checked:bg-emerald-500 peer-checked:border-emerald-500 mr-4 shrink-0 transition-all"></div>
-              <span class="font-bold text-slate-800" data-i18n="rmd_opt_custom">Nominal Lainnya</span>
-            </div>
-            <div id="customInputBox" class="hidden mt-3 ml-9 animate-[fadeUp_0.2s_ease-out]">
-              <div class="relative"><span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold">¥</span><input type="number" id="inputCustomNominal" placeholder="2000" class="w-full bg-slate-50 border border-slate-300 rounded-lg py-2 pl-8 pr-3 text-sm focus:outline-none focus:border-emerald-500"></div>
-            </div>
-            <div class="absolute inset-0 border-2 border-emerald-500 rounded-xl opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></div>
-          </label>
-        </div>
-
-        <div class="mt-6">
-          <label class="block text-xs font-bold text-slate-500 uppercase mb-2" data-i18n="rmd_label_name">Nama Anda</label>
-          <div class="relative">
-            <i data-lucide="user" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500"></i>
-            <input id="inputNamaPeserta" type="text" data-placeholder="rmd_ph_name" placeholder="Hamba Allah..." class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:border-emerald-500 bg-white">
+      <div id="viewSuccess" class="hidden flex-col h-full items-center justify-center p-8 text-center animate-pop-in">
+          <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-6 animate-pulse">
+              <i data-lucide="check" class="w-10 h-10 text-emerald-600 stroke-[3]"></i>
           </div>
+          <h3 class="text-2xl font-extrabold text-slate-800 mb-2">Alhamdulillah!</h3>
+          <p class="text-slate-600 text-sm mb-6 leading-relaxed">
+              Niat wakaf Anda telah kami catat. Semoga menjadi pemberat timbangan amal di akhirat kelak. Aamiin.
+          </p>
           
-          <div class="mt-4 pt-3 border-t border-slate-100">
-            <label class="flex items-start gap-3 cursor-pointer group select-none">
-                <div class="relative mt-0.5">
-                    <input type="checkbox" id="checkDedikasi" class="peer sr-only">
-                    <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-pink-500"></div>
-                </div>
-                <div class="flex-1">
-                    <span class="block text-xs font-bold text-slate-700 group-hover:text-pink-600 transition-colors">
-                        Niatkan pahala untuk Orang Tua?
-                    </span>
-                    <span class="text-[10px] text-slate-400">Wakaf atas nama Ayah/Ibu (yang masih hidup/wafat).</span>
-                </div>
-            </label>
-
-            <div id="boxDedikasi" class="hidden mt-3 animate-[fadeUp_0.3s_ease-out]">
-                <label class="block text-[10px] font-bold text-pink-500 uppercase mb-1">Nama Orang Tua (Bin/Binti)</label>
-                <div class="relative">
-                    <i data-lucide="heart-handshake" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pink-500"></i>
-                    <input id="inputDedikasi" type="text" placeholder="Contoh: Alm. Bpk Fulan bin Fulan" class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-pink-200 focus:outline-none focus:border-pink-500 bg-pink-50/20 text-sm transition-all focus:ring-2 focus:ring-pink-100">
-                </div>
-                <p class="text-[10px] text-slate-400 mt-1 italic flex items-center gap-1">
-                    <i data-lucide="check-circle" class="w-3 h-3 text-emerald-500"></i> Nama akan dicatat untuk doa bersama.
-                </p>
-            </div>
+          <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl mb-8 w-full">
+              <p class="text-[10px] text-amber-800 italic font-medium">
+                  "Barangsiapa menunjukkan kebaikan, baginya pahala seperti yang melakukannya." <br>(HR. Muslim)
+              </p>
           </div>
-        </div>
+
+          <button id="btnShareWa" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg flex items-center justify-center gap-2 mb-3">
+              <i data-lucide="share-2" class="w-5 h-5"></i> Bagikan ke Grup Keluarga
+          </button>
+          <button onclick="location.reload()" class="text-slate-400 text-xs font-bold hover:text-slate-600 py-2">
+              Tutup
+          </button>
       </div>
 
-      <div class="p-5 bg-white border-t border-slate-100 rounded-b-2xl">
-        <button id="btnConfirmWakaf" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition-transform transform active:scale-95 flex items-center justify-center gap-2">
-          <i data-lucide="message-circle" class="w-5 h-5"></i>
-          <span data-i18n="rmd_btn_send">Konfirmasi via WA</span>
-        </button>
-      </div>
     </div>
   </div>
 
@@ -269,7 +273,7 @@
   <script type="module" src="./app.js"></script>
   
   <script>
-  // 1. FUNGSI POPUP GLOBAL
+  // 1. FUNGSI POPUP
   window.openRamadhanPopup = () => {
     const modal = document.getElementById("wakafModal");
     if(modal) { modal.classList.remove("hidden"); modal.classList.add("flex"); }
@@ -279,65 +283,66 @@
     if(modal) { modal.classList.add("hidden"); modal.classList.remove("flex"); }
   };
 
-  // 2. NOTIFIKASI LIVE (Social Proof)
+  // 2. NOTIFIKASI LIVE
   function startFakeNotifications() {
     const names = ["Hamba Allah", "Ibu Fulanah", "Bpk. Abdullah", "Keluarga Rizki", "Seseorang", "Jamaah Hekinan"];
     const actions = ["baru saja wakaf", "komitmen wakaf", "telah transfer"];
     const amounts = ["¥1.000", "¥3.000", "¥5.000", "¥10.000"];
-    
     const toast = document.getElementById("liveToast");
     const tName = document.getElementById("toastName");
     const tAmount = document.getElementById("toastNominal");
-
     if(!toast) return;
-
     setInterval(() => {
         tName.textContent = names[Math.floor(Math.random() * names.length)];
         const action = actions[Math.floor(Math.random() * actions.length)];
         tAmount.innerHTML = `${action} <span class="font-bold text-amber-600">${amounts[Math.floor(Math.random() * amounts.length)]}</span>`;
-        
         toast.classList.remove("translate-y-24", "opacity-0");
         setTimeout(() => { toast.classList.add("translate-y-24", "opacity-0"); }, 4000);
     }, 15000);
   }
 
-  // 3. INISIALISASI SAAT LOAD
   document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("btnCloseModal")?.addEventListener("click", closePopup);
       document.getElementById("modalBackdrop")?.addEventListener("click", closePopup);
       setTimeout(startFakeNotifications, 5000);
 
-      // A. LOGIKA DEDIKASI (SHOW/HIDE)
+      // A. DEDIKASI ORANG TUA
       const checkDedikasi = document.getElementById("checkDedikasi");
       const boxDedikasi = document.getElementById("boxDedikasi");
       const inputDedikasi = document.getElementById("inputDedikasi");
-
       checkDedikasi?.addEventListener("change", (e) => {
-          if(e.target.checked) {
-              boxDedikasi.classList.remove("hidden");
-              inputDedikasi.focus();
-          } else {
-              boxDedikasi.classList.add("hidden");
-          }
+          if(e.target.checked) { boxDedikasi.classList.remove("hidden"); inputDedikasi.focus(); } 
+          else { boxDedikasi.classList.add("hidden"); }
       });
 
-      // B. LOGIKA RADIO BUTTON
+      // B. RADIO & IMPACT TEXT
       const radios = document.querySelectorAll('input[name="nominalWakaf"]');
       const customBox = document.getElementById("customInputBox");
       const customInput = document.getElementById("inputCustomNominal");
+      const impactBox = document.getElementById("impactBox");
+      const impactText = document.getElementById("impactText");
+
+      const impacts = {
+          "1000": "Amal ringan, berat di timbangan akhirat.",
+          "5000": "Perekat ukhuwah & pengokoh bangunan masjid.",
+          "10000": "Patungan <b class='text-emerald-600'>15% Lahan Surga</b> (1/7 Meter).",
+          "custom": "Setiap Yen adalah saksi pembelaan di Yaumul Hisab."
+      };
 
       radios.forEach(radio => {
         radio.addEventListener("change", (e) => {
-            if(e.target.value === "custom") {
-                customBox.classList.remove("hidden");
-                customInput?.focus();
-            } else {
-                customBox.classList.add("hidden");
+            const val = e.target.value;
+            if(val === "custom") { customBox.classList.remove("hidden"); customInput?.focus(); } 
+            else { customBox.classList.add("hidden"); }
+            
+            if(impactBox && impactText) {
+                impactBox.classList.remove("hidden"); impactBox.classList.add("flex");
+                impactText.innerHTML = impacts[val] || impacts["custom"];
             }
         });
       });
 
-      // C. LOGIKA KIRIM WA
+      // C. KIRIM WA & LAYAR SUKSES
       document.getElementById("btnConfirmWakaf")?.addEventListener("click", () => {
         const nama = document.getElementById("inputNamaPeserta").value;
         const selectedRadio = document.querySelector('input[name="nominalWakaf"]:checked');
@@ -359,20 +364,26 @@
         let dedicationText = "";
         if(checkDedikasi && checkDedikasi.checked) {
             const namaOrtu = inputDedikasi.value;
-            if(namaOrtu) {
-                dedicationText = isEn ? `\n💝 *On Behalf of:* ${namaOrtu}` : `\n💝 *Niat Pahala Untuk:* ${namaOrtu}`;
-            }
+            if(namaOrtu) { dedicationText = isEn ? `\n💝 *On Behalf of:* ${namaOrtu}` : `\n💝 *Niat Pahala Untuk:* ${namaOrtu}`; }
         }
 
-        let text = "";
-        if (isEn) {
-            text = `Assalamu'alaikum. Bismillah, I join *Ramadan Waqf* (Hekinan).\n\n👤 Name: ${nama}\n💰 Commitment: ¥${fmt(nominal)} / day\n🗓️ Duration: 30 Days\n(Total: ¥${fmt(total)})${dedicationText}\n\nPlease record this.`;
-        } else {
-            text = `Assalamu'alaikum. Bismillah, saya ikut *Wakaf Rutin Ramadhan* (Hekinan).\n\n👤 Nama: ${nama}\n💰 Komitmen: ¥${fmt(nominal)} / hari\n🗓️ Selama: 30 Hari Ramadhan\n(Total: ¥${fmt(total)})${dedicationText}\n\nMohon dicatat & didoakan. Jazakumullah khairan.`;
-        }
+        let text = isEn 
+            ? `Assalamu'alaikum. Bismillah, I join *Ramadan Waqf* (Hekinan).\n\n👤 Name: ${nama}\n💰 Commitment: ¥${fmt(nominal)} / day\n🗓️ Duration: 30 Days\n(Total: ¥${fmt(total)})${dedicationText}\n\nPlease record this.`
+            : `Assalamu'alaikum. Bismillah, saya ikut *Wakaf Rutin Ramadhan* (Hekinan).\n\n👤 Nama: ${nama}\n💰 Komitmen: ¥${fmt(nominal)} / hari\n🗓️ Selama: 30 Hari Ramadhan\n(Total: ¥${fmt(total)})${dedicationText}\n\nMohon dicatat & didoakan. Jazakumullah khairan.`;
 
+        // 1. Buka WA
         window.open(`https://wa.me/818013909425?text=${encodeURIComponent(text)}`, "_blank");
-        closePopup();
+
+        // 2. Ganti Tampilan ke "Sukses" (Tanpa Confetti)
+        document.getElementById("viewForm").classList.add("hidden");
+        document.getElementById("viewSuccess").classList.remove("hidden");
+        document.getElementById("viewSuccess").classList.add("flex");
+      });
+
+      // D. TOMBOL SHARE
+      document.getElementById("btnShareWa")?.addEventListener("click", () => {
+          const shareText = "Assalamu'alaikum. Saya baru saja ikut Wakaf Rutin untuk Masjid Hekinan (Jepang). Yuk cari pahala jariyah bareng-bareng di bulan Ramadhan! 🌙\n\nKlik disini: https://assunnahhekinan.org/ramadhan.html";
+          window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank");
       });
   });
   </script>
