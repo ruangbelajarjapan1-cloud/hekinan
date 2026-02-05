@@ -100,9 +100,14 @@
     <img src="logohekinan.jpeg" class="h-8 w-auto rounded-lg" alt="Logo">
     <span class="font-extrabold text-sm text-slate-800">As-Sunnah Hekinan</span>
   </div>
-  <button id="langToggleMob" class="text-xs font-bold border border-slate-300 rounded-lg px-2 py-1">ID | EN</button>
+  
+  <div class="flex items-center gap-2">
+    <a href="ramadhan.html" class="text-emerald-600 bg-emerald-50 p-2 rounded-lg border border-emerald-200">
+      <i data-lucide="moon" class="w-4 h-4 fill-current"></i>
+    </a>
+    <button id="langToggleMob" class="text-xs font-bold border border-slate-300 rounded-lg px-2 py-1">ID | EN</button>
+  </div>
 </header>
-
 <section id="hero" class="relative bg-slate-900 pt-10 pb-20 md:pt-20 md:pb-32 overflow-hidden min-h-[500px] flex items-center">
   <div id="heroSlider" class="absolute inset-0 z-0">
     <img src="1.jpeg" class="hero-slide active" alt="Slide 1">
@@ -450,27 +455,44 @@
 </div>
 
 <div id="popupPromo" class="fixed inset-0 z-[60] hidden items-center justify-center p-4">
-  <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" id="closePopupBackdrop"></div>
+  <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" id="closePopupBackdrop"></div>
+  
   <div class="relative w-full max-w-md rounded-2xl bg-white p-5 shadow-2xl transform scale-95 transition-all animate-[fadeUp_0.3s_ease-out]">
-    <button id="closePopupBtn" class="absolute -top-3 -right-3 bg-slate-800 text-white p-2 rounded-full shadow-lg hover:bg-slate-700 z-10 border-2 border-white">
+    
+    <button id="closePopupBtn" class="absolute -top-3 -right-3 bg-slate-800 text-white p-2 rounded-full shadow-lg hover:bg-slate-700 z-10 border-2 border-white cursor-pointer">
       <i data-lucide="x" class="w-5 h-5"></i>
     </button>
-    <div class="relative overflow-hidden rounded-xl mb-4 bg-slate-100 min-h-[200px]">
-        <img src="poster.jpg" alt="Info" class="w-full h-auto object-cover" 
-             onerror="this.style.display='none';">
-    </div>
+    
+    <a href="ramadhan.html" class="block relative overflow-hidden rounded-xl mb-4 bg-emerald-100 min-h-[200px] group cursor-pointer border border-slate-200">
+        <img src="poster.jpg" alt="Info Ramadhan" class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" 
+             onerror="this.src='https://placehold.co/600x800/065f46/FFF?text=Ramadhan+Challenge';">
+        
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-5">
+            <div>
+                <span class="bg-amber-500 text-white text-[10px] font-bold px-2 py-1 rounded mb-1 inline-block shadow-sm">Program Spesial</span>
+                <h3 class="text-white font-bold text-xl leading-tight">Ikut Ramadhan Challenge <i data-lucide="arrow-right" class="inline w-4 h-4 ml-1"></i></h3>
+            </div>
+        </div>
+    </a>
+
     <div class="flex flex-col gap-3">
-        <button id="popupDonateBtn" class="w-full bg-fig-accent hover:bg-amber-600 text-white font-bold py-3.5 rounded-xl shadow-md transition-transform transform active:scale-95 flex items-center justify-center gap-2">
-          <i data-lucide="heart" class="w-5 h-5 fill-current"></i> 
-          <span data-i18n="btn_popup_wakaf">Ikut Wakaf Sekarang</span>
-        </button>
-        <button id="popupShareBtn" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-md transition-transform transform active:scale-95 flex items-center justify-center gap-2 border-2 border-emerald-400/50">
+        
+        <a href="ramadhan.html" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-600/30 transition-transform transform active:scale-95 flex items-center justify-center gap-2">
+          <i data-lucide="moon" class="w-5 h-5 fill-current"></i> 
+          <span>Ikut Wakaf Ramadhan</span>
+        </a>
+        
+        <button id="popupShareBtn" class="w-full bg-white text-emerald-600 border-2 border-emerald-100 hover:bg-emerald-50 font-bold py-3.5 rounded-xl shadow-sm transition-transform transform active:scale-95 flex items-center justify-center gap-2">
           <i data-lucide="share-2" class="w-5 h-5"></i> 
           <span>Bantu Share ke WA</span>
         </button>
+
     </div>
-    <p class="text-[10px] text-center text-slate-400 mt-3 italic">
+ <p class="text-[10px] text-center text-slate-400 mt-3 italic">
         "Barangsiapa menunjukkan kebaikan, baginya pahala seperti yang melakukannya." (HR. Muslim)
+    </p>
+    <p class="text-[10px] text-center text-slate-400 mt-4 italic">
+        "Target: Pelunasan Masjid sebelum Mei 2026"
     </p>
   </div>
 </div>
@@ -580,6 +602,7 @@
 <script type="module" src="./app.js"></script>
 </body>
 </html>
+
 
 
 
