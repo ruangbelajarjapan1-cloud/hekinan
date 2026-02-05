@@ -337,26 +337,39 @@ function initHeroSlider() {
   let current = 0; setInterval(() => { slides[current].classList.remove("active"); current = (current + 1) % slides.length; slides[current].classList.add("active"); }, 5000);
 }
 
+// ==========================================
+// UPDATE: POPUP TANPA SLIDER (KHUSUS POSTER CSS)
+// ==========================================
 function initPopup() {
-  const popup = $("#popupPromo"); const imgEl = $("#popupPromo img"); const donateBtn = $("#popupDonateBtn"); const shareBtn = $("#popupShareBtn"); 
-  if (!popup || !imgEl || !POPUP_IMAGES_LIST || POPUP_IMAGES_LIST.length === 0) return;
-  let currentIndex = 0; let slideInterval;
-  const showImage = (index) => { if (index >= POPUP_IMAGES_LIST.length) currentIndex = 0; else if (index < 0) currentIndex = POPUP_IMAGES_LIST.length - 1; else currentIndex = index; imgEl.src = POPUP_IMAGES_LIST[currentIndex]; };
-  imgEl.onerror = null; imgEl.removeAttribute("onerror"); popup.style.removeProperty('display'); popup.style.display = 'flex'; imgEl.style.display = 'block'; popup.classList.remove("hidden"); showImage(0);
-  if (POPUP_IMAGES_LIST.length > 1) {
-    const navContainer = document.createElement("div"); navContainer.className = "absolute inset-0 flex justify-between items-center px-2 pointer-events-none top-0 h-[200px]";
-    navContainer.innerHTML = `<button id="popPrevBtn" class="pointer-events-auto bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors backdrop-blur-sm"><i data-lucide="chevron-left" class="w-6 h-6"></i></button><button id="popNextBtn" class="pointer-events-auto bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-colors backdrop-blur-sm"><i data-lucide="chevron-right" class="w-6 h-6"></i></button>`;
-    const relativeContainer = popup.querySelector(".relative"); if (relativeContainer) { relativeContainer.appendChild(navContainer); window.lucide?.createIcons?.(); }
-    const nextSlide = () => showImage(currentIndex + 1); const prevSlide = () => showImage(currentIndex - 1);
-    $("#popNextBtn")?.addEventListener("click", (e) => { e.stopPropagation(); nextSlide(); resetInterval(); }); $("#popPrevBtn")?.addEventListener("click", (e) => { e.stopPropagation(); prevSlide(); resetInterval(); });
-    const startInterval = () => { slideInterval = setInterval(nextSlide, 3500); }; const resetInterval = () => { clearInterval(slideInterval); startInterval(); }; startInterval();
-  }
-  const close = () => { popup.classList.add("hidden"); popup.style.display = 'none'; if (slideInterval) clearInterval(slideInterval); };
-  $("#closePopupBtn")?.addEventListener("click", close); $("#closePopupBackdrop")?.addEventListener("click", close);
-  donateBtn?.addEventListener("click", () => { close(); $("#donasi")?.scrollIntoView({ behavior: "smooth" }); });
-  shareBtn?.addEventListener("click", () => { const text = "Assalamu'alaikum. Mohon bantuannya untuk pembebasan lahan dan bangunan *Masjid As-Sunnah Hekinan (Jepang)*. \n\nMari cari pahala jariyah dengan menyebarkan info ini atau ikut berwakaf baarakallah fiikum. \n\nCek progres & donasi di sini: 👇\nhttps://assunnahhekinan.org"; window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank"); close(); });
-}
+  const popup = $("#popupPromo");
+  
+  // Hapus pengecekan gambar (imgEl), cukup cek popup-nya ada atau tidak
+  if (!popup) return; 
 
+  // Tampilkan Popup
+  popup.classList.remove("hidden");
+  popup.style.display = 'flex'; 
+
+  // Fungsi Tutup
+  const close = () => { 
+    popup.classList.add("hidden"); 
+    popup.style.display = 'none'; 
+  };
+
+  // Event Listener Tombol Tutup
+  $("#closePopupBtn")?.addEventListener("click", close);
+  $("#closePopupBackdrop")?.addEventListener("click", close);
+
+  // Tombol Share WA (Jika ada)
+  const shareBtn = $("#popupShareBtn");
+  if (shareBtn) {
+    shareBtn.addEventListener("click", () => {
+      const text = "Assalamu'alaikum. Mohon bantuannya untuk pelunasan lahan *Masjid As-Sunnah Hekinan (Jepang)* sebelum Mei 2026. \n\nMari cari pahala jariyah dengan menyebarkan info ini atau ikut berwakaf. \n\nCek info lengkap & donasi di sini: 👇\nhttps://assunnahhekinan.org";
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+      // close(); // Opsional: tutup popup setelah share
+    });
+  }
+}
 function initVideoAjakan() { const container = $("#videoAjakanContainer"); if (!container || !VIDEO_DONASI_LIST.length) return; container.innerHTML = ""; if (VIDEO_DONASI_LIST.length === 1) { container.className = "max-w-4xl mx-auto reveal"; container.innerHTML = `<div class="relative w-full pt-[56.25%] rounded-2xl overflow-hidden shadow-2xl border-4 border-white/50 group"><iframe src="https://www.youtube.com/embed/${VIDEO_DONASI_LIST[0]}?rel=0" title="Video Ajakan Wakaf" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe></div>`; } else { container.className = "max-w-full mx-auto reveal flex gap-4 overflow-x-auto pb-4 snap-x hide-scrollbar px-4"; VIDEO_DONASI_LIST.forEach(id => { const item = document.createElement("div"); item.className = "snap-center shrink-0 w-[85%] sm:w-[60%] md:w-[45%] relative pt-[48%] sm:pt-[33%] md:pt-[25%] rounded-xl overflow-hidden shadow-lg border border-slate-200 bg-black"; item.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?rel=0" title="Video Ajakan" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>`; container.appendChild(item); }); } }
 function initVideoKajian() { const grid = $("#videoGrid"); if (!grid || !YOUTUBE_VIDEOS.length) return; grid.innerHTML = ""; YOUTUBE_VIDEOS.forEach(id => { const card = document.createElement("div"); card.className = "rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white group hover:-translate-y-1 transition-transform duration-300"; card.innerHTML = `<div class="relative w-full pt-[56.25%] bg-black"><iframe src="https://www.youtube.com/embed/${id}" title="Video Kajian" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe></div>`; grid.appendChild(card); }); }
 function initDoa() { const elArab = $("#doaArab"), elArti = $("#doaArti"), btn = $("#btnGantiDoa"); if (!elArab) return; const acakDoa = () => { const r = DAFTAR_DOA[Math.floor(Math.random() * DAFTAR_DOA.length)]; elArab.textContent = r.ar; elArti.textContent = r.id; }; acakDoa(); btn?.addEventListener("click", acakDoa); }
