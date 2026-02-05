@@ -27,20 +27,26 @@
       <a href="index.html" class="flex gap-2 items-center text-slate-600 hover:text-emerald-600 font-bold transition-colors text-sm md:text-base">
         <i data-lucide="arrow-left" class="w-4 h-4"></i> <span data-i18n="rmd_page_back">Kembali</span>
       </a>
-      
       <button id="langToggle" class="text-xs font-bold border border-slate-300 rounded-lg px-2 py-1 hover:bg-slate-50">ID | EN</button>
     </nav>
   </header>
 
   <section class="relative bg-emerald-900 text-white py-16 overflow-hidden">
+    <div class="absolute inset-0 opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-emerald-900/50 to-emerald-800/90"></div>
+    
+    <div class="absolute top-0 left-1/4 w-64 h-64 bg-amber-400/20 rounded-full blur-[100px]"></div>
+    <div class="absolute bottom-0 right-1/4 w-64 h-64 bg-emerald-400/10 rounded-full blur-[100px]"></div>
+
     <div class="absolute top-0 right-0 opacity-10 transform translate-x-10 -translate-y-10"><i data-lucide="moon" class="w-64 h-64"></i></div>
+    
     <div class="container mx-auto px-4 relative z-10 text-center">
       <span class="inline-flex items-center gap-2 py-1 px-4 rounded-full bg-red-600/90 border border-red-400 text-[10px] md:text-xs font-bold text-white mb-6 animate-pulse">
         <i data-lucide="alert-circle" class="w-3 h-3"></i> <span data-i18n="rmd_page_deadline">Deadline: 31 Mei 2026</span>
       </span>
       <h1 class="text-3xl md:text-5xl font-extrabold mb-4 font-arab leading-relaxed text-amber-400" data-i18n="rmd_hero_title">Wakaf M² Surga</h1>
-      <p class="text-emerald-100 max-w-xl mx-auto text-base md:text-lg mb-8 px-2" data-i18n="rmd_hero_desc">
-        "Barangsiapa membangun masjid karena Allah, maka Allah akan membangunkan baginya rumah (istana) di surga.HR Bukhari (no. 450) dan Muslim (no. 533) "
+      <p class="text-emerald-100 max-w-xl mx-auto text-base md:text-lg mb-8 px-2 leading-relaxed" data-i18n="rmd_hero_desc">
+        "Barangsiapa membangun masjid karena Allah, maka Allah akan membangunkan baginya rumah (istana) di surga." <br><span class="text-xs opacity-75">(HR Bukhari & Muslim)</span>
       </p>
       
       <div class="max-w-md mx-auto bg-emerald-800/50 p-4 rounded-2xl border border-emerald-700 backdrop-blur-sm">
@@ -50,13 +56,27 @@
         </div>
         <div class="w-full bg-emerald-950 rounded-full h-3 overflow-hidden"><div id="ramadhanProgress" class="bg-gradient-to-r from-amber-400 to-amber-600 h-full rounded-full w-0 transition-all duration-1000"></div></div>
       </div>
+
+      <div class="mt-8 flex justify-center items-center gap-[-10px] relative z-20">
+        <div class="flex -space-x-3">
+            <div class="w-8 h-8 rounded-full border-2 border-emerald-800 bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600">A</div>
+            <div class="w-8 h-8 rounded-full border-2 border-emerald-800 bg-slate-300 flex items-center justify-center text-[10px] font-bold text-slate-600">B</div>
+            <div class="w-8 h-8 rounded-full border-2 border-emerald-800 bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-600">C</div>
+            <div class="w-8 h-8 rounded-full border-2 border-emerald-800 bg-amber-500 text-white flex items-center justify-center text-[10px] font-bold shadow-lg">400+</div>
+        </div>
+        <p class="ml-4 text-xs text-emerald-100 font-medium text-left">Jamaah telah bergabung.<br><span class="text-amber-400 font-bold">Giliran Anda sekarang!</span></p>
+      </div>
     </div>
   </section>
 
   <section class="container mx-auto px-4 -mt-10 relative z-20">
     <div class="max-w-xl mx-auto">
       
-      <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
+      <div class="bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden border-2 border-amber-400/30 relative transform hover:-translate-y-1 transition-all duration-300">
+        <div class="absolute top-0 right-0 w-20 h-20 overflow-hidden z-10">
+            <div class="bg-amber-500 text-white text-[10px] font-bold py-1 px-8 absolute top-4 right-[-30px] rotate-45 shadow-sm">SPESIAL</div>
+        </div>
+
         <div class="bg-purple-50 p-6 md:p-8 text-center border-b border-purple-100">
           <div class="w-16 h-16 md:w-20 md:h-20 mx-auto bg-white rounded-full flex items-center justify-center shadow-md mb-4">
             <i data-lucide="home" class="w-8 h-8 md:w-10 md:h-10 text-purple-600"></i>
@@ -78,6 +98,24 @@
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <section class="container mx-auto px-4 py-16">
+    <div class="max-w-2xl mx-auto text-center mb-10">
+        <h3 class="text-xl font-bold text-slate-800 mb-2">Mengapa Wakaf di Ramadhan?</h3>
+        <div class="h-1 w-20 bg-amber-500 mx-auto rounded-full"></div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex gap-4 items-start hover:shadow-md transition-shadow">
+            <div class="bg-emerald-100 p-3 rounded-full text-emerald-600 shrink-0"><i data-lucide="zap" class="w-6 h-6"></i></div>
+            <div><h4 class="font-bold text-slate-800 mb-1">Pahala Berlipat</h4><p class="text-xs text-slate-500 leading-relaxed">Amalan sunnah diganjar pahala wajib, yang wajib dilipatgandakan 70x lipat.</p></div>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex gap-4 items-start hover:shadow-md transition-shadow">
+            <div class="bg-purple-100 p-3 rounded-full text-purple-600 shrink-0"><i data-lucide="clock" class="w-6 h-6"></i></div>
+            <div><h4 class="font-bold text-slate-800 mb-1">Mengejar Deadline</h4><p class="text-xs text-slate-500 leading-relaxed">Masjid ini harus lunas Mei 2026. Wakaf Anda hari ini menyelamatkan aset umat.</p></div>
+        </div>
     </div>
   </section>
 
@@ -144,16 +182,8 @@
 
   <script type="module" src="./app.js"></script>
   
-  <script type="module">
-     import { boot } from './app.js'; 
-     // Pastikan boot berjalan, lalu set fungsi global
-     window.openRamadhanPopup = () => {
-        const m = document.getElementById("wakafModal");
-        if(m) { m.classList.remove("hidden"); m.classList.add("flex"); }
-     }
-  </script>
   <script>
-  // 1. Logika Membuka Popup
+  // 1. FUNGSI GLOBAL POPUP (Agar bisa dipanggil dari tombol HTML)
   window.openRamadhanPopup = () => {
     const modal = document.getElementById("wakafModal");
     if(modal) {
@@ -162,7 +192,7 @@
     }
   };
 
-  // 2. Logika Menutup Popup
+  // 2. FUNGSI TUTUP POPUP
   const closePopup = () => {
     const modal = document.getElementById("wakafModal");
     if(modal) {
@@ -171,74 +201,74 @@
     }
   };
 
-  // Pasang Event Listener untuk Tombol Close & Backdrop
-  document.getElementById("btnCloseModal")?.addEventListener("click", closePopup);
-  document.getElementById("modalBackdrop")?.addEventListener("click", closePopup);
+  // 3. INISIALISASI (Saat halaman selesai loading)
+  document.addEventListener("DOMContentLoaded", () => {
+      
+      // Event Listener Tombol Tutup
+      document.getElementById("btnCloseModal")?.addEventListener("click", closePopup);
+      document.getElementById("modalBackdrop")?.addEventListener("click", closePopup);
 
-  // 3. Logika Pilihan Nominal (Tampilkan Input Manual jika pilih 'Lainnya')
-  const radios = document.querySelectorAll('input[name="nominalWakaf"]');
-  const customBox = document.getElementById("customInputBox");
-  const customInput = document.getElementById("inputCustomNominal");
+      // Logika Radio Button (Custom Nominal)
+      const radios = document.querySelectorAll('input[name="nominalWakaf"]');
+      const customBox = document.getElementById("customInputBox");
+      const customInput = document.getElementById("inputCustomNominal");
 
-  radios.forEach(radio => {
-    radio.addEventListener("change", (e) => {
-        if(e.target.value === "custom") {
-            customBox.classList.remove("hidden");
-            customInput?.focus();
-        } else {
-            customBox.classList.add("hidden");
-        }
-    });
-  });
+      radios.forEach(radio => {
+        radio.addEventListener("change", (e) => {
+            if(e.target.value === "custom") {
+                customBox.classList.remove("hidden");
+                customInput?.focus();
+            } else {
+                customBox.classList.add("hidden");
+            }
+        });
+      });
 
-  // 4. Logika Tombol Konfirmasi WA (Kirim Data)
-  document.getElementById("btnConfirmWakaf")?.addEventListener("click", () => {
-    const nama = document.getElementById("inputNamaPeserta").value;
-    const selectedRadio = document.querySelector('input[name="nominalWakaf"]:checked');
-    
-    // Cek Bahasa Aktif (ID atau EN) dari LocalStorage
-    const lang = localStorage.getItem("lang") || "id";
-    const isEn = lang === "en";
+      // Logika Tombol Konfirmasi WA
+      document.getElementById("btnConfirmWakaf")?.addEventListener("click", () => {
+        const nama = document.getElementById("inputNamaPeserta").value;
+        const selectedRadio = document.querySelector('input[name="nominalWakaf"]:checked');
+        
+        // Cek Bahasa
+        const lang = localStorage.getItem("lang") || "id";
+        const isEn = lang === "en";
 
-    // Validasi Input
-    if (!selectedRadio) { 
-        alert(isEn ? "Please select a donation amount." : "Mohon pilih nominal wakaf."); 
-        return; 
-    }
-    if (!nama) { 
-        alert(isEn ? "Please enter your name." : "Mohon isi nama Anda."); 
-        document.getElementById("inputNamaPeserta").focus(); 
-        return; 
-    }
-
-    let nominal = 0;
-    // Cek apakah user pilih Custom atau Paket
-    if(selectedRadio.value === "custom") {
-        nominal = parseInt(customInput.value);
-        if(!nominal) { 
-            alert(isEn ? "Please enter amount." : "Mohon isi nominal manual."); 
+        // Validasi
+        if (!selectedRadio) { 
+            alert(isEn ? "Please select a donation amount." : "Mohon pilih nominal wakaf."); 
             return; 
         }
-    } else {
-        nominal = parseInt(selectedRadio.value);
-    }
+        if (!nama) { 
+            alert(isEn ? "Please enter your name." : "Mohon isi nama Anda."); 
+            document.getElementById("inputNamaPeserta").focus(); 
+            return; 
+        }
 
-    const total = nominal * 30; // Total 30 Hari
-    // Format Angka (Contoh: 1.000)
-    const fmt = (n) => new Intl.NumberFormat(isEn ? 'en-US' : 'id-ID').format(n);
+        let nominal = 0;
+        if(selectedRadio.value === "custom") {
+            nominal = parseInt(customInput.value);
+            if(!nominal) { 
+                alert(isEn ? "Please enter amount." : "Mohon isi nominal manual."); 
+                return; 
+            }
+        } else {
+            nominal = parseInt(selectedRadio.value);
+        }
 
-    // Siapkan Pesan WA (Bilingual Sederhana)
-    let text = "";
-    if (isEn) {
-        text = `Assalamu'alaikum Admin. Bismillah, I want to commit to *Daily Waqf M² Paradise* (Hekinan Mosque).\n\n👤 Name: ${nama}\n💰 Commitment: ¥${fmt(nominal)} / day\n🗓️ Duration: 30 Days of Ramadan\n(Total Estimate: ¥${fmt(total)})\n\nPlease record this. Jazakumullah Khairan.`;
-    } else {
-        text = `Assalamu'alaikum Admin. Bismillah, saya ingin komitmen *Wakaf Rutin M² Surga* (Pelunasan Masjid Hekinan).\n\n👤 Nama: ${nama}\n💰 Komitmen: ¥${fmt(nominal)} / hari\n🗓️ Selama: 30 Hari Ramadhan\n(Total estimasi: ¥${fmt(total)})\n\nMohon dicatat. Jazakumullah khairan.`;
-    }
+        const total = nominal * 30; 
+        const fmt = (n) => new Intl.NumberFormat(isEn ? 'en-US' : 'id-ID').format(n);
 
-    // Buka WhatsApp
-    window.open(`https://wa.me/818013909425?text=${encodeURIComponent(text)}`, "_blank");
-    closePopup();
+        let text = "";
+        if (isEn) {
+            text = `Assalamu'alaikum Admin. Bismillah, I want to commit to *Daily Waqf M² Paradise* (Hekinan Mosque).\n\n👤 Name: ${nama}\n💰 Commitment: ¥${fmt(nominal)} / day\n🗓️ Duration: 30 Days of Ramadan\n(Total Estimate: ¥${fmt(total)})\n\nPlease record this. Jazakumullah Khairan.`;
+        } else {
+            text = `Assalamu'alaikum Admin. Bismillah, saya ingin komitmen *Wakaf Rutin M² Surga* (Pelunasan Masjid Hekinan).\n\n👤 Nama: ${nama}\n💰 Komitmen: ¥${fmt(nominal)} / hari\n🗓️ Selama: 30 Hari Ramadhan\n(Total estimasi: ¥${fmt(total)})\n\nMohon dicatat. Jazakumullah khairan.`;
+        }
+
+        window.open(`https://wa.me/818013909425?text=${encodeURIComponent(text)}`, "_blank");
+        closePopup();
+      });
   });
-</script>
+  </script>
 </body>
 </html>
