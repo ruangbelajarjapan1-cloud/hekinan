@@ -557,10 +557,21 @@ function initDonasi() {
 }
 
 function initCountdown() {
+  // Ambil elemen dulu
+  const elDays = $("#cdDays");
+  const elHours = $("#cdHours");
+  const elMin = $("#cdMin");
+
+  // PENTING: Cek apakah elemen ada? Jika tidak ada, STOP (jangan lanjut)
+  // Ini mencegah error di halaman ramadhan.html
+  if (!elDays || !elHours || !elMin) return;
+
   const end = new Date("2026-05-31T23:59:59").getTime();
   setInterval(() => {
     const gap = end - new Date().getTime(); if(gap<0)return;
-    $("#cdDays").innerText = Math.floor(gap/86400000); $("#cdHours").innerText = Math.floor((gap%86400000)/3600000); $("#cdMin").innerText = Math.floor((gap%3600000)/60000);
+    elDays.innerText = Math.floor(gap/86400000); 
+    elHours.innerText = Math.floor((gap%86400000)/3600000); 
+    elMin.innerText = Math.floor((gap%3600000)/60000);
   }, 1000);
 }
 // ==========================================
