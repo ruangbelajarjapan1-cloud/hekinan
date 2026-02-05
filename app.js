@@ -486,7 +486,73 @@ function initCountdown() {
     $("#cdDays").innerText = Math.floor(gap/86400000); $("#cdHours").innerText = Math.floor((gap%86400000)/3600000); $("#cdMin").innerText = Math.floor((gap%3600000)/60000);
   }, 1000);
 }
+// ==========================================
+// FITUR BARU: RAMADHAN CHALLENGE (PELUNASAN)
+// ==========================================
+function initRamadhanFeature() {
+  // 1. Cek apakah tombol join ada? (Tanda kita di halaman ramadhan.html)
+  const btnJoin = $("#btnJoinChallenge");
+  if (!btnJoin) return; 
 
+  // 2. Logic Progress Bar Ramadhan
+  // Asumsi Ramadhan mulai 18 Feb 2026
+  const startRamadhan = new Date("2026-02-18").getTime(); 
+  const endRamadhan = new Date("2026-03-19").getTime();
+  const today = new Date().getTime();
+  
+  const totalDuration = endRamadhan - startRamadhan;
+  const elapsed = today - startRamadhan;
+  
+  let percentage = 0;
+  let textStatus = "Menunggu Ramadhan";
+
+  if (today < startRamadhan) {
+    percentage = 0;
+    const daysLeft = Math.ceil((startRamadhan - today) / (1000 * 60 * 60 * 24));
+    textStatus = `${daysLeft} Hari Menuju Ramadhan`;
+  } else if (today > endRamadhan) {
+    percentage = 100;
+    textStatus = "Ramadhan Telah Usai";
+  } else {
+    percentage = (elapsed / totalDuration) * 100;
+    const dayKe = Math.ceil(elapsed / (1000 * 60 * 60 * 24));
+    textStatus = `Hari ke-${dayKe} Ramadhan`;
+  }
+
+  // Update Tampilan Bar
+  const bar = $("#ramadhanProgress");
+  const label = $("#ramadhanDayText");
+  if(bar) setTimeout(() => { bar.style.width = percentage + "%"; }, 500);
+  if(label) label.textContent = textStatus;
+
+  // 3. Logic Tombol WhatsApp (Wakaf Pelunasan)
+  btnJoin.addEventListener("click", () => {
+    const nama = $("#inputNamaPeserta").value;
+    const paketEl = document.querySelector('input[name="paket"]:checked');
+    
+    if (!paketEl) { alert("Mohon pilih salah satu paket wakaf."); return; }
+    if (!nama) { alert("Mohon isi nama Anda."); $("#inputNamaPeserta").focus(); return; }
+
+    const paketNama = paketEl.value;
+    const nominal = paketEl.dataset.nominal;
+    const total = new Intl.NumberFormat('id-ID').format(nominal * 30);
+    const nominalFmt = new Intl.NumberFormat('id-ID').format(nominal);
+
+    // Format Pesan WA
+    const text = `Assalamu'alaikum Admin.
+Bismillah, saya ingin mengikuti *Gerakan Wakaf Rutin Ramadhan* untuk Pelunasan Masjid As-Sunnah Hekinan.
+    
+👤 Nama: ${nama}
+🕌 Paket: ${paketNama}
+💰 Komitmen: ¥${nominalFmt} / hari
+(Total estimasi ¥${total} selama 30 hari Ramadhan)
+
+Mohon dicatat sebagai ikhtiar pelunasan sebelum Mei 2026. Jazakumullah khairan wa baarakallahu fiikum.`;
+
+    // Kirim ke WA (Nomor Tisna sesuai footer)
+    window.open(`https://wa.me/818013909425?text=${encodeURIComponent(text)}`, "_blank");
+  });
+}
 // ==========================================
 // 4. BOOTSTRAP (RUN EVERYTHING)
 // ==========================================
@@ -515,7 +581,7 @@ function boot() {
   initZakatCalculator();
   initDoa();
   initPopup();
-
+initRamadhanFeature();
   // Scroll Reveal
   const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add("active") }), { threshold: 0.1 });
   $$(".reveal").forEach(e => obs.observe(e));
