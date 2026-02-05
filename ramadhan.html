@@ -152,5 +152,93 @@
         if(m) { m.classList.remove("hidden"); m.classList.add("flex"); }
      }
   </script>
+  <script>
+  // 1. Logika Membuka Popup
+  window.openRamadhanPopup = () => {
+    const modal = document.getElementById("wakafModal");
+    if(modal) {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+    }
+  };
+
+  // 2. Logika Menutup Popup
+  const closePopup = () => {
+    const modal = document.getElementById("wakafModal");
+    if(modal) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+    }
+  };
+
+  // Pasang Event Listener untuk Tombol Close & Backdrop
+  document.getElementById("btnCloseModal")?.addEventListener("click", closePopup);
+  document.getElementById("modalBackdrop")?.addEventListener("click", closePopup);
+
+  // 3. Logika Pilihan Nominal (Tampilkan Input Manual jika pilih 'Lainnya')
+  const radios = document.querySelectorAll('input[name="nominalWakaf"]');
+  const customBox = document.getElementById("customInputBox");
+  const customInput = document.getElementById("inputCustomNominal");
+
+  radios.forEach(radio => {
+    radio.addEventListener("change", (e) => {
+        if(e.target.value === "custom") {
+            customBox.classList.remove("hidden");
+            customInput?.focus();
+        } else {
+            customBox.classList.add("hidden");
+        }
+    });
+  });
+
+  // 4. Logika Tombol Konfirmasi WA (Kirim Data)
+  document.getElementById("btnConfirmWakaf")?.addEventListener("click", () => {
+    const nama = document.getElementById("inputNamaPeserta").value;
+    const selectedRadio = document.querySelector('input[name="nominalWakaf"]:checked');
+    
+    // Cek Bahasa Aktif (ID atau EN) dari LocalStorage
+    const lang = localStorage.getItem("lang") || "id";
+    const isEn = lang === "en";
+
+    // Validasi Input
+    if (!selectedRadio) { 
+        alert(isEn ? "Please select a donation amount." : "Mohon pilih nominal wakaf."); 
+        return; 
+    }
+    if (!nama) { 
+        alert(isEn ? "Please enter your name." : "Mohon isi nama Anda."); 
+        document.getElementById("inputNamaPeserta").focus(); 
+        return; 
+    }
+
+    let nominal = 0;
+    // Cek apakah user pilih Custom atau Paket
+    if(selectedRadio.value === "custom") {
+        nominal = parseInt(customInput.value);
+        if(!nominal) { 
+            alert(isEn ? "Please enter amount." : "Mohon isi nominal manual."); 
+            return; 
+        }
+    } else {
+        nominal = parseInt(selectedRadio.value);
+    }
+
+    const total = nominal * 30; // Total 30 Hari
+    // Format Angka (Contoh: 1.000)
+    const fmt = (n) => new Intl.NumberFormat(isEn ? 'en-US' : 'id-ID').format(n);
+
+    // Siapkan Pesan WA (Bilingual Sederhana)
+    let text = "";
+    if (isEn) {
+        text = `Assalamu'alaikum Admin. Bismillah, I want to commit to *Daily Waqf M² Paradise* (Hekinan Mosque).\n\n👤 Name: ${nama}\n💰 Commitment: ¥${fmt(nominal)} / day\n🗓️ Duration: 30 Days of Ramadan\n(Total Estimate: ¥${fmt(total)})\n\nPlease record this. Jazakumullah Khairan.`;
+    } else {
+        text = `Assalamu'alaikum Admin. Bismillah, saya ingin komitmen *Wakaf Rutin M² Surga* (Pelunasan Masjid Hekinan).\n\n👤 Nama: ${nama}\n💰 Komitmen: ¥${fmt(nominal)} / hari\n🗓️ Selama: 30 Hari Ramadhan\n(Total estimasi: ¥${fmt(total)})\n\nMohon dicatat. Jazakumullah khairan.`;
+    }
+
+    // Buka WhatsApp
+    window.open(`https://wa.me/818013909425?text=${encodeURIComponent(text)}`, "_blank");
+    closePopup();
+  });
+</script>
 </body>
 </html>
