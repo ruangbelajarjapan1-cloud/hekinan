@@ -487,72 +487,113 @@ function initCountdown() {
   }, 1000);
 }
 // ==========================================
-// FITUR BARU: RAMADHAN CHALLENGE (PELUNASAN)
+// FITUR BARU: RAMADHAN CHALLENGE (POPUP VERSION)
 // ==========================================
 function initRamadhanFeature() {
-  // 1. Cek apakah tombol join ada? (Tanda kita di halaman ramadhan.html)
-  const btnJoin = $("#btnJoinChallenge");
-  if (!btnJoin) return; 
+  // 1. Cek elemen-elemen penting
+  const btnOpen = $("#btnOpenPopup");
+  const modal = $("#wakafModal");
+  const btnClose = $("#btnCloseModal");
+  const backdrop = $("#modalBackdrop");
+  const btnConfirm = $("#btnConfirmWakaf");
+  const customRadio = $("#radioCustom");
+  const customBox = $("#customInputBox");
+  const radios = $$('input[name="nominalWakaf"]'); // Ambil semua radio button
 
-  // 2. Logic Progress Bar Ramadhan
-  // Asumsi Ramadhan mulai 18 Feb 2026
-  const startRamadhan = new Date("2026-02-18").getTime(); 
+  if (!btnOpen || !modal) return; // Stop jika tidak di halaman ramadhan
+
+  // --- LOGIC PROGRESS BAR (Sama seperti sebelumnya) ---
+  const startRamadhan = new Date("2026-02-18").getTime();
   const endRamadhan = new Date("2026-03-19").getTime();
   const today = new Date().getTime();
-  
   const totalDuration = endRamadhan - startRamadhan;
   const elapsed = today - startRamadhan;
-  
-  let percentage = 0;
-  let textStatus = "Menunggu Ramadhan";
+  let percentage = 0; let textStatus = "Menunggu Ramadhan";
 
   if (today < startRamadhan) {
     percentage = 0;
     const daysLeft = Math.ceil((startRamadhan - today) / (1000 * 60 * 60 * 24));
     textStatus = `${daysLeft} Hari Menuju Ramadhan`;
   } else if (today > endRamadhan) {
-    percentage = 100;
-    textStatus = "Ramadhan Telah Usai";
+    percentage = 100; textStatus = "Ramadhan Telah Usai";
   } else {
     percentage = (elapsed / totalDuration) * 100;
     const dayKe = Math.ceil(elapsed / (1000 * 60 * 60 * 24));
     textStatus = `Hari ke-${dayKe} Ramadhan`;
   }
-
-  // Update Tampilan Bar
-  const bar = $("#ramadhanProgress");
-  const label = $("#ramadhanDayText");
+  const bar = $("#ramadhanProgress"); const label = $("#ramadhanDayText");
   if(bar) setTimeout(() => { bar.style.width = percentage + "%"; }, 500);
   if(label) label.textContent = textStatus;
 
-  // 3. Logic Tombol WhatsApp (Wakaf Pelunasan)
-  btnJoin.addEventListener("click", () => {
+  // --- LOGIC POPUP ---
+  const toggleModal = (show) => {
+    if (show) {
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    } else {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+  };
+
+  btnOpen.addEventListener("click", () => toggleModal(true));
+  btnClose.addEventListener("click", () => toggleModal(false));
+  backdrop.addEventListener("click", () => toggleModal(false));
+
+  // --- LOGIC INPUT CUSTOM (Tampilkan input jika pilih "Lainnya") ---
+  radios.forEach(radio => {
+    radio.addEventListener("change", (e) => {
+      if (e.target.value === "custom") {
+        customBox.classList.remove("hidden");
+        $("#inputCustomNominal").focus();
+      } else {
+        customBox.classList.add("hidden");
+      }
+    });
+  });
+
+  // --- LOGIC TOMBOL KONFIRMASI WA ---
+  btnConfirm.addEventListener("click", () => {
     const nama = $("#inputNamaPeserta").value;
-    const paketEl = document.querySelector('input[name="paket"]:checked');
-    
-    if (!paketEl) { alert("Mohon pilih salah satu paket wakaf."); return; }
+    const selectedRadio = document.querySelector('input[name="nominalWakaf"]:checked');
+
+    // Validasi
+    if (!selectedRadio) { alert("Mohon pilih nominal wakaf."); return; }
     if (!nama) { alert("Mohon isi nama Anda."); $("#inputNamaPeserta").focus(); return; }
 
-    const paketNama = paketEl.value;
-    const nominal = paketEl.dataset.nominal;
-    const total = new Intl.NumberFormat('id-ID').format(nominal * 30);
-    const nominalFmt = new Intl.NumberFormat('id-ID').format(nominal);
+    let nominalPerHari = 0;
+    
+    // Cek apakah Custom atau Preset
+    if (selectedRadio.value === "custom") {
+      const customVal = $("#inputCustomNominal").value;
+      if (!customVal) { alert("Mohon isi nominal manual."); return; }
+      nominalPerHari = parseInt(customVal);
+    } else {
+      nominalPerHari = parseInt(selectedRadio.value);
+    }
+
+    const totalSebulan = nominalPerHari * 30;
+    const fmt = (n) => new Intl.NumberFormat('id-ID').format(n);
 
     // Format Pesan WA
     const text = `Assalamu'alaikum Admin.
-Bismillah, saya ingin mengikuti *Gerakan Wakaf Rutin Ramadhan* untuk Pelunasan Masjid As-Sunnah Hekinan.
-    
+Bismillah, saya ingin komitmen *Wakaf Rutin M² Surga* (Pelunasan Masjid Hekinan).
+
 👤 Nama: ${nama}
-🕌 Paket: ${paketNama}
-💰 Komitmen: ¥${nominalFmt} / hari
-(Total estimasi ¥${total} selama 30 hari Ramadhan)
+💰 Komitmen: ¥${fmt(nominalPerHari)} / hari
+🗓️ Selama: 30 Hari Ramadhan
+(Total estimasi: ¥${fmt(totalSebulan)})
 
-Mohon dicatat sebagai ikhtiar pelunasan sebelum Mei 2026. Jazakumullah khairan wa baarakallahu fiikum.`;
+Mohon dicatat. Jazakumullah khairan.`;
 
-    // Kirim ke WA (Nomor Tisna sesuai footer)
+    // Kirim ke WA (Contoh nomor Tisna)
     window.open(`https://wa.me/818013909425?text=${encodeURIComponent(text)}`, "_blank");
+    
+    // Opsional: Tutup modal setelah kirim
+    toggleModal(false);
   });
 }
+
 // ==========================================
 // 4. BOOTSTRAP (RUN EVERYTHING)
 // ==========================================
