@@ -457,69 +457,50 @@
 <div id="popupPromo" class="fixed inset-0 z-[60] hidden items-center justify-center p-4">
   <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" id="closePopupBackdrop"></div>
   
-  <div class="relative w-full max-w-md rounded-2xl bg-white p-5 shadow-2xl transform scale-95 transition-all animate-[fadeUp_0.3s_ease-out]">
+  <div class="relative w-full max-w-sm md:max-w-md rounded-2xl bg-white p-5 shadow-2xl transform scale-95 transition-all animate-[fadeUp_0.3s_ease-out]">
     
     <button id="closePopupBtn" class="absolute -top-3 -right-3 bg-slate-800 text-white p-2 rounded-full shadow-lg hover:bg-slate-700 z-10 border-2 border-white cursor-pointer">
       <i data-lucide="x" class="w-5 h-5"></i>
     </button>
     
-   <a href="ramadhan.html" class="block relative overflow-hidden rounded-xl mb-5 w-full aspect-[4/5] group cursor-pointer shadow-lg border border-slate-200">
-    
-    <div class="absolute inset-0 bg-gradient-to-br from-emerald-800 to-emerald-950"></div>
-    <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-0 left-0 w-32 h-32 bg-amber-500/20 rounded-full blur-2xl"></div>
-
-    <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-10">
-        
-        <span class="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/20 text-emerald-200 text-[10px] font-bold uppercase tracking-widest mb-4 backdrop-blur-sm">
-            Menuju Ramadhan 1447 H
-        </span>
-
-        <div class="mb-4 transform group-hover:scale-110 transition-transform duration-500">
-             <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/30 text-white">
-                <i data-lucide="mosque" class="w-10 h-10 fill-current"></i>
-             </div>
+    <a href="ramadhan.html" class="block relative overflow-hidden rounded-xl mb-4 w-full aspect-[4/5] group cursor-pointer shadow-lg border border-slate-200">
+        <div class="absolute inset-0 bg-gradient-to-br from-emerald-800 to-emerald-950"></div>
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-10">
+            <span class="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/20 text-emerald-200 text-[10px] font-bold uppercase tracking-widest mb-4 backdrop-blur-sm" data-i18n="rmd_popup_badge">
+                Program Spesial
+            </span>
+            <div class="mb-4 transform group-hover:scale-110 transition-transform duration-500">
+                 <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-amber-400 to-amber-600 flex items-center justify-center shadow-lg text-white">
+                    <i data-lucide="moon" class="w-8 h-8 fill-current"></i>
+                 </div>
+            </div>
+            <h3 class="text-2xl font-extrabold text-white mb-2 leading-tight font-sans" data-i18n="rmd_popup_title">
+                Ikut Ramadhan Challenge
+            </h3>
+            <div class="w-12 h-1 bg-white/20 rounded-full my-3"></div>
+            <div class="flex items-center gap-2 text-white text-sm font-bold bg-white/20 px-4 py-2 rounded-lg border border-white/30">
+                <span data-i18n="rmd_popup_btn_join">Ikut Wakaf Ramadhan</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </div>
         </div>
-
-        <h3 class="text-3xl font-extrabold text-white mb-2 leading-tight font-sans">
-            WAKAF<br>
-            <span class="text-amber-400">PELUNASAN</span><br>
-            MASJID
-        </h3>
-
-        <div class="w-16 h-1 bg-white/20 rounded-full my-3"></div>
-
-        <p class="text-emerald-100 text-xs leading-relaxed mb-4">
-            "Siapa yang membangun masjid karena Allah, Allah bangunkan rumah di surga."
-        </p>
-
-        <div class="flex items-center gap-2 text-white text-sm font-bold bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors border border-white/30 backdrop-blur-sm">
-            <span>Ambil Bagian</span>
-            <i data-lucide="arrow-right" class="w-4 h-4 animate-pulse"></i>
-        </div>
-    </div>
-
-    <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none transform -translate-x-full group-hover:translate-x-full"></div>
-</a>
+    </a>
 
     <div class="flex flex-col gap-3">
-        
-        <a href="ramadhan.html" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-600/30 transition-transform transform active:scale-95 flex items-center justify-center gap-2">
+        <a href="ramadhan.html" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition-transform transform active:scale-95 flex items-center justify-center gap-2">
           <i data-lucide="moon" class="w-5 h-5 fill-current"></i> 
-          <span>Ikut Wakaf Ramadhan</span>
+          <span data-i18n="rmd_popup_btn_join">Ikut Wakaf Ramadhan</span>
         </a>
-        
         <button id="popupShareBtn" class="w-full bg-white text-emerald-600 border-2 border-emerald-100 hover:bg-emerald-50 font-bold py-3.5 rounded-xl shadow-sm transition-transform transform active:scale-95 flex items-center justify-center gap-2">
           <i data-lucide="share-2" class="w-5 h-5"></i> 
-          <span>Bantu Share ke WA</span>
+          <span data-i18n="rmd_popup_btn_share">Bantu Share ke WA</span>
         </button>
-
     </div>
  <p class="text-[10px] text-center text-slate-400 mt-3 italic">
         "Barangsiapa menunjukkan kebaikan, baginya pahala seperti yang melakukannya." (HR. Muslim)
     </p>
-    <p class="text-[10px] text-center text-slate-400 mt-4 italic">
-        "Target: Pelunasan Masjid sebelum Mei 2026"
+    <p class="text-[10px] text-center text-slate-400 mt-4 italic" data-i18n="rmd_popup_footer">
+        Target: Pelunasan Masjid sebelum Mei 2026
     </p>
   </div>
 </div>
@@ -629,6 +610,7 @@
 <script type="module" src="./app.js"></script>
 </body>
 </html>
+
 
 
 
