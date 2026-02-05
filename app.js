@@ -54,7 +54,15 @@ const TRANSLATIONS = {
     joined_label: "Orang Lagi Dibutuhkan", btn_join_movement: "Gabung Gerakan Ini", target_complete: "Menuju Lunas",
     dedication_check: "Niatkan pahala untuk", dedication_target: "Orang Tua / yang sudah meninggal rahimahumullahu ?", dedication_label: "Nama Orang Tua / yang sudah meninggal rahimahumullahu ", dedication_placeholder: "Contoh: Bpk. Fulan bin Fulan",
     alert_nominal: "Mohon masukkan nominal donasi.", btn_loading: "Membuka WhatsApp...", btn_copied: "Tersalin",
-    wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi pembangunan Masjid As-Sunnah Hekinan.", wa_dedication: "🎁 Pahala diniatkan atas nama:", wa_closing: "Mohon dicek. Jazakumullah khairan."
+    wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi pembangunan Masjid As-Sunnah Hekinan.", wa_dedication: "🎁 Pahala diniatkan atas nama:", wa_closing: "Mohon dicek. Jazakumullah khairan.",// --- TAMBAHAN RAMADHAN (ID) ---
+    rmd_title: "Komitmen Wakaf Harian",
+    rmd_subtitle: "Pilih nominal sedekah rutin per hari selama Ramadhan:",
+    rmd_custom: "Nominal Lainnya",
+    rmd_btn_confirm: "Konfirmasi via WA",
+    rmd_name_label: "Nama Anda",
+    rmd_name_ph: "Hamba Allah...",
+    rmd_wa_intro: "Assalamu'alaikum Admin. Bismillah, saya ingin komitmen *Wakaf Rutin M² Surga* (Pelunasan Masjid Hekinan).",
+    rmd_wa_closing: "Mohon dicatat. Jazakumullah khairan."
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
@@ -76,7 +84,17 @@ const TRANSLATIONS = {
     joined_label: "People Still Needed", btn_join_movement: "Join This Movement", target_complete: "Towards Completion",
     dedication_check: "Intend reward for", dedication_target: "Parents / Deceased?", dedication_label: "Name of Parents / Deceased", dedication_placeholder: "Ex: Mr. Fulan bin Fulan",
     alert_nominal: "Please enter donation amount.", btn_loading: "Opening WhatsApp...", btn_copied: "Copied",
-    wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque construction.", wa_dedication: "🎁 Reward intended for:", wa_closing: "Please check. Jazakumullah Khairan."
+    wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque construction.", wa_dedication: "🎁 Reward intended for:", wa_closing: "Please check. Jazakumullah Khairan.",
+
+    // --- TAMBAHAN RAMADHAN (EN) ---
+    rmd_title: "Daily Waqf Commitment",
+    rmd_subtitle: "Choose daily charity amount during Ramadan:",
+    rmd_custom: "Other Amount",
+    rmd_btn_confirm: "Confirm via WA",
+    rmd_name_label: "Your Name",
+    rmd_name_ph: "Servant of Allah...",
+    rmd_wa_intro: "Assalamu'alaikum Admin. Bismillah, I want to commit to *Daily Waqf M² Paradise* (Hekinan Mosque Repayment).",
+    rmd_wa_closing: "Please record this. Jazakumullah Khairan."
   }
 };
 
@@ -487,60 +505,42 @@ function initCountdown() {
   }, 1000);
 }
 // ==========================================
-// FITUR BARU: RAMADHAN CHALLENGE (POPUP VERSION)
+// FITUR BARU: RAMADHAN CHALLENGE (FINAL)
 // ==========================================
 function initRamadhanFeature() {
-  // 1. Cek elemen-elemen penting
-  const btnOpen = $("#btnOpenPopup");
   const modal = $("#wakafModal");
+  if (!modal) return; // Stop jika modal tidak ada di halaman ini
+
+  const btnOpen = $("#btnOpenPopup"); // Tombol manual (opsional)
   const btnClose = $("#btnCloseModal");
   const backdrop = $("#modalBackdrop");
   const btnConfirm = $("#btnConfirmWakaf");
-  const customRadio = $("#radioCustom");
   const customBox = $("#customInputBox");
-  const radios = $$('input[name="nominalWakaf"]'); // Ambil semua radio button
+  const radios = $$('input[name="nominalWakaf"]');
 
-  if (!btnOpen || !modal) return; // Stop jika tidak di halaman ramadhan
-
-  // --- LOGIC PROGRESS BAR (Sama seperti sebelumnya) ---
-  const startRamadhan = new Date("2026-02-18").getTime();
-  const endRamadhan = new Date("2026-03-19").getTime();
-  const today = new Date().getTime();
-  const totalDuration = endRamadhan - startRamadhan;
-  const elapsed = today - startRamadhan;
-  let percentage = 0; let textStatus = "Menunggu Ramadhan";
-
-  if (today < startRamadhan) {
-    percentage = 0;
-    const daysLeft = Math.ceil((startRamadhan - today) / (1000 * 60 * 60 * 24));
-    textStatus = `${daysLeft} Hari Menuju Ramadhan`;
-  } else if (today > endRamadhan) {
-    percentage = 100; textStatus = "Ramadhan Telah Usai";
-  } else {
-    percentage = (elapsed / totalDuration) * 100;
-    const dayKe = Math.ceil(elapsed / (1000 * 60 * 60 * 24));
-    textStatus = `Hari ke-${dayKe} Ramadhan`;
+  // --- 1. LOGIC AUTO POPUP (Hanya di Homepage) ---
+  // Cek apakah kita di halaman utama (index) atau ramadhan
+  const isHomepage = window.location.pathname.endsWith("index.html") || window.location.pathname.endsWith("/");
+  
+  // Muncul otomatis setelah 2 detik, TAPI hanya sekali per sesi browser (supaya tidak mengganggu)
+  if (isHomepage && !sessionStorage.getItem("seenRamadhan")) {
+    setTimeout(() => {
+      toggleModal(true);
+      sessionStorage.setItem("seenRamadhan", "true");
+    }, 2000);
   }
-  const bar = $("#ramadhanProgress"); const label = $("#ramadhanDayText");
-  if(bar) setTimeout(() => { bar.style.width = percentage + "%"; }, 500);
-  if(label) label.textContent = textStatus;
 
-  // --- LOGIC POPUP ---
+  // --- 2. LOGIC BUKA TUTUP MODAL ---
   const toggleModal = (show) => {
-    if (show) {
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-    } else {
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-    }
+    if (show) { modal.classList.remove("hidden"); modal.classList.add("flex"); } 
+    else { modal.classList.add("hidden"); modal.classList.remove("flex"); }
   };
 
-  btnOpen.addEventListener("click", () => toggleModal(true));
-  btnClose.addEventListener("click", () => toggleModal(false));
-  backdrop.addEventListener("click", () => toggleModal(false));
+  if(btnOpen) btnOpen.addEventListener("click", () => toggleModal(true));
+  if(btnClose) btnClose.addEventListener("click", () => toggleModal(false));
+  if(backdrop) backdrop.addEventListener("click", () => toggleModal(false));
 
-  // --- LOGIC INPUT CUSTOM (Tampilkan input jika pilih "Lainnya") ---
+  // --- 3. LOGIC INPUT CUSTOM ---
   radios.forEach(radio => {
     radio.addEventListener("change", (e) => {
       if (e.target.value === "custom") {
@@ -552,46 +552,44 @@ function initRamadhanFeature() {
     });
   });
 
-  // --- LOGIC TOMBOL KONFIRMASI WA ---
-  btnConfirm.addEventListener("click", () => {
-    const nama = $("#inputNamaPeserta").value;
-    const selectedRadio = document.querySelector('input[name="nominalWakaf"]:checked');
+  // --- 4. LOGIC KIRIM WA (BILINGUAL) ---
+  if(btnConfirm) {
+    btnConfirm.addEventListener("click", () => {
+      const nama = $("#inputNamaPeserta").value;
+      const selectedRadio = document.querySelector('input[name="nominalWakaf"]:checked');
+      
+      // Ambil teks sesuai bahasa aktif
+      const t = TRANSLATIONS[currentLang] || TRANSLATIONS['id']; 
 
-    // Validasi
-    if (!selectedRadio) { alert("Mohon pilih nominal wakaf."); return; }
-    if (!nama) { alert("Mohon isi nama Anda."); $("#inputNamaPeserta").focus(); return; }
+      if (!selectedRadio) { alert(currentLang === 'en' ? "Please select amount." : "Mohon pilih nominal wakaf."); return; }
+      if (!nama) { alert(currentLang === 'en' ? "Please enter your name." : "Mohon isi nama Anda."); $("#inputNamaPeserta").focus(); return; }
 
-    let nominalPerHari = 0;
-    
-    // Cek apakah Custom atau Preset
-    if (selectedRadio.value === "custom") {
-      const customVal = $("#inputCustomNominal").value;
-      if (!customVal) { alert("Mohon isi nominal manual."); return; }
-      nominalPerHari = parseInt(customVal);
-    } else {
-      nominalPerHari = parseInt(selectedRadio.value);
-    }
+      let nominalPerHari = 0;
+      if (selectedRadio.value === "custom") {
+        const customVal = $("#inputCustomNominal").value;
+        if (!customVal) { alert(currentLang === 'en' ? "Enter amount." : "Isi nominal manual."); return; }
+        nominalPerHari = parseInt(customVal);
+      } else {
+        nominalPerHari = parseInt(selectedRadio.value);
+      }
 
-    const totalSebulan = nominalPerHari * 30;
-    const fmt = (n) => new Intl.NumberFormat('id-ID').format(n);
+      const totalSebulan = nominalPerHari * 30;
+      const fmt = (n) => new Intl.NumberFormat(currentLang === 'en' ? 'en-US' : 'id-ID').format(n);
 
-    // Format Pesan WA
-    const text = `Assalamu'alaikum Admin.
-Bismillah, saya ingin komitmen *Wakaf Rutin M² Surga* (Pelunasan Masjid Hekinan).
+      // Pesan WA Bilingual
+      const text = `${t.rmd_wa_intro}
+      
+👤 ${t.rmd_name_label}: ${nama}
+💰 Commitment: ¥${fmt(nominalPerHari)} / day
+🗓️ Duration: 30 Days (Ramadhan)
+(Total: ¥${fmt(totalSebulan)})
 
-👤 Nama: ${nama}
-💰 Komitmen: ¥${fmt(nominalPerHari)} / hari
-🗓️ Selama: 30 Hari Ramadhan
-(Total estimasi: ¥${fmt(totalSebulan)})
+${t.rmd_wa_closing}`;
 
-Mohon dicatat. Jazakumullah khairan.`;
-
-    // Kirim ke WA (Contoh nomor Tisna)
-    window.open(`https://wa.me/818013909425?text=${encodeURIComponent(text)}`, "_blank");
-    
-    // Opsional: Tutup modal setelah kirim
-    toggleModal(false);
-  });
+      window.open(`https://wa.me/818013909425?text=${encodeURIComponent(text)}`, "_blank");
+      toggleModal(false);
+    });
+  }
 }
 
 // ==========================================
