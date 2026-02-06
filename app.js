@@ -1,4 +1,4 @@
-// app.js (Final Fix: Translate Lengkap + Anti Error)
+// app.js (Final Fix: Translate Sempurna)
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -13,7 +13,7 @@ const TERKUMPUL_SAAT_INI = 9519843;
 
 // Update gambar popup
 const POPUP_IMAGES_LIST = ["assets/foto/1e.png", "assets/foto/001.jpg", "assets/foto/poster3.jpeg"]; 
-const VIDEO_DONASI_LIST = ["jfPRdk", "dQcQ"];
+const VIDEO_DONASI_LIST = ["jfKRdk", "dQwcQ"];
 const YOUTUBE_VIDEOS = ["OvQjcl65BR8", "zEu4jVpgB_8", "oQjqwQb6atA"];
 const LOCAL_IMAGES = ["1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "6.jpeg", "7.jpeg"];
 
@@ -81,12 +81,12 @@ const TRANSLATIONS = {
     rmd_ph_name: "Hamba Allah...",
     rmd_btn_send: "Konfirmasi via WA",
     
-    // Popup Switch & Dedikasi (YANG SEBELUMNYA HILANG)
+    // Popup Switch & Dedikasi
     rmd_mode_daily: "Harian (30 Hari)",
     rmd_mode_weekly: "Pekanan (4 Jumat)",
     rmd_dedication_ask: "Niatkan pahala untuk Orang Tua?",
     rmd_dedication_note: "Wakaf atas nama Ayah/Ibu (yang masih hidup/wafat).",
-    rmd_dedication_name_label: "Nama Orang Tua (Bin/Binti)"
+    rmd_dedication_placeholder: "Contoh: Alm. Bpk Fulan"
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
@@ -134,12 +134,12 @@ const TRANSLATIONS = {
     rmd_ph_name: "Servant of Allah...",
     rmd_btn_send: "Confirm via WA",
 
-    // Popup Switch & Dedication (ADDED)
+    // Popup Switch & Dedication
     rmd_mode_daily: "Daily (30 Days)",
     rmd_mode_weekly: "Weekly (4 Fridays)",
     rmd_dedication_ask: "Intend reward for Parents?",
     rmd_dedication_note: "Waqf on behalf of Parents (living or deceased).",
-    rmd_dedication_name_label: "Parent's Name"
+    rmd_dedication_placeholder: "Ex: Mr. Fulan"
   }
 };
 
@@ -184,7 +184,7 @@ function setLang(lang) {
   $$("[data-placeholder]").forEach(el => { const k = el.getAttribute("data-placeholder"); if (t[k]) el.placeholder = t[k]; });
   renderHadith(); renderHijri();
   
-  // TRIGGER EVENT KHUSUS (Agar halaman Ramadhan tahu bahasa berubah)
+  // EVENT LISTENER: Beritahu halaman lain bahwa bahasa berubah
   document.dispatchEvent(new Event('langChanged'));
 }
 
