@@ -1,20 +1,21 @@
-// app.js (Final Version - Strict Ordering & Index Method)
+// app.js (Final Version - Ramadhan Ready)
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
 // ==========================================
-// 1. DATA & KONFIGURASI GLOBAL (WAJIB PALING ATAS)
+// 1. DATA & KONFIGURASI GLOBAL
 // ==========================================
-window.globalContentData = []; // Penyimpanan data artikel agar tombol tidak error
+window.globalContentData = []; 
 
 const TARGET_DONASI = 42000000;
 const TERKUMPUL_SAAT_INI = 9519843;
 
-const POPUP_IMAGES_LIST = ["assets/foto/1e.png","assets/foto/001.jpg","assets/foto/poster3.jpeg"]; 
+// Update gambar popup jika diperlukan (opsional, karena kita pakai CSS poster sekarang)
+const POPUP_IMAGES_LIST = ["assets/foto/1e.png", "assets/foto/001.jpg", "assets/foto/poster3.jpeg"]; 
 const VIDEO_DONASI_LIST = ["jfKfPRdk", "dQwgXcQ"];
 const YOUTUBE_VIDEOS = ["OvQjcl65BR8", "zEu4jVpgB_8", "oQjqwQb6atA"];
-const LOCAL_IMAGES = ["1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "6.jpeg", "7.jpeg", "assets/foto/a.jpeg", "assets/foto/b.jpeg","assets/foto/poster3.jpeg"];
+const LOCAL_IMAGES = ["1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "6.jpeg", "7.jpeg"];
 
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
 const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
@@ -54,10 +55,9 @@ const TRANSLATIONS = {
     joined_label: "Orang Lagi Dibutuhkan", btn_join_movement: "Gabung Gerakan Ini", target_complete: "Menuju Lunas",
     dedication_check: "Niatkan pahala untuk", dedication_target: "Orang Tua / yang sudah meninggal rahimahumullahu ?", dedication_label: "Nama Orang Tua / yang sudah meninggal rahimahumullahu ", dedication_placeholder: "Contoh: Bpk. Fulan bin Fulan",
     alert_nominal: "Mohon masukkan nominal donasi.", btn_loading: "Membuka WhatsApp...", btn_copied: "Tersalin",
-    wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi pembangunan Masjid As-Sunnah Hekinan.", wa_dedication: "🎁 Pahala diniatkan atas nama:", // ... (kode lama) ...
-    wa_closing: "Mohon dicek. Jazakumullah khairan.",
-
-   // === TAMBAHKAN BAGIAN INI (INDONESIA) ===
+    wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi pembangunan Masjid As-Sunnah Hekinan.", wa_dedication: "🎁 Pahala diniatkan atas nama:", wa_closing: "Mohon dicek. Jazakumullah khairan.",
+    
+    // === KAMUS RAMADHAN (NEW) ===
     nav_ramadhan: "Ramadhan",
     rmd_page_back: "Kembali",
     rmd_page_deadline: "Deadline: 31 Mei 2026",
@@ -71,6 +71,7 @@ const TRANSLATIONS = {
     rmd_benefit_2: "Ikut melunasi bangunan sebelum Mei 2026",
     rmd_benefit_3: "Didoakan oleh ribuan jamaah & malaikat",
     rmd_btn_open: "Ambil Bagian Wakaf",
+    rmd_click_note: "Klik tombol di atas untuk memilih nominal.",
     rmd_modal_title: "Komitmen Wakaf",
     rmd_modal_subtitle: "Pilih nominal sedekah rutin",
     rmd_opt_custom: "Nominal Lainnya",
@@ -98,10 +99,9 @@ const TRANSLATIONS = {
     joined_label: "People Still Needed", btn_join_movement: "Join This Movement", target_complete: "Towards Completion",
     dedication_check: "Intend reward for", dedication_target: "Parents / Deceased?", dedication_label: "Name of Parents / Deceased", dedication_placeholder: "Ex: Mr. Fulan bin Fulan",
     alert_nominal: "Please enter donation amount.", btn_loading: "Opening WhatsApp...", btn_copied: "Copied",
-    wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque construction.", wa_dedication: "🎁 Reward intended for:", // ... (kode lama) ...
-    wa_closing: "Please check. Jazakumullah Khairan.",
+    wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque construction.", wa_dedication: "🎁 Reward intended for:", wa_closing: "Please check. Jazakumullah Khairan.",
 
-    // --- KAMUS RAMADHAN (ENGLISH) ---
+    // === KAMUS RAMADHAN (NEW) ===
     nav_ramadhan: "Ramadan",
     rmd_page_back: "Back",
     rmd_page_deadline: "Deadline: May 31, 2026",
@@ -115,6 +115,7 @@ const TRANSLATIONS = {
     rmd_benefit_2: "Help repay the building before May 2026",
     rmd_benefit_3: "Prayed for by thousands of congregants & angels",
     rmd_btn_open: "Take Part in Waqf",
+    rmd_click_note: "Click the button above to choose your daily waqf amount.",
     rmd_modal_title: "Waqf Commitment",
     rmd_modal_subtitle: "Choose daily charity amount",
     rmd_opt_custom: "Other Amount",
@@ -184,13 +185,11 @@ async function loadCsv(url) {
 }
 
 // ==========================================
-// 3. FUNGSI LOGIKA (DIDEFINISIKAN DULU)
+// 3. FUNGSI LOGIKA UTAMA
 // ==========================================
 
-// --- POPUP ARTIKEL (GLOBAL & FIXED) ---
 window.openArticleModal = (index) => {
   try {
-    // Ambil data dari variabel global (bukan parsing string HTML)
     const data = window.globalContentData[index];
     const modal = $("#articleModal"); 
     if (!modal || !data) return;
@@ -223,9 +222,8 @@ document.addEventListener("DOMContentLoaded", () => {
   $("#closeArticleBackdrop")?.addEventListener("click", close);
 });
 
-// --- RENDER CONTENT (INDEX METHOD) ---
 async function renderContent() {
-  window.globalContentData = []; // Reset
+  window.globalContentData = []; 
 
   const mkCard = (x, isArt, index) => {
     let tagColor = "bg-slate-100 text-slate-600"; let tagLabel = isArt ? "Artikel" : "Info";
@@ -236,7 +234,6 @@ async function renderContent() {
       else if (t.includes('kabar')) tagColor = "bg-emerald-100 text-emerald-700";
       else if (t.includes('faedah')) tagColor = "bg-amber-100 text-amber-700";
     }
-    // PENTING: onclick hanya kirim INDEX (angka), bukan data string
     return `
       <article class="group rounded-2xl border border-slate-100 bg-white p-5 shadow-sm hover:border-sky-200 hover:shadow-md flex flex-col h-full transition-all duration-300">
         <div class="flex items-center justify-between mb-3"><span class="${tagColor} px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">${tagLabel}</span><span class="text-[10px] text-slate-400 font-medium">${x.date || ""}</span></div>
@@ -263,8 +260,6 @@ async function renderContent() {
     window.allArticles = d;
 
     const filter = (q) => {
-      // Re-render harus hati-hati dengan index.
-      // Solusi aman: filter array asli, lalu ambil ulang index globalnya
       const filtered = d.map((item, i) => ({item, idx: startIdx + i}))
                         .filter(o => (o.item.title || "").toLowerCase().includes(q));
       
@@ -363,18 +358,12 @@ function initHeroSlider() {
   let current = 0; setInterval(() => { slides[current].classList.remove("active"); current = (current + 1) % slides.length; slides[current].classList.add("active"); }, 5000);
 }
 
-// ==========================================
-// UPDATE: POPUP TANPA SLIDER (KHUSUS POSTER CSS)
-// ==========================================
+// ----------------------------------------------------
+// UPDATE: POPUP (Supaya tidak error cari gambar)
+// ----------------------------------------------------
 function initPopup() {
   const popup = $("#popupPromo");
-  
-  // Hapus pengecekan gambar (imgEl), cukup cek popup-nya ada atau tidak
-  if (!popup) return; 
-
-  // Tampilkan Popup
-  popup.classList.remove("hidden");
-  popup.style.display = 'flex'; 
+  if (!popup) return; // Kalau tidak ada popup (misal di halaman lain), stop.
 
   // Fungsi Tutup
   const close = () => { 
@@ -382,20 +371,25 @@ function initPopup() {
     popup.style.display = 'none'; 
   };
 
-  // Event Listener Tombol Tutup
+  // Tampilkan Popup (Auto Show logic bisa ditaruh di sini jika mau)
+  // Untuk saat ini biar CSS di HTML yang handle initial state hidden,
+  // lalu di index.html biasanya ada script pemicu atau memang default visible.
+  // Tapi berdasarkan kode lama, kita buat default muncul:
+  popup.classList.remove("hidden");
+  popup.style.display = 'flex';
+
+  // Event Listener
   $("#closePopupBtn")?.addEventListener("click", close);
   $("#closePopupBackdrop")?.addEventListener("click", close);
 
-  // Tombol Share WA (Jika ada)
-  const shareBtn = $("#popupShareBtn");
-  if (shareBtn) {
-    shareBtn.addEventListener("click", () => {
-      const text = "Assalamu'alaikum. Mohon bantuannya untuk pelunasan lahan *Masjid As-Sunnah Hekinan (Jepang)* sebelum Mei 2026. \n\nMari cari pahala jariyah dengan menyebarkan info ini atau ikut berwakaf. \n\nCek info lengkap & donasi di sini: 👇\nhttps://assunnahhekinan.org";
+  // Tombol Share WA (Jika ada ID-nya)
+  $("#popupShareBtn")?.addEventListener("click", () => {
+      const text = "Assalamu'alaikum. Mohon bantuannya untuk pelunasan lahan *Masjid As-Sunnah Hekinan (Jepang)*. \n\nMari cari pahala jariyah dengan menyebarkan info ini. \n\nCek progres & donasi di sini: 👇\nhttps://assunnahhekinan.org/ramadhan.html";
       window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
-      // close(); // Opsional: tutup popup setelah share
-    });
-  }
+      // close(); 
+  });
 }
+
 function initVideoAjakan() { const container = $("#videoAjakanContainer"); if (!container || !VIDEO_DONASI_LIST.length) return; container.innerHTML = ""; if (VIDEO_DONASI_LIST.length === 1) { container.className = "max-w-4xl mx-auto reveal"; container.innerHTML = `<div class="relative w-full pt-[56.25%] rounded-2xl overflow-hidden shadow-2xl border-4 border-white/50 group"><iframe src="https://www.youtube.com/embed/${VIDEO_DONASI_LIST[0]}?rel=0" title="Video Ajakan Wakaf" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe></div>`; } else { container.className = "max-w-full mx-auto reveal flex gap-4 overflow-x-auto pb-4 snap-x hide-scrollbar px-4"; VIDEO_DONASI_LIST.forEach(id => { const item = document.createElement("div"); item.className = "snap-center shrink-0 w-[85%] sm:w-[60%] md:w-[45%] relative pt-[48%] sm:pt-[33%] md:pt-[25%] rounded-xl overflow-hidden shadow-lg border border-slate-200 bg-black"; item.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?rel=0" title="Video Ajakan" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>`; container.appendChild(item); }); } }
 function initVideoKajian() { const grid = $("#videoGrid"); if (!grid || !YOUTUBE_VIDEOS.length) return; grid.innerHTML = ""; YOUTUBE_VIDEOS.forEach(id => { const card = document.createElement("div"); card.className = "rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white group hover:-translate-y-1 transition-transform duration-300"; card.innerHTML = `<div class="relative w-full pt-[56.25%] bg-black"><iframe src="https://www.youtube.com/embed/${id}" title="Video Kajian" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe></div>`; grid.appendChild(card); }); }
 function initDoa() { const elArab = $("#doaArab"), elArti = $("#doaArti"), btn = $("#btnGantiDoa"); if (!elArab) return; const acakDoa = () => { const r = DAFTAR_DOA[Math.floor(Math.random() * DAFTAR_DOA.length)]; elArab.textContent = r.ar; elArti.textContent = r.id; }; acakDoa(); btn?.addEventListener("click", acakDoa); }
@@ -454,7 +448,6 @@ function initDonasi() {
   $$(".quick-jpy").forEach(b => b.addEventListener("click", () => $("#inputJPY").value = b.dataset.v));
   $$(".quick-idr").forEach(b => b.addEventListener("click", () => $("#inputIDR").value = b.dataset.v));
 
-  // Widget Orang Baik (Sisa)
   const NOMINAL_SATUAN = 1000;
   const targetOrang = Math.ceil(T / NOMINAL_SATUAN);
   const sisaOrang = Math.ceil(K / NOMINAL_SATUAN);
@@ -470,7 +463,6 @@ function initDonasi() {
     if (barOrang) { setTimeout(() => { barOrang.style.width = persenJalan + "%"; }, 500); }
   }
 
-  // Wakaf Dedikasi
   const checkDedikasi = $("#checkDedikasi");
   const boxDedikasi = $("#boxNamaDedikasi");
   if (checkDedikasi && boxDedikasi) {
@@ -480,7 +472,6 @@ function initDonasi() {
     });
   }
 
-  // Konfirmasi WA
   const btnWA = $("#donasiBtn");
   if (btnWA) {
     btnWA.addEventListener("click", () => {
@@ -508,7 +499,6 @@ function initDonasi() {
     });
   }
 
-  // Salin Rekening
   $$("[data-copy]").forEach(b => b.addEventListener("click", () => {
     navigator.clipboard.writeText($(b.dataset.copy).innerText);
     const t = TRANSLATIONS[currentLang] || TRANSLATIONS["id"];
@@ -519,7 +509,6 @@ function initDonasi() {
     setTimeout(() => { b.className = originalClass; b.innerHTML = originalText; window.lucide?.createIcons?.(); }, 2000);
   }));
 
-  // Komitmen
   const btnRemind = $("#btnSetReminder"); const inputDate = $("#dateReminder");
   if (inputDate) { const besok = new Date(); besok.setDate(besok.getDate() + 1); inputDate.value = besok.toISOString().split('T')[0]; }
   if (btnRemind && inputDate) {
@@ -536,14 +525,15 @@ function initDonasi() {
   }
 }
 
+// --------------------------------------------------------------------------
+// UPDATE: PERBAIKAN INIT COUNTDOWN (Supaya tidak error di halaman Ramadhan)
+// --------------------------------------------------------------------------
 function initCountdown() {
-  // Ambil elemen dulu
   const elDays = $("#cdDays");
   const elHours = $("#cdHours");
   const elMin = $("#cdMin");
 
-  // PENTING: Cek apakah elemen ada? Jika tidak ada, STOP (jangan lanjut)
-  // Ini mencegah error di halaman ramadhan.html
+  // CEK APAKAH ELEMEN ADA (PENTING!)
   if (!elDays || !elHours || !elMin) return;
 
   const end = new Date("2026-05-31T23:59:59").getTime();
@@ -554,96 +544,9 @@ function initCountdown() {
     elMin.innerText = Math.floor((gap%3600000)/60000);
   }, 1000);
 }
-// ==========================================
-// FITUR BARU: RAMADHAN CHALLENGE (FINAL)
-// ==========================================
-function initRamadhanFeature() {
-  const modal = $("#wakafModal");
-  if (!modal) return; // Stop jika modal tidak ada di halaman ini
-
-  const btnOpen = $("#btnOpenPopup"); // Tombol manual (opsional)
-  const btnClose = $("#btnCloseModal");
-  const backdrop = $("#modalBackdrop");
-  const btnConfirm = $("#btnConfirmWakaf");
-  const customBox = $("#customInputBox");
-  const radios = $$('input[name="nominalWakaf"]');
-
-  // --- 1. LOGIC AUTO POPUP (Hanya di Homepage) ---
-  // Cek apakah kita di halaman utama (index) atau ramadhan
-  const isHomepage = window.location.pathname.endsWith("index.html") || window.location.pathname.endsWith("/");
-  
-  // Muncul otomatis setelah 2 detik, TAPI hanya sekali per sesi browser (supaya tidak mengganggu)
-  if (isHomepage && !sessionStorage.getItem("seenRamadhan")) {
-    setTimeout(() => {
-      toggleModal(true);
-      sessionStorage.setItem("seenRamadhan", "true");
-    }, 2000);
-  }
-
-  // --- 2. LOGIC BUKA TUTUP MODAL ---
-  const toggleModal = (show) => {
-    if (show) { modal.classList.remove("hidden"); modal.classList.add("flex"); } 
-    else { modal.classList.add("hidden"); modal.classList.remove("flex"); }
-  };
-
-  if(btnOpen) btnOpen.addEventListener("click", () => toggleModal(true));
-  if(btnClose) btnClose.addEventListener("click", () => toggleModal(false));
-  if(backdrop) backdrop.addEventListener("click", () => toggleModal(false));
-
-  // --- 3. LOGIC INPUT CUSTOM ---
-  radios.forEach(radio => {
-    radio.addEventListener("change", (e) => {
-      if (e.target.value === "custom") {
-        customBox.classList.remove("hidden");
-        $("#inputCustomNominal").focus();
-      } else {
-        customBox.classList.add("hidden");
-      }
-    });
-  });
-
-  // --- 4. LOGIC KIRIM WA (BILINGUAL) ---
-  if(btnConfirm) {
-    btnConfirm.addEventListener("click", () => {
-      const nama = $("#inputNamaPeserta").value;
-      const selectedRadio = document.querySelector('input[name="nominalWakaf"]:checked');
-      
-      // Ambil teks sesuai bahasa aktif
-      const t = TRANSLATIONS[currentLang] || TRANSLATIONS['id']; 
-
-      if (!selectedRadio) { alert(currentLang === 'en' ? "Please select amount." : "Mohon pilih nominal wakaf."); return; }
-      if (!nama) { alert(currentLang === 'en' ? "Please enter your name." : "Mohon isi nama Anda."); $("#inputNamaPeserta").focus(); return; }
-
-      let nominalPerHari = 0;
-      if (selectedRadio.value === "custom") {
-        const customVal = $("#inputCustomNominal").value;
-        if (!customVal) { alert(currentLang === 'en' ? "Enter amount." : "Isi nominal manual."); return; }
-        nominalPerHari = parseInt(customVal);
-      } else {
-        nominalPerHari = parseInt(selectedRadio.value);
-      }
-
-      const totalSebulan = nominalPerHari * 30;
-      const fmt = (n) => new Intl.NumberFormat(currentLang === 'en' ? 'en-US' : 'id-ID').format(n);
-
-      // Pesan WA Bilingual
-      const text = `${t.rmd_wa_intro}
-      
-👤 ${t.rmd_name_label}: ${nama}
-💰 Commitment: ¥${fmt(nominalPerHari)} / day
-🗓️ Duration: 30 Days (Ramadhan)
-(Total: ¥${fmt(totalSebulan)})
-
-${t.rmd_wa_closing}`;
-
-      window.open(`https://wa.me/818013909425?text=${encodeURIComponent(text)}`, "_blank");
-      toggleModal(false);
-    });
-  }
-}
 
 // ==========================================
-// 4. BOOTSTRAP (RUN EVERYTHING)
+// 4. BOOTSTRAP
 // ==========================================
 function boot() {
   const hariIni = new Date().getDay(); const bannerJumat = $("#jumatBanner");
@@ -657,7 +560,6 @@ function boot() {
   
   if ($("#year")) $("#year").textContent = new Date().getFullYear();
 
-  // Load Semua Fitur secara Berurutan
   renderSholat();
   renderContent();
   initCountdown();
@@ -670,14 +572,11 @@ function boot() {
   initZakatCalculator();
   initDoa();
   initPopup();
-initRamadhanFeature();
-  // Scroll Reveal
+
   const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add("active") }), { threshold: 0.1 });
   $$(".reveal").forEach(e => obs.observe(e));
   
-  // Icon Lucide
   window.lucide?.createIcons?.();
 }
 
-// Jalankan saat loading selesai
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
