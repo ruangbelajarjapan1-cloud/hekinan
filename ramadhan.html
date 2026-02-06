@@ -58,6 +58,7 @@
     <div class="absolute inset-0 opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');"></div>
     <div class="absolute inset-0 bg-gradient-to-b from-emerald-900/50 to-emerald-800/90"></div>
     <div class="absolute top-0 left-1/4 w-64 h-64 bg-amber-400/20 rounded-full blur-[100px] animate-pulse-slow"></div>
+    <div class="absolute bottom-0 right-1/4 w-64 h-64 bg-emerald-400/10 rounded-full blur-[100px]"></div>
     <div class="absolute top-10 right-10 opacity-20 animate-float"><i data-lucide="moon" class="w-32 h-32 text-amber-200"></i></div>
     
     <div class="container mx-auto px-4 relative z-10 text-center">
@@ -69,13 +70,21 @@
         "Barangsiapa membangun masjid karena Allah, maka Allah akan membangunkan baginya rumah (istana) di surga." <br><span class="text-xs opacity-75 font-mono mt-1 block">(HR Bukhari & Muslim)</span>
       </p>
       
-      <div class="max-w-md mx-auto bg-emerald-950/30 p-4 rounded-2xl border border-emerald-700/50 backdrop-blur-md shadow-inner">
-        <div class="flex justify-between text-[10px] md:text-xs font-bold text-emerald-300 mb-2 uppercase tracking-wider">
-            <span data-i18n="rmd_progress_label">Perjalanan Ramadhan</span>
-            <span id="ramadhanDayText" class="text-amber-400" data-i18n="rmd_progress_wait">Menunggu Ramadhan...</span>
+      <div class="max-w-md mx-auto bg-emerald-950/40 p-4 rounded-2xl border border-emerald-700/50 backdrop-blur-md shadow-lg mt-6">
+        <div class="text-center border-b border-emerald-800/50 pb-3 mb-3">
+            <p id="timeLabel" class="text-[10px] md:text-xs font-bold text-emerald-300 mb-1 uppercase tracking-wider">Waktu Hekinan</p>
+            <div id="timeCountdown" class="text-3xl md:text-4xl font-mono font-extrabold text-white tracking-widest drop-shadow-md">--:--:--</div>
         </div>
-        <div class="w-full bg-emerald-950/50 rounded-full h-3 overflow-hidden border border-emerald-800/30">
-            <div id="ramadhanProgress" class="bg-gradient-to-r from-amber-400 to-amber-600 h-full rounded-full w-0 transition-all duration-1000 shadow-[0_0_10px_rgba(245,158,11,0.5)]"></div>
+        <div class="flex justify-between items-center text-xs px-2">
+            <div class="text-center">
+                <span class="block text-emerald-400 font-bold uppercase text-[10px]">Imsak</span>
+                <span id="jadwalImsak" class="block text-white font-mono text-lg font-bold">--:--</span>
+            </div>
+            <div class="h-8 w-[1px] bg-emerald-700/50"></div>
+            <div class="text-center">
+                <span class="block text-amber-400 font-bold uppercase text-[10px]">Maghrib</span>
+                <span id="jadwalMaghrib" class="block text-white font-mono text-lg font-bold">--:--</span>
+            </div>
         </div>
       </div>
 
@@ -169,22 +178,29 @@
                 <img src="logohekinan.jpeg" class="w-full h-full rounded-full object-cover">
             </div>
             <h3 class="font-extrabold text-2xl text-white relative z-10" data-i18n="rmd_modal_title">Komitmen Wakaf</h3>
-            <p class="text-emerald-100 text-sm relative z-10" data-i18n="rmd_modal_subtitle">Pilih nominal sedekah rutin</p>
+            <p class="text-emerald-100 text-sm relative z-10" data-i18n="rmd_modal_subtitle">Pilih nominal sedekah</p>
           </div>
 
           <div class="p-6 overflow-y-auto bg-slate-50 grow">
+            
+            <div class="flex bg-slate-200 p-1 rounded-xl mb-6 relative">
+                <div id="modeActiveBg" class="absolute left-1 top-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-lg shadow-sm transition-all duration-300"></div>
+                <button id="btnModeDaily" class="flex-1 relative z-10 text-xs font-bold py-2.5 text-emerald-600 transition-colors text-center">Harian (30 Hari)</button>
+                <button id="btnModeWeekly" class="flex-1 relative z-10 text-xs font-bold py-2.5 text-slate-500 transition-colors text-center">Pekanan (4 Jumat)</button>
+            </div>
+
             <div class="space-y-3">
               <label class="relative flex items-center p-4 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-emerald-500 transition-all group shadow-sm">
                 <input type="radio" name="nominalWakaf" value="1000" class="peer sr-only">
                 <div class="w-5 h-5 rounded-full border-2 border-slate-300 peer-checked:bg-emerald-500 peer-checked:border-emerald-500 mr-4 shrink-0 transition-all"></div>
-                <div class="flex-1"><span class="block font-bold text-slate-800 text-lg">¥1.000 <span class="text-sm font-normal text-slate-400">/hari</span></span></div>
+                <div class="flex-1"><span class="block font-bold text-slate-800 text-lg">¥1.000 <span class="text-sm font-normal text-slate-400 label-period">/hari</span></span></div>
                 <div class="absolute inset-0 border-2 border-emerald-500 rounded-xl opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></div>
               </label>
               <label class="relative flex items-center p-4 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-emerald-500 transition-all group shadow-sm">
                 <div class="absolute -top-2.5 right-4 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm z-10">POPULER</div>
                 <input type="radio" name="nominalWakaf" value="5000" class="peer sr-only">
                 <div class="w-5 h-5 rounded-full border-2 border-slate-300 peer-checked:bg-emerald-500 peer-checked:border-emerald-500 mr-4 shrink-0 transition-all"></div>
-                <div class="flex-1"><span class="block font-bold text-slate-800 text-lg">¥5.000 <span class="text-sm font-normal text-slate-400">/hari</span></span></div>
+                <div class="flex-1"><span class="block font-bold text-slate-800 text-lg">¥5.000 <span class="text-sm font-normal text-slate-400 label-period">/hari</span></span></div>
                 <div class="absolute inset-0 border-2 border-emerald-500 rounded-xl opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></div>
               </label>
               <label class="relative flex flex-col p-4 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-emerald-500 transition-all group shadow-sm">
@@ -248,13 +264,11 @@
           <p class="text-slate-600 text-sm mb-6 leading-relaxed">
               Niat wakaf Anda telah kami catat. Semoga menjadi pemberat timbangan amal di akhirat kelak. Aamiin.
           </p>
-          
           <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl mb-8 w-full">
               <p class="text-[10px] text-amber-800 italic font-medium">
                   "Barangsiapa menunjukkan kebaikan, baginya pahala seperti yang melakukannya." <br>(HR. Muslim)
               </p>
           </div>
-
           <button id="btnShareWa" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg flex items-center justify-center gap-2 mb-3">
               <i data-lucide="share-2" class="w-5 h-5"></i> Bagikan ke Grup Keluarga
           </button>
@@ -283,7 +297,77 @@
     if(modal) { modal.classList.add("hidden"); modal.classList.remove("flex"); }
   };
 
-  // 2. NOTIFIKASI LIVE
+  // 2. LOGIKA IMSAKIYAH
+  async function initSmartImsakiyah() {
+      const LAT = 34.884, LON = 136.993; // Hekinan
+      const today = new Date();
+      
+      const elLabel = document.getElementById("timeLabel"); 
+      const elTimer = document.getElementById("timeCountdown");
+      const elImsak = document.getElementById("jadwalImsak");
+      const elMaghrib = document.getElementById("jadwalMaghrib");
+
+      if(!elLabel) return; 
+
+      try {
+          const apiUrl = `https://api.aladhan.com/v1/timings/${today.getDate()}-${today.getMonth()+1}-${today.getFullYear()}?latitude=${LAT}&longitude=${LON}&method=2`;
+          const res = await fetch(apiUrl);
+          const data = await res.json();
+          const timings = data.data.timings;
+
+          if(elImsak) elImsak.textContent = timings.Imsak;
+          if(elMaghrib) elMaghrib.textContent = timings.Maghrib;
+
+          setInterval(() => {
+              const now = new Date();
+              const strTime = (timeStr) => {
+                  const [h, m] = timeStr.split(':');
+                  const d = new Date();
+                  d.setHours(h, m, 0, 0);
+                  return d;
+              };
+
+              const timeImsak = strTime(timings.Imsak);
+              const timeSubuh = strTime(timings.Fajr); 
+              const timeMaghrib = strTime(timings.Maghrib);
+
+              let targetDate, labelText, labelClass;
+
+              if (now < timeImsak) {
+                  targetDate = timeImsak;
+                  labelText = "Waktu Sahur (Menuju Imsak)";
+                  labelClass = "text-[10px] md:text-xs font-bold text-emerald-300 mb-1 uppercase tracking-wider";
+              } else if (now >= timeImsak && now < timeSubuh) {
+                  targetDate = timeSubuh;
+                  labelText = "⚠️ Waktu Imsak (Segera Selesaikan Sahur)";
+                  labelClass = "text-[10px] md:text-xs font-bold text-amber-400 mb-1 uppercase tracking-wider animate-pulse";
+              } else if (now >= timeSubuh && now < timeMaghrib) {
+                  targetDate = timeMaghrib;
+                  labelText = "Selamat Berpuasa (Menuju Maghrib)";
+                  labelClass = "text-[10px] md:text-xs font-bold text-white mb-1 uppercase tracking-wider";
+              } else {
+                  targetDate = null;
+                  labelText = "Alhamdulillah Telah Berbuka";
+                  labelClass = "text-[10px] md:text-xs font-bold text-emerald-400 mb-1 uppercase tracking-wider";
+              }
+
+              elLabel.className = labelClass;
+              elLabel.textContent = labelText;
+
+              if (targetDate) {
+                  const diff = targetDate - now;
+                  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                  const m = Math.floor((diff / (1000 * 60)) % 60);
+                  const s = Math.floor((diff / 1000) % 60);
+                  elTimer.textContent = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+              } else {
+                  elTimer.textContent = timings.Maghrib;
+              }
+          }, 1000);
+      } catch (e) { console.error("Gagal jadwal:", e); }
+  }
+
+  // 3. NOTIFIKASI LIVE
   function startFakeNotifications() {
     const names = ["Hamba Allah", "Ibu Fulanah", "Bpk. Abdullah", "Keluarga Rizki", "Seseorang", "Jamaah Hekinan"];
     const actions = ["baru saja wakaf", "komitmen wakaf", "telah transfer"];
@@ -305,8 +389,34 @@
       document.getElementById("btnCloseModal")?.addEventListener("click", closePopup);
       document.getElementById("modalBackdrop")?.addEventListener("click", closePopup);
       setTimeout(startFakeNotifications, 5000);
+      initSmartImsakiyah();
 
-      // A. DEDIKASI ORANG TUA
+      // FITUR BARU: SWITCH MODE HARIAN / PEKANAN
+      let currentMode = 'daily'; // 'daily' or 'weekly'
+      const btnDaily = document.getElementById("btnModeDaily");
+      const btnWeekly = document.getElementById("btnModeWeekly");
+      const activeBg = document.getElementById("modeActiveBg");
+      const periodLabels = document.querySelectorAll(".label-period");
+
+      const updateMode = (mode) => {
+          currentMode = mode;
+          if (mode === 'daily') {
+              activeBg.style.transform = "translateX(0)";
+              btnDaily.classList.replace("text-slate-500", "text-emerald-600");
+              btnWeekly.classList.replace("text-emerald-600", "text-slate-500");
+              periodLabels.forEach(el => el.textContent = "/hari");
+          } else {
+              activeBg.style.transform = "translateX(100%)";
+              btnWeekly.classList.replace("text-slate-500", "text-emerald-600");
+              btnDaily.classList.replace("text-emerald-600", "text-slate-500");
+              periodLabels.forEach(el => el.textContent = "/pekan");
+          }
+      };
+
+      btnDaily.addEventListener("click", () => updateMode('daily'));
+      btnWeekly.addEventListener("click", () => updateMode('weekly'));
+
+      // DEDIKASI ORANG TUA
       const checkDedikasi = document.getElementById("checkDedikasi");
       const boxDedikasi = document.getElementById("boxDedikasi");
       const inputDedikasi = document.getElementById("inputDedikasi");
@@ -315,7 +425,7 @@
           else { boxDedikasi.classList.add("hidden"); }
       });
 
-      // B. RADIO & IMPACT TEXT
+      // RADIO & IMPACT TEXT
       const radios = document.querySelectorAll('input[name="nominalWakaf"]');
       const customBox = document.getElementById("customInputBox");
       const customInput = document.getElementById("inputCustomNominal");
@@ -342,7 +452,7 @@
         });
       });
 
-      // C. KIRIM WA & LAYAR SUKSES
+      // KIRIM WA
       document.getElementById("btnConfirmWakaf")?.addEventListener("click", () => {
         const nama = document.getElementById("inputNamaPeserta").value;
         const selectedRadio = document.querySelector('input[name="nominalWakaf"]:checked');
@@ -358,7 +468,14 @@
             if(!nominal) { alert(isEn ? "Enter amount." : "Isi nominal manual."); return; }
         } else { nominal = parseInt(selectedRadio.value); }
 
-        const total = nominal * 30; 
+        // HITUNG TOTAL BERDASARKAN MODE
+        const multiplier = currentMode === 'daily' ? 30 : 4;
+        const periodText = currentMode === 'daily' 
+            ? (isEn ? "30 Days" : "30 Hari Ramadhan") 
+            : (isEn ? "4 Fridays" : "4 Pekan (Jumat Berkah)");
+        const freqText = currentMode === 'daily' ? "/hari" : "/pekan";
+
+        const total = nominal * multiplier; 
         const fmt = (n) => new Intl.NumberFormat(isEn ? 'en-US' : 'id-ID').format(n);
         
         let dedicationText = "";
@@ -368,19 +485,17 @@
         }
 
         let text = isEn 
-            ? `Assalamu'alaikum. Bismillah, I join *Ramadan Waqf* (Hekinan).\n\n👤 Name: ${nama}\n💰 Commitment: ¥${fmt(nominal)} / day\n🗓️ Duration: 30 Days\n(Total: ¥${fmt(total)})${dedicationText}\n\nPlease record this.`
-            : `Assalamu'alaikum. Bismillah, saya ikut *Wakaf Rutin Ramadhan* (Hekinan).\n\n👤 Nama: ${nama}\n💰 Komitmen: ¥${fmt(nominal)} / hari\n🗓️ Selama: 30 Hari Ramadhan\n(Total: ¥${fmt(total)})${dedicationText}\n\nMohon dicatat & didoakan. Jazakumullah khairan.`;
+            ? `Assalamu'alaikum. Bismillah, I join *Ramadan Waqf* (Hekinan).\n\n👤 Name: ${nama}\n💰 Commitment: ¥${fmt(nominal)} ${freqText}\n🗓️ Duration: ${periodText}\n(Total: ¥${fmt(total)})${dedicationText}\n\nPlease record this.`
+            : `Assalamu'alaikum. Bismillah, saya ikut *Wakaf Rutin Ramadhan* (Hekinan).\n\n👤 Nama: ${nama}\n💰 Komitmen: ¥${fmt(nominal)} ${freqText}\n🗓️ Selama: ${periodText}\n(Total: ¥${fmt(total)})${dedicationText}\n\nMohon dicatat & didoakan. Jazakumullah khairan.`;
 
-        // 1. Buka WA
         window.open(`https://wa.me/818013909425?text=${encodeURIComponent(text)}`, "_blank");
 
-        // 2. Ganti Tampilan ke "Sukses" (Tanpa Confetti)
         document.getElementById("viewForm").classList.add("hidden");
         document.getElementById("viewSuccess").classList.remove("hidden");
         document.getElementById("viewSuccess").classList.add("flex");
       });
 
-      // D. TOMBOL SHARE
+      // TOMBOL SHARE
       document.getElementById("btnShareWa")?.addEventListener("click", () => {
           const shareText = "Assalamu'alaikum. Saya baru saja ikut Wakaf Rutin untuk Masjid Hekinan (Jepang). Yuk cari pahala jariyah bareng-bareng di bulan Ramadhan! 🌙\n\nKlik disini: https://assunnahhekinan.org/ramadhan.html";
           window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "_blank");
