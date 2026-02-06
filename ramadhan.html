@@ -6,7 +6,6 @@
   <title>Ramadhan Challenge — Masjid As-Sunnah Hekinan</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  
   <script>
     tailwind.config = {
       theme: {
@@ -66,7 +65,7 @@
       </span>
       <h1 class="text-3xl md:text-5xl font-extrabold mb-4 font-arab leading-relaxed text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500 drop-shadow-sm" data-i18n="rmd_hero_title">Wakaf M² Surga</h1>
       <p class="text-emerald-100 max-w-xl mx-auto text-base md:text-lg mb-8 px-2 leading-relaxed" data-i18n="rmd_hero_desc">
-        "Barangsiapa membangun masjid karena Allah, maka Allah akan membangunkan baginya rumah (istana) di surga." <br><span class="text-xs opacity-75 font-mono mt-1 block">(HR Bukhari & Muslim)</span>
+        "Barangsiapa membangun masjid karena Allah, maka Allah akan membangunkan baginya rumah (istana) di surga."
       </p>
       
       <div class="max-w-md mx-auto bg-emerald-950/40 p-4 rounded-2xl border border-emerald-700/50 backdrop-blur-md shadow-lg mt-6">
@@ -177,15 +176,15 @@
                 <img src="logohekinan.jpeg" class="w-full h-full rounded-full object-cover">
             </div>
             <h3 class="font-extrabold text-2xl text-white relative z-10" data-i18n="rmd_modal_title">Komitmen Wakaf</h3>
-            <p class="text-emerald-100 text-sm relative z-10" data-i18n="rmd_modal_subtitle">Pilih nominal sedekah</p>
+            <p class="text-emerald-100 text-sm relative z-10" data-i18n="rmd_modal_subtitle">Pilih nominal sedekah rutin</p>
           </div>
 
           <div class="p-6 overflow-y-auto bg-slate-50 grow">
             
             <div class="flex bg-slate-200 p-1 rounded-xl mb-6 relative">
                 <div id="modeActiveBg" class="absolute left-1 top-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-lg shadow-sm transition-all duration-300"></div>
-                <button id="btnModeDaily" class="flex-1 relative z-10 text-xs font-bold py-2.5 text-emerald-600 transition-colors text-center">Harian (30 Hari)</button>
-                <button id="btnModeWeekly" class="flex-1 relative z-10 text-xs font-bold py-2.5 text-slate-500 transition-colors text-center">Pekanan (4 Jumat)</button>
+                <button id="btnModeDaily" class="flex-1 relative z-10 text-xs font-bold py-2.5 text-emerald-600 transition-colors text-center" data-i18n="rmd_mode_daily">Harian (30 Hari)</button>
+                <button id="btnModeWeekly" class="flex-1 relative z-10 text-xs font-bold py-2.5 text-slate-500 transition-colors text-center" data-i18n="rmd_mode_weekly">Pekanan (4 Jumat)</button>
             </div>
 
             <div class="space-y-3">
@@ -234,14 +233,14 @@
                         <div class="w-9 h-5 bg-slate-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-pink-500"></div>
                     </div>
                     <div class="flex-1">
-                        <span class="block text-xs font-bold text-slate-700 group-hover:text-pink-600 transition-colors">Niatkan pahala untuk Orang Tua?</span>
-                        <span class="text-[10px] text-slate-400">Wakaf atas nama Ayah/Ibu (yang masih hidup/wafat).</span>
+                        <span class="block text-xs font-bold text-slate-700 group-hover:text-pink-600 transition-colors" data-i18n="rmd_dedication_ask">Niatkan pahala untuk Orang Tua?</span>
+                        <span class="text-[10px] text-slate-400" data-i18n="rmd_dedication_note">Wakaf atas nama Ayah/Ibu (yang masih hidup/wafat).</span>
                     </div>
                 </label>
                 <div id="boxDedikasi" class="hidden mt-3 animate-[fadeUp_0.3s_ease-out]">
                     <div class="relative">
                         <i data-lucide="heart-handshake" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pink-500"></i>
-                        <input id="inputDedikasi" type="text" placeholder="Contoh: Alm. Bpk Fulan" class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-pink-200 focus:outline-none focus:border-pink-500 bg-pink-50/20 text-sm">
+                        <input id="inputDedikasi" type="text" data-placeholder="rmd_dedication_placeholder" placeholder="Contoh: Alm. Bpk Fulan" class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-pink-200 focus:outline-none focus:border-pink-500 bg-pink-50/20 text-sm">
                     </div>
                 </div>
               </div>
@@ -300,7 +299,7 @@
       const today = new Date();
       const elLabel = document.getElementById("timeLabel"); 
       const elTimer = document.getElementById("timeCountdown");
-      const elSubuh = document.getElementById("jadwalSubuh"); // ID diganti jadwalSubuh
+      const elSubuh = document.getElementById("jadwalSubuh"); 
       const elMaghrib = document.getElementById("jadwalMaghrib");
 
       if(!elLabel) return; 
@@ -311,7 +310,6 @@
           const data = await res.json();
           const timings = data.data.timings;
 
-          // Tampilkan Subuh & Maghrib
           if(elSubuh) elSubuh.textContent = timings.Fajr;
           if(elMaghrib) elMaghrib.textContent = timings.Maghrib;
 
@@ -329,7 +327,6 @@
 
               let targetDate, labelText, labelClass;
 
-              // LOGIKA SUBUH (TANPA IMSAK)
               if (now < timeSubuh) {
                   targetDate = timeSubuh;
                   labelText = "Waktu Sahur (Menuju Subuh)";
@@ -362,7 +359,6 @@
 
   function startFakeNotifications() {
     const names = ["Hamba Allah", "Ibu Fulanah", "Bpk. Abdullah", "Keluarga Rizki", "Seseorang", "Jamaah Hekinan"];
-    const actions = ["baru saja wakaf", "komitmen wakaf", "telah transfer"];
     const amounts = ["¥1.000", "¥3.000", "¥5.000", "¥10.000"];
     const toast = document.getElementById("liveToast");
     const tName = document.getElementById("toastName");
@@ -370,8 +366,8 @@
     if(!toast) return;
     setInterval(() => {
         tName.textContent = names[Math.floor(Math.random() * names.length)];
-        const action = actions[Math.floor(Math.random() * actions.length)];
-        tAmount.innerHTML = `${action} <span class="font-bold text-amber-600">${amounts[Math.floor(Math.random() * amounts.length)]}</span>`;
+        const amount = amounts[Math.floor(Math.random() * amounts.length)];
+        tAmount.innerHTML = `Baru saja wakaf <span class="font-bold text-amber-600">${amount}</span>`;
         toast.classList.remove("translate-y-24", "opacity-0");
         setTimeout(() => { toast.classList.add("translate-y-24", "opacity-0"); }, 4000);
     }, 15000);
@@ -392,21 +388,27 @@
 
       const updateMode = (mode) => {
           currentMode = mode;
+          const isEn = localStorage.getItem("lang") === "en";
+          const txtDay = isEn ? "/day" : "/hari";
+          const txtWeek = isEn ? "/week" : "/pekan";
+
           if (mode === 'daily') {
               activeBg.style.transform = "translateX(0)";
               btnDaily.classList.replace("text-slate-500", "text-emerald-600");
               btnWeekly.classList.replace("text-emerald-600", "text-slate-500");
-              periodLabels.forEach(el => el.textContent = "/hari");
+              periodLabels.forEach(el => el.textContent = txtDay);
           } else {
               activeBg.style.transform = "translateX(100%)";
               btnWeekly.classList.replace("text-slate-500", "text-emerald-600");
               btnDaily.classList.replace("text-emerald-600", "text-slate-500");
-              periodLabels.forEach(el => el.textContent = "/pekan");
+              periodLabels.forEach(el => el.textContent = txtWeek);
           }
       };
 
       btnDaily.addEventListener("click", () => updateMode('daily'));
       btnWeekly.addEventListener("click", () => updateMode('weekly'));
+      
+      document.addEventListener('langChanged', () => updateMode(currentMode));
 
       // DEDIKASI
       const checkDedikasi = document.getElementById("checkDedikasi");
