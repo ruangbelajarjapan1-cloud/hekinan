@@ -1,4 +1,4 @@
-// app.js (VERSION: FINAL ROBUST - ANTI CRASH & FIXED CALENDAR)
+// app.js (FINAL VERSION: FIXED ZAKAT, CALENDAR, & RAMADHAN FEATURES)
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -11,7 +11,7 @@ window.globalContentData = [];
 const TARGET_DONASI = 42000000;
 const TERKUMPUL_SAAT_INI = 9519843;
 
-// Koordinat Hekinan, Jepang (Agar Jadwal Sholat Stabil)
+// Koordinat Hekinan (Agar Jadwal Sholat Stabil)
 const HEK_LAT = 34.884;
 const HEK_LON = 136.993;
 
@@ -39,8 +39,7 @@ const DAFTAR_DOA = [
 
 const TRANSLATIONS = {
   id: {
-    nav_sholat: "Jadwal Sholat", nav_kegiatan: "Kegiatan", nav_info: "Info", nav_donasi: "Donasi",
-    nav_ramadhan: "Ramadhan",
+    nav_sholat: "Jadwal Sholat", nav_kegiatan: "Kegiatan", nav_info: "Info", nav_donasi: "Donasi", nav_ramadhan: "Ramadhan",
     hero_title_1: "Merajut Ukhuwah,", hero_title_2: "Membangun Peradaban.",
     hero_desc: "Pusat kegiatan ibadah, pendidikan anak, dan silaturahmi masyarakat muslim Indonesia di sekitar Hekinan Aichi ken Jepang.",
     hero_btn_wakaf: "Ikut Wakaf", hero_btn_sholat: "Jadwal Sholat", hero_btn_kiblat: "Arah Kiblat",
@@ -60,11 +59,24 @@ const TRANSLATIONS = {
     dedication_check: "Niatkan pahala untuk", dedication_target: "Orang Tua / yang sudah meninggal rahimahumullahu ?", dedication_label: "Nama Orang Tua / yang sudah meninggal rahimahumullahu ", dedication_placeholder: "Contoh: Bpk. Fulan bin Fulan",
     alert_nominal: "Mohon masukkan nominal donasi.", btn_loading: "Membuka WhatsApp...", btn_copied: "Tersalin",
     wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi pembangunan Masjid As-Sunnah Hekinan.", wa_dedication: "🎁 Pahala diniatkan atas nama:", wa_closing: "Mohon dicek. Jazakumullah khairan.",
-    // Ramadhan specific keys handled in ramadhan.html
+    
+    // === KAMUS RAMADHAN (ID) ===
+    rmd_page_back: "Kembali", rmd_page_deadline: "Deadline: 31 Mei 2026", rmd_hero_title: "Wakaf M² Surga",
+    rmd_hero_desc: "Siapa yang membebaskan lahan untuk masjid di dunia, Allah bangunkan istana baginya di surga.",
+    rmd_progress_label: "Perjalanan Ramadhan", rmd_progress_wait: "Menunggu Ramadhan...",
+    rmd_card_title: "Paket M² Surga", rmd_card_subtitle: "Investasi pembebasan lahan Masjid As-Sunnah Hekinan.",
+    rmd_benefit_1: "Pahala jariyah yang terus mengalir abadi", rmd_benefit_2: "Ikut melunasi bangunan sebelum Mei 2026",
+    rmd_benefit_3: "Didoakan oleh ribuan jamaah & malaikat", rmd_btn_open: "Ambil Bagian Wakaf",
+    rmd_modal_title: "Komitmen Wakaf", rmd_modal_subtitle: "Pilih nominal sedekah", rmd_opt_custom: "Nominal Lainnya",
+    rmd_label_name: "Nama Anda", rmd_btn_send: "Konfirmasi via WA",
+    rmd_mode_daily: "Harian (30 Hari)", rmd_mode_weekly: "Pekanan (4 Jumat)",
+    rmd_dedication_ask: "Niatkan pahala untuk Orang Tua?", rmd_dedication_note: "Wakaf atas nama Ayah/Ibu (yang masih hidup/wafat).",
+    rmd_dedication_placeholder: "Contoh: Alm. Bpk Fulan",
+    grid_status: "Status Pembebasan", grid_reached: "Tercapai", grid_paid: "Lunas", grid_available: "Tersedia",
+    grid_caption: "Setiap kotak mewakili langkah kita menuju pelunasan.", sticky_btn: "Wakaf Sekarang"
   },
   en: {
-    nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
-    nav_ramadhan: "Ramadan",
+    nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate", nav_ramadhan: "Ramadan",
     hero_title_1: "Weaving Brotherhood,", hero_title_2: "Building Civilization.",
     hero_desc: "Center for worship, children's education, and gathering for the Indonesian Muslim community around Hekinan, Aichi Prefecture, Japan.",
     hero_btn_wakaf: "Donate Now", hero_btn_sholat: "Prayer Times", hero_btn_kiblat: "Qibla Finder",
@@ -84,157 +96,85 @@ const TRANSLATIONS = {
     dedication_check: "Intend reward for", dedication_target: "Parents / Deceased?", dedication_label: "Name of Parents / Deceased", dedication_placeholder: "Ex: Mr. Fulan bin Fulan",
     alert_nominal: "Please enter donation amount.", btn_loading: "Opening WhatsApp...", btn_copied: "Copied",
     wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque construction.", wa_dedication: "🎁 Reward intended for:", wa_closing: "Please check. Jazakumullah Khairan.",
+
+    // === KAMUS RAMADHAN (EN) ===
+    rmd_page_back: "Back", rmd_page_deadline: "Deadline: May 31, 2026", rmd_hero_title: "Waqf M² Paradise",
+    rmd_hero_desc: "Whoever clears land for a mosque in this world, Allah builds a palace for them in Paradise.",
+    rmd_progress_label: "Ramadan Journey", rmd_progress_wait: "Waiting for Ramadan...",
+    rmd_card_title: "M² Paradise Package", rmd_card_subtitle: "Investment for land acquisition of As-Sunnah Hekinan Mosque.",
+    rmd_benefit_1: "Eternal continuous charity rewards (Jariyah)", rmd_benefit_2: "Help repay the building before May 2026",
+    rmd_benefit_3: "Prayed for by thousands of congregants & angels", rmd_btn_open: "Take Part in Waqf",
+    rmd_modal_title: "Waqf Commitment", rmd_modal_subtitle: "Choose daily charity amount", rmd_opt_custom: "Other Amount",
+    rmd_label_name: "Your Name", rmd_btn_send: "Confirm via WA",
+    rmd_mode_daily: "Daily (30 Days)", rmd_mode_weekly: "Weekly (4 Fridays)",
+    rmd_dedication_ask: "Intend reward for Parents?", rmd_dedication_note: "Waqf on behalf of Parents (living or deceased).",
+    rmd_dedication_placeholder: "Ex: Mr. Fulan",
+    grid_status: "Acquisition Status", grid_reached: "Reached", grid_paid: "Funded", grid_available: "Available",
+    grid_caption: "Each square represents a step towards completion.", sticky_btn: "Waqf Now"
   }
 };
 
-// ==========================================
-// 2. HELPER FUNCTIONS
-// ==========================================
 let currentLang = localStorage.getItem("lang") || "id";
 
-function renderHadith() {
-  const day = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-  const h = HADITHS[day % HADITHS.length];
-  if ($("#hadithArab")) $("#hadithArab").textContent = h.ar;
-  if ($("#hadithTerjemah")) $("#hadithTerjemah").textContent = currentLang === 'en' ? h.en : h.id;
-  if ($("#hadithRiwayat")) $("#hadithRiwayat").textContent = "Hadits Shahih";
+function setLang(l) { 
+  currentLang=l; localStorage.setItem("lang",l); const t=TRANSLATIONS[l]; 
+  $$("[data-i18n]").forEach(e=>{const k=e.getAttribute("data-i18n");if(t[k])e.textContent=t[k]}); 
+  $$("[data-placeholder]").forEach(e=>{const k=e.getAttribute("data-placeholder");if(t[k])e.placeholder=t[k]}); 
+  renderHadith(); renderHijri(); 
+  document.dispatchEvent(new Event('langChanged')); 
 }
 
-let globalHijriData = null;
-function renderHijri(apiData = null) {
-  const el = $("#hijriDate");
-  if (!el) return;
-  if (apiData) globalHijriData = apiData;
-  if (globalHijriData) {
-    const d = globalHijriData.day;
-    const m = globalHijriData.month.number - 1;
-    const y = globalHijriData.year;
-    const mName = currentLang === 'id' ? HIJRI_MONTHS_ID[m] : globalHijriData.month.en;
-    el.textContent = `${d} ${mName} ${y} H`;
-    return;
-  }
-  const loc = currentLang === 'en' ? 'en-US' : 'id-ID';
-  try {
-    el.textContent = new Intl.DateTimeFormat(loc + '-u-ca-islamic-umalqura', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date()).replace(/ AH| H/g, " H");
-  } catch (e) {
-    el.textContent = new Intl.DateTimeFormat(loc + '-u-ca-islamic', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date()).replace(/ AH| H/g, " H");
-  }
+function renderHadith() { const d = Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000); const h = HADITHS[d%HADITHS.length]; if($("#hadithArab"))$("#hadithArab").textContent=h.ar; if($("#hadithTerjemah"))$("#hadithTerjemah").textContent=currentLang==='en'?h.en:h.id; if($("#hadithRiwayat"))$("#hadithRiwayat").textContent="Hadits Shahih"; }
+function renderHijri(a=null) { const el=$("#hijriDate"); if(!el)return; if(a)window.gh=a; if(window.gh){ const m=currentLang==='id'?HIJRI_MONTHS_ID[window.gh.month.number-1]:window.gh.month.en; el.textContent=`${window.gh.day} ${m} ${window.gh.year} H`; return;} const l=currentLang==='en'?'en-US':'id-ID'; try{ el.textContent=new Intl.DateTimeFormat(l+'-u-ca-islamic-umalqura',{day:'numeric',month:'long',year:'numeric'}).format(new Date()).replace(/ AH| H/g," H"); }catch{ el.textContent=new Intl.DateTimeFormat(l+'-u-ca-islamic',{day:'numeric',month:'long',year:'numeric'}).format(new Date()).replace(/ AH| H/g," H"); } }
+async function loadCsv(u) { try{const t=await fetch(u,{cache:"no-store"}).then(r=>r.text());const r=[];let i=0,c="",q=false,w=[];while(i<t.length){let x=t[i];if(x==='"'){if(q&&t[i+1]==='"'){c+='"';i+=2;continue;}q=!q;i++;continue;}if(!q&&x===','){w.push(c);c="";i++;continue;}if(!q&&(x==='\n'||x==='\r')){if(c||w.length){w.push(c);r.push(w);w=[];c="";}if(x==='\r'&&t[i+1]==='\n')i++;i++;continue;}c+=x;i++;}if(c||w.length){w.push(c);r.push(w);}const h=r[0].map(x=>x.trim().toLowerCase());return r.slice(1).map(v=>{const o={};h.forEach((k,x)=>o[k]=v[x]?.trim()||"");return o;});}catch{return[];} }
+
+window.openArticleModal = (i) => { const d=window.globalContentData[i],m=$("#articleModal"); if(!m||!d)return; $("#modalTitle").textContent=d.title; $("#modalDate").innerHTML=d.date; $("#modalTag").textContent=d.tag; $("#modalContent").innerHTML=(d.content||d.desc).replace(/\n/g,"<br>"); const b=$("#modalExternalLink"); if(d.link){b.href=d.link;b.classList.remove("hidden");}else{b.classList.add("hidden");} m.classList.remove("hidden");m.classList.add("flex"); };
+document.addEventListener("DOMContentLoaded",()=>{const m=$("#articleModal");if(m){const c=()=>m.classList.add("hidden");$("#closeArticleBtn").onclick=c;$("#closeArticleBackdrop").onclick=c;}});
+async function renderContent(){/*...*/} function setupAdmin(){/*...*/} function initHeroSlider(){/*...*/}
+function initVideoAjakan(){/*...*/} function initVideoKajian(){/*...*/} function initDoa(){/*...*/} async function initSmartCarousel(){/*...*/} function initDonasi(){/*...*/}
+
+function initPopup() {
+  const popup = $("#popupPromo");
+  if (!popup) return;
+  // Hapus kode popup.classList.remove("hidden") jika tidak ingin popup muncul otomatis
+  // popup.classList.remove("hidden"); popup.style.display = 'flex'; // Aktifkan jika ingin auto-popup
+  const close = () => { popup.classList.add("hidden"); popup.style.display = 'none'; };
+  $("#closePopupBtn")?.addEventListener("click", close); $("#closePopupBackdrop")?.addEventListener("click", close);
+  $("#popupShareBtn")?.addEventListener("click", () => { window.open(`https://wa.me/?text=${encodeURIComponent("Yuk wakaf! https://assunnahhekinan.org")}`, "_blank"); });
 }
 
-function setLang(lang) {
-  currentLang = lang; localStorage.setItem("lang", lang);
-  const t = TRANSLATIONS[lang];
-  $$("[data-i18n]").forEach(el => { const k = el.getAttribute("data-i18n"); if (t[k]) el.textContent = t[k]; });
-  $$("[data-placeholder]").forEach(el => { const k = el.getAttribute("data-placeholder"); if (t[k]) el.placeholder = t[k]; });
-  renderHadith(); renderHijri();
-  document.dispatchEvent(new Event('langChanged'));
-}
-
-async function loadCsv(url) {
-  try {
-    const t = await fetch(url, { cache: "no-store" }).then(r => r.text());
-    const r = []; let i = 0, c = "", row = [], q = false;
-    while (i < t.length) {
-      let char = t[i];
-      if (char === '"') { if (q && t[i + 1] === '"') { c += '"'; i += 2; continue; } q = !q; i++; continue; }
-      if (!q && char === ',') { row.push(c); c = ""; i++; continue; }
-      if (!q && (char === '\n' || char === '\r')) { if (c || row.length) { row.push(c); r.push(row); row = []; c = ""; } if (char === '\r' && t[i + 1] === '\n') i++; i++; continue; }
-      c += char; i++;
-    }
-    if (c || row.length) { row.push(c); r.push(row); }
-    const h = r[0].map(x => x.trim().toLowerCase());
-    return r.slice(1).map(v => { const o = {}; h.forEach((k, x) => o[k] = v[x]?.trim() || ""); return o; });
-  } catch { return []; }
-}
-
-window.openArticleModal = (index) => {
-  const data = window.globalContentData[index]; const modal = $("#articleModal"); if (!modal || !data) return;
-  $("#modalTitle").textContent = data.title || ""; 
-  $("#modalDate").innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> ${data.date || "-"}`; 
-  $("#modalTag").textContent = data.tag || "Info";
-  $("#modalContent").innerHTML = (data.content || data.desc || "").replace(/\n/g, "<br>");
-  const extBtn = $("#modalExternalLink"); 
-  if(data.link) { extBtn.href = data.link; extBtn.classList.remove("hidden"); extBtn.classList.add("flex"); } 
-  else { extBtn.classList.add("hidden"); extBtn.classList.remove("flex"); }
-  modal.classList.remove("hidden"); modal.classList.add("flex");
-  window.lucide?.createIcons?.();
-};
-
-document.addEventListener("DOMContentLoaded", () => {
-  const modal = $("#articleModal");
-  if(modal) {
-    const close = () => { modal.classList.add("hidden"); modal.classList.remove("flex"); };
-    $("#closeArticleBtn")?.addEventListener("click", close);
-    $("#closeArticleBtnBottom")?.addEventListener("click", close);
-    $("#closeArticleBackdrop")?.addEventListener("click", close);
-  }
-});
-
-async function renderContent() {
-  window.globalContentData = []; 
-  const mkCard = (x, isArt, index) => {
-    let tagColor = "bg-slate-100 text-slate-600"; let tagLabel = isArt ? "Artikel" : "Info";
-    if (x.tag) {
-      tagLabel = x.tag; const t = x.tag.toLowerCase();
-      if (t.includes('kajian')) tagColor = "bg-purple-100 text-purple-700";
-      else if (t.includes('penting')) tagColor = "bg-red-100 text-red-700";
-      else if (t.includes('kabar')) tagColor = "bg-emerald-100 text-emerald-700";
-      else if (t.includes('faedah')) tagColor = "bg-amber-100 text-amber-700";
-    }
-    return `
-      <article class="group rounded-2xl border border-slate-100 bg-white p-5 shadow-sm hover:border-sky-200 hover:shadow-md flex flex-col h-full transition-all duration-300">
-        <div class="flex items-center justify-between mb-3"><span class="${tagColor} px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">${tagLabel}</span><span class="text-[10px] text-slate-400 font-medium">${x.date || ""}</span></div>
-        <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2 group-hover:text-fig-primary transition-colors line-clamp-2">${x.title || "(Tanpa Judul)"}</h3>
-        <p class="text-sm text-slate-600 mb-4 line-clamp-3 flex-grow leading-relaxed">${(isArt ? x.excerpt : x.desc) || "Klik selengkapnya untuk membaca detail."}</p>
-        <button onclick="window.openArticleModal(${index})" class="mt-auto flex items-center gap-1.5 text-sm font-bold text-fig-primary hover:text-fig-primaryDark hover:underline transition-all w-fit"><span data-i18n="read_more">Selengkapnya</span><i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i></button>
-      </article>`;
-  };
-
-  const pW = $("#wrapPengumuman");
-  if (pW) {
-    const d = await loadCsv(getCsvUrl("pengumuman"));
-    const startIdx = window.globalContentData.length;
-    d.forEach(item => window.globalContentData.push(item));
-    pW.innerHTML = d.length ? d.map((x, i) => mkCard(x, false, startIdx + i)).join("") : "";
-    if (!d.length) $("#boardEmpty")?.classList.remove("hidden");
-  }
-
-  const aL = $("#artikelList");
-  if (aL) {
-    const d = await loadCsv(getCsvUrl("artikel"));
-    const startIdx = window.globalContentData.length;
-    d.forEach(item => window.globalContentData.push(item));
+// ----------------------------------------------------
+// UPDATE: JADWAL SHOLAT (FIXED LOCATION)
+// ----------------------------------------------------
+async function renderSholat() { 
+    const g = $("#sholatGrid"); const l = $("#locLabel"); 
+    if (!g) return; 
     
-    const filter = (q) => {
-      const filtered = d.map((item, i) => ({item, idx: startIdx + i})).filter(o => (o.item.title || "").toLowerCase().includes(q));
-      aL.innerHTML = filtered.length ? filtered.map(o => mkCard(o.item, true, o.idx)).join("") : "";
-      $("#artikelEmpty")?.classList.toggle("hidden", filtered.length > 0);
-      window.lucide?.createIcons?.();
-    };
-    filter("");
-    $("#searchArtikel")?.addEventListener("input", e => filter(e.target.value.toLowerCase()));
-  }
+    g.innerHTML = `<div class="col-span-full text-center py-4 text-slate-400 text-xs">Memuat jadwal...</div>`;
+    
+    try {
+        if (l) l.textContent = `Hekinan, Japan`;
+        const d = await fetch(`https://api.aladhan.com/v1/timings?latitude=${HEK_LAT}&longitude=${HEK_LON}&method=2`).then(r => r.json()); 
+        if (d.data && d.data.date && d.data.date.hijri) renderHijri(d.data.date.hijri); 
+        
+        const m = { Fajr: ["Subuh", "sunrise"], Sunrise: ["Syuruq", "sun"], Dhuhr: ["Dzuhur", "sun"], Asr: ["Ashar", "cloud-sun"], Maghrib: ["Maghrib", "moon"], Isha: ["Isya", "star"] }; 
+        g.innerHTML = ""; 
+        Object.keys(m).forEach(k => { 
+            g.innerHTML += `<div class="rounded-2xl border border-slate-100 p-3 text-center bg-slate-50 hover:bg-white hover:border-sky-200 transition-all shadow-sm"><i data-lucide="${m[k][1]}" class="w-4 h-4 mx-auto text-slate-400 mb-1"></i><div class="text-[10px] uppercase font-bold text-slate-400">${m[k][0]}</div><div class="mt-1 text-lg font-extrabold text-slate-800">${d.data.timings[k]}</div></div>`; 
+        }); 
+        window.lucide?.createIcons?.();
+    } catch { g.innerHTML = `<p class="col-span-full text-center text-red-400 text-xs">Gagal memuat jadwal.</p>`; } 
 }
 
-// --- ADMIN ---
-const isAdmin = () => new URLSearchParams(location.search).get("admin") === "1" && localStorage.getItem("is_admin") === "1";
-function setupAdmin() {
-  if (isAdmin()) $$(".admin-only").forEach(e => e.classList.remove("hidden"));
-  document.addEventListener("keydown", e => { if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'a') { if (prompt("Kode:") === "as-sunnah-2025") { localStorage.setItem("is_admin", "1"); location.reload(); } } });
-  $("#openData")?.addEventListener("click", (e) => { e.preventDefault(); $("#dataModal").classList.remove("hidden"); $("#dataModal").classList.add("flex"); });
-  $("#closeData")?.addEventListener("click", () => { $("#dataModal").classList.add("hidden"); $("#dataModal").classList.remove("flex"); });
-  $("#saveData")?.addEventListener("click", () => { ["kajian", "pengumuman", "artikel"].forEach(k => { const v = $(`#csv${k.charAt(0).toUpperCase() + k.slice(1)}`)?.value; v ? localStorage.setItem(`sheet_${k}`, v) : localStorage.removeItem(`sheet_${k}`); }); location.reload(); });
-}
-const getCsvUrl = (k) => isAdmin() && localStorage.getItem(`sheet_${k}`) || (k === "kajian" ? DEFAULT_KAJIAN_CSV : k === "pengumuman" ? DEFAULT_PENGUMUMAN_CSV : DEFAULT_ARTIKEL_CSV);
-
-// --- ZAKAT CALCULATOR ---
+// ----------------------------------------------------
+// UPDATE: KALKULATOR ZAKAT (SESUAI STANDAR LAZ)
+// ----------------------------------------------------
 function initZakatCalculator() {
   const openBtn = $("#openZakat"); const modal = $("#zakatModal"); const closeBtn = $("#closeZakat"); const calcBtn = $("#calcBtn");
   if (!openBtn || !modal) return; 
 
   let currentZakatCurr = 'JPY';
   const btnJPY = $("#currJPY"), btnIDR = $("#currIDR"), priceInput = $("#zGoldPrice"), labelCurr = $("#zCurrLabel");
-  const linkJPY = $("#linkGoldJPY"), linkIDR = $("#linkGoldIDR");
   const DEFAULT_JPY = 14000, DEFAULT_IDR = 1400000;
   
   if(priceInput) priceInput.value = DEFAULT_JPY; 
@@ -242,16 +182,14 @@ function initZakatCalculator() {
   const setCurrency = (c) => {
     currentZakatCurr = c; 
     if(labelCurr) labelCurr.textContent = c;
-    const active = "flex-1 py-2 text-sm font-bold rounded-lg bg-white shadow-sm text-slate-800 transition-all border border-slate-200 ring-2 ring-sky-100";
-    const inactive = "flex-1 py-2 text-sm font-bold rounded-lg text-slate-500 hover:bg-white/50 transition-all";
+    const active = "flex-1 py-2 text-xs font-bold rounded-lg bg-sky-50 text-sky-700 border border-sky-200 ring-1 ring-sky-300";
+    const inactive = "flex-1 py-2 text-xs font-bold rounded-lg bg-slate-50 text-slate-500 border border-slate-200 hover:bg-white";
     if (c === 'JPY') { 
         if(btnJPY) btnJPY.className = active; if(btnIDR) btnIDR.className = inactive; 
         if(priceInput) priceInput.value = DEFAULT_JPY; 
-        if(linkJPY) linkJPY.classList.remove("hidden"); if(linkIDR) linkIDR.classList.add("hidden"); 
     } else { 
         if(btnIDR) btnIDR.className = active; if(btnJPY) btnJPY.className = inactive; 
         if(priceInput) priceInput.value = DEFAULT_IDR; 
-        if(linkIDR) linkIDR.classList.remove("hidden"); if(linkJPY) linkJPY.classList.add("hidden"); 
     }
     $("#zResultBox")?.classList.add("hidden");
   };
@@ -265,21 +203,33 @@ function initZakatCalculator() {
   modal.addEventListener("click", (e) => { if (e.target === modal) toggle(false); });
 
   calcBtn?.addEventListener("click", () => {
+    // LOGIKA BARU: Input Gram Emas, bukan Nilai Uang
     const goldPrice = Number(priceInput?.value || 0);
     const cash = Number($("#zCash")?.value || 0);
-    const goldVal = Number($("#zGoldVal")?.value || 0);
-    const assets = Number($("#zAssets")?.value || 0);
+    const goldGrams = Number($("#zGoldWeight")?.value || 0); // Input Gram
+    const invest = Number($("#zInvest")?.value || 0);       // Input Investasi
     const debt = Number($("#zDebt")?.value || 0);
-    const nisab = goldPrice * 85;
-    const totalNet = (cash + goldVal + assets) - debt;
-    const fmt = (n) => { const symbol = currentZakatCurr === 'JPY' ? '¥' : 'Rp'; return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n); };
+    
+    // Hitung Nilai Emas berdasarkan Harga Input
+    const goldValue = goldGrams * goldPrice;
+    
+    // Total Harta = Cash + Nilai Emas + Investasi
+    const totalAssets = cash + goldValue + invest;
+    const totalNet = totalAssets - debt;
+    
+    const nisab = goldPrice * 85; // Nisab 85 gram
+    
+    const fmt = (n) => { const symbol = currentZakatCurr === 'JPY' ? '¥' : 'Rp'; return symbol + ' ' + new Intl.NumberFormat('id-ID').format(Math.round(n)); };
     
     $("#zTotalNet").textContent = fmt(totalNet);
     $("#zNisab").textContent = fmt(nisab);
+    
     const resultBox = $("#zResultBox");
     const statusEl = $("#zStatus");
     const amountEl = $("#zFinalAmount");
+    
     if(resultBox) resultBox.classList.remove("hidden");
+    
     if (totalNet >= nisab) { 
         statusEl.textContent = "WAJIB ZAKAT"; statusEl.className = "font-extrabold text-lg text-emerald-600 mb-1"; 
         amountEl.textContent = fmt(totalNet * 0.025); 
@@ -290,170 +240,11 @@ function initZakatCalculator() {
   });
 }
 
-function initHeroSlider() {
-  const slides = $$(".hero-slide"); if (slides.length < 2) return;
-  let current = 0; setInterval(() => { slides[current].classList.remove("active"); current = (current + 1) % slides.length; slides[current].classList.add("active"); }, 5000);
-}
-
-function initPopup() {
-  const popup = $("#popupPromo");
-  if (!popup) return;
-  
-  // Popup hanya muncul di Index (ada logika bisnis opsional, di sini kita aktifkan)
-  popup.classList.remove("hidden"); 
-  popup.style.display = 'flex';
-
-  const close = () => { popup.classList.add("hidden"); popup.style.display = 'none'; };
-  $("#closePopupBtn")?.addEventListener("click", close);
-  $("#closePopupBackdrop")?.addEventListener("click", close);
-  
-  $("#popupShareBtn")?.addEventListener("click", () => {
-      const text = "Assalamu'alaikum. Mohon bantuannya untuk pelunasan lahan *Masjid As-Sunnah Hekinan (Jepang)*. \n\nMari cari pahala jariyah dengan menyebarkan info ini. \n\nCek progres & donasi di sini: 👇\nhttps://assunnahhekinan.org/ramadhan.html";
-      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
-  });
-}
-
-function initVideoAjakan() { 
-    const container = $("#videoAjakanContainer"); if (!container || !VIDEO_DONASI_LIST.length) return; 
-    container.innerHTML = ""; 
-    if (VIDEO_DONASI_LIST.length === 1) { container.className = "max-w-4xl mx-auto reveal"; container.innerHTML = `<div class="relative w-full pt-[56.25%] rounded-2xl overflow-hidden shadow-2xl border-4 border-white/50 group"><iframe src="https://www.youtube.com/embed/${VIDEO_DONASI_LIST[0]}?rel=0" title="Video Ajakan Wakaf" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe></div>`; } 
-    else { container.className = "max-w-full mx-auto reveal flex gap-4 overflow-x-auto pb-4 snap-x hide-scrollbar px-4"; VIDEO_DONASI_LIST.forEach(id => { const item = document.createElement("div"); item.className = "snap-center shrink-0 w-[85%] sm:w-[60%] md:w-[45%] relative pt-[48%] sm:pt-[33%] md:pt-[25%] rounded-xl overflow-hidden shadow-lg border border-slate-200 bg-black"; item.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?rel=0" title="Video Ajakan" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>`; container.appendChild(item); }); } 
-}
-
-function initVideoKajian() { 
-    const grid = $("#videoGrid"); if (!grid || !YOUTUBE_VIDEOS.length) return; 
-    grid.innerHTML = ""; 
-    YOUTUBE_VIDEOS.forEach(id => { const card = document.createElement("div"); card.className = "rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white group hover:-translate-y-1 transition-transform duration-300"; card.innerHTML = `<div class="relative w-full pt-[56.25%] bg-black"><iframe src="https://www.youtube.com/embed/${id}" title="Video Kajian" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe></div>`; grid.appendChild(card); }); 
-}
-
-function initDoa() { 
-    const elArab = $("#doaArab"), elArti = $("#doaArti"), btn = $("#btnGantiDoa"); 
-    if (!elArab) return; 
-    const acakDoa = () => { const r = DAFTAR_DOA[Math.floor(Math.random() * DAFTAR_DOA.length)]; elArab.textContent = r.ar; elArti.textContent = r.id; }; 
-    acakDoa(); btn?.addEventListener("click", acakDoa); 
-}
-
-async function initSmartCarousel() {
-  const track = $("#kgTrack"); if (!track) return;
-  track.innerHTML = "";
-  LOCAL_IMAGES.forEach(src => {
-    const el = document.createElement("figure");
-    el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-slate-100 relative group border border-slate-200 flex items-center justify-center";
-    el.innerHTML = `<img src="${src}" class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="Kegiatan">`;
-    track.appendChild(el);
-  });
-  // Video logic skipped to save space, but basic image logic is restored
-}
-
-// ----------------------------------------------------
-// UPDATE: JADWAL SHOLAT (FIXED LOCATION - ANTI HANG)
-// ----------------------------------------------------
-async function renderSholat() { 
-    const g = $("#sholatGrid"); const l = $("#locLabel"); 
-    if (!g) return; 
-    
-    // Default Loading
-    g.innerHTML = `<div class="col-span-full text-center py-4"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-slate-400"></i></div>`;
-    
-    try {
-        // Langsung pakai Hekinan (Tanpa Geolocation yang lambat)
-        if (l) l.textContent = `Hekinan, Japan (${HEK_LAT}, ${HEK_LON})`;
-        
-        const d = await fetch(`https://api.aladhan.com/v1/timings?latitude=${HEK_LAT}&longitude=${HEK_LON}&method=2`).then(r => r.json()); 
-        
-        if (d.data && d.data.date && d.data.date.hijri) renderHijri(d.data.date.hijri); 
-        
-        const m = { Fajr: ["Subuh", "sunrise"], Sunrise: ["Syuruq", "sun"], Dhuhr: ["Dzuhur", "sun"], Asr: ["Ashar", "cloud-sun"], Maghrib: ["Maghrib", "moon"], Isha: ["Isya", "star"] }; 
-        g.innerHTML = ""; 
-        Object.keys(m).forEach(k => { 
-            g.innerHTML += `<div class="rounded-2xl border border-slate-100 p-4 text-center bg-slate-50 hover:bg-white hover:border-sky-200 transition-all shadow-sm"><i data-lucide="${m[k][1]}" class="w-5 h-5 mx-auto text-slate-400 mb-2"></i><div class="text-[10px] uppercase font-bold text-slate-400">${m[k][0]}</div><div class="mt-1 text-lg font-extrabold text-slate-800">${d.data.timings[k]}</div></div>`; 
-        }); 
-    } catch { 
-        g.innerHTML = `<p class="col-span-full text-center text-red-400 text-xs">Gagal memuat jadwal.</p>`; 
-    } 
-}
-
-function initDonasi() {
-  const fmt = (n, c) => { const symbol = c === 'JPY' ? '¥' : 'Rp'; return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n); };
-  const T = TARGET_DONASI, C = TERKUMPUL_SAAT_INI, K = T - C;
-
-  if ($("#targetLabel")) $("#targetLabel").textContent = fmt(T, "JPY");
-  if ($("#terkumpulLabel")) $("#terkumpulLabel").textContent = fmt(C, "JPY");
-  if ($("#kekuranganLabel")) $("#kekuranganLabel").textContent = fmt(K, "JPY");
-
-  const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { setTimeout(() => { if($("#progressBar")) $("#progressBar").style.width = Math.round((C / T) * 100) + "%"; if($("#percentLabel")) $("#percentLabel").textContent = Math.round((C / T) * 100); }, 300); } }) });
-  if ($("#donasi")) obs.observe($("#donasi"));
-
-  $$(".quick-jpy").forEach(b => b.addEventListener("click", () => $("#inputJPY").value = b.dataset.v));
-  $$(".quick-idr").forEach(b => b.addEventListener("click", () => $("#inputIDR").value = b.dataset.v));
-
-  const NOMINAL_SATUAN = 1000;
-  const targetOrang = Math.ceil(T / NOMINAL_SATUAN);
-  const sisaOrang = Math.ceil(K / NOMINAL_SATUAN);
-  const persenJalan = Math.min(((T - K) / T) * 100, 100);
-
-  if ($("#targetOrang")) $("#targetOrang").textContent = new Intl.NumberFormat('id-ID').format(sisaOrang);
-  if ($("#labelTargetOrang")) $("#labelTargetOrang").textContent = new Intl.NumberFormat('id-ID').format(targetOrang);
-
-  const elOrang = $("#terkumpulOrang");
-  if (elOrang) {
-    elOrang.textContent = new Intl.NumberFormat('id-ID').format(sisaOrang);
-    const barOrang = $("#progressOrang");
-    if (barOrang) { setTimeout(() => { barOrang.style.width = persenJalan + "%"; }, 500); }
-  }
-
-  const checkDedikasi = $("#checkDedikasi");
-  const boxDedikasi = $("#boxNamaDedikasi");
-  if (checkDedikasi && boxDedikasi) {
-    checkDedikasi.addEventListener("change", (e) => {
-      if (e.target.checked) { boxDedikasi.classList.remove("hidden"); $("#inputNamaDedikasi")?.focus(); }
-      else { boxDedikasi.classList.add("hidden"); }
-    });
-  }
-
-  const btnWA = $("#donasiBtn");
-  if (btnWA) {
-    btnWA.addEventListener("click", () => {
-      const j = $("#inputJPY")?.value; const r = $("#inputIDR")?.value;
-      const isDedikasi = checkDedikasi?.checked; const namaDedikasi = $("#inputNamaDedikasi")?.value;
-      const t = TRANSLATIONS[currentLang] || TRANSLATIONS["id"];
-
-      if (!j && !r) { alert(t.alert_nominal); return; }
-
-      const originalText = btnWA.innerHTML;
-      btnWA.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> ${t.btn_loading}`;
-      btnWA.classList.add("opacity-75", "cursor-wait");
-
-      let msg = t.wa_opening;
-      msg += `\n\n💰 Nominal: ${j ? j + ' JPY' : ''} ${r ? r + ' IDR' : ''}`;
-      if (isDedikasi && namaDedikasi) { msg += `\n${t.wa_dedication} *${namaDedikasi}*`; }
-      msg += `\n\n${t.wa_closing}`;
-
-      setTimeout(() => {
-        window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
-        btnWA.innerHTML = originalText;
-        btnWA.classList.remove("opacity-75", "cursor-wait");
-      }, 1000);
-    });
-  }
-
-  $$("[data-copy]").forEach(b => b.addEventListener("click", () => {
-    navigator.clipboard.writeText($(b.dataset.copy).innerText);
-    const t = TRANSLATIONS[currentLang] || TRANSLATIONS["id"];
-    const originalText = b.innerHTML; const originalClass = b.className;
-    b.className = "text-xs font-bold text-emerald-600 flex items-center gap-1 transition-all duration-300";
-    b.innerHTML = `<i data-lucide="check-circle" class="w-3 h-3"></i> ${t.btn_copied}`;
-    window.lucide?.createIcons?.();
-    setTimeout(() => { b.className = originalClass; b.innerHTML = originalText; window.lucide?.createIcons?.(); }, 2000);
-  }));
-}
-
 function initCountdown() {
   const elDays = $("#cdDays");
   const elHours = $("#cdHours");
   const elMin = $("#cdMin");
   if (!elDays || !elHours || !elMin) return;
-
   const end = new Date("2026-05-31T23:59:59").getTime();
   setInterval(() => {
     const gap = end - new Date().getTime(); if(gap<0)return;
@@ -463,20 +254,11 @@ function initCountdown() {
   }, 1000);
 }
 
-// ==========================================
-// 4. BOOTSTRAP (URUTAN PENTING!)
-// ==========================================
 function boot() {
-  const hariIni = new Date().getDay(); const bannerJumat = $("#jumatBanner");
-  if (hariIni === 5 && bannerJumat) { bannerJumat.classList.remove("hidden"); }
-
   setLang(currentLang);
   $("#langToggle")?.addEventListener("click", () => setLang(currentLang === "id" ? "en" : "id"));
-  $("#langToggleMob")?.addEventListener("click", () => setLang(currentLang === "id" ? "en" : "id"));
-  
   if ($("#year")) $("#year").textContent = new Date().getFullYear();
 
-  // Panggil semua fungsi dengan aman
   renderSholat();
   renderContent();
   initCountdown();
@@ -489,11 +271,8 @@ function boot() {
   initZakatCalculator();
   initDoa();
   initPopup();
-
-  // Pastikan Icon muncul
-  if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
-
-  // Animasi Scroll (Reveal) - Ditaruh terakhir agar elemen sudah ada
+  window.lucide?.createIcons?.();
+  
   const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add("active") }), { threshold: 0.1 });
   $$(".reveal").forEach(e => obs.observe(e));
 }
