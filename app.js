@@ -60,7 +60,16 @@ const TRANSLATIONS = {
     dedication_check: "Niatkan pahala untuk", dedication_target: "Orang Tua / yang sudah meninggal rahimahumullahu ?", dedication_label: "Nama Orang Tua / yang sudah meninggal rahimahumullahu ", dedication_placeholder: "Contoh: Bpk. Fulan bin Fulan",
     alert_nominal: "Mohon masukkan nominal donasi.", btn_loading: "Membuka WhatsApp...", btn_copied: "Tersalin",
     wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi pembangunan Masjid As-Sunnah Hekinan.", wa_dedication: "🎁 Pahala diniatkan atas nama:", wa_closing: "Mohon dicek. Jazakumullah khairan.",
-    // Ramadhan specific keys handled in ramadhan.html
+    // --- KHUSUS RAMADHAN (ID) ---
+    rmd_page_back: "Kembali", rmd_page_deadline: "Deadline: 31 Mei 2026", rmd_hero_title: "Wakaf M² Surga",
+    rmd_hero_desc: "Barangsiapa membangun masjid karena Allah, maka Allah akan membangunkan baginya rumah di surga.",
+    rmd_card_title: "Paket M² Surga", rmd_card_subtitle: "Investasi pembebasan lahan Masjid Hekinan.",
+    rmd_benefit_1: "Pahala jariyah yang terus mengalir abadi", rmd_benefit_2: "Ikut melunasi bangunan sebelum Mei 2026", rmd_benefit_3: "Didoakan oleh ribuan jamaah & malaikat",
+    rmd_btn_open: "Ambil Bagian Wakaf", rmd_btn_send: "Konfirmasi via WA", rmd_modal_title: "Komitmen Wakaf",
+    rmd_modal_subtitle: "Pilih nominal sedekah rutin", rmd_mode_daily: "Harian (30 Hari)", rmd_mode_weekly: "Pekanan (4 Jumat)",
+    rmd_opt_custom: "Nominal Lainnya", rmd_label_name: "Nama Anda", rmd_ph_name: "Hamba Allah...",
+    rmd_dedication_ask: "Niatkan pahala untuk Orang Tua?", rmd_dedication_note: "Atas nama Ayah/Ibu (hidup/wafat).",
+    rmd_dedication_placeholder: "Contoh: Alm. Bpk Fulan",
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
@@ -84,9 +93,18 @@ const TRANSLATIONS = {
     dedication_check: "Intend reward for", dedication_target: "Parents / Deceased?", dedication_label: "Name of Parents / Deceased", dedication_placeholder: "Ex: Mr. Fulan bin Fulan",
     alert_nominal: "Please enter donation amount.", btn_loading: "Opening WhatsApp...", btn_copied: "Copied",
     wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque construction.", wa_dedication: "🎁 Reward intended for:", wa_closing: "Please check. Jazakumullah Khairan.",
+    // --- KHUSUS RAMADHAN (EN) ---
+    rmd_page_back: "Back", rmd_page_deadline: "Deadline: May 31, 2026", rmd_hero_title: "Waqf M² for Jannah",
+    rmd_hero_desc: "Whoever builds a mosque for Allah, Allah will build for him a house in Paradise.",
+    rmd_card_title: "Waqf Package", rmd_card_subtitle: "Investment for Hekinan Mosque land.",
+    rmd_benefit_1: "Everlasting rewards (Sadaqah Jariyah)", rmd_benefit_2: "Help pay off the land by May 2026", rmd_benefit_3: "Prayers from thousands of congregants",
+    rmd_btn_open: "Take Part in Waqf", rmd_btn_send: "Confirm via WhatsApp", rmd_modal_title: "Waqf Commitment",
+    rmd_modal_subtitle: "Choose your routine charity", rmd_mode_daily: "Daily (30 Days)", rmd_mode_weekly: "Weekly (4 Fridays)",
+    rmd_opt_custom: "Other Amount", rmd_label_name: "Your Name", rmd_ph_name: "Anonymous...",
+    rmd_dedication_ask: "Intend reward for parents?", rmd_dedication_note: "On behalf of Father/Mother.",
+    rmd_dedication_placeholder: "Ex: Mr. John Doe",
   }
 };
-
 // ==========================================
 // 2. HELPER FUNCTIONS
 // ==========================================
