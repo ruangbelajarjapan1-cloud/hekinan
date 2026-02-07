@@ -143,26 +143,15 @@
 
   <section class="container mx-auto px-4 py-16">
     <div class="max-w-2xl mx-auto text-center mb-10">
-        <h3 class="text-xl font-bold text-slate-800 mb-2">Mengapa Wakaf di Ramadhan?</h3>
-        <div class="h-1 w-16 bg-amber-500 mx-auto rounded-full"></div>
-    </div>
-    <div class="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
-        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex gap-4 items-center hover:shadow-md transition-shadow group">
-            <div class="bg-emerald-50 p-3 rounded-full text-emerald-600 shrink-0 group-hover:bg-emerald-100 transition-all"><i data-lucide="zap" class="w-6 h-6"></i></div>
-            <div><h4 class="font-bold text-slate-800 text-sm">Pahala Berlipat Ganda</h4><p class="text-xs text-slate-500 mt-1">Sunnah jadi wajib, wajib jadi 70x lipat.</p></div>
-        </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex gap-4 items-center hover:shadow-md transition-shadow group">
-            <div class="bg-purple-50 p-3 rounded-full text-purple-600 shrink-0 group-hover:bg-purple-100 transition-all"><i data-lucide="clock" class="w-6 h-6"></i></div>
-            <div><h4 class="font-bold text-slate-800 text-sm">Mengejar Deadline Mei</h4><p class="text-xs text-slate-500 mt-1">Menyelamatkan aset umat sebelum jatuh tempo.</p></div>
-        </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex gap-4 items-center hover:shadow-md transition-shadow group">
-            <div class="bg-blue-50 p-3 rounded-full text-blue-600 shrink-0 group-hover:bg-blue-100 transition-all"><i data-lucide="gift" class="w-6 h-6"></i></div>
-            <div><h4 class="font-bold text-slate-800 text-sm">Hadiah Orang Tua</h4><p class="text-xs text-slate-500 mt-1">Wakaf atas nama orang tua yang sudah wafat.</p></div>
-        </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex gap-4 items-center hover:shadow-md transition-shadow group">
-            <div class="bg-amber-50 p-3 rounded-full text-amber-600 shrink-0 group-hover:bg-amber-100 transition-all"><i data-lucide="shield-check" class="w-6 h-6"></i></div>
-            <div><h4 class="font-bold text-slate-800 text-sm">Naungan di Akhirat</h4><p class="text-xs text-slate-500 mt-1">Sedekah akan menjadi naungan di hari kiamat.</p></div>
-        </div>
+        <h3 class="text-xl font-bold text-slate-800 mb-2" data-i18n="rmd_section_title">Mengapa Wakaf di Ramadhan?</h3>
+
+<div><h4 class="font-bold text-slate-800 text-sm" data-i18n="rmd_reason_1_title">Pahala Berlipat Ganda</h4><p class="text-xs text-slate-500 mt-1" data-i18n="rmd_reason_1_desc">Sunnah jadi wajib, wajib jadi 70x lipat.</p></div>
+
+<div><h4 class="font-bold text-slate-800 text-sm" data-i18n="rmd_reason_2_title">Mengejar Deadline Mei</h4><p class="text-xs text-slate-500 mt-1" data-i18n="rmd_reason_2_desc">Menyelamatkan aset umat sebelum jatuh tempo.</p></div>
+
+<div><h4 class="font-bold text-slate-800 text-sm" data-i18n="rmd_reason_3_title">Hadiah Orang Tua</h4><p class="text-xs text-slate-500 mt-1" data-i18n="rmd_reason_3_desc">Wakaf atas nama orang tua yang sudah wafat.</p></div>
+
+<div><h4 class="font-bold text-slate-800 text-sm" data-i18n="rmd_reason_4_title">Naungan di Akhirat</h4><p class="text-xs text-slate-500 mt-1" data-i18n="rmd_reason_4_desc">Sedekah akan menjadi naungan di hari kiamat.</p></div>
     </div>
   </section>
 
@@ -387,22 +376,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const toast = document.getElementById("liveToast");
     const tName = document.getElementById("toastName");
     const tAmount = document.getElementById("toastNominal");
+    
     if(!toast) return;
-    // UBAH BAGIAN tAmount.innerHTML DI DALAM setInterval
-setInterval(() => {
-    const lang = localStorage.getItem("lang") || "id";
-    tName.textContent = names[Math.floor(Math.random() * names.length)];
-    const amount = amounts[Math.floor(Math.random() * amounts.length)];
-    
-    // Logika ganti bahasa untuk notifikasi
-    const textBase = lang === 'en' ? "Just donated" : "Baru saja wakaf";
-    tAmount.innerHTML = `${textBase} <span class="font-bold text-amber-600">${amount}</span>`;
-    
-    toast.classList.remove("translate-y-24", "opacity-0");
-    setTimeout(() => { toast.classList.add("translate-y-24", "opacity-0"); }, 4000);
-}, 15000);
-  }
 
+    setInterval(() => {
+        const lang = localStorage.getItem("lang") || "id";
+        tName.textContent = names[Math.floor(Math.random() * names.length)];
+        const amount = amounts[Math.floor(Math.random() * amounts.length)];
+        
+        // Perbaikan di sini: Logika ganti bahasa untuk notifikasi
+        const textAction = lang === 'en' ? "Just donated" : "Baru saja wakaf";
+        tAmount.innerHTML = `${textAction} <span class="font-bold text-amber-600">${amount}</span>`;
+        
+        toast.classList.remove("translate-y-24", "opacity-0");
+        setTimeout(() => { toast.classList.add("translate-y-24", "opacity-0"); }, 4000);
+    }, 15000);
+}
   document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("btnCloseModal")?.addEventListener("click", closePopup);
       document.getElementById("modalBackdrop")?.addEventListener("click", closePopup);
