@@ -93,8 +93,10 @@
             <div class="w-8 h-8 rounded-full border-2 border-emerald-900 bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-600">S</div>
             <div class="w-8 h-8 rounded-full border-2 border-emerald-900 bg-amber-500 text-white flex items-center justify-center text-[10px] font-bold shadow-lg">+400</div>
         </div>
-        <p class="ml-3 text-xs text-emerald-100 font-medium text-left leading-tight">Orang Baik telah bergabung.<br><span class="text-amber-400 font-bold underline decoration-amber-400/50">Giliran Anda sekarang!</span></p>
-      </div>
+       <p class="ml-3 text-xs text-emerald-100 font-medium text-left leading-tight">
+    <span data-i18n="rmd_social_joined">Orang Baik telah bergabung.</span><br>
+    <span class="text-amber-400 font-bold underline decoration-amber-400/50" data-i18n="rmd_social_turn">Giliran Anda sekarang!</span>
+</p>
     </div>
   </section>
 
@@ -330,35 +332,41 @@ document.addEventListener("DOMContentLoaded", () => {
           if(elMaghrib) elMaghrib.textContent = timings.Maghrib;
 
           setInterval(() => {
-              const now = new Date();
-              const strTime = (timeStr) => {
-                  const [h, m] = timeStr.split(':');
-                  const d = new Date();
-                  d.setHours(h, m, 0, 0);
-                  return d;
-              };
+    const now = new Date();
+    const lang = localStorage.getItem("lang") || "id";
+    const t = (window.TRANSLATIONS && window.TRANSLATIONS[lang]) ? window.TRANSLATIONS[lang] : {};
 
-              const timeSubuh = strTime(timings.Fajr); 
-              const timeMaghrib = strTime(timings.Maghrib);
+    const strTime = (timeStr) => {
+        const [h, m] = timeStr.split(':');
+        const d = new Date();
+        d.setHours(h, m, 0, 0);
+        return d;
+    };
 
-              let targetDate, labelText, labelClass;
+    const timeSubuh = strTime(timings.Fajr); 
+    const timeMaghrib = strTime(timings.Maghrib);
 
-              if (now < timeSubuh) {
-                  targetDate = timeSubuh;
-                  labelText = "Waktu Sahur (Menuju Subuh)";
-                  labelClass = "text-[10px] md:text-xs font-bold text-emerald-300 mb-1 uppercase tracking-wider";
-              } else if (now >= timeSubuh && now < timeMaghrib) {
-                  targetDate = timeMaghrib;
-                  labelText = "Selamat Berpuasa (Menuju Maghrib)";
-                  labelClass = "text-[10px] md:text-xs font-bold text-white mb-1 uppercase tracking-wider";
-              } else {
-                  targetDate = null;
-                  labelText = "Alhamdulillah Telah Berbuka";
-                  labelClass = "text-[10px] md:text-xs font-bold text-emerald-400 mb-1 uppercase tracking-wider";
-              }
+    let targetDate, labelText, labelClass;
 
-              elLabel.className = labelClass;
-              elLabel.textContent = labelText;
+    if (now < timeSubuh) {
+        targetDate = timeSubuh;
+        // Menggunakan kunci rmd_time_sahur
+        labelText = lang === 'en' ? "Sahur Time (Towards Fajr)" : "Waktu Sahur (Menuju Subuh)";
+        labelClass = "text-[10px] md:text-xs font-bold text-emerald-300 mb-1 uppercase tracking-wider";
+    } else if (now >= timeSubuh && now < timeMaghrib) {
+        targetDate = timeMaghrib;
+        // Menggunakan kunci rmd_time_fasting
+        labelText = lang === 'en' ? "Happy Fasting (Towards Maghrib)" : "Selamat Berpuasa (Menuju Maghrib)";
+        labelClass = "text-[10px] md:text-xs font-bold text-white mb-1 uppercase tracking-wider";
+    } else {
+        targetDate = null;
+        // Menggunakan kunci rmd_time_break
+        labelText = lang === 'en' ? "Alhamdulillah It's Iftar Time" : "Alhamdulillah Telah Berbuka";
+        labelClass = "text-[10px] md:text-xs font-bold text-emerald-400 mb-1 uppercase tracking-wider";
+    }
+
+    elLabel.className = labelClass;
+    elLabel.textContent = labelText;
 
               if (targetDate) {
                   const diff = targetDate - now;
@@ -380,13 +388,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const tName = document.getElementById("toastName");
     const tAmount = document.getElementById("toastNominal");
     if(!toast) return;
-    setInterval(() => {
-        tName.textContent = names[Math.floor(Math.random() * names.length)];
-        const amount = amounts[Math.floor(Math.random() * amounts.length)];
-        tAmount.innerHTML = `Baru saja wakaf <span class="font-bold text-amber-600">${amount}</span>`;
-        toast.classList.remove("translate-y-24", "opacity-0");
-        setTimeout(() => { toast.classList.add("translate-y-24", "opacity-0"); }, 4000);
-    }, 15000);
+    // UBAH BAGIAN tAmount.innerHTML DI DALAM setInterval
+setInterval(() => {
+    const lang = localStorage.getItem("lang") || "id";
+    tName.textContent = names[Math.floor(Math.random() * names.length)];
+    const amount = amounts[Math.floor(Math.random() * amounts.length)];
+    
+    // Logika ganti bahasa untuk notifikasi
+    const textBase = lang === 'en' ? "Just donated" : "Baru saja wakaf";
+    tAmount.innerHTML = `${textBase} <span class="font-bold text-amber-600">${amount}</span>`;
+    
+    toast.classList.remove("translate-y-24", "opacity-0");
+    setTimeout(() => { toast.classList.add("translate-y-24", "opacity-0"); }, 4000);
+}, 15000);
   }
 
   document.addEventListener("DOMContentLoaded", () => {
