@@ -283,7 +283,23 @@
   </footer>
 
   <script type="module" src="./app.js"></script>
+  <script>
+// Sinkronisasi Progress Donasi ke Halaman Ramadhan
+document.addEventListener("DOMContentLoaded", () => {
+  // Ambil data dari app.js yang sudah bersifat Global
+  const T = 42000000; // Target
+  const C = 9519843;  // Terkumpul (Sesuai konstanta Anda di app.js)
   
+  const percent = Math.round((C / T) * 100);
+  
+  // Jika Anda menambahkan elemen progress di ramadhan.html seperti saran saya sebelumnya:
+  const bar = document.querySelector(".bg-emerald-500.h-full");
+  const label = document.querySelector(".text-emerald-600.font-bold"); // Elemen persentase
+  
+  if(bar) bar.style.width = percent + "%";
+  if(label) label.textContent = percent + "%";
+});
+</script>
   <script>
   window.openRamadhanPopup = () => {
     const modal = document.getElementById("wakafModal");
