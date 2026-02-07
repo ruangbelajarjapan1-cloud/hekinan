@@ -121,12 +121,40 @@ function renderHijri(apiData = null) {
   }
 }
 
+// GANTI KODE LAMA setLang DENGAN INI:
 function setLang(lang) {
-  currentLang = lang; localStorage.setItem("lang", lang);
+  currentLang = lang; 
+  localStorage.setItem("lang", lang);
+  
   const t = TRANSLATIONS[lang];
-  $$("[data-i18n]").forEach(el => { const k = el.getAttribute("data-i18n"); if (t[k]) el.textContent = t[k]; });
-  $$("[data-placeholder]").forEach(el => { const k = el.getAttribute("data-placeholder"); if (t[k]) el.placeholder = t[k]; });
-  renderHadith(); renderHijri();
+  if (!t) return; // Pengaman jika bahasa tidak ditemukan
+
+  // Update teks biasa
+  $$("[data-i18n]").forEach(el => { 
+    const k = el.getAttribute("data-i18n"); 
+    if (t[k]) {
+      el.textContent = t[k]; 
+    }
+  });
+
+  // Update placeholder (untuk kotak pencarian)
+  $$("[data-placeholder]").forEach(el => { 
+    const k = el.getAttribute("data-placeholder"); 
+    if (t[k]) {
+      el.placeholder = t[k]; 
+    }
+  });
+
+  // Update teks tombol toggle agar user tahu bahasa apa yang sedang aktif
+  const langBtn = $("#langToggle");
+  const langBtnMob = $("#langToggleMob");
+  if (langBtn) langBtn.textContent = lang === "id" ? "ID | EN" : "EN | ID";
+  if (langBtnMob) langBtnMob.textContent = lang === "id" ? "ID | EN" : "EN | ID";
+
+  renderHadith(); 
+  renderHijri();
+  
+  // Memberitahu elemen lain bahwa bahasa sudah berubah
   document.dispatchEvent(new Event('langChanged'));
 }
 
