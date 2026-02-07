@@ -140,42 +140,43 @@ function renderHijri(apiData = null) {
 }
 
 // GANTI KODE LAMA setLang DENGAN INI:
+// GANTI FUNGSI setLang LAMA DENGAN INI:
 function setLang(lang) {
   currentLang = lang; 
   localStorage.setItem("lang", lang);
   
   const t = TRANSLATIONS[lang];
-  if (!t) return; // Pengaman jika bahasa tidak ditemukan
+  if (!t) return;
 
-  // Update teks biasa
+  // Update teks yang memiliki atribut data-i18n
   $$("[data-i18n]").forEach(el => { 
     const k = el.getAttribute("data-i18n"); 
-    if (t[k]) {
-      el.textContent = t[k]; 
-    }
+    if (t[k]) el.textContent = t[k]; 
   });
 
-  // Update placeholder (untuk kotak pencarian)
+  // Update placeholder input
   $$("[data-placeholder]").forEach(el => { 
     const k = el.getAttribute("data-placeholder"); 
-    if (t[k]) {
-      el.placeholder = t[k]; 
-    }
+    const key = el.getAttribute("data-placeholder");
+    if (t[key]) el.placeholder = t[key]; 
   });
 
-  // Update teks tombol toggle agar user tahu bahasa apa yang sedang aktif
+  // UX Improvement: Berikan indikasi bahasa mana yang aktif di tombol
   const langBtn = $("#langToggle");
   const langBtnMob = $("#langToggleMob");
-  if (langBtn) langBtn.textContent = lang === "id" ? "ID | EN" : "EN | ID";
-  if (langBtnMob) langBtnMob.textContent = lang === "id" ? "ID | EN" : "EN | ID";
+  if (langBtn) {
+    langBtn.innerHTML = lang === "id" ? 'ID | <span class="opacity-50">EN</span>' : '<span class="opacity-50">ID</span> | EN';
+  }
+  if (langBtnMob) {
+    langBtnMob.innerHTML = lang === "id" ? 'ID | <span class="opacity-50">EN</span>' : '<span class="opacity-50">ID</span> | EN';
+  }
 
   renderHadith(); 
   renderHijri();
   
-  // Memberitahu elemen lain bahwa bahasa sudah berubah
+  // Memberitahu halaman ramadhan.html jika sedang dibuka agar ikut update
   document.dispatchEvent(new Event('langChanged'));
 }
-
 async function loadCsv(url) {
   try {
     const t = await fetch(url, { cache: "no-store" }).then(r => r.text());
