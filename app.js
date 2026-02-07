@@ -69,7 +69,8 @@ const TRANSLATIONS = {
     rmd_modal_subtitle: "Pilih nominal sedekah rutin", rmd_mode_daily: "Harian (30 Hari)", rmd_mode_weekly: "Pekanan (4 Jumat)",
     rmd_opt_custom: "Nominal Lainnya", rmd_label_name: "Nama Anda", rmd_ph_name: "Hamba Allah...",
     rmd_dedication_ask: "Niatkan pahala untuk Orang Tua?", rmd_dedication_note: "Atas nama Ayah/Ibu (hidup/wafat).",
-    rmd_dedication_placeholder: "Contoh: Alm. Bpk Fulan",
+    rmd_dedication_placeholder: "Contoh: Alm. Bpk Fulan",rmd_social_joined: "Orang Baik telah bergabung.",
+rmd_social_turn: "Giliran Anda sekarang!",
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
@@ -102,7 +103,8 @@ const TRANSLATIONS = {
     rmd_modal_subtitle: "Choose your routine charity", rmd_mode_daily: "Daily (30 Days)", rmd_mode_weekly: "Weekly (4 Fridays)",
     rmd_opt_custom: "Other Amount", rmd_label_name: "Your Name", rmd_ph_name: "Anonymous...",
     rmd_dedication_ask: "Intend reward for parents?", rmd_dedication_note: "On behalf of Father/Mother.",
-    rmd_dedication_placeholder: "Ex: Mr. John Doe",
+    rmd_dedication_placeholder: "Ex: Mr. John Doe",rmd_social_joined: "Good people have joined.",
+rmd_social_turn: "It's your turn now!",
   }
 };
 // ==========================================
