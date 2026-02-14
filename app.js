@@ -19,9 +19,9 @@ const HEK_LON = 136.993;
 // Slide 1 = HTML Ramadhan (sudah di index.html)
 // Slide 2, 3, dst = Gambar di bawah ini
 const POPUP_IMAGES_LIST = [
-    "assets/foto/poster3.jpeg", 
+    "assets/foto/p2.jpeg", 
     "assets/foto/1e.png",
-    "assets/foto/d1.jpg"
+    "assets/foto/d1.jpeg"
 ]; 
 
 const VIDEO_DONASI_LIST = ["jfKfPRdk", "dQwgXcQ"];
