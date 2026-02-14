@@ -25,7 +25,9 @@ const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE
 const DEFAULT_PENGUMUMAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv";
 const DEFAULT_ARTIKEL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv";
 
+// [PERBAIKAN] Nama variabel disesuaikan agar tidak error
 const DEFAULT_KEGIATAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1910296914&single=true&output=csv";
+
 const HIJRI_MONTHS_ID = ["Muharram", "Shafar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"];
 
 const HADITHS = [
@@ -217,17 +219,65 @@ async function loadCsv(url) {
   } catch { return []; }
 }
 
+// [PERBAIKAN] Fungsi ini diupdate untuk mendukung tombol daftar di popup
 window.openArticleModal = (index) => {
-  const data = window.globalContentData[index]; const modal = $("#articleModal"); if (!modal || !data) return;
-  $("#modalTitle").textContent = data.title || ""; 
-  $("#modalDate").innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> ${data.date || "-"}`; 
-  $("#modalTag").textContent = data.tag || "Info";
-  $("#modalContent").innerHTML = (data.content || data.desc || "").replace(/\n/g, "<br>");
-  const extBtn = $("#modalExternalLink"); 
-  if(data.link) { extBtn.href = data.link; extBtn.classList.remove("hidden"); extBtn.classList.add("flex"); } 
-  else { extBtn.classList.add("hidden"); extBtn.classList.remove("flex"); }
-  modal.classList.remove("hidden"); modal.classList.add("flex");
-  window.lucide?.createIcons?.();
+  const data = window.globalContentData[index];
+  const modal = document.getElementById("articleModal"); // Pakai native JS biar aman
+  
+  if (!modal || !data) {
+      console.error("Modal atau Data tidak ditemukan", index);
+      return;
+  }
+
+  // Isi Konten Modal
+  document.getElementById("modalTitle").textContent = data.title || "";
+  document.getElementById("modalDate").innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> ${data.date || "-"}`;
+  document.getElementById("modalTag").textContent = data.tag || "Info";
+  document.getElementById("modalContent").innerHTML = (data.content || data.desc || "").replace(/\n/g, "<br>");
+
+  // --- LOGIKA TOMBOL DI DALAM POPUP (BARU) ---
+  const modalFooter = modal.querySelector(".border-t"); // Area bawah modal
+  
+  // Hapus tombol custom lama jika ada (biar gak numpuk)
+  const oldBtn = document.getElementById("dynamicActionBtn");
+  if(oldBtn) oldBtn.remove();
+
+  // Cek apakah ada link pendaftaran?
+  if (data.link_daftar && data.link_daftar.length > 5) {
+      // Buat tombol baru
+      const btn = document.createElement("a");
+      btn.id = "dynamicActionBtn";
+      btn.href = data.link_daftar;
+      btn.target = "_blank";
+      btn.className = "flex items-center gap-2 text-xs font-bold text-white bg-sky-600 hover:bg-sky-700 px-4 py-2 rounded-lg transition-colors shadow-sm ml-auto mr-2";
+      btn.innerHTML = `<i data-lucide="edit" class="w-3 h-3"></i> Daftar Kegiatan`;
+      
+      // Masukkan sebelum tombol Tutup
+      const closeBtn = document.getElementById("closeArticleBtnBottom");
+      if(closeBtn && modalFooter) modalFooter.insertBefore(btn, closeBtn);
+  } else if (data.link) {
+      // Jika cuma link biasa (bukan pendaftaran)
+      const extBtn = document.getElementById("modalExternalLink");
+      if(extBtn) {
+         extBtn.href = data.link;
+         extBtn.classList.remove("hidden");
+         extBtn.classList.add("flex");
+      }
+  } else {
+      // Sembunyikan tombol eksternal jika gak ada link
+      const extBtn = document.getElementById("modalExternalLink");
+      if(extBtn) {
+         extBtn.classList.add("hidden");
+         extBtn.classList.remove("flex");
+      }
+  }
+
+  // Tampilkan Modal
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
+  
+  // Refresh icon
+  if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -240,6 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// [PERBAIKAN] Fungsi renderContent diupdate agar tombol "Daftar" muncul
 async function renderContent() {
   // Kosongkan data global sebelum mengisi ulang
   window.globalContentData = []; 
@@ -265,13 +316,13 @@ async function renderContent() {
     let actionButton = "";
     if (x.link_daftar && x.link_daftar.length > 5) {
         actionButton = `
-        <a href="${x.link_daftar}" target="_blank" class="mt-3 w-full block text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md shadow-sky-200 flex items-center justify-center gap-2">
+        <a href="${x.link_daftar}" target="_blank" class="relative z-10 mt-3 w-full block text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md shadow-sky-200 flex items-center justify-center gap-2">
            <i data-lucide="edit" class="w-4 h-4"></i> Daftar Sekarang
         </a>`;
     } else {
-        // Jika tidak ada link daftar, tombolnya "Baca Selengkapnya"
+        // Jika tidak ada link daftar, tombolnya "Selengkapnya"
         actionButton = `
-        <button onclick="window.openArticleModal(${index})" class="mt-3 w-full block text-center bg-slate-50 hover:bg-slate-100 text-slate-600 font-bold py-2 rounded-xl text-sm transition-all border border-slate-200">
+        <button onclick="window.openArticleModal(${index})" class="relative z-10 mt-3 w-full block text-center bg-slate-50 hover:bg-slate-100 text-slate-600 font-bold py-2 rounded-xl text-sm transition-all border border-slate-200">
            Selengkapnya
         </button>`;
     }
@@ -307,8 +358,6 @@ async function renderContent() {
   // --- LOGIKA LOAD DATA KEGIATAN (PENGUMUMAN) ---
   const pW = document.getElementById("wrapPengumuman");
   if (pW) {
-    // Kita gunakan getCsvUrl("pengumuman") atau DEFAULT_KEGIATAN_CSV
-    // Agar aman, pastikan variabel DEFAULT_KEGIATAN_CSV sudah dibuat di atas
     const urlKegiatan = isAdmin() && localStorage.getItem("sheet_pengumuman") ? localStorage.getItem("sheet_pengumuman") : DEFAULT_KEGIATAN_CSV;
     
     const d = await loadCsv(urlKegiatan);
@@ -320,7 +369,6 @@ async function renderContent() {
     // Render ke HTML
     if (d.length > 0) {
         pW.innerHTML = d.map((x, i) => mkCard(x, 'info', startIdx + i)).join("");
-        // Sembunyikan pesan kosong
         const emptyMsg = document.getElementById("boardEmpty");
         if(emptyMsg) emptyMsg.classList.add("hidden");
     } else {
@@ -492,7 +540,6 @@ async function initSmartCarousel() {
     el.innerHTML = `<img src="${src}" class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="Kegiatan">`;
     track.appendChild(el);
   });
-  // Video logic skipped to save space, but basic image logic is restored
 }
 
 // ----------------------------------------------------
