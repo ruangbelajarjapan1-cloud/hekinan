@@ -1,4 +1,4 @@
-// app.js (VERSION: FINAL ROBUST - ANTI CRASH & FIXED CALENDAR)
+// app.js (VERSION: SLIDESHOW HYBRID + RAMADHAN HTML)
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -11,11 +11,19 @@ window.globalContentData = [];
 const TARGET_DONASI = 42000000;
 const TERKUMPUL_SAAT_INI = 9686951;
 
-// Koordinat Hekinan, Jepang (Agar Jadwal Sholat Stabil)
+// Koordinat Hekinan, Jepang
 const HEK_LAT = 34.884;
 const HEK_LON = 136.993;
 
-const POPUP_IMAGES_LIST = ["assets/foto/1e.png", "assets/foto/001.jpg", "assets/foto/poster3.jpeg"]; 
+// --- DAFTAR GAMBAR UNTUK SLIDESHOW ---
+// Slide 1 = HTML Ramadhan (sudah di index.html)
+// Slide 2, 3, dst = Gambar di bawah ini
+const POPUP_IMAGES_LIST = [
+    "assets/foto/poster3.jpeg", 
+    "assets/foto/1e.png",
+    "assets/foto/d1.jpg"
+]; 
+
 const VIDEO_DONASI_LIST = ["jfKfPRdk", "dQwgXcQ"];
 const YOUTUBE_VIDEOS = ["OvQjcl65BR8", "zEu4jVpgB_8", "oQjqwQb6atA"];
 const LOCAL_IMAGES = ["1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "6.jpeg", "7.jpeg"];
@@ -24,8 +32,6 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZW
 const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
 const DEFAULT_PENGUMUMAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv";
 const DEFAULT_ARTIKEL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv";
-
-// [PERBAIKAN] Nama variabel disesuaikan agar tidak error
 const DEFAULT_KEGIATAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1910296914&single=true&output=csv";
 
 const HIJRI_MONTHS_ID = ["Muharram", "Shafar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"];
@@ -164,8 +170,6 @@ function renderHijri(apiData = null) {
   }
 }
 
-// GANTI KODE LAMA setLang DENGAN INI:
-// GANTI FUNGSI setLang LAMA DENGAN INI:
 function setLang(lang) {
   currentLang = lang; 
   localStorage.setItem("lang", lang);
@@ -173,20 +177,17 @@ function setLang(lang) {
   const t = TRANSLATIONS[lang];
   if (!t) return;
 
-  // Update teks yang memiliki atribut data-i18n
   $$("[data-i18n]").forEach(el => { 
     const k = el.getAttribute("data-i18n"); 
     if (t[k]) el.textContent = t[k]; 
   });
 
-  // Update placeholder input
   $$("[data-placeholder]").forEach(el => { 
     const k = el.getAttribute("data-placeholder"); 
     const key = el.getAttribute("data-placeholder");
     if (t[key]) el.placeholder = t[key]; 
   });
 
-  // UX Improvement: Berikan indikasi bahasa mana yang aktif di tombol
   const langBtn = $("#langToggle");
   const langBtnMob = $("#langToggleMob");
   if (langBtn) {
@@ -198,10 +199,9 @@ function setLang(lang) {
 
   renderHadith(); 
   renderHijri();
-  
-  // Memberitahu halaman ramadhan.html jika sedang dibuka agar ikut update
   document.dispatchEvent(new Event('langChanged'));
 }
+
 async function loadCsv(url) {
   try {
     const t = await fetch(url, { cache: "no-store" }).then(r => r.text());
@@ -219,32 +219,22 @@ async function loadCsv(url) {
   } catch { return []; }
 }
 
-// [PERBAIKAN] Fungsi ini diupdate untuk mendukung tombol daftar di popup
 window.openArticleModal = (index) => {
   const data = window.globalContentData[index];
-  const modal = document.getElementById("articleModal"); // Pakai native JS biar aman
+  const modal = document.getElementById("articleModal"); 
   
-  if (!modal || !data) {
-      console.error("Modal atau Data tidak ditemukan", index);
-      return;
-  }
+  if (!modal || !data) return;
 
-  // Isi Konten Modal
   document.getElementById("modalTitle").textContent = data.title || "";
   document.getElementById("modalDate").innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> ${data.date || "-"}`;
   document.getElementById("modalTag").textContent = data.tag || "Info";
   document.getElementById("modalContent").innerHTML = (data.content || data.desc || "").replace(/\n/g, "<br>");
 
-  // --- LOGIKA TOMBOL DI DALAM POPUP (BARU) ---
-  const modalFooter = modal.querySelector(".border-t"); // Area bawah modal
-  
-  // Hapus tombol custom lama jika ada (biar gak numpuk)
+  const modalFooter = modal.querySelector(".border-t"); 
   const oldBtn = document.getElementById("dynamicActionBtn");
   if(oldBtn) oldBtn.remove();
 
-  // Cek apakah ada link pendaftaran?
   if (data.link_daftar && data.link_daftar.length > 5) {
-      // Buat tombol baru
       const btn = document.createElement("a");
       btn.id = "dynamicActionBtn";
       btn.href = data.link_daftar;
@@ -252,11 +242,9 @@ window.openArticleModal = (index) => {
       btn.className = "flex items-center gap-2 text-xs font-bold text-white bg-sky-600 hover:bg-sky-700 px-4 py-2 rounded-lg transition-colors shadow-sm ml-auto mr-2";
       btn.innerHTML = `<i data-lucide="edit" class="w-3 h-3"></i> Daftar Kegiatan`;
       
-      // Masukkan sebelum tombol Tutup
       const closeBtn = document.getElementById("closeArticleBtnBottom");
       if(closeBtn && modalFooter) modalFooter.insertBefore(btn, closeBtn);
   } else if (data.link) {
-      // Jika cuma link biasa (bukan pendaftaran)
       const extBtn = document.getElementById("modalExternalLink");
       if(extBtn) {
          extBtn.href = data.link;
@@ -264,7 +252,6 @@ window.openArticleModal = (index) => {
          extBtn.classList.add("flex");
       }
   } else {
-      // Sembunyikan tombol eksternal jika gak ada link
       const extBtn = document.getElementById("modalExternalLink");
       if(extBtn) {
          extBtn.classList.add("hidden");
@@ -272,11 +259,8 @@ window.openArticleModal = (index) => {
       }
   }
 
-  // Tampilkan Modal
   modal.classList.remove("hidden");
   modal.classList.add("flex");
-  
-  // Refresh icon
   if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
 };
 
@@ -290,18 +274,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// [PERBAIKAN] Fungsi renderContent diupdate agar tombol "Daftar" muncul
 async function renderContent() {
-  // Kosongkan data global sebelum mengisi ulang
   window.globalContentData = []; 
 
-  // --- FUNGSI PEMBUAT KARTU (CARD) ---
   const mkCard = (x, type, index) => {
-    // 1. Tentukan Warna Label (Tag)
     let tagColor = "bg-slate-100 text-slate-600 border-slate-200";
     let tagName = x.tag || (type === 'artikel' ? "Artikel" : "Info");
     
-    // Logika warna biar terlihat "High Class"
     const t = tagName.toLowerCase();
     if (t.includes('dauroh') || t.includes('kajian')) {
         tagColor = "bg-purple-50 text-purple-700 border-purple-100";
@@ -311,8 +290,6 @@ async function renderContent() {
         tagColor = "bg-emerald-50 text-emerald-700 border-emerald-100";
     }
 
-    // 2. Cek apakah ada Link Pendaftaran?
-    // Jika di excel kolom 'link_daftar' diisi, tombol daftar akan muncul.
     let actionButton = "";
     if (x.link_daftar && x.link_daftar.length > 5) {
         actionButton = `
@@ -320,53 +297,31 @@ async function renderContent() {
            <i data-lucide="edit" class="w-4 h-4"></i> Daftar Sekarang
         </a>`;
     } else {
-        // Jika tidak ada link daftar, tombolnya "Selengkapnya"
         actionButton = `
         <button onclick="window.openArticleModal(${index})" class="relative z-10 mt-3 w-full block text-center bg-slate-50 hover:bg-slate-100 text-slate-600 font-bold py-2 rounded-xl text-sm transition-all border border-slate-200">
            Selengkapnya
         </button>`;
     }
 
-    // 3. Susun HTML Kartu
     return `
       <article class="group relative flex flex-col h-full bg-white rounded-2xl border border-slate-100 p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-        
         <div class="flex items-center justify-between mb-3">
-          <span class="${tagColor} border px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">
-            ${tagName}
-          </span>
-          <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1">
-            <i data-lucide="calendar" class="w-3 h-3"></i> ${x.date || "-"}
-          </span>
+          <span class="${tagColor} border px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">${tagName}</span>
+          <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i> ${x.date || "-"}</span>
         </div>
-
-        <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors">
-          ${x.title || "(Tanpa Judul)"}
-        </h3>
-
-        <p class="text-sm text-slate-500 mb-4 line-clamp-3 flex-grow leading-relaxed">
-          ${(type === 'artikel' ? x.excerpt : x.desc) || "Klik tombol di bawah untuk melihat detail informasi ini."}
-        </p>
-
-        <div class="mt-auto pt-3 border-t border-slate-50">
-           ${actionButton}
-        </div>
-
+        <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors">${x.title || "(Tanpa Judul)"}</h3>
+        <p class="text-sm text-slate-500 mb-4 line-clamp-3 flex-grow leading-relaxed">${(type === 'artikel' ? x.excerpt : x.desc) || "Klik tombol di bawah untuk melihat detail informasi ini."}</p>
+        <div class="mt-auto pt-3 border-t border-slate-50">${actionButton}</div>
       </article>`;
   };
 
-  // --- LOGIKA LOAD DATA KEGIATAN (PENGUMUMAN) ---
   const pW = document.getElementById("wrapPengumuman");
   if (pW) {
     const urlKegiatan = isAdmin() && localStorage.getItem("sheet_pengumuman") ? localStorage.getItem("sheet_pengumuman") : DEFAULT_KEGIATAN_CSV;
-    
     const d = await loadCsv(urlKegiatan);
-    
-    // Simpan ke data global agar modal bisa dibuka
     const startIdx = window.globalContentData.length;
     d.forEach(item => window.globalContentData.push(item));
 
-    // Render ke HTML
     if (d.length > 0) {
         pW.innerHTML = d.map((x, i) => mkCard(x, 'info', startIdx + i)).join("");
         const emptyMsg = document.getElementById("boardEmpty");
@@ -378,39 +333,24 @@ async function renderContent() {
     }
   }
 
-  // --- LOGIKA LOAD DATA ARTIKEL ---
   const aL = document.getElementById("artikelList");
   if (aL) {
     const urlArtikel = getCsvUrl("artikel");
     const d = await loadCsv(urlArtikel);
-    
     const startIdx = window.globalContentData.length;
     d.forEach(item => window.globalContentData.push(item));
     
     const filter = (q) => {
-      const filtered = d.map((item, i) => ({item, idx: startIdx + i}))
-                          .filter(o => (o.item.title || "").toLowerCase().includes(q));
-      
+      const filtered = d.map((item, i) => ({item, idx: startIdx + i})).filter(o => (o.item.title || "").toLowerCase().includes(q));
       aL.innerHTML = filtered.length ? filtered.map(o => mkCard(o.item, 'artikel', o.idx)).join("") : "";
-      
       const emptyArt = document.getElementById("artikelEmpty");
       if(emptyArt) emptyArt.classList.toggle("hidden", filtered.length > 0);
-      
-      // Re-render icon Lucide karena konten baru masuk
       if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
     };
-
-    // Jalankan filter pertama kali
     filter("");
-
-    // Aktifkan pencarian
     const searchInput = document.getElementById("searchArtikel");
-    if(searchInput) {
-        searchInput.addEventListener("input", e => filter(e.target.value.toLowerCase()));
-    }
+    if(searchInput) { searchInput.addEventListener("input", e => filter(e.target.value.toLowerCase())); }
   }
-
-  // Terakhir, panggil Lucide icons untuk merender icon di dalam kartu
   if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
 }
 
@@ -493,20 +433,98 @@ function initHeroSlider() {
   let current = 0; setInterval(() => { slides[current].classList.remove("active"); current = (current + 1) % slides.length; slides[current].classList.add("active"); }, 5000);
 }
 
+// --- NEW SLIDESHOW POPUP LOGIC ---
 function initPopup() {
   const popup = $("#popupPromo");
-  if (!popup) return;
+  const track = $("#popupTrack");
+  const dotsContainer = $("#popDots");
   
-  // Popup hanya muncul di Index (ada logika bisnis opsional, di sini kita aktifkan)
-  popup.classList.remove("hidden"); 
-  popup.style.display = 'flex';
+  if (!popup || !track) return;
 
-  const close = () => { popup.classList.add("hidden"); popup.style.display = 'none'; };
+  // 1. Ambil Slide Ramadhan (HTML yang sudah ada di index.html)
+  const slides = Array.from(track.children); // Saat ini isinya cuma 1 div (Ramadhan)
+  
+  // 2. Tambahkan Slide Gambar Tambahan dari POPUP_IMAGES_LIST
+  if (POPUP_IMAGES_LIST && POPUP_IMAGES_LIST.length > 0) {
+      POPUP_IMAGES_LIST.forEach((src, idx) => {
+          const div = document.createElement("div");
+          // Gunakan kelas CSS yang sama persis agar transisinya halus
+          div.className = "popup-slide transition-opacity duration-700 ease-in-out absolute inset-0 w-full h-full z-0 opacity-0";
+          
+          const img = document.createElement("img");
+          img.src = src;
+          img.className = "w-full h-full object-cover rounded-xl"; // object-cover agar gambar penuh
+          img.alt = "Info Slide " + (idx + 1);
+          
+          div.appendChild(img);
+          track.appendChild(div);
+      });
+  }
+
+  // Update daftar slides setelah penambahan gambar
+  const allSlides = Array.from(track.children);
+  
+  // Jika total slide <= 1, tidak perlu slider
+  if (allSlides.length <= 1) {
+      popup.classList.remove("hidden");
+      popup.classList.add("flex");
+      return; 
+  }
+
+  // 3. Buat Dots Indikator
+  dotsContainer.innerHTML = "";
+  allSlides.forEach((_, idx) => {
+      const dot = document.createElement("button");
+      dot.className = `w-2 h-2 rounded-full transition-all ${idx === 0 ? 'bg-white w-6' : 'bg-white/50 hover:bg-white'}`;
+      dot.onclick = () => showSlide(idx);
+      dotsContainer.appendChild(dot);
+  });
+
+  let currentIdx = 0;
+  let slideInterval;
+
+  const showSlide = (n) => {
+      allSlides.forEach((slide, i) => {
+          const dot = dotsContainer.children[i];
+          if (i === n) {
+              slide.classList.remove("opacity-0", "z-0");
+              slide.classList.add("opacity-100", "z-10");
+              if(dot) dot.className = "w-6 h-2 rounded-full bg-white transition-all";
+          } else {
+              slide.classList.add("opacity-0", "z-0");
+              slide.classList.remove("opacity-100", "z-10");
+              if(dot) dot.className = "w-2 h-2 rounded-full bg-white/50 hover:bg-white transition-all";
+          }
+      });
+      currentIdx = n;
+  };
+
+  const nextSlide = () => showSlide((currentIdx + 1) % allSlides.length);
+  const prevSlide = () => showSlide((currentIdx - 1 + allSlides.length) % allSlides.length);
+
+  $("#popNext")?.addEventListener("click", () => { nextSlide(); resetTimer(); });
+  $("#popPrev")?.addEventListener("click", () => { prevSlide(); resetTimer(); });
+
+  const startTimer = () => { slideInterval = setInterval(nextSlide, 4000); };
+  const stopTimer = () => clearInterval(slideInterval);
+  const resetTimer = () => { stopTimer(); startTimer(); };
+
+  // Tampilkan Popup
+  popup.classList.remove("hidden");
+  popup.classList.add("flex");
+  startTimer();
+
+  const close = () => { 
+      popup.classList.add("hidden"); 
+      popup.classList.remove("flex"); 
+      stopTimer(); 
+  };
+  
   $("#closePopupBtn")?.addEventListener("click", close);
   $("#closePopupBackdrop")?.addEventListener("click", close);
   
   $("#popupShareBtn")?.addEventListener("click", () => {
-      const text = "Assalamu'alaikum. Mohon bantuannya untuk pelunasan lahan *Masjid As-Sunnah Hekinan (Jepang)*. \n\nMari cari pahala jariyah dengan menyebarkan info ini. \n\nCek progres & donasi di sini: 👇\nhttps://assunnahhekinan.org/ramadhan.html";
+      const text = "Info Terbaru Masjid As-Sunnah Hekinan. Cek di sini: https://assunnahhekinan.org";
       window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
   });
 }
