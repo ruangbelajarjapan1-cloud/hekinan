@@ -9,7 +9,7 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 window.globalContentData = []; 
 
 const TARGET_DONASI = 42000000;
-const TERKUMPUL_SAAT_INI = 9519843;
+const TERKUMPUL_SAAT_INI = 9686951;
 
 // Koordinat Hekinan, Jepang (Agar Jadwal Sholat Stabil)
 const HEK_LAT = 34.884;
