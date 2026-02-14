@@ -24,7 +24,8 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZW
 const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
 const DEFAULT_PENGUMUMAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv";
 const DEFAULT_ARTIKEL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv";
-
+// GANTI / TAMBAHKAN DI SEKITAR BARIS 33
+const DEFAULT_DAFTAR_KEGIATAN_CSV = https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1910296914&single=true&output=csv;
 const HIJRI_MONTHS_ID = ["Muharram", "Shafar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"];
 
 const HADITHS = [
@@ -240,49 +241,129 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function renderContent() {
+  // Kosongkan data global sebelum mengisi ulang
   window.globalContentData = []; 
-  const mkCard = (x, isArt, index) => {
-    let tagColor = "bg-slate-100 text-slate-600"; let tagLabel = isArt ? "Artikel" : "Info";
-    if (x.tag) {
-      tagLabel = x.tag; const t = x.tag.toLowerCase();
-      if (t.includes('kajian')) tagColor = "bg-purple-100 text-purple-700";
-      else if (t.includes('penting')) tagColor = "bg-red-100 text-red-700";
-      else if (t.includes('kabar')) tagColor = "bg-emerald-100 text-emerald-700";
-      else if (t.includes('faedah')) tagColor = "bg-amber-100 text-amber-700";
+
+  // --- FUNGSI PEMBUAT KARTU (CARD) ---
+  const mkCard = (x, type, index) => {
+    // 1. Tentukan Warna Label (Tag)
+    let tagColor = "bg-slate-100 text-slate-600 border-slate-200";
+    let tagName = x.tag || (type === 'artikel' ? "Artikel" : "Info");
+    
+    // Logika warna biar terlihat "High Class"
+    const t = tagName.toLowerCase();
+    if (t.includes('dauroh') || t.includes('kajian')) {
+        tagColor = "bg-purple-50 text-purple-700 border-purple-100";
+    } else if (t.includes('penting') || t.includes('mendesak')) {
+        tagColor = "bg-red-50 text-red-700 border-red-100";
+    } else if (t.includes('ramadhan')) {
+        tagColor = "bg-emerald-50 text-emerald-700 border-emerald-100";
     }
+
+    // 2. Cek apakah ada Link Pendaftaran?
+    // Jika di excel kolom 'link_daftar' diisi, tombol daftar akan muncul.
+    let actionButton = "";
+    if (x.link_daftar && x.link_daftar.length > 5) {
+        actionButton = `
+        <a href="${x.link_daftar}" target="_blank" class="mt-3 w-full block text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md shadow-sky-200 flex items-center justify-center gap-2">
+           <i data-lucide="edit" class="w-4 h-4"></i> Daftar Sekarang
+        </a>`;
+    } else {
+        // Jika tidak ada link daftar, tombolnya "Baca Selengkapnya"
+        actionButton = `
+        <button onclick="window.openArticleModal(${index})" class="mt-3 w-full block text-center bg-slate-50 hover:bg-slate-100 text-slate-600 font-bold py-2 rounded-xl text-sm transition-all border border-slate-200">
+           Selengkapnya
+        </button>`;
+    }
+
+    // 3. Susun HTML Kartu
     return `
-      <article class="group rounded-2xl border border-slate-100 bg-white p-5 shadow-sm hover:border-sky-200 hover:shadow-md flex flex-col h-full transition-all duration-300">
-        <div class="flex items-center justify-between mb-3"><span class="${tagColor} px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">${tagLabel}</span><span class="text-[10px] text-slate-400 font-medium">${x.date || ""}</span></div>
-        <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2 group-hover:text-fig-primary transition-colors line-clamp-2">${x.title || "(Tanpa Judul)"}</h3>
-        <p class="text-sm text-slate-600 mb-4 line-clamp-3 flex-grow leading-relaxed">${(isArt ? x.excerpt : x.desc) || "Klik selengkapnya untuk membaca detail."}</p>
-        <button onclick="window.openArticleModal(${index})" class="mt-auto flex items-center gap-1.5 text-sm font-bold text-fig-primary hover:text-fig-primaryDark hover:underline transition-all w-fit"><span data-i18n="read_more">Selengkapnya</span><i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i></button>
+      <article class="group relative flex flex-col h-full bg-white rounded-2xl border border-slate-100 p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+        
+        <div class="flex items-center justify-between mb-3">
+          <span class="${tagColor} border px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">
+            ${tagName}
+          </span>
+          <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1">
+            <i data-lucide="calendar" class="w-3 h-3"></i> ${x.date || "-"}
+          </span>
+        </div>
+
+        <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors">
+          ${x.title || "(Tanpa Judul)"}
+        </h3>
+
+        <p class="text-sm text-slate-500 mb-4 line-clamp-3 flex-grow leading-relaxed">
+          ${(type === 'artikel' ? x.excerpt : x.desc) || "Klik tombol di bawah untuk melihat detail informasi ini."}
+        </p>
+
+        <div class="mt-auto pt-3 border-t border-slate-50">
+           ${actionButton}
+        </div>
+
       </article>`;
   };
 
-  const pW = $("#wrapPengumuman");
+  // --- LOGIKA LOAD DATA KEGIATAN (PENGUMUMAN) ---
+  const pW = document.getElementById("wrapPengumuman");
   if (pW) {
-    const d = await loadCsv(getCsvUrl("pengumuman"));
+    // Kita gunakan getCsvUrl("pengumuman") atau DEFAULT_KEGIATAN_CSV
+    // Agar aman, pastikan variabel DEFAULT_KEGIATAN_CSV sudah dibuat di atas
+    const urlKegiatan = isAdmin() && localStorage.getItem("sheet_pengumuman") ? localStorage.getItem("sheet_pengumuman") : DEFAULT_KEGIATAN_CSV;
+    
+    const d = await loadCsv(urlKegiatan);
+    
+    // Simpan ke data global agar modal bisa dibuka
     const startIdx = window.globalContentData.length;
     d.forEach(item => window.globalContentData.push(item));
-    pW.innerHTML = d.length ? d.map((x, i) => mkCard(x, false, startIdx + i)).join("") : "";
-    if (!d.length) $("#boardEmpty")?.classList.remove("hidden");
+
+    // Render ke HTML
+    if (d.length > 0) {
+        pW.innerHTML = d.map((x, i) => mkCard(x, 'info', startIdx + i)).join("");
+        // Sembunyikan pesan kosong
+        const emptyMsg = document.getElementById("boardEmpty");
+        if(emptyMsg) emptyMsg.classList.add("hidden");
+    } else {
+        pW.innerHTML = "";
+        const emptyMsg = document.getElementById("boardEmpty");
+        if(emptyMsg) emptyMsg.classList.remove("hidden");
+    }
   }
 
-  const aL = $("#artikelList");
+  // --- LOGIKA LOAD DATA ARTIKEL ---
+  const aL = document.getElementById("artikelList");
   if (aL) {
-    const d = await loadCsv(getCsvUrl("artikel"));
+    const urlArtikel = getCsvUrl("artikel");
+    const d = await loadCsv(urlArtikel);
+    
     const startIdx = window.globalContentData.length;
     d.forEach(item => window.globalContentData.push(item));
     
     const filter = (q) => {
-      const filtered = d.map((item, i) => ({item, idx: startIdx + i})).filter(o => (o.item.title || "").toLowerCase().includes(q));
-      aL.innerHTML = filtered.length ? filtered.map(o => mkCard(o.item, true, o.idx)).join("") : "";
-      $("#artikelEmpty")?.classList.toggle("hidden", filtered.length > 0);
-      window.lucide?.createIcons?.();
+      const filtered = d.map((item, i) => ({item, idx: startIdx + i}))
+                          .filter(o => (o.item.title || "").toLowerCase().includes(q));
+      
+      aL.innerHTML = filtered.length ? filtered.map(o => mkCard(o.item, 'artikel', o.idx)).join("") : "";
+      
+      const emptyArt = document.getElementById("artikelEmpty");
+      if(emptyArt) emptyArt.classList.toggle("hidden", filtered.length > 0);
+      
+      // Re-render icon Lucide karena konten baru masuk
+      if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
     };
+
+    // Jalankan filter pertama kali
     filter("");
-    $("#searchArtikel")?.addEventListener("input", e => filter(e.target.value.toLowerCase()));
+
+    // Aktifkan pencarian
+    const searchInput = document.getElementById("searchArtikel");
+    if(searchInput) {
+        searchInput.addEventListener("input", e => filter(e.target.value.toLowerCase()));
+    }
   }
+
+  // Terakhir, panggil Lucide icons untuk merender icon di dalam kartu
+  if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
 }
 
 // --- ADMIN ---
