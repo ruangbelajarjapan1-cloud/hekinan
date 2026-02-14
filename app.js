@@ -25,7 +25,7 @@ const POPUP_SLIDES_DATA = [
         text: "Daftar Dauroh" // Tulisan di tombol
     },
     { 
-        src: "assets/foto/p2.png", 
+        src: "assets/foto/p2.jpeg", 
         link: "https://wa.me/818013909425", 
         text: "Hubungi Admin" 
     }
