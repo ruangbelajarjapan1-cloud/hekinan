@@ -1,4 +1,4 @@
-// app.js (VERSION: SLIDESHOW HYBRID + RAMADHAN HTML)
+// app.js (VERSION: DYNAMIC LINKS FOR EACH SLIDE)
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -15,13 +15,20 @@ const TERKUMPUL_SAAT_INI = 9686951;
 const HEK_LAT = 34.884;
 const HEK_LON = 136.993;
 
-// --- DAFTAR GAMBAR UNTUK SLIDESHOW ---
-// Slide 1 = HTML Ramadhan (sudah di index.html)
-// Slide 2, 3, dst = Gambar di bawah ini
-const POPUP_IMAGES_LIST = [
-    "assets/foto/p2.jpeg", 
-    "assets/foto/1e.png",
-    "assets/foto/d1.jpeg"
+// --- KONFIGURASI SLIDESHOW POPUP (GAMBAR & LINK) ---
+// Slide 1 adalah Poster Ramadhan (sudah ada di HTML).
+// Slide 2, 3, dst ditambahkan di sini:
+const POPUP_SLIDES_DATA = [
+    { 
+        src: "assets/foto/d1.jpeg",  // <-- Ganti dengan nama file poster Dauroh Anda
+        link: "https://forms.gle/zJqA2Eba2FaxvrXv6", // <-- MASUKKAN LINK GOOGLE FORM DISINI
+        text: "Daftar Dauroh" // Tulisan di tombol
+    },
+    { 
+        src: "assets/foto/p2.png", 
+        link: "https://wa.me/818013909425", 
+        text: "Hubungi Admin" 
+    }
 ]; 
 
 const VIDEO_DONASI_LIST = ["jfKfPRdk", "dQwgXcQ"];
@@ -89,7 +96,7 @@ rmd_reason_3_desc: "Wakaf atas nama orang tua yang sudah wafat.",
 rmd_reason_4_title: "Naungan di Akhirat",
 rmd_reason_4_desc: "Sedekah akan menjadi naungan di hari kiamat.",
 rmd_social_joined: "Orang Baik telah bergabung.",
-rmd_social_turn: "Giliran Anda sekarang!",
+rmd_social_turn: "It's your turn now!",
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
@@ -433,7 +440,7 @@ function initHeroSlider() {
   let current = 0; setInterval(() => { slides[current].classList.remove("active"); current = (current + 1) % slides.length; slides[current].classList.add("active"); }, 5000);
 }
 
-// --- NEW SLIDESHOW POPUP LOGIC ---
+// --- NEW SLIDESHOW POPUP LOGIC WITH DYNAMIC LINKS ---
 function initPopup() {
   const popup = $("#popupPromo");
   const track = $("#popupTrack");
@@ -442,21 +449,29 @@ function initPopup() {
   if (!popup || !track) return;
 
   // 1. Ambil Slide Ramadhan (HTML yang sudah ada di index.html)
-  const slides = Array.from(track.children); // Saat ini isinya cuma 1 div (Ramadhan)
+  // Slide 0 ini dianggap sebagai "Base Slide"
+  const slides = Array.from(track.children); 
   
-  // 2. Tambahkan Slide Gambar Tambahan dari POPUP_IMAGES_LIST
-  if (POPUP_IMAGES_LIST && POPUP_IMAGES_LIST.length > 0) {
-      POPUP_IMAGES_LIST.forEach((src, idx) => {
+  // 2. Tambahkan Slide Gambar Tambahan dari POPUP_SLIDES_DATA
+  if (POPUP_SLIDES_DATA && POPUP_SLIDES_DATA.length > 0) {
+      POPUP_SLIDES_DATA.forEach((data, idx) => {
           const div = document.createElement("div");
           // Gunakan kelas CSS yang sama persis agar transisinya halus
           div.className = "popup-slide transition-opacity duration-700 ease-in-out absolute inset-0 w-full h-full z-0 opacity-0";
           
+          // Bungkus gambar dengan Link (agar gambar bisa diklik juga)
+          const link = document.createElement("a");
+          link.href = data.link || "#";
+          link.target = "_blank";
+          link.className = "block w-full h-full cursor-pointer";
+
           const img = document.createElement("img");
-          img.src = src;
-          img.className = "w-full h-full object-cover rounded-xl"; // object-cover agar gambar penuh
-          img.alt = "Info Slide " + (idx + 1);
+          img.src = data.src;
+          img.className = "w-full h-full object-cover rounded-xl"; 
+          img.alt = data.text || "Info Slide " + (idx + 1);
           
-          div.appendChild(img);
+          link.appendChild(img);
+          div.appendChild(link);
           track.appendChild(div);
       });
   }
@@ -483,6 +498,7 @@ function initPopup() {
   let currentIdx = 0;
   let slideInterval;
 
+  // 4. Logika Update Tampilan Slide & TOMBOL AKSI
   const showSlide = (n) => {
       allSlides.forEach((slide, i) => {
           const dot = dotsContainer.children[i];
@@ -497,6 +513,30 @@ function initPopup() {
           }
       });
       currentIdx = n;
+
+      // UPDATE LINK & TEXT TOMBOL DI BAWAH
+      // Kita cari tombol di dalam popup (sebelah tombol Share)
+      const shareBtn = $("#popupShareBtn");
+      const actionBtn = shareBtn?.previousElementSibling; // Asumsi tombol aksi ada sebelum tombol share
+
+      if (actionBtn) {
+          if (n === 0) {
+              // Jika Slide 0 (Ramadhan HTML)
+              // Kita kembalikan ke default Ramadhan
+              actionBtn.href = "ramadhan.html"; 
+              actionBtn.innerHTML = `<i data-lucide="moon" class="w-4 h-4"></i> Info Ramadhan`;
+          } else {
+              // Jika Slide Gambar (Ambil data dari array)
+              // Ingat: n=1 berarti data index ke-0
+              const data = POPUP_SLIDES_DATA[n - 1];
+              if (data) {
+                  actionBtn.href = data.link;
+                  actionBtn.innerHTML = `<i data-lucide="edit" class="w-4 h-4"></i> ${data.text || "Selengkapnya"}`;
+              }
+          }
+          // Refresh icon agar muncul
+          if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+      }
   };
 
   const nextSlide = () => showSlide((currentIdx + 1) % allSlides.length);
