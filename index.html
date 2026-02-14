@@ -401,18 +401,36 @@
 
 <section id="info" class="container mx-auto px-4 py-16">
   <div class="max-w-4xl mx-auto">
-    <div id="tabs" class="relative tab-left bg-slate-100 p-1 rounded-xl flex mb-8 reveal">
-      <button id="tabPengumuman" class="flex-1 relative z-10 py-3 text-sm font-bold text-slate-600 transition-colors rounded-lg hover:text-fig-primary" data-i18n="tab_announcement">Pengumuman</button>
-      <button id="tabArtikel" class="flex-1 relative z-10 py-3 text-sm font-bold text-slate-600 transition-colors rounded-lg hover:text-fig-primary" data-i18n="tab_article">Artikel & Faedah</button>
-      <span class="tab-slider absolute bottom-1 h-[calc(100%-8px)] w-[calc(50%-4px)] bg-white shadow-sm rounded-lg !transform transition-all"></span>
+    
+    <div id="tabs" class="relative tab-left bg-slate-100 p-1 rounded-xl flex mb-8 reveal shadow-inner">
+      <button id="tabPengumuman" class="flex-1 relative z-10 py-3 text-sm font-bold text-slate-600 transition-colors rounded-lg hover:text-fig-primary focus:outline-none">
+        📋 Daftar Kegiatan
+      </button>
+      <button id="tabArtikel" class="flex-1 relative z-10 py-3 text-sm font-bold text-slate-600 transition-colors rounded-lg hover:text-fig-primary focus:outline-none">
+        📖 Artikel & Faedah
+      </button>
+      <span class="tab-slider absolute bottom-1 h-[calc(100%-8px)] w-[calc(50%-4px)] bg-white shadow-sm rounded-lg !transform transition-all duration-300"></span>
     </div>
-    <div id="wrapPengumuman" class="grid md:grid-cols-2 gap-6 min-h-[200px]"></div>
-    <p id="boardEmpty" class="hidden text-center text-slate-500 py-10" data-i18n="empty_data">Belum ada data terbaru.</p>
-    <div id="wrapArtikel" class="hidden min-h-[200px]">
-      <div class="flex justify-end mb-6"><input id="searchArtikel" data-placeholder="search_placeholder" placeholder="Cari..." class="w-full md:w-64 pl-4 pr-4 py-2 rounded-xl border border-slate-200 text-sm"></div>
+
+    <div id="wrapPengumuman" class="grid md:grid-cols-2 gap-6 min-h-[200px] reveal">
+       </div>
+    <p id="boardEmpty" class="hidden text-center text-slate-500 py-10 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+       Belum ada kegiatan terbaru yang dibuka.
+    </p>
+
+    <div id="wrapArtikel" class="hidden min-h-[200px] reveal">
+      <div class="flex justify-end mb-6">
+        <div class="relative w-full md:w-64">
+           <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+           <input id="searchArtikel" placeholder="Cari judul artikel..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200 text-sm focus:border-sky-500 outline-none transition-colors">
+        </div>
+      </div>
       <div id="artikelList" class="grid md:grid-cols-2 gap-6"></div>
-      <p id="artikelEmpty" class="hidden text-center text-slate-500 py-10" data-i18n="empty_search">Tidak ditemukan.</p>
+      <p id="artikelEmpty" class="hidden text-center text-slate-500 py-10">
+         Tidak ditemukan artikel yang dicari.
+      </p>
     </div>
+
   </div>
 </section>
 
@@ -610,6 +628,7 @@
 <script type="module" src="./app.js"></script>
 </body>
 </html>
+
 
 
 
