@@ -438,7 +438,44 @@ async function renderContent() {
   }
   if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
 }
+// --- FUNGSI TAB SWITCHER (Tambahkan ini di app.js) ---
+function initTabs() {
+  const btnP = $("#tabPengumuman");
+  const btnA = $("#tabArtikel");
+  const wrapP = $("#wrapPengumuman");
+  const wrapA = $("#wrapArtikel");
+  const tabsContainer = $("#tabs");
 
+  if (!btnP || !btnA || !tabsContainer) return;
+
+  // Logika Klik Tab Pengumuman
+  btnP.addEventListener("click", () => {
+    // Geser slider ke kiri
+    tabsContainer.classList.remove("tab-right");
+    tabsContainer.classList.add("tab-left");
+    
+    // Tampilkan konten Pengumuman, Sembunyikan Artikel
+    wrapP.classList.remove("hidden");
+    wrapA.classList.add("hidden");
+    
+    // Animasi fade in (opsional, biar halus)
+    wrapP.classList.add("animate-[fadeUp_0.3s_ease-out]");
+  });
+
+  // Logika Klik Tab Artikel
+  btnA.addEventListener("click", () => {
+    // Geser slider ke kanan
+    tabsContainer.classList.remove("tab-left");
+    tabsContainer.classList.add("tab-right");
+    
+    // Tampilkan konten Artikel, Sembunyikan Pengumuman
+    wrapP.classList.add("hidden");
+    wrapA.classList.remove("hidden");
+    
+    // Animasi fade in
+    wrapA.classList.add("animate-[fadeUp_0.3s_ease-out]");
+  });
+}
 // --- ADMIN ---
 const isAdmin = () => new URLSearchParams(location.search).get("admin") === "1" && localStorage.getItem("is_admin") === "1";
 function setupAdmin() {
@@ -861,7 +898,7 @@ function boot() {
   initZakatCalculator();
   initDoa();
   initPopup();
-
+initTabs();
   // Pastikan Icon muncul
   if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
 
