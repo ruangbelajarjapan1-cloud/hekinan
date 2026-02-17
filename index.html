@@ -50,8 +50,22 @@
     background-color: #f8fafc;
     background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230ea5e9' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
-  .hero-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.5s ease-in-out; }
-  .hero-slide.active { opacity: 1; }
+  /* GANTI CSS .hero-slide dan .hero-slide.active DENGAN INI */
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1); /* Posisi awal normal */
+  transition: opacity 1.5s ease-in-out, transform 10s ease-out; /* Animasi zoom selama 10 detik */
+}
+
+.hero-slide.active {
+  opacity: 1;
+  transform: scale(1.1); /* Zoom in sedikit (110%) saat aktif */
+}
 </style>
 </head>
 
@@ -264,7 +278,9 @@
           </div>
           <div class="relative mb-8">
             <div class="overflow-hidden h-3 mb-2 text-xs flex rounded-full bg-slate-200">
-              <div id="progressBar" class="flex flex-col text-center justify-center bg-fig-primary transition-all duration-1000 ease-out w-0 relative"></div>
+              <div id="progressBar" class="flex flex-col text-center justify-center bg-fig-primary transition-all duration-1000 ease-out w-0 relative overflow-hidden">
+    <div class="absolute top-0 bottom-0 left-0 w-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full animate-[shimmer_2s_infinite]"></div>
+</div>
             </div>
             <div class="flex justify-between text-[11px] text-slate-500 font-bold">
               <span><span id="percentLabel">0</span>%</span><span>Target: <span id="targetLabel">0</span></span>
@@ -631,8 +647,13 @@
     <span class="font-bold text-sm">Ramadhan Challenge</span>
   </div>
 </a>
+  <button id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
+    class="fixed bottom-24 right-4 md:bottom-8 md:right-24 z-30 p-3 rounded-full bg-white/80 backdrop-blur border border-slate-200 shadow-lg text-slate-600 hover:bg-sky-600 hover:text-white transition-all transform translate-y-20 opacity-0 pointer-events-none">
+    <i data-lucide="arrow-up" class="w-5 h-5"></i>
+</button>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script type="module" src="./app.js"></script>
 </body>
 </html>
+
 
