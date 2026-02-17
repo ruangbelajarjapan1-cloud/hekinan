@@ -478,9 +478,11 @@
   </div>
 </footer>
 
-<button id="openZakat" class="fixed bottom-28 right-4 md:bottom-8 md:right-8 z-40 bg-slate-900 text-white p-4 rounded-full shadow-2xl hover:bg-slate-800 transition-all active:scale-95 flex items-center justify-center gap-2 border-2 border-slate-700" title="Kalkulator Zakat Mal">
-  <i data-lucide="calculator" class="w-6 h-6"></i><span class="hidden md:inline font-bold text-sm" data-i18n="btn_zakat">Hitung Zakat</span>
-</button>
+<a href="https://laz.berbagi.id/zakat/kalkulator" target="_blank" rel="noopener noreferrer" class="fixed bottom-28 right-4 md:bottom-8 md:right-8 z-40 bg-slate-900 text-white p-4 rounded-full shadow-2xl hover:bg-slate-800 transition-all active:scale-95 flex items-center justify-center gap-2 border-2 border-slate-700 group" title="Buka Kalkulator Zakat">
+  <i data-lucide="calculator" class="w-6 h-6 group-hover:rotate-12 transition-transform"></i>
+  <span class="hidden md:inline font-bold text-sm">Kalkulator Zakat</span>
+  <i data-lucide="external-link" class="w-3 h-3 text-slate-400"></i>
+</a>
 
 <div class="md:hidden fixed bottom-20 left-0 right-0 z-30 px-4 flex justify-center pointer-events-none">
   <a href="#donasi" class="pointer-events-auto bg-fig-accent hover:bg-amber-600 text-white px-6 py-3 rounded-full font-bold shadow-lg shadow-amber-900/20 flex items-center gap-2 transform transition-transform active:scale-95 border-2 border-white">
@@ -592,13 +594,7 @@
     </div>
   </div>
 </div>
-  <div id="zakatModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-[100]">
-  <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl animate-[fadeUp_0.3s_ease-out]">
-    <div class="flex items-center justify-between mb-6 border-b pb-4">
-      <h3 class="text-xl font-bold text-slate-900">Kalkulator Zakat Mal</h3>
-      <button id="closeZakat" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-6 h-6"></i></button>
-    </div>
-    
+     
     <div class="space-y-4">
       <div class="flex gap-2 mb-4">
         <button id="currJPY" onclick="document.getElementById('zGoldPrice').value=14000; document.getElementById('zCurrLabel').textContent='JPY'" class="flex-1 py-2 text-xs font-bold rounded-lg bg-sky-50 text-sky-700 border border-sky-200">JPY (Yen)</button>
@@ -655,6 +651,7 @@
 <script type="module" src="./app.js"></script>
 </body>
 </html>
+
 
 
 
