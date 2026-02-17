@@ -757,10 +757,11 @@ function initCountdown() {
 }
 
 // ==========================================
-// 4. BOOTSTRAP (URUTAN PENTING!)
+// 4. BOOTSTRAP (UPDATE TERBARU)
 // ==========================================
 function boot() {
-  const hariIni = new Date().getDay(); const bannerJumat = $("#jumatBanner");
+  const hariIni = new Date().getDay(); 
+  const bannerJumat = $("#jumatBanner");
   if (hariIni === 5 && bannerJumat) { bannerJumat.classList.remove("hidden"); }
 
   setLang(currentLang);
@@ -785,6 +786,21 @@ function boot() {
 
   // Pastikan Icon muncul
   if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+
+  // --- LOGIKA BARU: TOMBOL BACK TO TOP ---
+  const btnTop = document.getElementById("backToTop");
+  if (btnTop) {
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 500) {
+            // Munculkan tombol (hapus class yang menyembunyikan)
+            btnTop.classList.remove("translate-y-20", "opacity-0", "pointer-events-none");
+        } else {
+            // Sembunyikan tombol
+            btnTop.classList.add("translate-y-20", "opacity-0", "pointer-events-none");
+        }
+      });
+  }
+  // ---------------------------------------
 
   // Animasi Scroll (Reveal) - Ditaruh terakhir agar elemen sudah ada
   const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add("active") }), { threshold: 0.1 });
