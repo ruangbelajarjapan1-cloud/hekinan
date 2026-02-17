@@ -556,13 +556,13 @@
   </div>
 </footer>
 
-<a href="https://laz.berbagi.id/zakat/kalkulator" target="_blank" rel="noopener noreferrer" class="fixed bottom-28 right-4 md:bottom-8 md:right-8 z-40 bg-slate-900 text-white p-4 rounded-full shadow-2xl hover:bg-slate-800 transition-all active:scale-95 flex items-center justify-center gap-2 border-2 border-slate-700 group" title="Buka Kalkulator Zakat">
+<a href="https://laz.berbagi.id/zakat/kalkulator" target="_blank" rel="noopener noreferrer" class="fixed bottom-40 right-4 md:bottom-8 md:right-8 z-40 bg-slate-900 text-white p-4 rounded-full shadow-2xl hover:bg-slate-800 transition-all active:scale-95 flex items-center justify-center gap-2 border-2 border-slate-700 group" title="Buka Kalkulator Zakat">
   <i data-lucide="calculator" class="w-6 h-6 group-hover:rotate-12 transition-transform"></i>
   <span class="hidden md:inline font-bold text-sm">Kalkulator Zakat</span>
   <i data-lucide="external-link" class="w-3 h-3 text-slate-400"></i>
 </a>
 
-<div class="md:hidden fixed bottom-20 left-0 right-0 z-30 px-4 flex justify-center pointer-events-none">
+<div class="md:hidden fixed bottom-6 left-0 right-0 z-30 px-4 flex justify-center pointer-events-none">
   <a href="#donasi" class="pointer-events-auto bg-fig-accent hover:bg-amber-600 text-white px-6 py-3 rounded-full font-bold shadow-lg shadow-amber-900/20 flex items-center gap-2 transform transition-transform active:scale-95 border-2 border-white">
     <i data-lucide="heart" class="w-4 h-4 fill-current"></i> <span data-i18n="btn_donate_now">Donasi Sekarang</span>
   </a>
@@ -673,47 +673,7 @@
   </div>
 </div>
      
-    <div class="space-y-4">
-      <div class="flex gap-2 mb-4">
-        <button id="currJPY" onclick="document.getElementById('zGoldPrice').value=14000; document.getElementById('zCurrLabel').textContent='JPY'" class="flex-1 py-2 text-xs font-bold rounded-lg bg-sky-50 text-sky-700 border border-sky-200">JPY (Yen)</button>
-        <button id="currIDR" onclick="document.getElementById('zGoldPrice').value=1400000; document.getElementById('zCurrLabel').textContent='IDR'" class="flex-1 py-2 text-xs font-bold rounded-lg bg-slate-50 text-slate-600 border border-slate-200">IDR (Rupiah)</button>
-      </div>
-
-      <div>
-        <label class="text-[10px] font-bold text-slate-400 uppercase">Harga Emas per Gram (<span id="zCurrLabel">JPY</span>)</label>
-        <input id="zGoldPrice" type="number" value="14000" class="w-full border rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-sky-500 outline-none">
-      </div>
-      <div>
-        <label class="text-[10px] font-bold text-slate-400 uppercase">Total Uang Simpanan (Tabungan/Cash)</label>
-        <input id="zCash" type="number" placeholder="0" class="w-full border rounded-xl px-4 py-2 text-sm">
-      </div>
-      <div>
-        <label class="text-[10px] font-bold text-slate-400 uppercase">Emas/Perak (Nilai Uangnya)</label>
-        <input id="zGoldVal" type="number" placeholder="0" class="w-full border rounded-xl px-4 py-2 text-sm">
-      </div>
-      <div>
-        <label class="text-[10px] font-bold text-slate-400 uppercase">Hutang Jatuh Tempo (Pengurang)</label>
-        <input id="zDebt" type="number" placeholder="0" class="w-full border rounded-xl px-4 py-2 text-sm">
-      </div>
-
-      <button id="calcBtn" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition-all mt-2">Hitung Sekarang</button>
-
-      <div id="zResultBox" class="hidden mt-4 p-4 rounded-xl bg-slate-50 border-2 border-dashed border-slate-200">
-        <p class="text-[10px] font-bold text-slate-400 uppercase text-center">Hasil Perhitungan</p>
-        <div id="zStatus" class="text-center font-extrabold text-lg my-1"></div>
-        <div class="flex justify-between text-sm border-t pt-2 mt-2">
-          <span>Total Bersih:</span> <span id="zTotalNet" class="font-bold"></span>
-        </div>
-        <div class="flex justify-between text-sm">
-          <span>Nisab (85gr):</span> <span id="zNisab" class="font-bold"></span>
-        </div>
-        <div class="flex justify-between text-lg font-black text-emerald-600 border-t mt-2 pt-2">
-          <span>Zakat:</span> <span id="zFinalAmount"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+    
   <a href="ramadhan.html" class="fixed bottom-4 left-4 z-50 bg-emerald-600 text-white px-4 py-3 rounded-full shadow-xl hover:bg-emerald-700 transition-transform hover:-translate-y-1 flex items-center gap-2 border-2 border-emerald-400 animate-bounce">
   <span class="text-xl">🌙</span>
   <div class="text-left leading-none">
@@ -721,12 +681,12 @@
     <span class="font-bold text-sm">Ramadhan Challenge</span>
   </div>
 </a>
-  <button id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
+ <button id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
     class="fixed bottom-24 right-4 md:bottom-8 md:right-24 z-30 p-3 rounded-full bg-white/80 backdrop-blur border border-slate-200 shadow-lg text-slate-600 hover:bg-sky-600 hover:text-white transition-all transform translate-y-20 opacity-0 pointer-events-none">
     <i data-lucide="arrow-up" class="w-5 h-5"></i>
 </button>
   <a href="https://ramadhan-seven.vercel.app/" target="_blank" rel="noopener noreferrer" 
-   class="fixed bottom-48 left-4 md:bottom-24 md:left-8 z-50 group flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-700 text-white p-3 md:pl-4 md:pr-5 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.5)] border-2 border-emerald-300 hover:scale-105 transition-all duration-300 animate-bounce-slow">
+   class="fixed bottom-24 left-4 md:bottom-24 md:left-8 z-50 group flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-700 text-white p-3 md:pl-4 md:pr-5 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.5)] border-2 border-emerald-300 hover:scale-105 transition-all duration-300 animate-bounce-slow">
   
   <div class="bg-white/20 p-2 rounded-full backdrop-blur-sm group-hover:bg-white group-hover:text-emerald-600 transition-colors">
     <i data-lucide="smartphone" class="w-5 h-5 md:w-6 md:h-6"></i>
@@ -786,5 +746,6 @@
 <script type="module" src="./app.js"></script>
 </body>
 </html>
+
 
 
