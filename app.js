@@ -838,110 +838,85 @@ function initCountdown() {
     elMin.innerText = Math.floor((gap%3600000)/60000);
   }, 1000);
 }
-// --- FITUR KAMUS SAKU DAKWAH (JAPAN HELPER) ---
-function initKamusDakwah() {
-    const grid = document.getElementById("kamusGrid");
-    const search = document.getElementById("searchKamus");
-    const empty = document.getElementById("kamusEmpty");
+// --- FITUR KAMUS DAKWAH (MODAL VERSION) ---
+// Taruh di app.js
+
+// 1. Fungsi Buka/Tutup Modal (Global)
+window.toggleKamusModal = (show) => {
+    const m = document.getElementById("modalKamus");
+    if(show) {
+        m.classList.remove("hidden");
+        m.classList.add("flex");
+        document.getElementById("inputCariKamus").focus();
+    } else {
+        m.classList.add("hidden");
+        m.classList.remove("flex");
+    }
+};
+
+// 2. Logika Render Kamus
+function initKamusApp() {
+    const grid = document.getElementById("containerKamusGrid");
+    const search = document.getElementById("inputCariKamus");
+    const empty = document.getElementById("stateKamusKosong");
 
     if(!grid || !search) return;
 
-    // DATA KAMUS (Bisa ditambah nanti)
+    // DATA KAMUS
     const dataKamus = [
-        {
-            id: "sholat",
-            title: "Izin Sholat Sebentar",
-            indo: "Maaf, sudah waktunya sholat. Bolehkah saya istirahat 10 menit?",
-            jp: "すみません、お祈りの時間ですので、10分ほど休憩をいただいてもよろしいでしょうか？",
-            romaji: "Sumimasen, oinori no jikan desunode, juppun hodo kyuukei o itadaitemo yoroshii deshouka?"
-        },
-        {
-            id: "babi",
-            title: "Tidak Makan Babi",
-            indo: "Saya Muslim, jadi saya tidak bisa makan daging babi.",
-            jp: "私はイスラム教徒ですので、豚肉を食べることができません。",
-            romaji: "Watashi wa isuramu kyouto desunode, butaniku o taberu koto ga dekimasen."
-        },
-        {
-            id: "alkohol",
-            title: "Tidak Minum Alkohol",
-            indo: "Maaf, agama saya melarang minum alkohol (Sake).",
-            jp: "申し訳ありませんが、宗教上の理由でお酒を飲むことができません。",
-            romaji: "Moushiwake arimasen ga, shuukyoujou no riyuu de osake o nomu koto ga dekimasen."
-        },
-        {
-            id: "puasa",
-            title: "Sedang Puasa",
-            indo: "Saya sedang puasa (tidak makan & minum sampai matahari terbenam).",
-            jp: "私は今、断食をしています（日没まで水も食事もとりません）。",
-            romaji: "Watashi wa ima, danjiki o shiteimasu (nichibotsu made mizu mo shokuji mo torimasen)."
-        },
-        {
-            id: "jumat",
-            title: "Izin Sholat Jumat",
-            indo: "Setiap Jumat siang, saya harus pergi ke Masjid untuk ibadah wajib.",
-            jp: "毎週金曜日の昼は、モスクへ礼拝に行かなければなりません。",
-            romaji: "Maishuu kinyoubi no hiru wa, mosuku e reihai ni ikanakereba narimasen."
-        },
-        {
-            id: "salam",
-            title: "Salam Islami",
-            indo: "Assalamu'alaikum (Semoga kedamaian menyertai Anda).",
-            jp: "アッサラーム・アライクム (あなたに平安がありますように)",
-            romaji: "Assalamu'alaikum (Anata ni heian ga arimasu youni)"
-        }
+        { title: "Izin Sholat Sebentar", indo: "Maaf, sudah waktunya sholat. Bolehkah saya istirahat 10 menit?", jp: "すみません、お祈りの時間ですので、10分ほど休憩をいただいてもよろしいでしょうか？", romaji: "Sumimasen, oinori no jikan desunode, juppun hodo kyuukei o itadaitemo yoroshii deshouka?" },
+        { title: "Tidak Makan Babi", indo: "Saya Muslim, jadi saya tidak bisa makan daging babi.", jp: "私はイスラム教徒ですので、豚肉を食べることができません。", romaji: "Watashi wa isuramu kyouto desunode, butaniku o taberu koto ga dekimasen." },
+        { title: "Tidak Minum Alkohol", indo: "Maaf, agama saya melarang minum alkohol (Sake).", jp: "申し訳ありませんが、宗教上の理由でお酒を飲むことができません。", romaji: "Moushiwake arimasen ga, shuukyoujou no riyuu de osake o nomu koto ga dekimasen." },
+        { title: "Sedang Puasa", indo: "Saya sedang puasa (tidak makan & minum sampai matahari terbenam).", jp: "私は今、断食をしています（日没まで水も食事もとりません）。", romaji: "Watashi wa ima, danjiki o shiteimasu (nichibotsu made mizu mo shokuji mo torimasen)." },
+        { title: "Izin Sholat Jumat", indo: "Setiap Jumat siang, saya harus pergi ke Masjid untuk ibadah wajib.", jp: "毎週金曜日の昼は、モスクへ礼拝に行かなければなりません。", romaji: "Maishuu kinyoubi no hiru wa, mosuku e reihai ni ikanakereba narimasen." },
+        { title: "Salam Islami", indo: "Assalamu'alaikum (Semoga kedamaian menyertai Anda).", jp: "アッサラーム・アライクム (あなたに平安がありますように)", romaji: "Assalamu'alaikum (Anata ni heian ga arimasu youni)" },
+        { title: "Makanan Halal?", indo: "Apakah makanan ini Halal? (Tidak mengandung babi/alkohol)", jp: "これはハラルですか？（豚肉やアルコールが入っていませんか？）", romaji: "Kore wa Hararu desuka? (Butaniku ya arukooru ga haitte imasenka?)" }
     ];
 
-    // Fungsi Render
     const render = (items) => {
         grid.innerHTML = "";
         if(items.length === 0) {
             empty.classList.remove("hidden");
+            empty.classList.add("flex");
         } else {
             empty.classList.add("hidden");
+            empty.classList.remove("flex");
+            
             items.forEach(item => {
-                const card = document.createElement("div");
-                card.className = "bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group relative overflow-hidden";
-                card.innerHTML = `
-                    <div class="absolute top-0 left-0 w-1 h-full bg-pink-500 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-top"></div>
+                const el = document.createElement("div");
+                el.className = "bg-white p-5 rounded-xl border border-slate-200 hover:border-pink-300 hover:shadow-md transition-all group relative";
+                el.innerHTML = `
                     <div class="flex justify-between items-start mb-2">
-                        <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wide text-pink-600">${item.title}</h3>
-                        <button class="copy-btn text-slate-400 hover:text-pink-600" title="Salin Teks Jepang">
+                        <h4 class="font-bold text-slate-800 text-sm uppercase text-pink-600">${item.title}</h4>
+                        <button class="btn-copy text-slate-400 hover:text-pink-600 p-1" title="Salin">
                             <i data-lucide="copy" class="w-4 h-4"></i>
                         </button>
                     </div>
-                    <p class="text-xs text-slate-400 mb-3 italic">"${item.indo}"</p>
-                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                        <p class="text-lg font-bold text-slate-800 mb-1 leading-relaxed font-sans">${item.jp}</p>
-                        <p class="text-[10px] text-slate-500 font-mono">${item.romaji}</p>
+                    <p class="text-xs text-slate-400 italic mb-3">"${item.indo}"</p>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 group-hover:bg-pink-50/30 transition-colors">
+                        <p class="text-base font-bold text-slate-800 mb-1 font-sans select-all">${item.jp}</p>
+                        <p class="text-[10px] text-slate-500 font-mono select-all">${item.romaji}</p>
                     </div>
                 `;
                 
-                // Event Copy
-                const btnCopy = card.querySelector(".copy-btn");
-                btnCopy.addEventListener("click", () => {
+                // Copy Event
+                el.querySelector(".btn-copy").addEventListener("click", () => {
                     navigator.clipboard.writeText(item.jp);
-                    // Panggil Toast Notification (jika sudah pasang fitur Toast sebelumnya)
-                    if(window.showToast) window.showToast("Teks Jepang berhasil disalin!");
-                    else alert("Teks berhasil disalin!");
+                    if(window.showToast) window.showToast("Teks Jepang tersalin!");
                 });
 
-                grid.appendChild(card);
+                grid.appendChild(el);
             });
-            // Refresh icon Lucide
-            if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+            if(window.lucide) window.lucide.createIcons();
         }
     };
 
-    // Render Awal
     render(dataKamus);
 
-    // Event Search
     search.addEventListener("input", (e) => {
         const q = e.target.value.toLowerCase();
-        const filtered = dataKamus.filter(item => 
-            item.title.toLowerCase().includes(q) || 
-            item.indo.toLowerCase().includes(q)
+        const filtered = dataKamus.filter(i => 
+            i.title.toLowerCase().includes(q) || i.indo.toLowerCase().includes(q)
         );
         render(filtered);
     });
