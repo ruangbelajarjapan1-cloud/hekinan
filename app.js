@@ -7,7 +7,19 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 // 1. DATA & KONFIGURASI
 // ==========================================
 window.globalContentData = []; 
-
+// --- AUTO FIX GAMBAR RUSAK (QA) ---
+// Letakkan ini di bagian atas app.js (setelah window.globalContentData)
+window.addEventListener('error', function(e) {
+    if (e.target && e.target.tagName === 'IMG') {
+        // Hentikan loop jika logo cadangan juga rusak
+        if (e.target.src.includes('logohekinan.jpeg')) return;
+        
+        // Ganti gambar rusak dengan logo masjid
+        e.target.src = 'logohekinan.jpeg'; 
+        e.target.alt = "Gambar tidak tersedia";
+        e.target.classList.add("opacity-50", "grayscale"); // Efek visual biar ketahuan ini placeholder
+    }
+}, true); // 'true' penting agar error capture phase tertangkap
 const TARGET_DONASI = 42000000;
 const TERKUMPUL_SAAT_INI = 9686951;
 
@@ -303,6 +315,35 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function renderContent() {
+    // Di dalam async function renderContent() { ...
+// TEMPEL INI DI BARIS PERTAMA FUNGSI:
+
+  const showSkeleton = (id, count = 3) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      // HTML untuk kotak abu-abu berdenyut
+      const skeletonHTML = `
+        <div class="animate-pulse bg-white rounded-2xl border border-slate-100 p-5 shadow-sm h-full">
+            <div class="flex justify-between mb-4">
+                <div class="h-4 w-16 bg-slate-200 rounded"></div>
+                <div class="h-4 w-20 bg-slate-200 rounded"></div>
+            </div>
+            <div class="h-6 w-3/4 bg-slate-200 rounded mb-3"></div>
+            <div class="h-4 w-full bg-slate-200 rounded mb-2"></div>
+            <div class="h-4 w-2/3 bg-slate-200 rounded mb-6"></div>
+            <div class="h-10 w-full bg-slate-200 rounded-xl"></div>
+        </div>
+      `;
+      // Ulangi sebanyak 'count' kali
+      el.innerHTML = Array(count).fill(skeletonHTML).join("");
+  };
+
+  // Tampilkan skeleton sementara data loading
+  showSkeleton("wrapPengumuman", 3);
+  showSkeleton("artikelList", 3);
+  showSkeleton("kajianList", 3);
+
+  // ... (lanjutkan ke kode fetch data di bawahnya biarkan saja)
   window.globalContentData = []; 
 
   const mkCard = (x, type, index) => {
@@ -739,6 +780,43 @@ function initDonasi() {
     window.lucide?.createIcons?.();
     setTimeout(() => { b.className = originalClass; b.innerHTML = originalText; window.lucide?.createIcons?.(); }, 2000);
   }));
+    // --- FORMATTER UANG LIVE (UX) ---
+  // Tempel di bagian bawah fungsi initDonasi()
+  const formatInputUang = (selector, prefix) => {
+      const el = $(selector);
+      if(!el) return;
+      
+      // Saat user mengetik
+      el.addEventListener('input', (e) => {
+          // 1. Ambil angka saja (hapus titik/huruf)
+          let val = e.target.value.replace(/\D/g, ''); 
+          
+          // 2. Format jadi ribuan (contoh: 1.000.000)
+          if(val) {
+             // Simpan nilai asli di atribut data-value untuk perhitungan
+             el.dataset.realValue = val; 
+             // Tampilkan format cantik ke user
+             // Catatan: Input type harus 'text' untuk bisa ada titiknya, 
+             // tapi karena di HTML kita pakai type='number', kita ubah sedikit pendekatannya:
+             // KITA HANYA TAMPILKAN HINT DI BAWAHNYA
+             
+             let formatted = new Intl.NumberFormat('id-ID').format(val);
+             let hintId = selector + "Hint";
+             let hintEl = document.getElementById(hintId.replace("#",""));
+             
+             if(!hintEl) {
+                 hintEl = document.createElement("div");
+                 hintEl.id = hintId.replace("#","");
+                 hintEl.className = "text-xs text-emerald-400 font-bold mt-1 text-right";
+                 el.parentNode.appendChild(hintEl);
+             }
+             hintEl.textContent = `${prefix} ${formatted}`;
+          }
+      });
+  };
+
+  formatInputUang("#inputJPY", "¥");
+  formatInputUang("#inputIDR", "Rp");
 }
 
 function initCountdown() {
