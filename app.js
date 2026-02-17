@@ -948,7 +948,7 @@ function boot() {
     initDoa();
   initPopup();
 initTabs();
-    initKamusDakwah();
+    initKamusApp();
   // Pastikan Icon muncul
   if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
 
