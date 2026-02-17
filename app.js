@@ -736,9 +736,39 @@ async function renderSholat() {
         
         const m = { Fajr: ["Subuh", "sunrise"], Sunrise: ["Syuruq", "sun"], Dhuhr: ["Dzuhur", "sun"], Asr: ["Ashar", "cloud-sun"], Maghrib: ["Maghrib", "moon"], Isha: ["Isya", "star"] }; 
         g.innerHTML = ""; 
+        // --- KODE BARU (Highlight Jadwal) ---
         Object.keys(m).forEach(k => { 
-            g.innerHTML += `<div class="rounded-2xl border border-slate-100 p-4 text-center bg-slate-50 hover:bg-white hover:border-sky-200 transition-all shadow-sm"><i data-lucide="${m[k][1]}" class="w-5 h-5 mx-auto text-slate-400 mb-2"></i><div class="text-[10px] uppercase font-bold text-slate-400">${m[k][0]}</div><div class="mt-1 text-lg font-extrabold text-slate-800">${d.data.timings[k]}</div></div>`; 
+            // 1. Ambil angka jam dari waktu sholat (misal "18:05" -> ambil 18)
+            const timeStr = d.data.timings[k];
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            
+            // 2. Cek waktu sekarang
+            const now = new Date();
+            // Logika: Jika jam di HP sekarang == jam sholat, maka aktif
+            const isCurrentHour = now.getHours() === hours;
+
+            // 3. Tentukan Warna (Hijau jika aktif, Abu-abu jika tidak)
+            let cardClass = isCurrentHour 
+                ? "bg-emerald-600 border-emerald-600 text-white shadow-lg scale-105 ring-2 ring-emerald-200 z-10" 
+                : "bg-slate-50 border-slate-100 text-slate-800 hover:bg-white hover:border-sky-200";
+            
+            let iconClass = isCurrentHour 
+                ? "text-emerald-100 animate-pulse" 
+                : "text-slate-400";
+                
+            let labelClass = isCurrentHour
+                ? "text-emerald-100"
+                : "text-slate-400";
+
+            // 4. Masukkan ke HTML
+            g.innerHTML += `
+              <div class="rounded-2xl border p-4 text-center transition-all duration-300 ${cardClass}">
+                <i data-lucide="${m[k][1]}" class="w-5 h-5 mx-auto mb-2 ${iconClass}"></i>
+                <div class="text-[10px] uppercase font-bold ${labelClass}">${m[k][0]}</div>
+                <div class="mt-1 text-lg font-extrabold">${timeStr}</div>
+              </div>`; 
         }); 
+       
     } catch { 
         g.innerHTML = `<p class="col-span-full text-center text-red-400 text-xs">Gagal memuat jadwal.</p>`; 
     } 
