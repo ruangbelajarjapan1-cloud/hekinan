@@ -208,7 +208,27 @@ function setLang(lang) {
   renderHijri();
   document.dispatchEvent(new Event('langChanged'));
 }
+// --- TAMBAHAN KEAMANAN (Paste di app.js bagian Helper) ---
 
+// Fungsi untuk membersihkan teks dari script jahat tapi tetap membolehkan formatting dasar
+function sanitizeHTML(str) {
+  if (!str) return "";
+  // 1. Ganti karakter berbahaya dasar
+  let temp = str.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+  // 2. (Opsional) Kembalikan formatting aman jika Anda ingin bold/italic/breakline dari CSV
+  // Ini membolehkan Anda menulis [b]teks[/b] atau [br] di Excel/CSV
+  temp = temp.replace(/\[b\]/g, "<b>").replace(/\[\/b\]/g, "</b>")
+             .replace(/\[i\]/g, "<i>").replace(/\[\/i\]/g, "</i>")
+             .replace(/\[br\]/g, "<br>")
+             .replace(/\n/g, "<br>"); // Ganti enter jadi <br>
+             
+  return temp;
+}
 async function loadCsv(url) {
   try {
     const t = await fetch(url, { cache: "no-store" }).then(r => r.text());
@@ -235,7 +255,7 @@ window.openArticleModal = (index) => {
   document.getElementById("modalTitle").textContent = data.title || "";
   document.getElementById("modalDate").innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> ${data.date || "-"}`;
   document.getElementById("modalTag").textContent = data.tag || "Info";
-  document.getElementById("modalContent").innerHTML = (data.content || data.desc || "").replace(/\n/g, "<br>");
+  document.getElementById("modalContent").innerHTML = sanitizeHTML(data.content || data.desc || "");
 
   const modalFooter = modal.querySelector(".border-t"); 
   const oldBtn = document.getElementById("dynamicActionBtn");
@@ -246,6 +266,7 @@ window.openArticleModal = (index) => {
       btn.id = "dynamicActionBtn";
       btn.href = data.link_daftar;
       btn.target = "_blank";
+      btn.rel = "noopener noreferrer";
       btn.className = "flex items-center gap-2 text-xs font-bold text-white bg-sky-600 hover:bg-sky-700 px-4 py-2 rounded-lg transition-colors shadow-sm ml-auto mr-2";
       btn.innerHTML = `<i data-lucide="edit" class="w-3 h-3"></i> Daftar Kegiatan`;
       
@@ -285,6 +306,7 @@ async function renderContent() {
   window.globalContentData = []; 
 
   const mkCard = (x, type, index) => {
+    // 1. LOGIKA WARNA TAG (TIDAK BERUBAH)
     let tagColor = "bg-slate-100 text-slate-600 border-slate-200";
     let tagName = x.tag || (type === 'artikel' ? "Artikel" : "Info");
     
@@ -297,10 +319,12 @@ async function renderContent() {
         tagColor = "bg-emerald-50 text-emerald-700 border-emerald-100";
     }
 
+    // 2. LOGIKA TOMBOL (UPDATE KEAMANAN: REL="NOOPENER")
     let actionButton = "";
     if (x.link_daftar && x.link_daftar.length > 5) {
+        // Tambahan: rel="noopener noreferrer" agar link eksternal aman
         actionButton = `
-        <a href="${x.link_daftar}" target="_blank" class="relative z-10 mt-3 w-full block text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md shadow-sky-200 flex items-center justify-center gap-2">
+        <a href="${x.link_daftar}" target="_blank" rel="noopener noreferrer" class="relative z-10 mt-3 w-full block text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md shadow-sky-200 flex items-center justify-center gap-2">
            <i data-lucide="edit" class="w-4 h-4"></i> Daftar Sekarang
         </a>`;
     } else {
@@ -310,14 +334,27 @@ async function renderContent() {
         </button>`;
     }
 
+    // 3. SANITASI DATA (UPDATE KEAMANAN: XSS)
+    // Membersihkan judul dari kode berbahaya
+    const safeTitle = sanitizeHTML(x.title || "(Tanpa Judul)");
+    
+    // Ambil deskripsi, bersihkan kode berbahaya, lalu hapus tag HTML (<br>, <b> dll) 
+    // supaya tampilan kartu di depan tetap rapi (hanya teks polos)
+    const rawDesc = (type === 'artikel' ? x.excerpt : x.desc) || "";
+    const safeDesc = sanitizeHTML(rawDesc).replace(/<[^>]*>?/gm, '');
+
     return `
       <article class="group relative flex flex-col h-full bg-white rounded-2xl border border-slate-100 p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
         <div class="flex items-center justify-between mb-3">
-          <span class="${tagColor} border px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">${tagName}</span>
-          <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i> ${x.date || "-"}</span>
+          <span class="${tagColor} border px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">${sanitizeHTML(tagName)}</span>
+          <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1">
+            <i data-lucide="calendar" class="w-3 h-3"></i> ${sanitizeHTML(x.date || "-")}
+          </span>
         </div>
-        <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors">${x.title || "(Tanpa Judul)"}</h3>
-        <p class="text-sm text-slate-500 mb-4 line-clamp-3 flex-grow leading-relaxed">${(type === 'artikel' ? x.excerpt : x.desc) || "Klik tombol di bawah untuk melihat detail informasi ini."}</p>
+        
+        <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors">${safeTitle}</h3>
+        <p class="text-sm text-slate-500 mb-4 line-clamp-3 flex-grow leading-relaxed">${safeDesc || "Klik tombol di bawah untuk melihat detail informasi ini."}</p>
+        
         <div class="mt-auto pt-3 border-t border-slate-50">${actionButton}</div>
       </article>`;
   };
@@ -463,6 +500,7 @@ function initPopup() {
           const link = document.createElement("a");
           link.href = data.link || "#";
           link.target = "_blank";
+          link.rel = "noopener noreferrer";
           link.className = "block w-full h-full cursor-pointer";
 
           const img = document.createElement("img");
