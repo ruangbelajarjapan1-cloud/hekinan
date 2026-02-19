@@ -145,21 +145,22 @@
     <div class="max-w-2xl mx-auto text-center mb-10">
         <h3 class="text-xl font-bold text-slate-800 mb-2" data-i18n="rmd_section_title">Mengapa Wakaf di Ramadhan?</h3>
 
-<div><h4 class="font-bold text-slate-800 text-sm" data-i18n="rmd_reason_1_title">Pahala Berlipat Ganda</h4><p class="text-xs text-slate-500 mt-1" data-i18n="rmd_reason_1_desc">Sunnah jadi wajib, wajib jadi 70x lipat.</p></div>
+        <div><h4 class="font-bold text-slate-800 text-sm" data-i18n="rmd_reason_1_title">Pahala Berlipat Ganda</h4><p class="text-xs text-slate-500 mt-1" data-i18n="rmd_reason_1_desc">Sunnah jadi wajib, wajib jadi 70x lipat.</p></div>
 
-<div><h4 class="font-bold text-slate-800 text-sm" data-i18n="rmd_reason_2_title">Mengejar Deadline Mei</h4><p class="text-xs text-slate-500 mt-1" data-i18n="rmd_reason_2_desc">Menyelamatkan aset umat sebelum jatuh tempo.</p></div>
+        <div><h4 class="font-bold text-slate-800 text-sm" data-i18n="rmd_reason_2_title">Mengejar Deadline Mei</h4><p class="text-xs text-slate-500 mt-1" data-i18n="rmd_reason_2_desc">Menyelamatkan aset umat sebelum jatuh tempo.</p></div>
 
-<div><h4 class="font-bold text-slate-800 text-sm" data-i18n="rmd_reason_3_title">Hadiah Orang Tua</h4><p class="text-xs text-slate-500 mt-1" data-i18n="rmd_reason_3_desc">Wakaf atas nama orang tua yang sudah wafat.</p></div>
+        <div><h4 class="font-bold text-slate-800 text-sm" data-i18n="rmd_reason_3_title">Hadiah Orang Tua</h4><p class="text-xs text-slate-500 mt-1" data-i18n="rmd_reason_3_desc">Wakaf atas nama orang tua yang sudah wafat.</p></div>
 
-<div><h4 class="font-bold text-slate-800 text-sm" data-i18n="rmd_reason_4_title">Naungan di Akhirat</h4><p class="text-xs text-slate-500 mt-1" data-i18n="rmd_reason_4_desc">Sedekah akan menjadi naungan di hari kiamat.</p></div>
+        <div><h4 class="font-bold text-slate-800 text-sm" data-i18n="rmd_reason_4_title">Naungan di Akhirat</h4><p class="text-xs text-slate-500 mt-1" data-i18n="rmd_reason_4_desc">Sedekah akan menjadi naungan di hari kiamat.</p></div>
     </div>
   </section>
 
   <div id="wakafModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 text-left font-sans">
     <div id="modalBackdrop" class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity cursor-pointer"></div>
-    <div class="relative w-full max-w-md bg-white rounded-2xl shadow-2xl transform scale-95 transition-all animate-[fadeUp_0.3s_ease-out] flex flex-col max-h-[90vh]">
+    <div class="relative w-full max-w-md bg-white rounded-2xl shadow-2xl transform scale-95 transition-all animate-[fadeUp_0.3s_ease-out] flex flex-col max-h-[90vh] overflow-hidden">
       
-      <div id="viewForm" class="flex flex-col h-full">
+      <div id="viewForm" class="flex flex-col flex-1 min-h-0">
+          
           <div class="p-6 bg-emerald-600 rounded-t-2xl text-center relative overflow-hidden shrink-0">
             <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]"></div>
             <button id="btnCloseModal" class="absolute top-4 right-4 text-white/70 hover:text-white transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
@@ -170,7 +171,7 @@
             <p class="text-emerald-100 text-sm relative z-10" data-i18n="rmd_modal_subtitle">Pilih nominal sedekah rutin</p>
           </div>
 
-          <div class="p-6 overflow-y-auto bg-slate-50 grow">
+          <div class="p-6 overflow-y-auto bg-slate-50 flex-1">
             
             <div class="flex bg-slate-200 p-1 rounded-xl mb-6 relative">
                 <div id="modeActiveBg" class="absolute left-1 top-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-lg shadow-sm transition-all duration-300"></div>
@@ -185,6 +186,7 @@
                 <div class="flex-1"><span class="block font-bold text-slate-800 text-lg">¥1.000 <span class="text-sm font-normal text-slate-400 label-period">/hari</span></span></div>
                 <div class="absolute inset-0 border-2 border-emerald-500 rounded-xl opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></div>
               </label>
+              
               <label class="relative flex items-center p-4 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-emerald-500 transition-all group shadow-sm">
                 <div class="absolute -top-2.5 right-4 bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm z-10">POPULER</div>
                 <input type="radio" name="nominalWakaf" value="5000" class="peer sr-only">
@@ -192,6 +194,7 @@
                 <div class="flex-1"><span class="block font-bold text-slate-800 text-lg">¥5.000 <span class="text-sm font-normal text-slate-400 label-period">/hari</span></span></div>
                 <div class="absolute inset-0 border-2 border-emerald-500 rounded-xl opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></div>
               </label>
+              
               <label class="relative flex flex-col p-4 bg-white border-2 border-slate-200 rounded-xl cursor-pointer hover:border-emerald-500 transition-all group shadow-sm">
                 <div class="flex items-center">
                   <input type="radio" name="nominalWakaf" value="custom" id="radioCustom" class="peer sr-only">
@@ -275,17 +278,14 @@
 
   <script type="module" src="./app.js"></script>
   <script>
-// Sinkronisasi Progress Donasi ke Halaman Ramadhan
 document.addEventListener("DOMContentLoaded", () => {
-  // Ambil data dari app.js yang sudah bersifat Global
-  const T = 42000000; // Target
-  const C = 9519843;  // Terkumpul (Sesuai konstanta Anda di app.js)
+  const T = 42000000; 
+  const C = 9519843;  
   
   const percent = Math.round((C / T) * 100);
   
-  // Jika Anda menambahkan elemen progress di ramadhan.html seperti saran saya sebelumnya:
   const bar = document.querySelector(".bg-emerald-500.h-full");
-  const label = document.querySelector(".text-emerald-600.font-bold"); // Elemen persentase
+  const label = document.querySelector(".text-emerald-600.font-bold"); 
   
   if(bar) bar.style.width = percent + "%";
   if(label) label.textContent = percent + "%";
@@ -302,7 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   async function initSmartImsakiyah() {
-      const LAT = 34.884, LON = 136.993; // Hekinan
+      const LAT = 34.884, LON = 136.993; 
       const today = new Date();
       const elLabel = document.getElementById("timeLabel"); 
       const elTimer = document.getElementById("timeCountdown");
@@ -339,17 +339,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (now < timeSubuh) {
         targetDate = timeSubuh;
-        // Menggunakan kunci rmd_time_sahur
         labelText = lang === 'en' ? "Sahur Time (Towards Fajr)" : "Waktu Sahur (Menuju Subuh)";
         labelClass = "text-[10px] md:text-xs font-bold text-emerald-300 mb-1 uppercase tracking-wider";
     } else if (now >= timeSubuh && now < timeMaghrib) {
         targetDate = timeMaghrib;
-        // Menggunakan kunci rmd_time_fasting
         labelText = lang === 'en' ? "Happy Fasting (Towards Maghrib)" : "Selamat Berpuasa (Menuju Maghrib)";
         labelClass = "text-[10px] md:text-xs font-bold text-white mb-1 uppercase tracking-wider";
     } else {
         targetDate = null;
-        // Menggunakan kunci rmd_time_break
         labelText = lang === 'en' ? "Alhamdulillah It's Iftar Time" : "Alhamdulillah Telah Berbuka";
         labelClass = "text-[10px] md:text-xs font-bold text-emerald-400 mb-1 uppercase tracking-wider";
     }
@@ -384,7 +381,6 @@ document.addEventListener("DOMContentLoaded", () => {
         tName.textContent = names[Math.floor(Math.random() * names.length)];
         const amount = amounts[Math.floor(Math.random() * amounts.length)];
         
-        // Perbaikan di sini: Logika ganti bahasa untuk notifikasi
         const textAction = lang === 'en' ? "Just donated" : "Baru saja wakaf";
         tAmount.innerHTML = `${textAction} <span class="font-bold text-amber-600">${amount}</span>`;
         
@@ -398,7 +394,6 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(startFakeNotifications, 5000);
       initSmartImsakiyah();
 
-      // SWITCH MODE
       let currentMode = 'daily';
       const btnDaily = document.getElementById("btnModeDaily");
       const btnWeekly = document.getElementById("btnModeWeekly");
@@ -429,7 +424,6 @@ document.addEventListener("DOMContentLoaded", () => {
       
       document.addEventListener('langChanged', () => updateMode(currentMode));
 
-      // DEDIKASI
       const checkDedikasi = document.getElementById("checkDedikasi");
       const boxDedikasi = document.getElementById("boxDedikasi");
       const inputDedikasi = document.getElementById("inputDedikasi");
@@ -438,7 +432,6 @@ document.addEventListener("DOMContentLoaded", () => {
           else { boxDedikasi.classList.add("hidden"); }
       });
 
-      // RADIO & IMPACT
       const radios = document.querySelectorAll('input[name="nominalWakaf"]');
       const customBox = document.getElementById("customInputBox");
       const customInput = document.getElementById("inputCustomNominal");
@@ -464,7 +457,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       });
 
-      // KIRIM WA
       document.getElementById("btnConfirmWakaf")?.addEventListener("click", () => {
         const nama = document.getElementById("inputNamaPeserta").value;
         const selectedRadio = document.querySelector('input[name="nominalWakaf"]:checked');
