@@ -277,7 +277,8 @@
   </footer>
 
   <script type="module" src="./app.js"></script>
-  <script>
+ <script>
+// Sinkronisasi Progress Donasi ke Halaman Ramadhan
 document.addEventListener("DOMContentLoaded", () => {
   const T = 42000000; 
   const C = 9519843;  
@@ -285,7 +286,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const percent = Math.round((C / T) * 100);
   
   const bar = document.querySelector(".bg-emerald-500.h-full");
-  const label = document.querySelector(".text-emerald-600.font-bold"); 
+  // PERBAIKAN: Ganti selector agar lebih spesifik mencari ID, bukan class warna
+  const label = document.querySelector("#labelPersentaseRamadhan"); 
   
   if(bar) bar.style.width = percent + "%";
   if(label) label.textContent = percent + "%";
