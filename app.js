@@ -21,7 +21,7 @@ window.addEventListener('error', function(e) {
     }
 }, true); // 'true' penting agar error capture phase tertangkap
 const TARGET_DONASI = 42000000;
-const TERKUMPUL_SAAT_INI = 9687055;
+const TERKUMPUL_SAAT_INI = 9691822;
 
 // Koordinat Hekinan, Jepang
 const HEK_LAT = 34.884;
@@ -44,7 +44,7 @@ const POPUP_SLIDES_DATA = [
 ]; 
 
 const VIDEO_DONASI_LIST = ["jfKfPRdk", "dQwgXcQ"];
-const YOUTUBE_VIDEOS = ["OvQjcl65BR8", "zEu4jVpgB_8", "oQjqwQb6atA"];
+const YOUTUBE_VIDEOS = ["PLxj2S1OWqdDCfhtsJG1wWj17U6FNbJYnH", "zEu4jVpgB_8", "oQjqwQb6atA"];
 const LOCAL_IMAGES = ["1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "6.jpeg", "7.jpeg"];
 
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
