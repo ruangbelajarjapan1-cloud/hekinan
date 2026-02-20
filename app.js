@@ -44,7 +44,7 @@ const POPUP_SLIDES_DATA = [
 ]; 
 
 const VIDEO_DONASI_LIST = ["jfKfPRdk", "dQwgXcQ"];
-const YOUTUBE_VIDEOS = ["pCTZQmBQi_8&list", "zEu4jVpgB_8", "oQjqwQb6atA"];
+const YOUTUBE_VIDEOS = ["pCTZQmBQi_8", "zEu4jVpgB_8", "oQjqwQb6atA"];
 const LOCAL_IMAGES = ["1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "6.jpeg", "7.jpeg"];
 
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
