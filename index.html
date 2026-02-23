@@ -174,17 +174,35 @@
 
 <section id="sholat" class="container mx-auto px-4 py-6 relative z-10">
   <div class="rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-card reveal">
+    
     <div class="flex justify-between items-center mb-6">
       <div class="flex items-center gap-3">
-  <h2 class="text-2xl font-extrabold flex items-center gap-2 text-slate-900"><i data-lucide="sun" class="text-fig-accent"></i> <span data-i18n="sholat_title">Jadwal Sholat</span></h2>
-  <button onclick="window.bukaPopupJamaah()" class="text-[10px] md:text-xs font-bold bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-full hover:bg-emerald-200 transition-colors border border-emerald-200 flex items-center gap-1 shadow-sm active:scale-95">
-    <i data-lucide="clock" class="w-3 h-3"></i> Info Jamaah
-  </button>
-</div>
-      <button id="refreshSholat" class="text-sm text-fig-primary hover:underline flex items-center gap-1"><i data-lucide="refresh-cw" class="w-3 h-3"></i> Update</button>
+        <h2 class="text-2xl font-extrabold flex items-center gap-2 text-slate-900">
+          <i data-lucide="sun" class="text-fig-accent"></i> <span data-i18n="sholat_title">Jadwal Sholat</span>
+        </h2>
+        <button onclick="window.bukaPopupJamaah()" class="text-[10px] md:text-xs font-bold bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-full hover:bg-emerald-200 transition-colors border border-emerald-200 flex items-center gap-1 shadow-sm active:scale-95">
+          <i data-lucide="clock" class="w-3 h-3"></i> Info Jamaah
+        </button>
+      </div>
+      <button id="refreshSholat" class="hidden md:flex text-sm text-fig-primary hover:underline items-center gap-1">
+        <i data-lucide="refresh-cw" class="w-3 h-3"></i> Update
+      </button>
     </div>
-    <div id="sholatGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3"></div>
-    <p class="mt-4 text-center text-xs text-slate-400" id="locLabel">Mendeteksi lokasi...</p>
+
+    <div class="relative group">
+      <button id="btnScrollLeft" class="absolute left-0 top-1/2 -translate-y-1/2 -ml-3 z-20 w-10 h-10 bg-slate-600/80 hover:bg-slate-800 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm shadow-md hidden md:flex">
+         <i data-lucide="chevron-left" class="w-5 h-5"></i>
+      </button>
+
+      <div id="sholatGrid" class="flex overflow-x-auto snap-x hide-scrollbar gap-4 pb-4 px-1">
+         </div>
+
+      <button id="btnScrollRight" class="absolute right-0 top-1/2 -translate-y-1/2 -mr-3 z-20 w-10 h-10 bg-slate-400/80 hover:bg-slate-600 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm shadow-md hidden md:flex">
+         <i data-lucide="chevron-right" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <p class="mt-2 text-center text-xs text-slate-400" id="locLabel">Mendeteksi lokasi...</p>
   </div>
 </section>
 
@@ -835,6 +853,7 @@
 </div>
 </body>
 </html>
+
 
 
 
