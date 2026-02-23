@@ -656,51 +656,97 @@ async function initSmartCarousel() {
 }
 
 // ----------------------------------------------------
-// UPDATE: JADWAL SHOLAT & IQOMAH (FIXED LOCATION & SPREADSHEET)
+// UPDATE: JADWAL SHOLAT (API) + IQOMAH (SPREADSHEET) DI KARTU
 // ----------------------------------------------------
 async function renderSholat() { 
     const g = $("#sholatGrid"); const l = $("#locLabel"); 
     if (!g) return; 
     
-    g.innerHTML = `<div class="col-span-full text-center py-4"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-slate-400"></i></div>`;
+    g.innerHTML = `<div class="w-full text-center py-4"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-slate-400"></i></div>`;
     
     try {
         if (l) l.textContent = `Hekinan, Japan (${HEK_LAT}, ${HEK_LON})`;
         
-        // Memakai parameter presisi: MWL (method=3), Syafi'i (school=0), dan Tune (Ikhtiyat)
+        // 1. Ambil Jam Adzan (API Aladhan - Presisi Salatuk MWL)
         const d = await fetch(`https://api.aladhan.com/v1/timings?latitude=${HEK_LAT}&longitude=${HEK_LON}&method=3&school=0&tune=0,2,0,1,1,0,2,1`).then(r => r.json()); 
-        
         if (d.data && d.data.date && d.data.date.hijri) renderHijri(d.data.date.hijri); 
         
+        // 2. Ambil Jam Jamaah (Spreadsheet)
+        let iqomahData = [];
+        try {
+            iqomahData = await loadCsv(DEFAULT_IQOMAH_CSV); // Pastikan DEFAULT_IQOMAH_CSV sudah dideklarasi di atas
+        } catch(e) { console.error("Gagal load Iqomah CSV", e); }
+
+        const now = new Date();
+        const dayOfWeek = now.getDay(); // 0=Minggu, 5=Jumat
+
+        // Fungsi pencari jam jamaah dari data CSV
+        const getIqomah = (namaSholat) => {
+            if (iqomahData.length === 0) return "-";
+            let key = namaSholat;
+            if (namaSholat === "Isya") key = (dayOfWeek === 0 || dayOfWeek === 6) ? "Isya_Weekend" : "Isya_Weekday";
+            if (namaSholat === "Dzuhur" && dayOfWeek === 5) key = "Jumat";
+            
+            const row = iqomahData.find(x => x.sholat && x.sholat.toLowerCase() === key.toLowerCase());
+            return row ? row.jam : "-";
+        };
+
         const m = { Fajr: ["Subuh", "sunrise"], Sunrise: ["Syuruq", "sun"], Dhuhr: ["Dzuhur", "sun"], Asr: ["Ashar", "cloud-sun"], Maghrib: ["Maghrib", "moon"], Isha: ["Isya", "star"] }; 
         g.innerHTML = ""; 
         
-        const now = new Date();
-
+        // 3. Render Kartu per waktu sholat
         Object.keys(m).forEach(k => { 
+            const namaSholat = m[k][0];
             const timeStr = d.data.timings[k];
             const [hours, minutes] = timeStr.split(':').map(Number);
             const isCurrentHour = now.getHours() === hours;
 
+            let iqomahTime = getIqomah(namaSholat);
+            let displayNamaSholat = (namaSholat === "Dzuhur" && dayOfWeek === 5) ? "Jum'at" : namaSholat;
+
+            // Logika UI: Highlight warna jika masuk waktu sholat
             let cardClass = isCurrentHour 
-                ? "bg-emerald-600 border-emerald-600 text-white shadow-lg scale-105 ring-2 ring-emerald-200 z-10" 
-                : "bg-slate-50 border-slate-100 text-slate-800 hover:bg-white hover:border-sky-200";
+                ? "bg-emerald-50 border-emerald-400 shadow-md ring-1 ring-emerald-200" // Waktu aktif
+                : "bg-white border-slate-100 shadow-sm hover:border-emerald-200 hover:shadow-md"; // Waktu normal
             
-            let iconClass = isCurrentHour ? "text-emerald-100 animate-pulse" : "text-slate-400";
-            let labelClass = isCurrentHour ? "text-emerald-100" : "text-slate-400";
+            let iconClass = isCurrentHour ? "text-emerald-600 animate-pulse" : "text-slate-400";
+            let labelClass = isCurrentHour ? "text-emerald-700" : "text-slate-500";
+            let textClass = isCurrentHour ? "text-emerald-900" : "text-slate-800";
+
+            // UI Kotak Hijau Jamaah persis seperti Screenshot
+            let iqomahHtml = namaSholat === "Syuruq" 
+                ? `<div class="mt-4 text-[10px] text-transparent select-none py-1.5">-</div>` // Kosongkan untuk syuruq
+                : `<div class="mt-4 flex items-center justify-between text-[11px] font-bold py-1.5 px-3 rounded-lg border border-emerald-200 bg-white text-emerald-600 shadow-sm">
+                     <span>Jamaah:</span> <span class="text-sm font-extrabold">${iqomahTime}</span>
+                   </div>`;
 
             g.innerHTML += `
-              <div class="rounded-2xl border p-4 text-center transition-all duration-300 ${cardClass}">
-                <i data-lucide="${m[k][1]}" class="w-5 h-5 mx-auto mb-2 ${iconClass}"></i>
-                <div class="text-[10px] uppercase font-bold ${labelClass}">${m[k][0]}</div>
-                <div class="mt-1 text-2xl font-extrabold">${timeStr}</div>
+              <div class="snap-center shrink-0 w-[140px] md:w-[150px] lg:flex-1 rounded-2xl border p-4 text-center transition-all duration-300 flex flex-col justify-between ${cardClass}">
+                <div>
+                  <i data-lucide="${m[k][1]}" class="w-6 h-6 mx-auto mb-3 ${iconClass}"></i>
+                  <div class="text-[10px] uppercase font-bold tracking-widest ${labelClass}">${displayNamaSholat}</div>
+                  <div class="mt-1 text-3xl font-extrabold tracking-tight ${textClass}">${timeStr}</div>
+                </div>
+                ${iqomahHtml}
               </div>`; 
         }); 
-       if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+        
+        if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+
+        // 4. Aktifkan Tombol Scroll Kiri/Kanan
+        const grid = document.getElementById("sholatGrid");
+        document.getElementById("btnScrollLeft")?.addEventListener("click", () => {
+            grid.scrollBy({ left: -160, behavior: "smooth" });
+        });
+        document.getElementById("btnScrollRight")?.addEventListener("click", () => {
+            grid.scrollBy({ left: 160, behavior: "smooth" });
+        });
+
     } catch { 
-        g.innerHTML = `<p class="col-span-full text-center text-red-400 text-xs">Gagal memuat jadwal.</p>`; 
+        g.innerHTML = `<p class="w-full text-center text-red-400 text-xs">Gagal memuat jadwal. Pastikan Link CSV benar.</p>`; 
     } 
 }
+
 function initDonasi() {
   const fmt = (n, c) => { const symbol = c === 'JPY' ? '¥' : 'Rp'; return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n); };
   const T = TARGET_DONASI, C = TERKUMPUL_SAAT_INI, K = T - C;
