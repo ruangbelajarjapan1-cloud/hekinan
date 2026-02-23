@@ -247,7 +247,29 @@ function sanitizeHTML(str) {
              
   return temp;
 }
+// --- FUNGSI SMART CACHE UNTUK GOOGLE SHEET ---
 async function loadCsv(url) {
+  // 1. Buat "Kunci" unik untuk setiap URL (Iqomah, Kajian, Artikel)
+  const cacheKey = "cache_data_" + url;
+  const cacheTimeKey = "cache_time_" + url;
+  
+  // 2. Atur Durasi Simpan (Contoh: 60 menit)
+  // 60 menit * 60 detik * 1000 milidetik
+  const CACHE_DURATION = 60 * 60 * 1000; 
+  
+  // 3. Cek memori HP (localStorage) apakah data masih segar
+  const cachedData = localStorage.getItem(cacheKey);
+  const cachedTime = localStorage.getItem(cacheTimeKey);
+  const now = new Date().getTime();
+
+  // Jika data ada dan belum kedaluwarsa, langsung tampilkan (0 loading!)
+  if (cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
+      console.log("⚡ Data diambil dari Cache (Super Cepat!):", url);
+      return JSON.parse(cachedData);
+  }
+
+  // 4. Jika memori kosong atau data sudah usang (> 60 menit), ambil baru dari Google
+  console.log("🔄 Mengunduh data baru dari Google Sheet:", url);
   try {
     const t = await fetch(url, { cache: "no-store" }).then(r => r.text());
     const r = []; let i = 0, c = "", row = [], q = false;
@@ -259,9 +281,23 @@ async function loadCsv(url) {
       c += char; i++;
     }
     if (c || row.length) { row.push(c); r.push(row); }
+    
+    // Jika sheet ternyata kosong
+    if (r.length === 0 || !r[0]) return [];
+
     const h = r[0].map(x => x.trim().toLowerCase());
-    return r.slice(1).map(v => { const o = {}; h.forEach((k, x) => o[k] = v[x]?.trim() || ""); return o; });
-  } catch { return []; }
+    const finalData = r.slice(1).map(v => { const o = {}; h.forEach((k, x) => o[k] = v[x]?.trim() || ""); return o; });
+    
+    // 5. Simpan data baru ke memori HP agar kunjungan berikutnya instan
+    localStorage.setItem(cacheKey, JSON.stringify(finalData));
+    localStorage.setItem(cacheTimeKey, now.toString());
+
+    return finalData;
+  } catch { 
+    // Fallback: Jika internet mati/Google error, coba pakai data usang di memori (jika ada)
+    if (cachedData) return JSON.parse(cachedData);
+    return []; 
+  }
 }
 
 window.openArticleModal = (index) => {
