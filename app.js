@@ -32,6 +32,11 @@ const HEK_LON = 136.993;
 // Slide 2, 3, dst ditambahkan di sini:
 const POPUP_SLIDES_DATA = [
     { 
+        src: "assets/foto/w.jpeg",  // <-- Ganti dengan nama file poster Dauroh Anda
+        link: "https://wa.me/818088452258", // <-- MASUKKAN LINK GOOGLE FORM DISINI
+        text: "Wakaf media" // Tulisan di tombol
+    },
+    { 
         src: "assets/foto/d1.jpeg",  // <-- Ganti dengan nama file poster Dauroh Anda
         link: "https://forms.gle/zJqA2Eba2FaxvrXv6", // <-- MASUKKAN LINK GOOGLE FORM DISINI
         text: "Daftar Dauroh" // Tulisan di tombol
