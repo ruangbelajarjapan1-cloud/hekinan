@@ -669,7 +669,7 @@ async function renderSholat() {
         if (l) l.textContent = `Hekinan, Japan (${HEK_LAT}, ${HEK_LON})`;
         
         // 1. Ambil data waktu Adzan dari API
-        const d = await fetch(`https://api.aladhan.com/v1/timings?latitude=${HEK_LAT}&longitude=${HEK_LON}&method=3`).then(r => r.json());
+        const d = await fetch(`https://api.aladhan.com/v1/timings?latitude=${HEK_LAT}&longitude=${HEK_LON}&method=3&school=0&tune=0,2,0,1,1,0,2,1`).then(r => r.json());
         if (d.data && d.data.date && d.data.date.hijri) renderHijri(d.data.date.hijri); 
         
         // 2. Ambil data Iqomah/Jamaah dari Spreadsheet CSV
