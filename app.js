@@ -662,91 +662,43 @@ async function renderSholat() {
     const g = $("#sholatGrid"); const l = $("#locLabel"); 
     if (!g) return; 
     
-    // Tampilan loading UI
     g.innerHTML = `<div class="col-span-full text-center py-4"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-slate-400"></i></div>`;
     
     try {
         if (l) l.textContent = `Hekinan, Japan (${HEK_LAT}, ${HEK_LON})`;
         
-        // 1. Ambil data waktu Adzan dari API
-        const d = await fetch(`https://api.aladhan.com/v1/timings?latitude=${HEK_LAT}&longitude=${HEK_LON}&method=3&school=0&tune=0,2,0,1,1,0,2,1`).then(r => r.json());
+        // Memakai parameter presisi: MWL (method=3), Syafi'i (school=0), dan Tune (Ikhtiyat)
+        const d = await fetch(`https://api.aladhan.com/v1/timings?latitude=${HEK_LAT}&longitude=${HEK_LON}&method=3&school=0&tune=0,2,0,1,1,0,2,1`).then(r => r.json()); 
+        
         if (d.data && d.data.date && d.data.date.hijri) renderHijri(d.data.date.hijri); 
         
-        // 2. Ambil data Iqomah/Jamaah dari Spreadsheet CSV
-        let iqomahData = [];
-        try {
-            // Memanggil link CSV Iqomah yang sudah kita set di atas
-            iqomahData = await loadCsv(DEFAULT_IQOMAH_CSV);
-        } catch(e) { console.error("Gagal load Iqomah CSV", e); }
-
-        const now = new Date();
-        const dayOfWeek = now.getDay(); // 0 = Minggu, 5 = Jumat, 6 = Sabtu
-
-        // 3. Fungsi Helper untuk mencocokkan jadwal API dengan Spreadsheet
-        const getIqomah = (namaSholat) => {
-            if (iqomahData.length === 0) return "-";
-            let key = namaSholat;
-            
-            // Logika UI: Pisahkan jadwal Isya Weekend dan Weekday
-            if (namaSholat === "Isya") {
-                key = (dayOfWeek === 0 || dayOfWeek === 6) ? "Isya_Weekend" : "Isya_Weekday";
-            }
-            // Logika UI: Jika hari Jumat, Dzuhur diganti jadwal Jumat
-            if (namaSholat === "Dzuhur" && dayOfWeek === 5) {
-                key = "Jumat";
-            }
-            
-            const row = iqomahData.find(x => x.sholat && x.sholat.toLowerCase() === key.toLowerCase());
-            return row ? row.jam : "-";
-        };
-
         const m = { Fajr: ["Subuh", "sunrise"], Sunrise: ["Syuruq", "sun"], Dhuhr: ["Dzuhur", "sun"], Asr: ["Ashar", "cloud-sun"], Maghrib: ["Maghrib", "moon"], Isha: ["Isya", "star"] }; 
         g.innerHTML = ""; 
         
-        // 4. Render Kartu HTML
+        const now = new Date();
+
         Object.keys(m).forEach(k => { 
-            const namaSholat = m[k][0];
-            const timeStr = d.data.timings[k]; // Waktu Adzan
+            const timeStr = d.data.timings[k];
             const [hours, minutes] = timeStr.split(':').map(Number);
             const isCurrentHour = now.getHours() === hours;
 
-            // Ambil waktu jamaah dari sheet
-            let iqomahTime = getIqomah(namaSholat);
-            
-            // UX Teks: Ubah label Dzuhur jadi Jum'at di hari Jumat
-            let displayNamaSholat = namaSholat;
-            if (namaSholat === "Dzuhur" && dayOfWeek === 5) {
-                displayNamaSholat = "Jum'at";
-            }
-
-            // Desain Warna Kartu (Aktif vs Normal)
             let cardClass = isCurrentHour 
                 ? "bg-emerald-600 border-emerald-600 text-white shadow-lg scale-105 ring-2 ring-emerald-200 z-10" 
                 : "bg-slate-50 border-slate-100 text-slate-800 hover:bg-white hover:border-sky-200";
+            
             let iconClass = isCurrentHour ? "text-emerald-100 animate-pulse" : "text-slate-400";
             let labelClass = isCurrentHour ? "text-emerald-100" : "text-slate-400";
-            let iqomahClass = isCurrentHour ? "bg-emerald-700/50 text-white border-emerald-500/50" : "bg-white text-emerald-700 border-emerald-200 shadow-sm";
-
-            // Desain Waktu Jamaah (Syuruq tidak punya jam jamaah)
-            let iqomahHtml = namaSholat === "Syuruq" 
-                ? `<div class="mt-3 text-[10px] font-medium text-slate-400 py-1">-</div>`
-                : `<div class="mt-3 flex items-center justify-between text-[10px] font-bold py-1.5 px-3 rounded-lg border ${iqomahClass} transition-colors">
-                     <span>Jamaah:</span> <span class="text-sm">${iqomahTime}</span>
-                   </div>`;
 
             g.innerHTML += `
-              <div class="rounded-2xl border p-4 text-center transition-all duration-300 flex flex-col justify-between ${cardClass}">
-                <div>
-                  <i data-lucide="${m[k][1]}" class="w-5 h-5 mx-auto mb-2 ${iconClass}"></i>
-                  <div class="text-[10px] uppercase font-bold ${labelClass}">${displayNamaSholat}</div>
-                  <div class="mt-1 text-2xl font-extrabold tracking-tight">${timeStr}</div>
-                </div>
-                ${iqomahHtml}
+              <div class="rounded-2xl border p-4 text-center transition-all duration-300 ${cardClass}">
+                <i data-lucide="${m[k][1]}" class="w-5 h-5 mx-auto mb-2 ${iconClass}"></i>
+                <div class="text-[10px] uppercase font-bold ${labelClass}">${m[k][0]}</div>
+                <div class="mt-1 text-2xl font-extrabold">${timeStr}</div>
               </div>`; 
         }); 
        if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
     } catch { 
-        g.innerHTML = `<p class="col-span-full text-center text-red-400 text-xs">Gagal memuat jadwal dari sistem.</p>`; 
+        g.innerHTML = `<p class="col-span-full text-center text-red-400 text-xs">Gagal memuat jadwal.</p>`; 
     } 
 }
 function initDonasi() {
@@ -958,6 +910,58 @@ function initKamusApp() {
         render(filtered);
     });
 }
+// ==========================================
+// FITUR POPUP JADWAL JAMAAH VIA SPREADSHEET
+// ==========================================
+window.bukaPopupJamaah = async () => {
+    const modal = $("#modalJamaah");
+    const container = $("#isiJadwalJamaah");
+    if (!modal || !container) return;
+
+    // Tampilkan Popup
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    if(window.lucide) window.lucide.createIcons();
+
+    try {
+        // Ambil data dari Spreadsheet (CSV)
+        const d = await loadCsv(DEFAULT_IQOMAH_CSV);
+        
+        if (d.length === 0) {
+            container.innerHTML = `<p class="text-center text-xs text-red-500">Data jadwal belum tersedia di Spreadsheet.</p>`;
+            return;
+        }
+
+        // Render HTML
+        container.innerHTML = "";
+        d.forEach(item => {
+            // Abaikan jika baris kosong
+            if(!item.sholat || !item.jam) return;
+            
+            // Format teks agar rapi (Contoh: isya_weekend -> Isya Weekend)
+            let nama = item.sholat.replace(/_/g, ' ').toUpperCase();
+            
+            // Desain Baris Jadwal
+            container.innerHTML += `
+            <div class="flex justify-between items-center bg-slate-50 border border-slate-100 p-3 rounded-xl hover:bg-emerald-50 hover:border-emerald-100 transition-colors">
+                <span class="text-xs font-bold text-slate-600">${nama}</span>
+                <span class="text-sm font-extrabold text-emerald-700 bg-white border border-emerald-200 px-3 py-1 rounded-lg shadow-sm">${item.jam}</span>
+            </div>
+            `;
+        });
+
+    } catch (e) {
+        container.innerHTML = `<p class="text-center text-xs text-red-500">Gagal mengambil data. Cek koneksi atau Link CSV.</p>`;
+    }
+};
+
+window.tutupPopupJamaah = () => {
+    const modal = $("#modalJamaah");
+    if (modal) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+    }
+};
 // ==========================================
 // 4. BOOTSTRAP (UPDATE TERBARU)
 // ==========================================
