@@ -653,11 +653,7 @@
   <span class="hidden md:inline font-bold text-sm">Kalkulator Zakat</span>
 </a>
 
-<div class="md:hidden fixed bottom-6 left-0 right-0 z-30 px-4 flex justify-center pointer-events-none">
-  <a href="#donasi" class="pointer-events-auto bg-fig-accent hover:bg-amber-600 text-white px-6 py-3 rounded-full font-bold shadow-lg shadow-amber-900/20 flex items-center gap-2 transform transition-transform active:scale-95 border-2 border-white">
-    <i data-lucide="heart" class="w-4 h-4 fill-current"></i> <span data-i18n="btn_donate_now">Donasi Sekarang</span>
-  </a>
-</div>
+
 
 <div id="popupPromo" class="fixed inset-0 z-[60] hidden items-center justify-center p-4">
   <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" id="closePopupBackdrop"></div>
@@ -851,8 +847,40 @@
     </div>
   </div>
 </div>
+  <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-[90] px-2 py-1 flex justify-between items-center pb-safe shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
+  
+  <a href="#hero" class="flex flex-col items-center justify-center p-2 w-16 text-slate-400 hover:text-emerald-600 transition-colors">
+    <i data-lucide="home" class="w-5 h-5 mb-1"></i>
+    <span class="text-[9px] font-bold">Home</span>
+  </a>
+
+  <a href="#sholat" class="flex flex-col items-center justify-center p-2 w-16 text-slate-400 hover:text-emerald-600 transition-colors">
+    <i data-lucide="clock" class="w-5 h-5 mb-1"></i>
+    <span class="text-[9px] font-bold">Jadwal</span>
+  </a>
+  
+  <div class="relative -top-6">
+    <a href="#donasi" class="flex flex-col items-center justify-center w-14 h-14 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full shadow-lg shadow-emerald-500/30 border-4 border-white transform hover:scale-105 active:scale-95 transition-all group">
+      <i data-lucide="heart" class="w-6 h-6 fill-current group-hover:animate-pulse"></i>
+    </a>
+  </div>
+
+  <a href="#info" class="flex flex-col items-center justify-center p-2 w-16 text-slate-400 hover:text-emerald-600 transition-colors">
+    <i data-lucide="file-text" class="w-5 h-5 mb-1"></i>
+    <span class="text-[9px] font-bold">Info</span>
+  </a>
+
+  <a href="ramadhan.html" class="flex flex-col items-center justify-center p-2 w-16 text-emerald-600/70 hover:text-emerald-600 transition-colors relative">
+    <span class="absolute top-0 right-2 w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
+    <span class="absolute top-0 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+    <i data-lucide="moon" class="w-5 h-5 mb-1"></i>
+    <span class="text-[9px] font-bold">Ramadhan</span>
+  </a>
+
+</div>
 </body>
 </html>
+
 
 
 
