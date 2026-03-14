@@ -37,6 +37,11 @@ const POPUP_SLIDES_DATA = [
         text: "Wakaf media" // Tulisan di tombol
     },
     { 
+        src: "assets/foto/a1.png",  // <-- Ganti dengan nama file
+        link:"https://wa.me/628895941864", // <-- MASUKKAN LINK GOOGLE FORM DISINI
+        text: "Informasi" // Tulisan di tombol
+    },
+    { 
         src: "assets/foto/d1.jpeg",  // <-- Ganti dengan nama file poster Dauroh Anda
         link: "https://forms.gle/zJqA2Eba2FaxvrXv6", // <-- MASUKKAN LINK GOOGLE FORM DISINI
         text: "Daftar Dauroh" // Tulisan di tombol
