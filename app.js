@@ -699,7 +699,7 @@ async function initSmartCarousel() {
   
   track.innerHTML = "Loading Galeri..."; // Feedback UX
   
-  // Ambil data dari Google Sheet, bukan array manual
+  // Ambil data dari Google Sheet
   const dataGaleri = await loadCsv(DEFAULT_GALERI_CSV); 
   
   if (dataGaleri.length === 0) {
@@ -710,12 +710,13 @@ async function initSmartCarousel() {
   track.innerHTML = "";
   dataGaleri.forEach(item => {
     const el = document.createElement("figure");
+    // Kotak pembungkusnya kita biarkan seragam ukurannya
     el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-slate-100 relative group border border-slate-200 flex items-center justify-center";
     
-    // Menggunakan item.url_gambar dari Google Sheet
+    // UPDATE: Ganti object-cover menjadi object-contain
     el.innerHTML = `
       <img src="${item.url_gambar}" 
-           class="max-w-full max-h-full object-cover w-full h-full group-hover:scale-105 transition-transform duration-700" 
+           class="max-w-full max-h-full object-contain w-full h-full group-hover:scale-105 transition-transform duration-700" 
            loading="lazy" 
            alt="${item.keterangan || 'Kegiatan'}">`;
     track.appendChild(el);
