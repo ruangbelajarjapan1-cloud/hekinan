@@ -691,7 +691,7 @@ function initDoa() {
 }
 
 // Tambahkan konstanta URL Sheet Galeri di bagian atas
-const DEFAULT_GALERI_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1255907412&single=true&output=csv&t=1";
+const DEFAULT_GALERI_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1255907412&single=true&output=csv&t=2";
 
 async function initSmartCarousel() {
   const track = $("#kgTrack"); 
