@@ -37,7 +37,7 @@ const POPUP_SLIDES_DATA = [
         text: "Wakaf media" // Tulisan di tombol
     },
     { 
-        src: "assets/foto/a1.png",  // <-- Ganti dengan nama file
+        src: "assets/foto/1a.png",  // <-- Ganti dengan nama file
         link:"https://wa.me/628895941864", // <-- MASUKKAN LINK GOOGLE FORM DISINI
         text: "Informasi" // Tulisan di tombol
     },
@@ -55,7 +55,7 @@ const POPUP_SLIDES_DATA = [
 
 const VIDEO_DONASI_LIST = ["jfKfPRdk", "dQwgXcQ"];
 const YOUTUBE_VIDEOS = ["pCTZQmBQi_8", "zEu4jVpgB_8", "oQjqwQb6atA"];
-const LOCAL_IMAGES = ["a1.png","a2.png","1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "6.jpeg", "7.jpeg"];
+const LOCAL_IMAGES = ["1a.png","1b.png","1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "6.jpeg", "7.jpeg"];
 
 const DEFAULT_IQOMAH_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=420244150&single=true&output=csv";
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
