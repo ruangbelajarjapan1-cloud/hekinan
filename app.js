@@ -314,7 +314,15 @@ window.openArticleModal = (index) => {
   document.getElementById("modalTitle").textContent = data.title || "";
   document.getElementById("modalDate").innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> ${data.date || "-"}`;
   document.getElementById("modalTag").textContent = data.tag || "Info";
-  document.getElementById("modalContent").innerHTML = sanitizeHTML(data.content || data.desc || "");
+  // Tambahkan logika poster di dalam modal
+  let posterDetail = "";
+  if (data.poster && data.poster.length > 5) {
+      // Menggunakan object-contain agar poster utuh tidak terpotong
+      posterDetail = `<img src="${sanitizeHTML(data.poster)}" class="w-full rounded-xl mb-5 object-contain max-h-[60vh] bg-slate-50 border border-slate-100" alt="Poster Detail">`;
+  }
+
+  // Gabungkan poster dengan teks deskripsi
+  document.getElementById("modalContent").innerHTML = posterDetail + sanitizeHTML(data.content || data.desc || "");
 
   const modalFooter = modal.querySelector(".border-t"); 
   const oldBtn = document.getElementById("dynamicActionBtn");
@@ -394,7 +402,7 @@ async function renderContent() {
   window.globalContentData = []; 
 
   const mkCard = (x, type, index) => {
-    // 1. LOGIKA WARNA TAG (TIDAK BERUBAH)
+    // 1. LOGIKA WARNA TAG
     let tagColor = "bg-slate-100 text-slate-600 border-slate-200";
     let tagName = x.tag || (type === 'artikel' ? "Artikel" : "Info");
     
@@ -407,10 +415,18 @@ async function renderContent() {
         tagColor = "bg-emerald-50 text-emerald-700 border-emerald-100";
     }
 
-    // 2. LOGIKA TOMBOL (UPDATE KEAMANAN: REL="NOOPENER")
+    // 2. LOGIKA THUMBNAIL POSTER (BARU)
+    let thumbnailHtml = "";
+    if (x.poster && x.poster.length > 5) {
+        thumbnailHtml = `
+        <div class="w-full h-40 mb-4 rounded-xl overflow-hidden bg-slate-50 shrink-0 border border-slate-100">
+            <img src="${sanitizeHTML(x.poster)}" alt="Thumbnail" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
+        </div>`;
+    }
+
+    // 3. LOGIKA TOMBOL 
     let actionButton = "";
     if (x.link_daftar && x.link_daftar.length > 5) {
-        // Tambahan: rel="noopener noreferrer" agar link eksternal aman
         actionButton = `
         <a href="${x.link_daftar}" target="_blank" rel="noopener noreferrer" class="relative z-10 mt-3 w-full block text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md shadow-sky-200 flex items-center justify-center gap-2">
            <i data-lucide="edit" class="w-4 h-4"></i> Daftar Sekarang
@@ -422,12 +438,8 @@ async function renderContent() {
         </button>`;
     }
 
-    // 3. SANITASI DATA (UPDATE KEAMANAN: XSS)
-    // Membersihkan judul dari kode berbahaya
+    // 4. SANITASI DATA 
     const safeTitle = sanitizeHTML(x.title || "(Tanpa Judul)");
-    
-    // Ambil deskripsi, bersihkan kode berbahaya, lalu hapus tag HTML (<br>, <b> dll) 
-    // supaya tampilan kartu di depan tetap rapi (hanya teks polos)
     const rawDesc = (type === 'artikel' ? x.excerpt : x.desc) || "";
     const safeDesc = sanitizeHTML(rawDesc).replace(/<[^>]*>?/gm, '');
 
@@ -440,7 +452,7 @@ async function renderContent() {
           </span>
         </div>
         
-        <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors">${safeTitle}</h3>
+        ${thumbnailHtml} <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors">${safeTitle}</h3>
         <p class="text-sm text-slate-500 mb-4 line-clamp-3 flex-grow leading-relaxed">${safeDesc || "Klik tombol di bawah untuk melihat detail informasi ini."}</p>
         
         <div class="mt-auto pt-3 border-t border-slate-50">${actionButton}</div>
