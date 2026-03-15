@@ -32,8 +32,8 @@ const HEK_LON = 136.993;
 // Slide 2, 3, dst ditambahkan di sini:
 const POPUP_SLIDES_DATA = [
     { 
-        src: "assets/foto/1a.png",  // <-- Ganti dengan nama file
-        link:"https://wa.me/628895941864", // <-- MASUKKAN LINK GOOGLE FORM DISINI
+        src: "assets/foto/z.jpeg",  // <-- Ganti dengan nama file
+        link:"https://wa.me/6287879993838", // <-- MASUKKAN LINK GOOGLE FORM DISINI
         text: "Informasi" // Tulisan di tombol
     },
     { 
