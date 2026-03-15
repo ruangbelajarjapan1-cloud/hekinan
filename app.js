@@ -47,7 +47,7 @@ const POPUP_SLIDES_DATA = [
         text: "Daftar Dauroh" // Tulisan di tombol
     },
     { 
-        src: "assets/foto/p2.jpeg", 
+        src: "assets/foto/wa1.jpeg", 
         link: "https://wa.me/818013909425", 
         text: "Hubungi Admin" 
     }
@@ -55,7 +55,7 @@ const POPUP_SLIDES_DATA = [
 
 const VIDEO_DONASI_LIST = ["jfKfPRdk", "dQwgXcQ"];
 const YOUTUBE_VIDEOS = ["pCTZQmBQi_8", "zEu4jVpgB_8", "oQjqwQb6atA"];
-const LOCAL_IMAGES = ["1a.png","1b.png","1.jpeg", "2.jpeg", "3.jpeg", "1a.png", "1b.png", "7.jpeg"];
+const LOCAL_IMAGES = ["1a.png","1b.png","1.jpeg", "2.jpeg", "3.jpeg", "1a.png", "1b.png", "w3.jpeg"];
 
 const DEFAULT_IQOMAH_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=420244150&single=true&output=csv";
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMb1wIdcq4YZWw7wbFJGlI2su_Yyti1DoUHPzRBMDZyMmsB98cQKfpV9z9DH9RwuGmA/exec";
