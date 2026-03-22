@@ -63,8 +63,8 @@ const DEFAULT_KEGIATAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS
 const HIJRI_MONTHS_ID = ["Muharram", "Shafar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"];
 
 const HADITHS = [
-  { ar: "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ", id: "Sesungguhnya setiap amalan tergantung pada niatnya.", en: "Actions are but by intentions." },
-  { ar: "خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ", id: "Sebaik-baik kalian adalah yang belajar Al-Qur'an dan mengajarkannya.", en: "The best of you learn Quran and teach it." }
+  { ar: "مَنْ صَامَ رَمَضَانَ ثُمَّ أَتْبَعَهُ سِتًّا مِنْ شَوَّالٍ، كَانَ كَصِيَامِ الدَّهْرِ", id: "Barangsiapa berpuasa Ramadhan kemudian mengikutinya dengan puasa enam hari di bulan Syawal, maka ia seperti berpuasa setahun penuh.", en: "Whoever fasts Ramadan, then follows it with six days of Shawwal, it is as if they fasted for a year." },
+  { ar: "أَحَبُّ الْأَعْمَالِ إِلَى اللَّهِ تَعَالَى أَدْوَمُهَا وَإِنْ قَلَّ", id: "Amalan yang paling dicintai oleh Allah adalah amalan yang konsisten (rutin) meskipun itu sedikit.", en: "The most beloved of deeds to Allah are those that are most consistent, even if it is small." }
 ];
 
 const DAFTAR_DOA = [
@@ -914,11 +914,14 @@ function initDonasi() {
       btnWA.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> ${t.btn_loading}`;
       btnWA.classList.add("opacity-75", "cursor-wait");
 
+      const kategoriEl = document.getElementById("kategoriDonasi");
+      const kategori = kategoriEl ? kategoriEl.value : "Umum";
+
       let msg = t.wa_opening;
-      msg += `\n\n💰 Nominal: ${j ? j + ' JPY' : ''} ${r ? r + ' IDR' : ''}`;
+      msg += `\n\n📌 *Tujuan:* ${kategori}`;
+      msg += `\n💰 *Nominal:* ${j ? j + ' JPY' : ''} ${r ? r + ' IDR' : ''}`;
       if (isDedikasi && namaDedikasi) { msg += `\n${t.wa_dedication} *${namaDedikasi}*`; }
       msg += `\n\n${t.wa_closing}`;
-
       setTimeout(() => {
         window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
         btnWA.innerHTML = originalText;
