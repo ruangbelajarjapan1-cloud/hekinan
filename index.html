@@ -194,6 +194,28 @@
     </div>
   </div>
 </section>
+<div id="syawalReminder" class="container mx-auto px-4 mb-4 relative z-20 reveal">
+  <div class="bg-gradient-to-r from-sky-50 to-indigo-50 border border-sky-100 rounded-2xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm relative overflow-hidden">
+    <div class="absolute -right-10 -top-10 opacity-5 pointer-events-none">
+      <i data-lucide="moon-star" class="w-40 h-40 text-sky-900"></i>
+    </div>
+    
+    <div class="flex items-start gap-3 relative z-10">
+      <div class="bg-sky-200 text-sky-700 p-2 rounded-xl mt-1 md:mt-0 shrink-0">
+        <i data-lucide="calendar-days" class="w-5 h-5"></i>
+      </div>
+      <div>
+        <h4 class="text-sm font-extrabold text-slate-800">Pengingat Puasa Sunnah</h4>
+        <p class="text-xs text-slate-600 mt-1 leading-relaxed">Jangan lewatkan keutamaan puasa 6 hari di bulan Syawal. <br class="hidden md:block"/>Puasa <em>Ayyamul Bidh</em> (13, 14, 15 Syawal) insyaallah jatuh pada pekan ke-3/ke-4 bulan ini.</p>
+      </div>
+    </div>
+    
+    <button onclick="document.getElementById('syawalReminder').style.display='none'" class="absolute top-2 right-2 md:relative md:top-auto md:right-auto text-slate-400 hover:text-slate-600 p-1 bg-white rounded-full shadow-sm border border-slate-100 z-10">
+      <i data-lucide="x" class="w-4 h-4"></i>
+    </button>
+  </div>
+</div>
+  
 <section id="sholat" class="container mx-auto px-4 py-6 relative z-10">
   <div class="rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-card reveal">
     
@@ -718,7 +740,15 @@
   <span class="hidden md:inline font-bold text-sm">Kalkulator Zakat</span>
 </a>
 
-
+<a href="#donasi" class="fixed bottom-24 left-4 md:bottom-8 md:left-8 z-50 group flex items-center gap-3 bg-white p-2 md:pr-5 rounded-full shadow-[0_8px_30px_rgba(245,158,11,0.2)] border border-amber-200 hover:border-amber-400 hover:shadow-[0_8px_30px_rgba(245,158,11,0.4)] transition-all duration-300 transform hover:-translate-y-1">
+  <div class="bg-gradient-to-br from-amber-400 to-orange-500 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-white shadow-inner group-hover:scale-110 transition-transform">
+    <i data-lucide="alert-circle" class="w-5 h-5 md:w-6 md:h-6 fill-current text-white"></i>
+  </div>
+  <div class="hidden md:block text-left leading-none">
+    <span class="block text-[10px] text-amber-600 font-extrabold uppercase tracking-wider mb-0.5">Deadline Mei 2026</span>
+    <span class="block text-sm font-bold text-slate-800">Darurat Pelunasan Lahan</span>
+  </div>
+</a>
 
 <div id="popupPromo" class="fixed inset-0 z-[60] hidden items-center justify-center p-4">
   <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" id="closePopupBackdrop"></div>
