@@ -1179,3 +1179,107 @@ initTabs();
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+// ==========================================
+// 5. EID FESTIVE & TAKBIR FUNCTIONS (NEW)
+// ==========================================
+
+window.openTakbirModal = () => {
+  // 1. Trigger Efek Confetti Elegan (Warna Masjid: Emerald, Emas, Putih)
+  if (typeof confetti === 'function') {
+    const duration = 2000;
+    const end = Date.now() + duration;
+    const colors = ['#059669', '#f59e0b', '#ffffff']; // Emerald, Amber, Putih
+
+    (function frame() {
+      confetti({
+        particleCount: 4,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: colors,
+        disableForReducedMotion: true
+      });
+      confetti({
+        particleCount: 4,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: colors,
+        disableForReducedMotion: true
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    }());
+  }
+
+  // 2. Tampilkan Modal Teks Takbir (Meneruskan dari Modal Kamus)
+  const modal = document.getElementById("modalKamus");
+  const grid = document.getElementById("containerKamusGrid");
+  const searchInput = document.getElementById("inputCariKamus");
+  const emptyState = document.getElementById("stateKamusKosong");
+  
+  if (!modal || !grid) return;
+
+  // Sembunyikan input pencarian kamus sementara karena ini mode Takbir
+  if(searchInput && searchInput.parentElement) {
+      searchInput.parentElement.classList.add("hidden"); 
+  }
+  
+  if(emptyState) {
+      emptyState.classList.add("hidden");
+      emptyState.classList.remove("flex");
+  }
+
+  // Isi Layout Teks Takbir
+  grid.innerHTML = `
+    <div class="col-span-full bg-amber-50 border border-amber-200 p-6 md:p-10 rounded-2xl shadow-sm relative overflow-hidden animate-[fadeUp_0.4s_ease-out]">
+        <div class="absolute -right-4 -top-4 opacity-10"><i data-lucide="mic" class="w-32 h-32 text-amber-900"></i></div>
+        <h4 class="font-bold text-amber-800 text-lg md:text-xl uppercase mb-6 relative z-10 flex items-center gap-2">
+            <i data-lucide="volume-2" class="w-6 h-6"></i> Lafadz Takbir Idul Fitri
+        </h4>
+        <div class="text-right text-3xl md:text-4xl mt-4 space-y-6 font-arab leading-loose text-slate-800 relative z-10" dir="rtl">
+            <p>اللَّهُ أَكْبَرُ اللَّهُ أَكْبَرُ اللَّهُ أَكْبَرُ</p>
+            <p>لَا إِلَهَ إِلَّا اللَّهُ وَاللَّهُ أَكْبَرُ</p>
+            <p>اللَّهُ أَكْبَرُ وَلِلَّهِ الْحَمْدُ</p>
+        </div>
+        <div class="text-sm text-slate-600 mt-8 border-t border-amber-200/60 pt-5 relative z-10 font-medium">
+            <p class="italic leading-relaxed">"Allah Maha Besar, Allah Maha Besar, Allah Maha Besar. Tidak ada ilah (yang berhak disembah) kecuali Allah, dan Allah Maha Besar. Allah Maha Besar dan segala puji hanya bagi Allah."</p>
+            <p class="mt-3 text-xs text-amber-700/80 font-bold">(Sesuai riwayat Ibnu Abi Syaibah dari Ibnu Mas'ud radhiyallahu 'anhu)</p>
+        </div>
+    </div>
+  `;
+
+  if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+
+  // Buka Modal
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
+};
+
+// 3. Modifikasi fungsi tutup modal agar saat Kamus dibuka lagi, bentuknya tidak nyangkut di Teks Takbir
+const originalToggle = window.toggleKamusModal;
+window.toggleKamusModal = (show) => {
+    if(!show) {
+        // Jika modal ditutup, kembalikan kotak pencarian Kamus
+        const searchInput = document.getElementById("inputCariKamus");
+        if(searchInput && searchInput.parentElement) {
+            searchInput.parentElement.classList.remove("hidden");
+            searchInput.value = ""; 
+        }
+        // Render ulang isi kamus ke awal
+        if(typeof initKamusApp === 'function') initKamusApp();
+    }
+    // Panggil fungsi bawaan untuk membuka/menutup
+    if(typeof originalToggle === 'function') {
+        originalToggle(show);
+    } else {
+        const m = document.getElementById("modalKamus");
+        if(show) {
+            m.classList.remove("hidden"); m.classList.add("flex");
+        } else {
+            m.classList.add("hidden"); m.classList.remove("flex");
+        }
+    }
+};
