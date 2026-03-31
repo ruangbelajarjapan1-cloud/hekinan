@@ -31,6 +31,11 @@ const HEK_LON = 136.993;
 // Slide 1 adalah Poster Ramadhan (sudah ada di HTML).
 // Slide 2, 3, dst ditambahkan di sini:
 const POPUP_SLIDES_DATA = [
+    { 
+        src: "assets/foto/ww.jpeg",  // <-- Ganti dengan nama file poster Dauroh Anda
+        link: "https://forms.gle/2uEmVVegC48TAWBy5", // <-- MASUKKAN LINK GOOGLE FORM DISINI
+        text: "Daftar Dauroh" // Tulisan di tombol
+    },
     
     { 
         src: "assets/foto/1b.png",  // <-- Ganti dengan nama file
