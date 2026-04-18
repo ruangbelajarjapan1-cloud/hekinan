@@ -700,51 +700,68 @@ function initVideoKajian() {
     grid.innerHTML = ""; 
     YOUTUBE_VIDEOS.forEach(id => { const card = document.createElement("div"); card.className = "rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white group hover:-translate-y-1 transition-transform duration-300"; card.innerHTML = `<div class="relative w-full pt-[56.25%] bg-black"><iframe src="https://www.youtube.com/embed/${id}" title="Video Kajian" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe></div>`; grid.appendChild(card); }); 
 }
+// =======================================================
+// FITUR LIVE STREAMING WEBSITE (AUTO-UPDATE 30 DETIK)
+// =======================================================
+let currentWebLiveId = "";
+
 async function cekLiveDariSheet() {
-    // PASTE LINK CSV TAB "SETELAN" ANDA DI SINI
     const CSV_SETELAN = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1608872178&single=true&output=csv"; 
     
     try {
-        const data = await loadCsv(CSV_SETELAN);
-        const pengaturanLive = data.find(row => row.key === "live_id");
+        // Kita pakai fetch langsung (bukan loadCsv) agar TIDAK tersangkut cache 1 jam di HP pengunjung
+        const response = await fetch(CSV_SETELAN + "&t=" + new Date().getTime());
+        const text = await response.text();
         
-        if (pengaturanLive && pengaturanLive.value && pengaturanLive.value.trim() !== "") {
-            YOUTUBE_LIVE_ID = pengaturanLive.value.trim();
-        } else {
-            YOUTUBE_LIVE_ID = "";
+        const rows = text.split('\n');
+        let foundId = "";
+        for (let row of rows) {
+            const cols = row.split(',');
+            if (cols[0] && cols[0].trim() === "live_id" && cols[1]) {
+                foundId = cols[1].trim().replace(/['"\r]/g, '');
+                break;
+            }
         }
+        
+        YOUTUBE_LIVE_ID = foundId;
+        initLiveStream(); // Perbarui tampilan website secara diam-diam
     } catch (error) {
-        console.error("Gagal mengecek status Live dari Spreadsheet.", error);
-        YOUTUBE_LIVE_ID = "";
+        console.error("Gagal mengecek status Live", error);
     }
 }
 
 function initLiveStream() {
-    // Membidik elemen di halaman utama (bukan popup)
     const container = $("#liveStreamContainer");
     const wrapper = $("#liveStreamWrapper");
     if (!container || !wrapper) return;
 
-    const isLiveActive = typeof YOUTUBE_LIVE_ID !== 'undefined' && YOUTUBE_LIVE_ID.trim() !== "";
-
-    if (isLiveActive) {
-        // Menyuntikkan Iframe YouTube asli persis seperti di screenshot
-        wrapper.innerHTML = `
-            <iframe 
-                src="https://www.youtube.com/embed/${YOUTUBE_LIVE_ID}?autoplay=1&mute=0&rel=0" 
-                title="YouTube Live Stream" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen 
-                class="absolute top-0 left-0 w-full h-full">
-            </iframe>`;
-        container.classList.remove("hidden");
+    if (YOUTUBE_LIVE_ID !== "") {
+        // Jika ada Live baru, dan ID-nya belum tayang di website
+        if (currentWebLiveId !== YOUTUBE_LIVE_ID) {
+            currentWebLiveId = YOUTUBE_LIVE_ID;
+            wrapper.innerHTML = `
+                <iframe 
+                    src="https://www.youtube.com/embed/${YOUTUBE_LIVE_ID}?autoplay=1&mute=0&rel=0" 
+                    title="YouTube Live Stream" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen 
+                    class="absolute top-0 left-0 w-full h-full">
+                </iframe>`;
+            container.classList.remove("hidden");
+        }
     } else {
-        // Menyembunyikan area live jika sedang tidak ada siaran
-        container.classList.add("hidden");
-        wrapper.innerHTML = "";
+        // Jika ID kosong (Live sudah selesai / dihapus Admin)
+        if (currentWebLiveId !== "") {
+            currentWebLiveId = "";
+            wrapper.innerHTML = "";
+            container.classList.add("hidden");
+        }
     }
 }
+
+// ALARM OTOMATIS: Paksa website untuk mengecek Google Sheet setiap 30 detik dari latar belakang
+setInterval(cekLiveDariSheet, 30000);
 function initDoa() { 
     const elArab = $("#doaArab"), elArti = $("#doaArti"), btn = $("#btnGantiDoa"); 
     if (!elArab) return; 
