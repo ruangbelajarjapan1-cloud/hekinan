@@ -9,7 +9,7 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 window.globalContentData = []; 
 
 // --- KONFIGURASI YOUTUBE LIVE ---
-const YOUTUBE_LIVE_ID = ""; 
+let YOUTUBE_LIVE_ID = ""; 
 
 // --- AUTO FIX GAMBAR RUSAK (QA) ---
 // Letakkan ini di bagian atas app.js (setelah window.globalContentData)
