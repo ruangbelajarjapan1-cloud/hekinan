@@ -745,7 +745,7 @@ function initLiveStream() {
                 qaBtn.id = "qaLiveBtn";
                 
                 // MASUKKAN LINK GOOGLE FORM ANDA DI BAWAH INI:
-                qaBtn.href = "https://forms.gle/LINK_FORM_TANYA_JAWAB_ANDA"; 
+                qaBtn.href = "https://forms.gle/JHutLtmzPTeBtmoR6"; 
                 
                 qaBtn.target = "_blank";
                 qaBtn.className = "mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold py-3.5 rounded-xl animate-pulse shadow-lg";
