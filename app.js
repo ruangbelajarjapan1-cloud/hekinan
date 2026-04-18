@@ -565,18 +565,38 @@ function initPopup() {
   
   if (!popup || !track) return;
 
-  // 1. Ambil Slide Ramadhan (HTML yang sudah ada di index.html)
-  // Slide 0 ini dianggap sebagai "Base Slide"
-  const slides = Array.from(track.children); 
-  
+  // Cek apakah ada siaran live yang sedang aktif
+  const isLiveActive = typeof YOUTUBE_LIVE_ID !== 'undefined' && YOUTUBE_LIVE_ID.trim() !== "";
+
+  // 1. Sisipkan Slide Live Stream ke urutan pertama jika ada live
+  if (isLiveActive) {
+      const liveSlide = document.createElement("div");
+      liveSlide.className = "popup-slide transition-opacity duration-700 ease-in-out absolute inset-0 w-full h-full z-0 opacity-0 bg-slate-900";
+      liveSlide.innerHTML = `
+          <a href="https://www.youtube.com/live/${YOUTUBE_LIVE_ID}" target="_blank" rel="noopener noreferrer" class="block w-full h-full relative cursor-pointer group">
+              <img src="https://img.youtube.com/vi/${YOUTUBE_LIVE_ID}/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/${YOUTUBE_LIVE_ID}/hqdefault.jpg'" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-30 transition-opacity" alt="Live Thumbnail">
+              <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-10">
+                  <span class="inline-block px-3 py-1 rounded-full bg-red-600 border border-red-500 text-white text-[10px] font-bold uppercase tracking-widest mb-4 animate-pulse">🔴 Sedang Live</span>
+                  <div class="mb-4 transform group-hover:scale-110 transition-transform duration-500">
+                       <div class="w-16 h-16 rounded-full bg-red-600/90 flex items-center justify-center shadow-lg text-white border-2 border-white/20">
+                          <svg class="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                       </div>
+                  </div>
+                  <h3 class="text-2xl font-extrabold text-white mb-2 leading-tight">Kajian Sedang Berlangsung</h3>
+                  <p class="text-xs text-slate-200">Klik untuk menonton siaran langsung sekarang.</p>
+              </div>
+          </a>
+      `;
+      // Masukkan slide live ke posisi paling depan (sebelum Ramadhan)
+      track.insertBefore(liveSlide, track.firstChild);
+  }
+
   // 2. Tambahkan Slide Gambar Tambahan dari POPUP_SLIDES_DATA
   if (POPUP_SLIDES_DATA && POPUP_SLIDES_DATA.length > 0) {
       POPUP_SLIDES_DATA.forEach((data, idx) => {
           const div = document.createElement("div");
-          // Gunakan kelas CSS yang sama persis agar transisinya halus
           div.className = "popup-slide transition-opacity duration-700 ease-in-out absolute inset-0 w-full h-full z-0 opacity-0";
           
-          // Bungkus gambar dengan Link (agar gambar bisa diklik juga)
           const link = document.createElement("a");
           link.href = data.link || "#";
           link.target = "_blank";
@@ -594,10 +614,8 @@ function initPopup() {
       });
   }
 
-  // Update daftar slides setelah penambahan gambar
   const allSlides = Array.from(track.children);
   
-  // Jika total slide <= 1, tidak perlu slider
   if (allSlides.length <= 1) {
       popup.classList.remove("hidden");
       popup.classList.add("flex");
@@ -632,27 +650,32 @@ function initPopup() {
       });
       currentIdx = n;
 
-      // UPDATE LINK & TEXT TOMBOL DI BAWAH
-      // Kita cari tombol di dalam popup (sebelah tombol Share)
       const shareBtn = $("#popupShareBtn");
-      const actionBtn = shareBtn?.previousElementSibling; // Asumsi tombol aksi ada sebelum tombol share
+      const actionBtn = shareBtn?.previousElementSibling; 
 
       if (actionBtn) {
-          if (n === 0) {
-              // Jika Slide 0 (Ramadhan HTML)
-              // Kita kembalikan ke default Ramadhan
+          // Sesuaikan kalkulasi indeks jika ada Live Slide di awal
+          const logicIdx = isLiveActive ? n - 1 : n;
+
+          if (logicIdx === -1) {
+              // Sedang menampilkan Slide Live
+              actionBtn.href = `https://www.youtube.com/live/${YOUTUBE_LIVE_ID}`;
+              actionBtn.target = "_blank";
+              actionBtn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Tonton Live`;
+          } else if (logicIdx === 0) {
+              // Sedang menampilkan Slide Ramadhan
               actionBtn.href = "ramadhan.html"; 
+              actionBtn.target = "_self";
               actionBtn.innerHTML = `<i data-lucide="moon" class="w-4 h-4"></i> Info Ramadhan`;
           } else {
-              // Jika Slide Gambar (Ambil data dari array)
-              // Ingat: n=1 berarti data index ke-0
-              const data = POPUP_SLIDES_DATA[n - 1];
+              // Sedang menampilkan Slide Gambar (Dauroh, dll)
+              const data = POPUP_SLIDES_DATA[logicIdx - 1];
               if (data) {
                   actionBtn.href = data.link;
+                  actionBtn.target = "_blank";
                   actionBtn.innerHTML = `<i data-lucide="edit" class="w-4 h-4"></i> ${data.text || "Selengkapnya"}`;
               }
           }
-          // Refresh icon agar muncul
           if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
       }
   };
