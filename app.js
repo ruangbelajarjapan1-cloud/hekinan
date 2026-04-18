@@ -565,7 +565,6 @@ function initPopup() {
   
   if (!popup || !track) return;
 
-  // Cek apakah ada siaran live yang sedang aktif
   const isLiveActive = typeof YOUTUBE_LIVE_ID !== 'undefined' && YOUTUBE_LIVE_ID.trim() !== "";
 
   // 1. Sisipkan Slide Live Stream ke urutan pertama jika ada live
@@ -573,7 +572,7 @@ function initPopup() {
       const liveSlide = document.createElement("div");
       liveSlide.className = "popup-slide transition-opacity duration-700 ease-in-out absolute inset-0 w-full h-full z-0 opacity-0 bg-slate-900";
       liveSlide.innerHTML = `
-          <a href="https://www.youtube.com/live/${YOUTUBE_LIVE_ID}" target="_blank" rel="noopener noreferrer" class="block w-full h-full relative cursor-pointer group">
+          <a href="#video-kajian" onclick="document.getElementById('closePopupBtn').click();" class="block w-full h-full relative cursor-pointer group">
               <img src="https://img.youtube.com/vi/${YOUTUBE_LIVE_ID}/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/${YOUTUBE_LIVE_ID}/hqdefault.jpg'" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-30 transition-opacity" alt="Live Thumbnail">
               <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-10">
                   <span class="inline-block px-3 py-1 rounded-full bg-red-600 border border-red-500 text-white text-[10px] font-bold uppercase tracking-widest mb-4 animate-pulse">🔴 Sedang Live</span>
@@ -583,31 +582,26 @@ function initPopup() {
                        </div>
                   </div>
                   <h3 class="text-2xl font-extrabold text-white mb-2 leading-tight">Kajian Sedang Berlangsung</h3>
-                  <p class="text-xs text-slate-200">Klik untuk menonton siaran langsung sekarang.</p>
+                  <p class="text-xs text-slate-200">Klik untuk menonton langsung di website kami.</p>
               </div>
           </a>
       `;
-      // Masukkan slide live ke posisi paling depan
       track.insertBefore(liveSlide, track.firstChild);
   }
 
-  // 2. Tambahkan Slide Gambar Tambahan dari POPUP_SLIDES_DATA
+  // 2. Tambahkan Slide Gambar Tambahan (Dauroh, dll)
   if (POPUP_SLIDES_DATA && POPUP_SLIDES_DATA.length > 0) {
       POPUP_SLIDES_DATA.forEach((data, idx) => {
           const div = document.createElement("div");
           div.className = "popup-slide transition-opacity duration-700 ease-in-out absolute inset-0 w-full h-full z-0 opacity-0";
-          
           const link = document.createElement("a");
           link.href = data.link || "#";
           link.target = "_blank";
           link.rel = "noopener noreferrer";
           link.className = "block w-full h-full cursor-pointer";
-
           const img = document.createElement("img");
           img.src = data.src;
           img.className = "w-full h-full object-cover rounded-xl"; 
-          img.alt = data.text || "Info Slide " + (idx + 1);
-          
           link.appendChild(img);
           div.appendChild(link);
           track.appendChild(div);
@@ -615,12 +609,7 @@ function initPopup() {
   }
 
   const allSlides = Array.from(track.children);
-  
-  if (allSlides.length <= 1) {
-      popup.classList.remove("hidden");
-      popup.classList.add("flex");
-      return; 
-  }
+  if (allSlides.length <= 1) { popup.classList.remove("hidden"); popup.classList.add("flex"); return; }
 
   // 3. Buat Dots Indikator
   dotsContainer.innerHTML = "";
@@ -657,18 +646,22 @@ function initPopup() {
           const logicIdx = isLiveActive ? n - 1 : n;
 
           if (logicIdx === -1) {
-              actionBtn.href = `https://www.youtube.com/live/${YOUTUBE_LIVE_ID}`;
-              actionBtn.target = "_blank";
-              actionBtn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Tonton Live`;
+              // TOMBOL AKSI DIARAHKAN KE SECTION WEBSITE
+              actionBtn.href = "#video-kajian";
+              actionBtn.target = "_self";
+              actionBtn.onclick = () => { document.getElementById('closePopupBtn').click(); };
+              actionBtn.innerHTML = `<i data-lucide="play-circle" class="w-4 h-4"></i> Tonton di Website`;
           } else if (logicIdx === 0) {
               actionBtn.href = "ramadhan.html"; 
               actionBtn.target = "_self";
+              actionBtn.onclick = null;
               actionBtn.innerHTML = `<i data-lucide="moon" class="w-4 h-4"></i> Info Ramadhan`;
           } else {
               const data = POPUP_SLIDES_DATA[logicIdx - 1];
               if (data) {
                   actionBtn.href = data.link;
                   actionBtn.target = "_blank";
+                  actionBtn.onclick = null;
                   actionBtn.innerHTML = `<i data-lucide="edit" class="w-4 h-4"></i> ${data.text || "Selengkapnya"}`;
               }
           }
@@ -678,35 +671,23 @@ function initPopup() {
 
   const nextSlide = () => showSlide((currentIdx + 1) % allSlides.length);
   const prevSlide = () => showSlide((currentIdx - 1 + allSlides.length) % allSlides.length);
-
   const startTimer = () => { slideInterval = setInterval(nextSlide, 4000); };
   const stopTimer = () => clearInterval(slideInterval);
   const resetTimer = () => { stopTimer(); startTimer(); };
 
-  // --- KUNCI UTAMA PERBAIKAN ---
-  // Paksa sistem untuk menampilkan slide ke-0 (Live) tepat sebelum popup dimunculkan
   showSlide(0); 
-
-  // Tampilkan Popup
   popup.classList.remove("hidden");
   popup.classList.add("flex");
   startTimer();
 
-  const close = () => { 
-      popup.classList.add("hidden"); 
-      popup.classList.remove("flex"); 
-      stopTimer(); 
-  };
-  
+  const close = () => { popup.classList.add("hidden"); popup.classList.remove("flex"); stopTimer(); };
   $("#closePopupBtn")?.addEventListener("click", close);
   $("#closePopupBackdrop")?.addEventListener("click", close);
-  
   $("#popupShareBtn")?.addEventListener("click", () => {
       const text = "Info Terbaru Masjid As-Sunnah Hekinan. Cek di sini: https://assunnahhekinan.org";
       window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
   });
 }
-
 function initVideoAjakan() { 
     const container = $("#videoAjakanContainer"); if (!container || !VIDEO_DONASI_LIST.length) return; 
     container.innerHTML = ""; 
