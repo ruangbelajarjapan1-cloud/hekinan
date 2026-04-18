@@ -701,7 +701,7 @@ function initVideoKajian() {
     YOUTUBE_VIDEOS.forEach(id => { const card = document.createElement("div"); card.className = "rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white group hover:-translate-y-1 transition-transform duration-300"; card.innerHTML = `<div class="relative w-full pt-[56.25%] bg-black"><iframe src="https://www.youtube.com/embed/${id}" title="Video Kajian" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe></div>`; grid.appendChild(card); }); 
 }
 // =======================================================
-// FITUR LIVE STREAMING WEBSITE (AUTO-UPDATE 30 DETIK)
+// SISTEM LIVE STREAMING + Q&A (AUTO-UPDATE 30 DETIK)
 // =======================================================
 let currentWebLiveId = "";
 
@@ -709,10 +709,8 @@ async function cekLiveDariSheet() {
     const CSV_SETELAN = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1608872178&single=true&output=csv"; 
     
     try {
-        // Kita pakai fetch langsung (bukan loadCsv) agar TIDAK tersangkut cache 1 jam di HP pengunjung
         const response = await fetch(CSV_SETELAN + "&t=" + new Date().getTime());
         const text = await response.text();
-        
         const rows = text.split('\n');
         let foundId = "";
         for (let row of rows) {
@@ -722,12 +720,9 @@ async function cekLiveDariSheet() {
                 break;
             }
         }
-        
         YOUTUBE_LIVE_ID = foundId;
-        initLiveStream(); // Perbarui tampilan website secara diam-diam
-    } catch (error) {
-        console.error("Gagal mengecek status Live", error);
-    }
+        initLiveStream(); 
+    } catch (error) { console.error("Gagal cek Live", error); }
 }
 
 function initLiveStream() {
@@ -736,32 +731,41 @@ function initLiveStream() {
     if (!container || !wrapper) return;
 
     if (YOUTUBE_LIVE_ID !== "") {
-        // Jika ada Live baru, dan ID-nya belum tayang di website
         if (currentWebLiveId !== YOUTUBE_LIVE_ID) {
             currentWebLiveId = YOUTUBE_LIVE_ID;
-            wrapper.innerHTML = `
-                <iframe 
-                    src="https://www.youtube.com/embed/${YOUTUBE_LIVE_ID}?autoplay=1&mute=0&rel=0" 
-                    title="YouTube Live Stream" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen 
-                    class="absolute top-0 left-0 w-full h-full">
-                </iframe>`;
+            
+            // Memunculkan video YouTube
+            wrapper.innerHTML = `<iframe src="https://www.youtube.com/embed/${YOUTUBE_LIVE_ID}?autoplay=1&mute=0&rel=0" title="Live" frameborder="0" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>`;
             container.classList.remove("hidden");
+
+            // Memunculkan Tombol Tanya Ustadz
+            let qaBtn = document.getElementById("qaLiveBtn");
+            if (!qaBtn) {
+                qaBtn = document.createElement("a");
+                qaBtn.id = "qaLiveBtn";
+                
+                // MASUKKAN LINK GOOGLE FORM ANDA DI BAWAH INI:
+                qaBtn.href = "https://forms.gle/LINK_FORM_TANYA_JAWAB_ANDA"; 
+                
+                qaBtn.target = "_blank";
+                qaBtn.className = "mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold py-3.5 rounded-xl animate-pulse shadow-lg";
+                qaBtn.innerHTML = `💬 Kirim Pertanyaan ke Ustadz`;
+                container.appendChild(qaBtn);
+            }
         }
     } else {
-        // Jika ID kosong (Live sudah selesai / dihapus Admin)
         if (currentWebLiveId !== "") {
             currentWebLiveId = "";
             wrapper.innerHTML = "";
             container.classList.add("hidden");
+            const qaBtn = document.getElementById("qaLiveBtn");
+            if (qaBtn) qaBtn.remove();
         }
     }
 }
-
-// ALARM OTOMATIS: Paksa website untuk mengecek Google Sheet setiap 30 detik dari latar belakang
+// Jalankan pengecekan otomatis setiap 30 detik
 setInterval(cekLiveDariSheet, 30000);
+
 function initDoa() { 
     const elArab = $("#doaArab"), elArti = $("#doaArti"), btn = $("#btnGantiDoa"); 
     if (!elArab) return; 
