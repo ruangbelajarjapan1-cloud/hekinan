@@ -587,7 +587,7 @@ function initPopup() {
               </div>
           </a>
       `;
-      // Masukkan slide live ke posisi paling depan (sebelum Ramadhan)
+      // Masukkan slide live ke posisi paling depan
       track.insertBefore(liveSlide, track.firstChild);
   }
 
@@ -654,21 +654,17 @@ function initPopup() {
       const actionBtn = shareBtn?.previousElementSibling; 
 
       if (actionBtn) {
-          // Sesuaikan kalkulasi indeks jika ada Live Slide di awal
           const logicIdx = isLiveActive ? n - 1 : n;
 
           if (logicIdx === -1) {
-              // Sedang menampilkan Slide Live
               actionBtn.href = `https://www.youtube.com/live/${YOUTUBE_LIVE_ID}`;
               actionBtn.target = "_blank";
               actionBtn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Tonton Live`;
           } else if (logicIdx === 0) {
-              // Sedang menampilkan Slide Ramadhan
               actionBtn.href = "ramadhan.html"; 
               actionBtn.target = "_self";
               actionBtn.innerHTML = `<i data-lucide="moon" class="w-4 h-4"></i> Info Ramadhan`;
           } else {
-              // Sedang menampilkan Slide Gambar (Dauroh, dll)
               const data = POPUP_SLIDES_DATA[logicIdx - 1];
               if (data) {
                   actionBtn.href = data.link;
@@ -683,12 +679,13 @@ function initPopup() {
   const nextSlide = () => showSlide((currentIdx + 1) % allSlides.length);
   const prevSlide = () => showSlide((currentIdx - 1 + allSlides.length) % allSlides.length);
 
-  $("#popNext")?.addEventListener("click", () => { nextSlide(); resetTimer(); });
-  $("#popPrev")?.addEventListener("click", () => { prevSlide(); resetTimer(); });
-
   const startTimer = () => { slideInterval = setInterval(nextSlide, 4000); };
   const stopTimer = () => clearInterval(slideInterval);
   const resetTimer = () => { stopTimer(); startTimer(); };
+
+  // --- KUNCI UTAMA PERBAIKAN ---
+  // Paksa sistem untuk menampilkan slide ke-0 (Live) tepat sebelum popup dimunculkan
+  showSlide(0); 
 
   // Tampilkan Popup
   popup.classList.remove("hidden");
@@ -723,34 +720,31 @@ function initVideoKajian() {
     YOUTUBE_VIDEOS.forEach(id => { const card = document.createElement("div"); card.className = "rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white group hover:-translate-y-1 transition-transform duration-300"; card.innerHTML = `<div class="relative w-full pt-[56.25%] bg-black"><iframe src="https://www.youtube.com/embed/${id}" title="Video Kajian" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe></div>`; grid.appendChild(card); }); 
 }
 function initLiveStream() {
+    // Membidik elemen di halaman utama (bukan popup)
     const container = $("#liveStreamContainer");
     const wrapper = $("#liveStreamWrapper");
     if (!container || !wrapper) return;
 
-    if (typeof YOUTUBE_LIVE_ID !== 'undefined' && YOUTUBE_LIVE_ID.trim() !== "") {
-        // Trik Fake Player: Menampilkan Thumbnail + Tombol Play
+    const isLiveActive = typeof YOUTUBE_LIVE_ID !== 'undefined' && YOUTUBE_LIVE_ID.trim() !== "";
+
+    if (isLiveActive) {
+        // Menyuntikkan Iframe YouTube asli persis seperti di screenshot
         wrapper.innerHTML = `
-            <a href="https://www.youtube.com/live/${YOUTUBE_LIVE_ID}" target="_blank" rel="noopener noreferrer" class="absolute inset-0 w-full h-full group block bg-slate-900">
-                <img src="https://img.youtube.com/vi/${YOUTUBE_LIVE_ID}/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/${YOUTUBE_LIVE_ID}/hqdefault.jpg'" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity" alt="Live Thumbnail">
-                
-                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                    <div class="bg-red-600/90 text-white p-4 rounded-full shadow-2xl group-hover:scale-110 group-hover:bg-red-600 transition-all duration-300 border-2 border-white/20">
-                        <svg class="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </div>
-                    <span class="mt-4 text-white font-bold text-sm bg-black/60 px-4 py-1.5 rounded-full backdrop-blur-md border border-white/10 flex items-center gap-2">
-                        Buka di YouTube <i data-lucide="external-link" class="w-3 h-3"></i>
-                    </span>
-                </div>
-            </a>
-        `;
+            <iframe 
+                src="https://www.youtube.com/embed/${YOUTUBE_LIVE_ID}?autoplay=1&mute=0&rel=0" 
+                title="YouTube Live Stream" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen 
+                class="absolute top-0 left-0 w-full h-full">
+            </iframe>`;
         container.classList.remove("hidden");
-        if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
     } else {
+        // Menyembunyikan area live jika sedang tidak ada siaran
         container.classList.add("hidden");
         wrapper.innerHTML = "";
     }
 }
-
 function initDoa() { 
     const elArab = $("#doaArab"), elArti = $("#doaArti"), btn = $("#btnGantiDoa"); 
     if (!elArab) return; 
