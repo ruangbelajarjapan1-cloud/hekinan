@@ -7,6 +7,10 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 // 1. DATA & KONFIGURASI
 // ==========================================
 window.globalContentData = []; 
+
+// --- KONFIGURASI YOUTUBE LIVE ---
+const YOUTUBE_LIVE_ID = "Z_k0CapA2ZI"; 
+
 // --- AUTO FIX GAMBAR RUSAK (QA) ---
 // Letakkan ini di bagian atas app.js (setelah window.globalContentData)
 window.addEventListener('error', function(e) {
@@ -695,6 +699,19 @@ function initVideoKajian() {
     grid.innerHTML = ""; 
     YOUTUBE_VIDEOS.forEach(id => { const card = document.createElement("div"); card.className = "rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white group hover:-translate-y-1 transition-transform duration-300"; card.innerHTML = `<div class="relative w-full pt-[56.25%] bg-black"><iframe src="https://www.youtube.com/embed/${id}" title="Video Kajian" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe></div>`; grid.appendChild(card); }); 
 }
+function initLiveStream() {
+    const container = $("#liveStreamContainer");
+    const wrapper = $("#liveStreamWrapper");
+    if (!container || !wrapper) return;
+
+    if (typeof YOUTUBE_LIVE_ID !== 'undefined' && YOUTUBE_LIVE_ID.trim() !== "") {
+        wrapper.innerHTML = `<iframe src="https://www.youtube.com/embed/${YOUTUBE_LIVE_ID}?autoplay=1&mute=0" title="YouTube Live Stream" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>`;
+        container.classList.remove("hidden");
+    } else {
+        container.classList.add("hidden");
+        wrapper.innerHTML = "";
+    }
+}
 
 function initDoa() { 
     const elArab = $("#doaArab"), elArti = $("#doaArti"), btn = $("#btnGantiDoa"); 
@@ -1154,6 +1171,7 @@ function boot() {
   initSmartCarousel();
   initVideoKajian();
   initVideoAjakan();
+    initLiveStream();
   initHeroSlider();
   setupAdmin();
     initDoa();
