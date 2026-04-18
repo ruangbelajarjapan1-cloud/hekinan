@@ -705,8 +705,23 @@ function initLiveStream() {
     if (!container || !wrapper) return;
 
     if (typeof YOUTUBE_LIVE_ID !== 'undefined' && YOUTUBE_LIVE_ID.trim() !== "") {
-        wrapper.innerHTML = `<iframe src="https://www.youtube.com/embed/${YOUTUBE_LIVE_ID}?autoplay=1&mute=0" title="YouTube Live Stream" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>`;
+        // Trik Fake Player: Menampilkan Thumbnail + Tombol Play
+        wrapper.innerHTML = `
+            <a href="https://www.youtube.com/live/${YOUTUBE_LIVE_ID}" target="_blank" rel="noopener noreferrer" class="absolute inset-0 w-full h-full group block bg-slate-900">
+                <img src="https://img.youtube.com/vi/${YOUTUBE_LIVE_ID}/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/${YOUTUBE_LIVE_ID}/hqdefault.jpg'" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity" alt="Live Thumbnail">
+                
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <div class="bg-red-600/90 text-white p-4 rounded-full shadow-2xl group-hover:scale-110 group-hover:bg-red-600 transition-all duration-300 border-2 border-white/20">
+                        <svg class="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                    <span class="mt-4 text-white font-bold text-sm bg-black/60 px-4 py-1.5 rounded-full backdrop-blur-md border border-white/10 flex items-center gap-2">
+                        Buka di YouTube <i data-lucide="external-link" class="w-3 h-3"></i>
+                    </span>
+                </div>
+            </a>
+        `;
         container.classList.remove("hidden");
+        if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
     } else {
         container.classList.add("hidden");
         wrapper.innerHTML = "";
