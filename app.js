@@ -9,7 +9,7 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 window.globalContentData = []; 
 
 // --- KONFIGURASI YOUTUBE LIVE ---
-const YOUTUBE_LIVE_ID = "uuqfzggLlLw"; 
+const YOUTUBE_LIVE_ID = ""; 
 
 // --- AUTO FIX GAMBAR RUSAK (QA) ---
 // Letakkan ini di bagian atas app.js (setelah window.globalContentData)
@@ -700,6 +700,25 @@ function initVideoKajian() {
     grid.innerHTML = ""; 
     YOUTUBE_VIDEOS.forEach(id => { const card = document.createElement("div"); card.className = "rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white group hover:-translate-y-1 transition-transform duration-300"; card.innerHTML = `<div class="relative w-full pt-[56.25%] bg-black"><iframe src="https://www.youtube.com/embed/${id}" title="Video Kajian" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe></div>`; grid.appendChild(card); }); 
 }
+async function cekLiveDariSheet() {
+    // PASTE LINK CSV TAB "SETELAN" ANDA DI SINI
+    const CSV_SETELAN = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1608872178&single=true&output=csv"; 
+    
+    try {
+        const data = await loadCsv(CSV_SETELAN);
+        const pengaturanLive = data.find(row => row.key === "live_id");
+        
+        if (pengaturanLive && pengaturanLive.value && pengaturanLive.value.trim() !== "") {
+            YOUTUBE_LIVE_ID = pengaturanLive.value.trim();
+        } else {
+            YOUTUBE_LIVE_ID = "";
+        }
+    } catch (error) {
+        console.error("Gagal mengecek status Live dari Spreadsheet.", error);
+        YOUTUBE_LIVE_ID = "";
+    }
+}
+
 function initLiveStream() {
     // Membidik elemen di halaman utama (bukan popup)
     const container = $("#liveStreamContainer");
@@ -1165,7 +1184,7 @@ window.tutupPopupJamaah = () => {
 // ==========================================
 // 4. BOOTSTRAP (UPDATE TERBARU)
 // ==========================================
-function boot() {
+async function boot() { // <-- Tambahkan kata async di sini
   const hariIni = new Date().getDay(); 
   const bannerJumat = $("#jumatBanner");
   if (hariIni === 5 && bannerJumat) { bannerJumat.classList.remove("hidden"); }
@@ -1176,7 +1195,6 @@ function boot() {
   
   if ($("#year")) $("#year").textContent = new Date().getFullYear();
 
-  // Panggil semua fungsi dengan aman
   renderSholat();
   renderContent();
   initCountdown();
@@ -1184,32 +1202,32 @@ function boot() {
   initSmartCarousel();
   initVideoKajian();
   initVideoAjakan();
-    initLiveStream();
+  initDoa();
+  initTabs();
+  initKamusApp();
+
+  // --- SISTEM LIVE OTOMATIS DARI SPREADSHEET ---
+  await cekLiveDariSheet(); // 1. Tunggu web mengecek Google Sheets
+  initLiveStream();         // 2. Render iframe di halaman utama
+  initPopup();              // 3. Render popup
+  // ---------------------------------------------
+
   initHeroSlider();
   setupAdmin();
-    initDoa();
-  initPopup();
-initTabs();
-    initKamusApp();
-  // Pastikan Icon muncul
-  if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
 
-  // --- LOGIKA BARU: TOMBOL BACK TO TOP ---
+  // Tombol Back to Top
   const btnTop = document.getElementById("backToTop");
   if (btnTop) {
       window.addEventListener("scroll", () => {
         if (window.scrollY > 500) {
-            // Munculkan tombol (hapus class yang menyembunyikan)
             btnTop.classList.remove("translate-y-20", "opacity-0", "pointer-events-none");
         } else {
-            // Sembunyikan tombol
             btnTop.classList.add("translate-y-20", "opacity-0", "pointer-events-none");
         }
       });
   }
-  // ---------------------------------------
 
-  // Animasi Scroll (Reveal) - Ditaruh terakhir agar elemen sudah ada
+  // Animasi Scroll (Reveal)
   const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add("active") }), { threshold: 0.1 });
   $$(".reveal").forEach(e => obs.observe(e));
 }
