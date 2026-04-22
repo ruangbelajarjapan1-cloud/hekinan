@@ -1339,3 +1339,59 @@ window.toggleKamusModal = (show) => {
         }
     }
 };
+// ==========================================
+// FITUR KOTAK SARAN & KRITIK
+// ==========================================
+
+window.toggleSaranModal = (show) => {
+    const modal = document.getElementById("modalSaran");
+    if (!modal) return;
+
+    if (show) {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        // Reset form saat dibuka
+        document.getElementById("pesanSaran").value = "";
+        document.getElementById("namaSaran").value = "";
+    } else {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+    }
+    if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+};
+
+window.kirimSaran = () => {
+    const kategori = document.getElementById("kategoriSaran").value;
+    const pesan = document.getElementById("pesanSaran").value.trim();
+    let nama = document.getElementById("namaSaran").value.trim();
+    const btn = document.getElementById("kirimSaranBtn");
+
+    if (!pesan) {
+        alert("Mohon isi pesan Anda terlebih dahulu.");
+        return;
+    }
+
+    if (!nama) nama = "Hamba Allah (Anonim)";
+
+    // Animasi Loading
+    const originalText = btn.innerHTML;
+    btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Memproses...`;
+    btn.classList.add("opacity-75", "cursor-wait");
+    if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+
+    // Format Pesan untuk WhatsApp (Bisa diganti ke fetch GAS API nantinya)
+    let msg = `Assalamu'alaikum, saya ingin menyampaikan pesan melalui Website Masjid Hekinan:\n\n`;
+    msg += `📌 *Kategori:* ${kategori}\n`;
+    msg += `👤 *Dari:* ${nama}\n\n`;
+    msg += `💬 *Pesan:*\n"${pesan}"`;
+
+    setTimeout(() => {
+        // Ganti nomor dengan nomor Admin/Ustadz penerima keluhan
+        window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
+        
+        // Kembalikan UI
+        btn.innerHTML = originalText;
+        btn.classList.remove("opacity-75", "cursor-wait");
+        toggleSaranModal(false);
+    }, 1000);
+};
