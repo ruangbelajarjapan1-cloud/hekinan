@@ -406,7 +406,7 @@ async function renderContent() {
   // ... (lanjutkan ke kode fetch data di bawahnya biarkan saja)
   window.globalContentData = []; 
 
-  const mkCard = (x, type, index) => {
+const mkCard = (x, type, index) => {
     // 1. LOGIKA WARNA TAG
     let tagColor = "bg-slate-100 text-slate-600 border-slate-200";
     let tagName = x.tag || (type === 'artikel' ? "Artikel" : "Info");
@@ -420,15 +420,15 @@ async function renderContent() {
         tagColor = "bg-emerald-50 text-emerald-700 border-emerald-100";
     }
 
-// 2. LOGIKA THUMBNAIL POSTER (OTOMATIS MENYESUAIKAN PORTRAIT/LANDSCAPE)
+    // 2. LOGIKA THUMBNAIL POSTER (UTUH & BISA DIKLIK)
     let thumbnailHtml = "";
     if (x.poster && x.poster.length > 5) {
         thumbnailHtml = `
-        <div onclick="window.openArticleModal(${index})" class="w-full mb-4 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200 cursor-pointer relative group shadow-inner">
+        <div onclick="window.openArticleModal(${index})" class="w-full mb-4 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 cursor-pointer relative group shadow-sm">
             <img src="${sanitizeHTML(x.poster)}" alt="Thumbnail" class="w-full h-auto object-contain block group-hover:scale-105 transition-transform duration-500" loading="lazy">
             
             <div class="absolute inset-0 bg-black/0 group-hover:bg-slate-900/10 transition-colors flex items-center justify-center">
-                <div class="bg-white/90 backdrop-blur text-slate-800 px-3 py-1.5 rounded-full text-[10px] font-extrabold opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 shadow-md flex items-center gap-1 border border-slate-200">
+                <div class="bg-white/95 backdrop-blur text-slate-800 px-3 py-1.5 rounded-full text-[10px] font-extrabold opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 shadow-md flex items-center gap-1 border border-slate-200">
                     <i data-lucide="zoom-in" class="w-3 h-3 text-sky-600"></i> Lihat Detail
                 </div>
             </div>
@@ -449,13 +449,13 @@ async function renderContent() {
         </button>`;
     }
 
-    // 4. SANITASI DATA (Teks diperbaiki agar spasi tidak hilang/menempel)
+    // 4. SANITASI DATA (Perbaikan Spasi Teks)
     const safeTitle = sanitizeHTML(x.title || "(Tanpa Judul)");
     const rawDesc = (type === 'artikel' ? x.excerpt : x.desc) || "";
-    // Mengubah <br> menjadi spasi terlebih dahulu, baru menghapus tag HTML
     const safeDesc = sanitizeHTML(rawDesc).replace(/<br\s*[\/]?>/gi, ' ').replace(/<[^>]*>?/gm, '');
 
-    return `      <article class="group relative flex flex-col h-full bg-white rounded-2xl border border-slate-100 p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+    return `
+      <article class="group relative flex flex-col h-full bg-white rounded-2xl border border-slate-100 p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
         <div class="flex items-center justify-between mb-3">
           <span class="${tagColor} border px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">${sanitizeHTML(tagName)}</span>
           <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1">
