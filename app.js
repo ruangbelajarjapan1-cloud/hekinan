@@ -939,72 +939,14 @@ async function renderSholat() {
 }
 
 function initDonasi() {
-  const fmt = (n, c) => { const symbol = c === 'JPY' ? '¥' : 'Rp'; return symbol + ' ' + new Intl.NumberFormat('id-ID').format(n); };
-  const T = TARGET_DONASI, C = TERKUMPUL_SAAT_INI, K = T - C;
-
-  if ($("#targetLabel")) $("#targetLabel").textContent = fmt(T, "JPY");
-  if ($("#terkumpulLabel")) $("#terkumpulLabel").textContent = fmt(C, "JPY");
-  if ($("#kekuranganLabel")) $("#kekuranganLabel").textContent = fmt(K, "JPY");
-
-  const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { setTimeout(() => { if($("#progressBar")) $("#progressBar").style.width = Math.round((C / T) * 100) + "%"; if($("#percentLabel")) $("#percentLabel").textContent = Math.round((C / T) * 100); }, 300); } }) });
-  if ($("#donasi")) obs.observe($("#donasi"));
-
-  $$(".quick-jpy").forEach(b => b.addEventListener("click", () => $("#inputJPY").value = b.dataset.v));
-  $$(".quick-idr").forEach(b => b.addEventListener("click", () => $("#inputIDR").value = b.dataset.v));
-
-  const NOMINAL_SATUAN = 1000;
-  const targetOrang = Math.ceil(T / NOMINAL_SATUAN);
-  const sisaOrang = Math.ceil(K / NOMINAL_SATUAN);
-  const persenJalan = Math.min(((T - K) / T) * 100, 100);
-
-  if ($("#targetOrang")) $("#targetOrang").textContent = new Intl.NumberFormat('id-ID').format(sisaOrang);
-  if ($("#labelTargetOrang")) $("#labelTargetOrang").textContent = new Intl.NumberFormat('id-ID').format(targetOrang);
-
-  const elOrang = $("#terkumpulOrang");
-  if (elOrang) {
-    elOrang.textContent = new Intl.NumberFormat('id-ID').format(sisaOrang);
-    const barOrang = $("#progressOrang");
-    if (barOrang) { setTimeout(() => { barOrang.style.width = persenJalan + "%"; }, 500); }
-  }
-
-  const checkDedikasi = $("#checkDedikasi");
-  const boxDedikasi = $("#boxNamaDedikasi");
-  if (checkDedikasi && boxDedikasi) {
-    checkDedikasi.addEventListener("change", (e) => {
-      if (e.target.checked) { boxDedikasi.classList.remove("hidden"); $("#inputNamaDedikasi")?.focus(); }
-      else { boxDedikasi.classList.add("hidden"); }
-    });
-  }
-
+  const inputEl = $("#inputNominal");
+  const currencyEl = $("#currencyToggle");
+  const hintEl = $("#inputNominalHint");
+  const quickWrapper = $("#quickButtonsWrapper");
   const btnWA = $("#donasiBtn");
-  if (btnWA) {
-    btnWA.addEventListener("click", () => {
-      const j = $("#inputJPY")?.value; const r = $("#inputIDR")?.value;
-      const isDedikasi = checkDedikasi?.checked; const namaDedikasi = $("#inputNamaDedikasi")?.value;
-      const t = TRANSLATIONS[currentLang] || TRANSLATIONS["id"];
+  const checkDedikasi = $("#checkDedikasi");
 
-      if (!j && !r) { alert(t.alert_nominal); return; }
-
-      const originalText = btnWA.innerHTML;
-      btnWA.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> ${t.btn_loading}`;
-      btnWA.classList.add("opacity-75", "cursor-wait");
-
-      const kategoriEl = document.getElementById("kategoriDonasi");
-      const kategori = kategoriEl ? kategoriEl.value : "Umum";
-
-      let msg = t.wa_opening;
-      msg += `\n\n📌 *Tujuan:* ${kategori}`;
-      msg += `\n💰 *Nominal:* ${j ? j + ' JPY' : ''} ${r ? r + ' IDR' : ''}`;
-      if (isDedikasi && namaDedikasi) { msg += `\n${t.wa_dedication} *${namaDedikasi}*`; }
-      msg += `\n\n${t.wa_closing}`;
-      setTimeout(() => {
-        window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
-        btnWA.innerHTML = originalText;
-        btnWA.classList.remove("opacity-75", "cursor-wait");
-      }, 1000);
-    });
-  }
-
+  // --- 1. LOGIKA COPY NOMOR REKENING ---
   $$("[data-copy]").forEach(b => b.addEventListener("click", () => {
     navigator.clipboard.writeText($(b.dataset.copy).innerText);
     const t = TRANSLATIONS[currentLang] || TRANSLATIONS["id"];
@@ -1014,43 +956,76 @@ function initDonasi() {
     window.lucide?.createIcons?.();
     setTimeout(() => { b.className = originalClass; b.innerHTML = originalText; window.lucide?.createIcons?.(); }, 2000);
   }));
-    // --- FORMATTER UANG LIVE (UX) ---
-  // Tempel di bagian bawah fungsi initDonasi()
-  const formatInputUang = (selector, prefix) => {
-      const el = $(selector);
-      if(!el) return;
-      
-      // Saat user mengetik
-      el.addEventListener('input', (e) => {
-          // 1. Ambil angka saja (hapus titik/huruf)
-          let val = e.target.value.replace(/\D/g, ''); 
-          
-          // 2. Format jadi ribuan (contoh: 1.000.000)
-          if(val) {
-             // Simpan nilai asli di atribut data-value untuk perhitungan
-             el.dataset.realValue = val; 
-             // Tampilkan format cantik ke user
-             // Catatan: Input type harus 'text' untuk bisa ada titiknya, 
-             // tapi karena di HTML kita pakai type='number', kita ubah sedikit pendekatannya:
-             // KITA HANYA TAMPILKAN HINT DI BAWAHNYA
-             
-             let formatted = new Intl.NumberFormat('id-ID').format(val);
-             let hintId = selector + "Hint";
-             let hintEl = document.getElementById(hintId.replace("#",""));
-             
-             if(!hintEl) {
-                 hintEl = document.createElement("div");
-                 hintEl.id = hintId.replace("#","");
-                 hintEl.className = "text-xs text-emerald-400 font-bold mt-1 text-right";
-                 el.parentNode.appendChild(hintEl);
-             }
-             hintEl.textContent = `${prefix} ${formatted}`;
-          }
-      });
+
+  // Jika form donasi tidak ada di halaman ini, hentikan eksekusi script selanjutnya
+  if (!inputEl || !currencyEl) return;
+
+  // --- 2. UPDATE FORMAT UANG & TOMBOL CEPAT ---
+  const updateUI = () => {
+    const currency = currencyEl.value;
+    const val = inputEl.value;
+    
+    // Update Tombol Cepat berdasarkan Mata Uang
+    if (currency === "JPY") {
+      quickWrapper.innerHTML = `
+        <button class="q-btn text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1.5 rounded-lg text-slate-300 font-bold transition-colors" data-v="1000">¥1.000</button>
+        <button class="q-btn text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1.5 rounded-lg text-slate-300 font-bold transition-colors" data-v="10000">¥10.000</button>`;
+    } else {
+      quickWrapper.innerHTML = `
+        <button class="q-btn text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1.5 rounded-lg text-slate-300 font-bold transition-colors" data-v="50000">Rp50rb</button>
+        <button class="q-btn text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1.5 rounded-lg text-slate-300 font-bold transition-colors" data-v="100000">Rp100rb</button>`;
+    }
+
+    // Pasang event listener untuk tombol baru
+    $$(".q-btn").forEach(b => b.addEventListener("click", (e) => {
+      e.preventDefault();
+      inputEl.value = b.dataset.v;
+      updateUI();
+    }));
+
+    // Tampilkan format ribuan yang cantik di bawah input
+    if (val) {
+      const prefix = currency === 'JPY' ? '¥' : 'Rp';
+      hintEl.textContent = `${prefix} ${new Intl.NumberFormat('id-ID').format(val)}`;
+    } else {
+      hintEl.textContent = "";
+    }
   };
 
-  formatInputUang("#inputJPY", "¥");
-  formatInputUang("#inputIDR", "Rp");
+  currencyEl.addEventListener("change", () => { inputEl.value = ""; updateUI(); });
+  inputEl.addEventListener("input", () => {
+     // Cegah input huruf di kolom number
+     inputEl.value = inputEl.value.replace(/\D/g, ''); 
+     updateUI();
+  });
+  updateUI();
+
+  // --- 3. LOGIKA KIRIM WHATSAPP ---
+  btnWA?.addEventListener("click", () => {
+    const nominal = inputEl.value;
+    const currency = currencyEl.value;
+    const kategori = $("#kategoriDonasi")?.value || "Umum";
+    const namaDedikasi = $("#inputNamaDedikasi")?.value;
+    const t = TRANSLATIONS[currentLang] || TRANSLATIONS["id"];
+
+    if (!nominal || nominal <= 0) { alert(t.alert_nominal); return; }
+
+    const originalText = btnWA.innerHTML;
+    btnWA.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> ${t.btn_loading}`;
+    btnWA.classList.add("opacity-75", "cursor-wait");
+
+    let msg = t.wa_opening;
+    msg += `\n\n📌 *Tujuan:* ${kategori}`;
+    msg += `\n💰 *Nominal:* ${new Intl.NumberFormat('id-ID').format(nominal)} ${currency}`;
+    if (checkDedikasi?.checked && namaDedikasi) { msg += `\n${t.wa_dedication} *${namaDedikasi}*`; }
+    msg += `\n\n${t.wa_closing}`;
+
+    setTimeout(() => {
+      window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
+      btnWA.innerHTML = originalText;
+      btnWA.classList.remove("opacity-75", "cursor-wait");
+    }, 1000);
+  });
 }
 
 function initCountdown() {
