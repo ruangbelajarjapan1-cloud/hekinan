@@ -420,12 +420,12 @@ async function renderContent() {
         tagColor = "bg-emerald-50 text-emerald-700 border-emerald-100";
     }
 
-  // 2. LOGIKA THUMBNAIL POSTER (BARU - UTUH & BISA DIKLIK)
+// 2. LOGIKA THUMBNAIL POSTER (OTOMATIS MENYESUAIKAN PORTRAIT/LANDSCAPE)
     let thumbnailHtml = "";
     if (x.poster && x.poster.length > 5) {
         thumbnailHtml = `
-        <div onclick="window.openArticleModal(${index})" class="w-full h-48 mb-4 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200 cursor-pointer relative group shadow-inner">
-            <img src="${sanitizeHTML(x.poster)}" alt="Thumbnail" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy">
+        <div onclick="window.openArticleModal(${index})" class="w-full mb-4 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200 cursor-pointer relative group shadow-inner">
+            <img src="${sanitizeHTML(x.poster)}" alt="Thumbnail" class="w-full h-auto block group-hover:scale-105 transition-transform duration-500" loading="lazy">
             
             <div class="absolute inset-0 bg-black/0 group-hover:bg-slate-900/10 transition-colors flex items-center justify-center">
                 <div class="bg-white/90 backdrop-blur text-slate-800 px-3 py-1.5 rounded-full text-[10px] font-extrabold opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 shadow-md flex items-center gap-1 border border-slate-200">
@@ -434,7 +434,6 @@ async function renderContent() {
             </div>
         </div>`;
     }
-
     // 3. LOGIKA TOMBOL 
     let actionButton = "";
     if (x.link_daftar && x.link_daftar.length > 5) {
