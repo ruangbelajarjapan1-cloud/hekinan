@@ -1184,6 +1184,46 @@ window.tutupPopupJamaah = () => {
     }
 };
 // ==========================================
+// FITUR KALKULASI PROGRESS WAKAF
+// ==========================================
+function initProgressWakaf() {
+  
+    const targetDonasi = TARGET_DONASI;
+    const terkumpulSaatIni = TERKUMPUL_SAAT_INI;
+    const kekurangan = targetDonasi - terkumpulSaatIni;
+
+    let persentase = (terkumpulSaatIni / targetDonasi) * 100;
+    if (persentase > 100) persentase = 100; 
+
+    const sisaOrang = Math.ceil(kekurangan / 1000);
+    const formatAngka = (angka) => new Intl.NumberFormat('id-ID').format(angka);
+
+    const updateTeks = (id, teks) => {
+        const elemen = document.getElementById(id);
+        if (elemen) elemen.textContent = teks;
+    };
+
+    const updateLebar = (id, persen) => {
+        const elemen = document.getElementById(id);
+        if (elemen) elemen.style.width = `${persen}%`;
+    };
+
+    // Update target orang di visual
+    updateTeks('targetOrang', formatAngka(sisaOrang));
+    updateTeks('terkumpulOrang', formatAngka(sisaOrang));
+
+    // Update animasi bar hijau
+    updateLebar('progressOrang', persentase);
+    updateLebar('progressBar', persentase);
+
+    // Update nominal di bawah bar
+    updateTeks('terkumpulLabel', `¥${formatAngka(terkumpulSaatIni)}`);
+    updateTeks('kekuranganLabel', `¥${formatAngka(kekurangan)}`);
+    updateTeks('targetLabel', `¥${formatAngka(targetDonasi)}`);
+    updateTeks('percentLabel', persentase.toFixed(1));
+}
+
+// ==========================================
 // 4. BOOTSTRAP (UPDATE TERBARU)
 // ==========================================
 async function boot() { // <-- Tambahkan kata async di sini
@@ -1201,6 +1241,7 @@ async function boot() { // <-- Tambahkan kata async di sini
   renderContent();
   initCountdown();
   initDonasi();
+    initProgressWakaf();
   initSmartCarousel();
   initVideoKajian();
   initVideoAjakan();
