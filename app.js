@@ -25,7 +25,7 @@ window.addEventListener('error', function(e) {
     }
 }, true); // 'true' penting agar error capture phase tertangkap
 const TARGET_DONASI = 42000000;
-const TERKUMPUL_SAAT_INI = 11878291;
+const TERKUMPUL_SAAT_INI = 21182533;
 
 // Koordinat Hekinan, Jepang
 const HEK_LAT = 34.884;
