@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
-  <title>As-Sunnah App - Premium</title>
+  <title>As-Sunnah App</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
@@ -28,6 +28,8 @@
 </head>
 <body class="pb-36 bg-app-dark text-white relative overflow-x-hidden">
 
+  <audio id="audioAdzan" src="https://files.myquran.com/suara/adzan/adzan_makkah.mp3" preload="none"></audio>
+
   <div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
     <div class="absolute -top-[10%] -right-[10%] w-[70vw] h-[70vw] rounded-full bg-emerald-900/20 blur-[80px]"></div>
     <div class="absolute top-[40%] -left-[20%] w-[60vw] h-[60vw] rounded-full bg-sky-900/10 blur-[80px]"></div>
@@ -40,11 +42,11 @@
         <img src="logohekinan.jpeg" alt="Logo" class="relative w-12 h-12 rounded-full border border-white/10 object-cover shadow-xl">
       </div>
       <div>
-        <h1 id="sapaanWaktu" class="text-sm font-medium text-slate-400">Assalamu'alaikum</h1>
+        <h1 id="sapaanWaktu" class="text-sm font-medium text-emerald-400">Assalamu'alaikum,</h1>
         <p class="text-lg font-extrabold tracking-tight text-white leading-tight">Jamaah Hekinan</p>
       </div>
     </div>
-    <div class="glass-ultra p-2.5 rounded-full shadow-lg">
+    <div class="glass-ultra p-2.5 rounded-full shadow-lg border border-slate-700">
       <i data-lucide="bell" class="w-5 h-5 text-emerald-400 animate-pulse"></i>
     </div>
   </header>
@@ -56,7 +58,7 @@
         المسجد
       </div>
       
-      <div class="relative z-10 flex justify-between items-start mb-8">
+      <div class="relative z-10 flex justify-between items-start mb-6">
         <div>
           <div class="flex items-center gap-2 mb-2">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
@@ -72,10 +74,10 @@
       </div>
 
       <div class="flex items-center justify-between pt-4 border-t border-emerald-500/20">
-        <p id="hijriDateApp" class="text-xs font-bold text-emerald-100/70 tracking-wide">Memuat Hijriah...</p>
-        <div class="bg-emerald-500/20 text-emerald-300 text-[10px] px-3 py-1 rounded-lg font-bold border border-emerald-500/30">
-          Hekinan, JP
-        </div>
+        <button onclick="toggleAudio()" id="btnToggleAudio" class="flex items-center gap-1.5 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/30 transition-colors text-[10px] px-3 py-1.5 rounded-lg font-bold border border-emerald-500/30 shadow-sm active:scale-95">
+          <i data-lucide="bell-off" class="w-3 h-3"></i> Alarm Adzan
+        </button>
+        <p id="hijriDateApp" class="text-xs font-bold text-emerald-100/70 tracking-wide text-right">Memuat...</p>
       </div>
     </section>
 
@@ -92,11 +94,24 @@
         <i data-lucide="book" class="w-6 h-6 text-pink-400 mb-2 group-hover:scale-110 transition-transform"></i>
         <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Kamus</span>
       </button>
-      <a href="index.html#kegiatan" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl hover:bg-white/5 transition-all active:scale-90 group border-b-2 border-b-purple-500/30">
-        <i data-lucide="image" class="w-6 h-6 text-purple-400 mb-2 group-hover:scale-110 transition-transform"></i>
-        <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Galeri</span>
+      
+      <a id="btnDzikir" href="#" target="_blank" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl hover:bg-white/5 transition-all active:scale-90 group border-b-2 border-b-purple-500/30">
+        <i id="iconDzikir" data-lucide="sun" class="w-6 h-6 text-purple-400 mb-2 group-hover:scale-110 transition-transform"></i>
+        <span id="textDzikir" class="text-[8px] font-bold uppercase tracking-wider text-slate-300">Dzikir</span>
       </a>
     </section>
+
+    <a href="index.html#kegiatan" onclick="sessionStorage.setItem('modeWebAktif', 'true')" id="kajianAppCard" class="hidden glass-ultra rounded-[1.5rem] p-4 relative overflow-hidden border border-sky-500/30 group active:scale-95 transition-transform flex items-center gap-4">
+      <div class="bg-sky-500/20 p-3 rounded-xl text-sky-400 group-hover:scale-110 transition-transform">
+         <i data-lucide="mic" class="w-6 h-6"></i>
+      </div>
+      <div class="flex-1 pr-6">
+         <h3 class="text-[9px] font-extrabold text-sky-400 uppercase tracking-widest mb-1">Kajian Terdekat</h3>
+         <p id="kajianAppTitle" class="font-bold text-white leading-tight line-clamp-1">Memuat...</p>
+         <p id="kajianAppDate" class="text-[10px] text-slate-400 mt-1">--</p>
+      </div>
+      <i data-lucide="chevron-right" class="absolute right-4 w-4 h-4 text-slate-500 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
+    </a>
 
     <section class="glass-ultra rounded-[2rem] p-6 relative overflow-hidden">
       <div class="absolute top-0 right-0 w-32 h-32 bg-sky-500/5 rounded-full blur-2xl"></div>
@@ -108,41 +123,11 @@
       </div>
       
       <div class="flex justify-between relative z-10">
-        <label class="flex flex-col items-center gap-3 cursor-pointer group">
-          <input type="checkbox" class="checkbox-custom hidden" id="chkSubuh" onchange="saveIbadah()">
-          <div class="w-12 h-12 rounded-[1rem] border border-white/10 bg-black/30 flex items-center justify-center transition-all duration-300 group-active:scale-90 shadow-inner">
-            <i data-lucide="check" class="w-6 h-6 text-white check-icon"></i>
-          </div>
-          <span class="text-[10px] font-bold text-slate-400 group-hover:text-white transition-colors">Subuh</span>
-        </label>
-        <label class="flex flex-col items-center gap-3 cursor-pointer group">
-          <input type="checkbox" class="checkbox-custom hidden" id="chkDzuhur" onchange="saveIbadah()">
-          <div class="w-12 h-12 rounded-[1rem] border border-white/10 bg-black/30 flex items-center justify-center transition-all duration-300 group-active:scale-90 shadow-inner">
-            <i data-lucide="check" class="w-6 h-6 text-white check-icon"></i>
-          </div>
-          <span class="text-[10px] font-bold text-slate-400 group-hover:text-white transition-colors">Dzuhur</span>
-        </label>
-        <label class="flex flex-col items-center gap-3 cursor-pointer group">
-          <input type="checkbox" class="checkbox-custom hidden" id="chkAshar" onchange="saveIbadah()">
-          <div class="w-12 h-12 rounded-[1rem] border border-white/10 bg-black/30 flex items-center justify-center transition-all duration-300 group-active:scale-90 shadow-inner">
-            <i data-lucide="check" class="w-6 h-6 text-white check-icon"></i>
-          </div>
-          <span class="text-[10px] font-bold text-slate-400 group-hover:text-white transition-colors">Ashar</span>
-        </label>
-        <label class="flex flex-col items-center gap-3 cursor-pointer group">
-          <input type="checkbox" class="checkbox-custom hidden" id="chkMaghrib" onchange="saveIbadah()">
-          <div class="w-12 h-12 rounded-[1rem] border border-white/10 bg-black/30 flex items-center justify-center transition-all duration-300 group-active:scale-90 shadow-inner">
-            <i data-lucide="check" class="w-6 h-6 text-white check-icon"></i>
-          </div>
-          <span class="text-[10px] font-bold text-slate-400 group-hover:text-white transition-colors">Maghrib</span>
-        </label>
-        <label class="flex flex-col items-center gap-3 cursor-pointer group">
-          <input type="checkbox" class="checkbox-custom hidden" id="chkIsya" onchange="saveIbadah()">
-          <div class="w-12 h-12 rounded-[1rem] border border-white/10 bg-black/30 flex items-center justify-center transition-all duration-300 group-active:scale-90 shadow-inner">
-            <i data-lucide="check" class="w-6 h-6 text-white check-icon"></i>
-          </div>
-          <span class="text-[10px] font-bold text-slate-400 group-hover:text-white transition-colors">Isya</span>
-        </label>
+        <label class="flex flex-col items-center gap-3 cursor-pointer group"><input type="checkbox" class="checkbox-custom hidden" id="chkSubuh" onchange="saveIbadah()"><div class="w-11 h-11 sm:w-12 sm:h-12 rounded-[1rem] border border-white/10 bg-black/30 flex items-center justify-center transition-all duration-300 group-active:scale-90 shadow-inner"><i data-lucide="check" class="w-5 h-5 text-white check-icon"></i></div><span class="text-[9px] font-bold text-slate-400 group-hover:text-white transition-colors">Subuh</span></label>
+        <label class="flex flex-col items-center gap-3 cursor-pointer group"><input type="checkbox" class="checkbox-custom hidden" id="chkDzuhur" onchange="saveIbadah()"><div class="w-11 h-11 sm:w-12 sm:h-12 rounded-[1rem] border border-white/10 bg-black/30 flex items-center justify-center transition-all duration-300 group-active:scale-90 shadow-inner"><i data-lucide="check" class="w-5 h-5 text-white check-icon"></i></div><span class="text-[9px] font-bold text-slate-400 group-hover:text-white transition-colors">Dzuhur</span></label>
+        <label class="flex flex-col items-center gap-3 cursor-pointer group"><input type="checkbox" class="checkbox-custom hidden" id="chkAshar" onchange="saveIbadah()"><div class="w-11 h-11 sm:w-12 sm:h-12 rounded-[1rem] border border-white/10 bg-black/30 flex items-center justify-center transition-all duration-300 group-active:scale-90 shadow-inner"><i data-lucide="check" class="w-5 h-5 text-white check-icon"></i></div><span class="text-[9px] font-bold text-slate-400 group-hover:text-white transition-colors">Ashar</span></label>
+        <label class="flex flex-col items-center gap-3 cursor-pointer group"><input type="checkbox" class="checkbox-custom hidden" id="chkMaghrib" onchange="saveIbadah()"><div class="w-11 h-11 sm:w-12 sm:h-12 rounded-[1rem] border border-white/10 bg-black/30 flex items-center justify-center transition-all duration-300 group-active:scale-90 shadow-inner"><i data-lucide="check" class="w-5 h-5 text-white check-icon"></i></div><span class="text-[9px] font-bold text-slate-400 group-hover:text-white transition-colors">Maghrib</span></label>
+        <label class="flex flex-col items-center gap-3 cursor-pointer group"><input type="checkbox" class="checkbox-custom hidden" id="chkIsya" onchange="saveIbadah()"><div class="w-11 h-11 sm:w-12 sm:h-12 rounded-[1rem] border border-white/10 bg-black/30 flex items-center justify-center transition-all duration-300 group-active:scale-90 shadow-inner"><i data-lucide="check" class="w-5 h-5 text-white check-icon"></i></div><span class="text-[9px] font-bold text-slate-400 group-hover:text-white transition-colors">Isya</span></label>
       </div>
     </section>
 
@@ -159,31 +144,25 @@
 
   <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-[100]">
     <nav class="glass-ultra backdrop-blur-3xl border border-white/10 rounded-full px-6 py-3 flex justify-between items-center shadow-[0_20px_40px_rgba(0,0,0,0.6)]">
-      
       <a href="app.html" class="flex flex-col items-center gap-1 text-emerald-400">
         <div class="bg-emerald-500/20 p-2 rounded-full"><i data-lucide="home" class="w-5 h-5"></i></div>
         <span class="text-[8px] font-black uppercase tracking-wider hidden sm:block">App</span>
       </a>
-      
       <a href="index.html" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition-colors p-2">
         <i data-lucide="globe" class="w-5 h-5"></i>
         <span class="text-[8px] font-black uppercase tracking-wider hidden sm:block">Web</span>
       </a>
-      
       <a href="index.html#donasi" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="relative -top-6 h-14 w-14 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center shadow-[0_10px_20px_rgba(16,185,129,0.4)] border-4 border-[#050B14] transform active:scale-90 transition-all hover:scale-105 group">
         <i data-lucide="heart" class="w-6 h-6 text-white fill-current group-hover:animate-pulse"></i>
       </a>
-      
       <a href="index.html#video-kajian" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition-colors p-2">
         <i data-lucide="youtube" class="w-5 h-5"></i>
         <span class="text-[8px] font-black uppercase tracking-wider hidden sm:block">Video</span>
       </a>
-      
       <button onclick="window.toggleSaranModal(true)" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition-colors p-2">
         <i data-lucide="message-circle" class="w-5 h-5"></i>
         <span class="text-[8px] font-black uppercase tracking-wider hidden sm:block">Tanya</span>
       </button>
-
     </nav>
   </div>
 
@@ -207,12 +186,82 @@
   <script>
     if(window.lucide) window.lucide.createIcons();
 
-    // Dinamis: Sapaan Waktu
-   // Sapaan Islami (Sesuai Sunnah)
-    const sapaanEl = document.getElementById("sapaanWaktu");
-    sapaanEl.innerText = "Assalamu'alaikum,";
+    // --- 1. FITUR DZIKIR PINTAR ---
+    const jamDzikir = new Date().getHours();
+    const textDzikir = document.getElementById("textDzikir");
+    const iconDzikir = document.getElementById("iconDzikir");
+    const btnDzikir = document.getElementById("btnDzikir");
+    
+    if(jamDzikir >= 3 && jamDzikir < 15) {
+        textDzikir.innerText = "Dzikir Pagi";
+        iconDzikir.setAttribute("data-lucide", "sunrise");
+        btnDzikir.href = "https://rumaysho.com/1636-bacaan-dzikir-pagi.html";
+    } else {
+        textDzikir.innerText = "Dzikir Petang";
+        iconDzikir.setAttribute("data-lucide", "sunset");
+        btnDzikir.href = "https://rumaysho.com/1638-bacaan-dzikir-petang.html";
+    }
 
-    // Logika Simpan Checklist Ibadah di HP
+    // --- 2. FITUR ALARM ADZAN ---
+    let isAdzanEnabled = false;
+    let hasPlayed = false;
+    window.toggleAudio = () => {
+        isAdzanEnabled = !isAdzanEnabled;
+        const btn = document.getElementById('btnToggleAudio');
+        const audio = document.getElementById('audioAdzan');
+        if(isAdzanEnabled) {
+            btn.innerHTML = '<i data-lucide="volume-2" class="w-3 h-3"></i> Alarm Aktif';
+            btn.classList.add('bg-emerald-500/80', 'text-white', 'border-emerald-400', 'shadow-[0_0_15px_rgba(16,185,129,0.5)]');
+            
+            // Pancing sistem browser agar mengizinkan suara keluar
+            audio.volume = 0; 
+            audio.play().then(() => { audio.pause(); audio.currentTime = 0; audio.volume = 1; }).catch(()=>{});
+        } else {
+            btn.innerHTML = '<i data-lucide="bell-off" class="w-3 h-3"></i> Alarm Adzan';
+            btn.classList.remove('bg-emerald-500/80', 'text-white', 'border-emerald-400', 'shadow-[0_0_15px_rgba(16,185,129,0.5)]');
+            audio.pause();
+            audio.currentTime = 0;
+        }
+        if(window.lucide) window.lucide.createIcons();
+    };
+
+    // Pengecek Hitung Mundur (Berbunyi kalau waktu sholat tiba)
+    setInterval(() => {
+        const cd = document.getElementById('countdown');
+        if(cd && cd.innerText.includes('Waktu Sholat')) {
+            if(isAdzanEnabled && !hasPlayed) {
+                document.getElementById('audioAdzan').play();
+                hasPlayed = true;
+            }
+        } else {
+            hasPlayed = false; // Reset kalau sholat selanjutnya muncul
+        }
+    }, 1000);
+
+    // --- 4. FITUR KAJIAN TERDEKAT ---
+    async function loadMiniKajian() {
+        try {
+            // Mengambil dari sheet yang sama dengan website utama Anda
+            const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=0&single=true&output=csv";
+            const res = await fetch(url + "&t=" + Date.now());
+            const text = await res.text();
+            const rows = text.split('\n');
+            
+            if(rows.length > 1) {
+                const barisPertama = rows[1].split(','); 
+                if(barisPertama.length >= 2 && barisPertama[0].trim() !== "") {
+                    // Masukkan ke kartu
+                    document.getElementById('kajianAppTitle').innerText = barisPertama[0].replace(/"/g, ''); // Kolom 1 (Judul)
+                    document.getElementById('kajianAppDate').innerText = barisPertama[1].replace(/"/g, '') || "Ketuk untuk info selengkapnya"; // Kolom 2 (Tanggal)
+                    document.getElementById('kajianAppCard').classList.remove('hidden'); // Tampilkan kartu
+                    document.getElementById('kajianAppCard').classList.add('flex');
+                }
+            }
+        } catch(e) {}
+    }
+    setTimeout(loadMiniKajian, 1500); // Tunggu sebentar saat buka aplikasi
+
+    // --- LOGIKA MUTABA'AH (Checklist Harian) ---
     const ibadahKeys = ['chkSubuh', 'chkDzuhur', 'chkAshar', 'chkMaghrib', 'chkIsya'];
     const today = new Date().toDateString();
 
@@ -224,22 +273,14 @@
         ibadahKeys.forEach(id => { document.getElementById(id).checked = localStorage.getItem(id) === 'true'; });
       }
     }
-
-    function saveIbadah() {
-      ibadahKeys.forEach(id => { localStorage.setItem(id, document.getElementById(id).checked); });
-    }
-
+    function saveIbadah() { ibadahKeys.forEach(id => { localStorage.setItem(id, document.getElementById(id).checked); }); }
     function resetIbadah(manual = true) {
       if(manual && !confirm("Reset checklist ibadah hari ini?")) return;
-      ibadahKeys.forEach(id => {
-        document.getElementById(id).checked = false;
-        localStorage.setItem(id, 'false');
-      });
+      ibadahKeys.forEach(id => { document.getElementById(id).checked = false; localStorage.setItem(id, 'false'); });
     }
-
     window.addEventListener('DOMContentLoaded', loadIbadah);
   </script>
 
-  <script type="module" src="./app.js?v=9000"></script>
+  <script type="module" src="./app.js?v=9999"></script>
 </body>
 </html>
