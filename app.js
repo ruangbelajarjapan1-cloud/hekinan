@@ -24,8 +24,8 @@ window.addEventListener('error', function(e) {
         e.target.classList.add("opacity-50", "grayscale"); // Efek visual biar ketahuan ini placeholder
     }
 }, true); // 'true' penting agar error capture phase tertangkap
-const TARGET_DONASI = 42000000;
-const TERKUMPUL_SAAT_INI = 21182533;
+let TARGET_DONASI = 42000000;
+let TERKUMPUL_SAAT_INI = 21182533;
 
 // Koordinat Hekinan, Jepang
 const HEK_LAT = 34.884;
@@ -570,7 +570,6 @@ function initPopup() {
   
   if (!popup || !track) return;
 
-  // 1. Logika Pembatasan 24 Jam
   const lastSeen = localStorage.getItem("popup_last_seen");
   const now = new Date().getTime();
   const ONE_DAY = 24 * 60 * 60 * 1000;
@@ -579,13 +578,11 @@ function initPopup() {
     return; 
   }
 
-  // 2. Hitung Progres Donasi secara Dinamis
   const persentase = Math.min((TERKUMPUL_SAAT_INI / TARGET_DONASI) * 100, 100).toFixed(1);
   const sisa = new Intl.NumberFormat('id-ID').format(TARGET_DONASI - TERKUMPUL_SAAT_INI);
 
   track.innerHTML = "";
 
-  // 3. Slide Utama dengan Progress Bar
   const mainSlide = document.createElement("div");
   mainSlide.className = "popup-slide transition-opacity duration-700 ease-in-out absolute inset-0 w-full h-full z-10 opacity-100";
   mainSlide.innerHTML = `
@@ -618,8 +615,6 @@ function initPopup() {
       </a>
   `;
   track.appendChild(mainSlide);
-
-  // ... (Sisa kode untuk navigasi dots dan slide lainnya tetap sama seperti sebelumnya)
   
   const close = () => { 
     popup.classList.add("hidden"); 
@@ -632,7 +627,7 @@ function initPopup() {
   
   popup.classList.remove("hidden");
   popup.classList.add("flex");
-  if(window.lucide) window.lucide.createIcons();
+  if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
 }
 function initVideoAjakan() { 
     const container = $("#videoAjakanContainer"); if (!container || !VIDEO_DONASI_LIST.length) return; 
@@ -659,16 +654,26 @@ async function cekLiveDariSheet() {
         const text = await response.text();
         const rows = text.split('\n');
         let foundId = "";
+        
         for (let row of rows) {
             const cols = row.split(',');
-            if (cols[0] && cols[0].trim() === "live_id" && cols[1]) {
-                foundId = cols[1].trim().replace(/['"\r]/g, '');
-                break;
+            if (cols[0] && cols[1]) {
+                const key = cols[0].trim().toLowerCase();
+                const val = cols[1].trim().replace(/['"\r]/g, '');
+
+                if (key === "live_id") foundId = val;
+                if (key === "target_donasi" && !isNaN(val) && val !== "") TARGET_DONASI = Number(val);
+                if (key === "terkumpul_donasi" && !isNaN(val) && val !== "") TERKUMPUL_SAAT_INI = Number(val);
             }
         }
+        
         YOUTUBE_LIVE_ID = foundId;
         initLiveStream(); 
-    } catch (error) { console.error("Gagal cek Live", error); }
+        if (typeof initProgressWakaf === 'function') initProgressWakaf();
+        
+    } catch (error) { 
+        console.error("Gagal cek Setelan dari Sheet", error); 
+    }
 }
 
 function initLiveStream() {
@@ -1166,35 +1171,32 @@ function initProgressWakaf() {
 // ==========================================
 // 4. BOOTSTRAP (UPDATE TERBARU)
 // ==========================================
-async function boot() { // <-- Tambahkan kata async di sini
+async function boot() {
   const hariIni = new Date().getDay(); 
   const bannerJumat = $("#jumatBanner");
   if (hariIni === 5 && bannerJumat) { bannerJumat.classList.remove("hidden"); }
 
   setLang(currentLang);
-  $("#langToggle")?.addEventListener("click", () => setLang(currentLang === "id" ? "en" : "id"));
-  $("#langToggleMob")?.addEventListener("click", () => setLang(currentLang === "id" ? "en" : "id"));
   
   if ($("#year")) $("#year").textContent = new Date().getFullYear();
+
+  // --- URUTAN BARU AGAR DATA GOOGLE SHEET DIAMBIL LEBIH DULU ---
+  await cekLiveDariSheet(); 
+  initLiveStream();         
+  initProgressWakaf();      
+  initPopup();              
+  // -------------------------------------------------------------
 
   renderSholat();
   renderContent();
   initCountdown();
   initDonasi();
-    initProgressWakaf();
   initSmartCarousel();
   initVideoKajian();
   initVideoAjakan();
   initDoa();
   initTabs();
   initKamusApp();
-
-  // --- SISTEM LIVE OTOMATIS DARI SPREADSHEET ---
-  await cekLiveDariSheet(); // 1. Tunggu web mengecek Google Sheets
-  initLiveStream();         // 2. Render iframe di halaman utama
-  initPopup();              // 3. Render popup
-  // ---------------------------------------------
-
   initHeroSlider();
   setupAdmin();
 
