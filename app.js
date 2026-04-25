@@ -949,6 +949,7 @@ if (document.readyState === "loading") document.addEventListener("DOMContentLoad
 // ==========================================
 // FUNGSI PEMBANTU KHUSUS APP.HTML
 // ==========================================
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => boot()); else boot();
 async function renderAppSholat() {
     const container = $("#prayerListApp");
     if(!container) return;
