@@ -182,7 +182,45 @@
         <div id="stateKamusKosong" class="hidden flex-1 flex-col items-center justify-center text-slate-400"><p>Tidak ditemukan.</p></div>
     </div>
   </div>
-
+<div id="modalSaran" class="fixed inset-0 z-[160] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-all text-slate-900">
+    <div class="bg-white w-full max-w-lg rounded-3xl flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+        <div>
+          <h3 class="text-xl font-extrabold text-slate-800 flex items-center gap-2">
+            <span class="bg-sky-100 text-sky-600 p-1.5 rounded-lg"><i data-lucide="inbox" class="w-5 h-5"></i></span>
+            Tanya / Saran
+          </h3>
+          <p class="text-xs text-slate-500 mt-1">Sampaikan masukan atau pertanyaan ke admin.</p>
+        </div>
+        <button onclick="window.toggleSaranModal(false)" class="p-2 rounded-full hover:bg-slate-200 text-slate-400 transition-colors">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Kategori</label>
+          <select id="kategoriSaran" class="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-700 focus:outline-none focus:border-sky-500 font-semibold appearance-none">
+            <option value="Tanya Ustadz">📚 Tanya Ustadz / Kajian</option>
+            <option value="Saran Masjid">🏗️ Saran Masjid Hekinan</option>
+            <option value="Lainnya">💡 Lainnya</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Pesan</label>
+          <textarea id="pesanSaran" rows="4" placeholder="Tulis pesan Anda..." class="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-700 focus:outline-none focus:border-sky-500 resize-none"></textarea>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Nama (Opsional)</label>
+          <input id="namaSaran" type="text" placeholder="Hamba Allah" class="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-700 focus:outline-none focus:border-sky-500">
+        </div>
+      </div>
+      <div class="p-5 border-t border-slate-100 bg-slate-50 flex gap-3">
+        <button onclick="window.kirimSaran()" id="kirimSaranBtn" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-xl shadow-md transition-transform transform active:scale-95 flex items-center justify-center gap-2">
+          <i data-lucide="send" class="w-4 h-4"></i> Kirim via WA
+        </button>
+      </div>
+    </div>
+  </div>
   <script>
     if(window.lucide) window.lucide.createIcons();
 
