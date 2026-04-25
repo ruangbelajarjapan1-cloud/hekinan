@@ -571,9 +571,23 @@ function initPopup() {
   
   if (!popup || !track) return;
 
+  // --- LOGIKA PEMBATASAN 24 JAM ---
+  const lastSeen = localStorage.getItem("popup_last_seen");
+  const now = new Date().getTime();
+  const ONE_DAY = 24 * 60 * 60 * 1000;
+
+  if (lastSeen && (now - lastSeen < ONE_DAY)) {
+    console.log("Pop-up disembunyikan untuk kenyamanan pengguna.");
+    return; 
+  }
+  // --------------------------------
+
   const isLiveActive = typeof YOUTUBE_LIVE_ID !== 'undefined' && YOUTUBE_LIVE_ID.trim() !== "";
 
-  // 1. Sisipkan Slide Live Stream ke urutan pertama jika ada live
+  // 1. Bersihkan track sebelum mengisi (menghindari duplikasi saat re-init)
+  track.innerHTML = "";
+
+  // 2. Sisipkan Slide Live Stream jika aktif
   if (isLiveActive) {
       const liveSlide = document.createElement("div");
       liveSlide.className = "popup-slide transition-opacity duration-700 ease-in-out absolute inset-0 w-full h-full z-0 opacity-0 bg-slate-900";
@@ -592,12 +606,12 @@ function initPopup() {
               </div>
           </a>
       `;
-      track.insertBefore(liveSlide, track.firstChild);
+      track.appendChild(liveSlide);
   }
 
-  // 2. Tambahkan Slide Gambar Tambahan (Dauroh, dll)
-  if (POPUP_SLIDES_DATA && POPUP_SLIDES_DATA.length > 0) {
-      POPUP_SLIDES_DATA.forEach((data, idx) => {
+  // 3. Tambahkan Slide Gambar dari POPUP_SLIDES_DATA
+  if (typeof POPUP_SLIDES_DATA !== 'undefined' && POPUP_SLIDES_DATA.length > 0) {
+      POPUP_SLIDES_DATA.forEach((data) => {
           const div = document.createElement("div");
           div.className = "popup-slide transition-opacity duration-700 ease-in-out absolute inset-0 w-full h-full z-0 opacity-0";
           const link = document.createElement("a");
@@ -615,21 +629,20 @@ function initPopup() {
   }
 
   const allSlides = Array.from(track.children);
-  if (allSlides.length <= 1) { popup.classList.remove("hidden"); popup.classList.add("flex"); return; }
+  if (allSlides.length === 0) return;
 
-  // 3. Buat Dots Indikator
+  // 4. Buat Dots Indikator
   dotsContainer.innerHTML = "";
   allSlides.forEach((_, idx) => {
       const dot = document.createElement("button");
       dot.className = `w-2 h-2 rounded-full transition-all ${idx === 0 ? 'bg-white w-6' : 'bg-white/50 hover:bg-white'}`;
-      dot.onclick = () => showSlide(idx);
+      dot.onclick = () => { resetTimer(); showSlide(idx); };
       dotsContainer.appendChild(dot);
   });
 
   let currentIdx = 0;
   let slideInterval;
 
-  // 4. Logika Update Tampilan Slide & TOMBOL AKSI
   const showSlide = (n) => {
       allSlides.forEach((slide, i) => {
           const dot = dotsContainer.children[i];
@@ -645,54 +658,59 @@ function initPopup() {
       });
       currentIdx = n;
 
-      const shareBtn = $("#popupShareBtn");
-      const actionBtn = shareBtn?.previousElementSibling; 
-
+      // Update Tombol Aksi Dinamis
+      const actionBtn = $("#popupPromo a[href^='#'], #popupPromo a[target='_blank']"); 
       if (actionBtn) {
-          const logicIdx = isLiveActive ? n - 1 : n;
-
-          if (logicIdx === -1) {
-              // TOMBOL AKSI DIARAHKAN KE SECTION WEBSITE
+          const logicIdx = isLiveActive ? n : n + 1; // Menyesuaikan urutan slide
+          
+          if (isLiveActive && n === 0) {
               actionBtn.href = "#video-kajian";
               actionBtn.target = "_self";
-              actionBtn.onclick = () => { document.getElementById('closePopupBtn').click(); };
+              actionBtn.onclick = () => { close(); };
               actionBtn.innerHTML = `<i data-lucide="play-circle" class="w-4 h-4"></i> Tonton di Website`;
-          } else if (logicIdx === 0) {
-              actionBtn.href = "ramadhan.html"; 
-              actionBtn.target = "_self";
-              actionBtn.onclick = null;
-              actionBtn.innerHTML = `<i data-lucide="moon" class="w-4 h-4"></i> Info Ramadhan`;
           } else {
-              const data = POPUP_SLIDES_DATA[logicIdx - 1];
-              if (data) {
-                  actionBtn.href = data.link;
-                  actionBtn.target = "_blank";
-                  actionBtn.onclick = null;
-                  actionBtn.innerHTML = `<i data-lucide="edit" class="w-4 h-4"></i> ${data.text || "Selengkapnya"}`;
+              // Logika untuk slide data (Ramadhan atau slide kustom)
+              const dataIdx = isLiveActive ? n - 1 : n;
+              if (dataIdx === -1) { /* Kasus khusus jika ada slide default di HTML */ }
+              else {
+                  const data = POPUP_SLIDES_DATA[dataIdx];
+                  if (data) {
+                      actionBtn.href = data.link;
+                      actionBtn.target = "_blank";
+                      actionBtn.onclick = null;
+                      actionBtn.innerHTML = `<i data-lucide="edit" class="w-4 h-4"></i> ${data.text || "Selengkapnya"}`;
+                  }
               }
           }
-          if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+          if(window.lucide) window.lucide.createIcons();
       }
   };
 
   const nextSlide = () => showSlide((currentIdx + 1) % allSlides.length);
-  const prevSlide = () => showSlide((currentIdx - 1 + allSlides.length) % allSlides.length);
   const startTimer = () => { slideInterval = setInterval(nextSlide, 4000); };
   const stopTimer = () => clearInterval(slideInterval);
   const resetTimer = () => { stopTimer(); startTimer(); };
 
+  // Fungsi Tutup dengan Pencatatan Waktu
+  const close = () => { 
+    popup.classList.add("hidden"); 
+    popup.classList.remove("flex"); 
+    stopTimer(); 
+    localStorage.setItem("popup_last_seen", new Date().getTime());
+  };
+
+  // Event Listeners
+  $("#closePopupBtn")?.addEventListener("click", close);
+  $("#closePopupBackdrop")?.addEventListener("click", close);
+  $("#popNext")?.addEventListener("click", () => { resetTimer(); nextSlide(); });
+  $("#popPrev")?.addEventListener("click", () => { resetTimer(); showSlide((currentIdx - 1 + allSlides.length) % allSlides.length); });
+
+  // Inisialisasi Tampilan
   showSlide(0); 
   popup.classList.remove("hidden");
   popup.classList.add("flex");
   startTimer();
-
-  const close = () => { popup.classList.add("hidden"); popup.classList.remove("flex"); stopTimer(); };
-  $("#closePopupBtn")?.addEventListener("click", close);
-  $("#closePopupBackdrop")?.addEventListener("click", close);
-  $("#popupShareBtn")?.addEventListener("click", () => {
-      const text = "Info Terbaru Masjid As-Sunnah Hekinan. Cek di sini: https://assunnahhekinan.org";
-      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
-  });
+}
 }
 function initVideoAjakan() { 
     const container = $("#videoAjakanContainer"); if (!container || !VIDEO_DONASI_LIST.length) return; 
