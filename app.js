@@ -566,17 +566,10 @@ function initHeroSlider() {
 function initPopup() {
   const popup = $("#popupPromo");
   const track = $("#popupTrack");
-  const dotsContainer = $("#popDots");
   
   if (!popup || !track) return;
 
-  const lastSeen = localStorage.getItem("popup_last_seen");
-  const now = new Date().getTime();
-  const ONE_DAY = 24 * 60 * 60 * 1000;
-
-  if (lastSeen && (now - lastSeen < ONE_DAY)) {
-    return; 
-  }
+  // KODE PEMBATAS WAKTU SUDAH DIHAPUS DI SINI AGAR SELALU MUNCUL
 
   const persentase = Math.min((TERKUMPUL_SAAT_INI / TARGET_DONASI) * 100, 100).toFixed(1);
   const sisa = new Intl.NumberFormat('id-ID').format(TARGET_DONASI - TERKUMPUL_SAAT_INI);
@@ -619,7 +612,6 @@ function initPopup() {
   const close = () => { 
     popup.classList.add("hidden"); 
     popup.classList.remove("flex"); 
-    localStorage.setItem("popup_last_seen", new Date().getTime());
   };
 
   $("#closePopupBtn")?.addEventListener("click", close);
