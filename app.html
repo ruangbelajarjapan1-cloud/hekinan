@@ -22,12 +22,20 @@
 </head>
 <body class="pb-36 bg-[#050B14]">
 
+  <div id="pwaInstallBanner" class="hidden bg-emerald-600 text-white text-xs px-5 py-3 flex justify-between items-center z-[100] relative shadow-md">
+    <div class="flex items-center gap-2">
+      <i data-lucide="download-cloud" class="w-4 h-4"></i>
+      <span class="font-semibold">Install Aplikasi As-Sunnah di HP Anda.</span>
+    </div>
+    <button id="btnInstallPwa" class="bg-white text-emerald-700 px-3 py-1.5 rounded-full font-bold shadow-sm active:scale-95 transition-transform text-[10px] uppercase tracking-wide">Install</button>
+  </div>
+
   <div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
     <div class="absolute -top-[10%] -right-[10%] w-[70vw] h-[70vw] rounded-full bg-emerald-900/10 blur-[80px]"></div>
     <div class="absolute top-[40%] -left-[20%] w-[60vw] h-[60vw] rounded-full bg-sky-900/10 blur-[80px]"></div>
   </div>
 
-  <header class="px-6 pt-10 pb-4 flex justify-between items-center relative z-20">
+  <header class="px-6 pt-8 pb-4 flex justify-between items-center relative z-20">
     <div class="flex items-center gap-4">
       <img src="logohekinan.jpeg" alt="Logo" class="w-12 h-12 rounded-full border border-white/10 shadow-xl object-cover">
       <div>
@@ -127,7 +135,7 @@
         <h3 class="font-extrabold text-[10px] uppercase tracking-[0.2em] text-slate-300" data-k="prayer_list">Jadwal Shalat Lengkap</h3>
       </div>
       <div id="appPrayerList" class="divide-y divide-white/5">
-        <div class="p-10 text-center"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-emerald-500/50"></i></div>
+        <div class="p-10 text-center"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-emerald-500/50"></i><p class="text-xs mt-2 text-slate-400">Mengambil data Iqomah...</p></div>
       </div>
     </section>
   </main>
@@ -169,7 +177,6 @@
             <div class="relative"><i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5"></i><input type="text" id="inputCariKamus" placeholder="Cari..." class="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none"></div>
         </div>
         <div id="containerKamusGrid" class="flex-1 overflow-y-auto p-4 grid grid-cols-1 gap-4 bg-slate-50/50"></div>
-        <div id="stateKamusKosong" class="hidden flex-1 flex-col items-center justify-center text-slate-400"><p>Tidak ditemukan.</p></div>
     </div>
   </div>
 
@@ -199,10 +206,11 @@
       { arab: "مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ طَرِيقًا إِلَى الْجَنَّةِ", id: `"Siapa menempuh jalan menuntut ilmu, Allah mudahkan jalannya ke Surga."`, en: `"Seeking knowledge makes the path to Paradise easy."`, jp: `"知識を求める者は楽園への道が容易になる。"` }
     ];
 
+    // NAMA WAKTU SHOLAT DIKUNCI AGAR TIDAK BERUBAH JADI FAJR
     const DICT = {
       id: { greet: "Assalamu'alaikum,", jamaah: "Jamaah Hekinan", next_prayer: "Selanjutnya", menu_qibla: "Kiblat", menu_kamus: "Kamus", menu_wakaf: "Wakaf", menu_kanji: "Kanji Haram", prayer_list: "Jadwal Shalat Lengkap", tahajjud: "Waktu Tahajjud. Mari memohon kepada Allah.", friday_alert: "Sunnah Jum'at: Baca Al-Kahfi & Shalawat.", sunnah_amalan: "Amalan Sunnah", hadith_title: "Hadits Hari Ini", pr_subuh:"Subuh", pr_syuruq:"Syuruq", pr_dzuhur:"Dzuhur", pr_ashar:"Ashar", pr_maghrib:"Maghrib", pr_isya:"Isya" },
-      en: { greet: "Peace be upon you,", jamaah: "Hekinan Community", next_prayer: "Next Prayer", menu_qibla: "Qibla", menu_kamus: "Glossary", menu_wakaf: "Donate", menu_kanji: "Haram Kanji", prayer_list: "Prayer Times", tahajjud: "Tahajjud Time. Let us pray to Allah.", friday_alert: "Friday Sunnah: Read Al-Kahf & Salawat.", sunnah_amalan: "Daily Sunnah", hadith_title: "Hadith of the Day", pr_subuh:"Fajr", pr_syuruq:"Sunrise", pr_dzuhur:"Dhuhr", pr_ashar:"Asr", pr_maghrib:"Maghrib", pr_isya:"Isha" },
-      jp: { greet: "アッサラーム・アライクム", jamaah: "碧南の皆様", next_prayer: "次の礼拝", menu_qibla: "キブラ", menu_kamus: "辞書", menu_wakaf: "寄付", menu_kanji: "ハラーム漢字", prayer_list: "礼拝時刻表", tahajjud: "タハジュドの時間です。", friday_alert: "金曜日のスンナ：アル・カハフ章", sunnah_amalan: "スンナの行い", hadith_title: "今日のハディース", pr_subuh:"ファジル", pr_syuruq:"日の出", pr_dzuhur:"ズフル", pr_ashar:"アスル", pr_maghrib:"マグリブ", pr_isya:"イシャー" }
+      en: { greet: "Peace be upon you,", jamaah: "Hekinan Community", next_prayer: "Next Prayer", menu_qibla: "Qibla", menu_kamus: "Glossary", menu_wakaf: "Donate", menu_kanji: "Haram Kanji", prayer_list: "Prayer Times", tahajjud: "Tahajjud Time. Let us pray to Allah.", friday_alert: "Friday Sunnah: Read Al-Kahf & Salawat.", sunnah_amalan: "Daily Sunnah", hadith_title: "Hadith of the Day", pr_subuh:"Subuh", pr_syuruq:"Syuruq", pr_dzuhur:"Dzuhur", pr_ashar:"Ashar", pr_maghrib:"Maghrib", pr_isya:"Isya" },
+      jp: { greet: "アッサラーム・アライクム", jamaah: "碧南の皆様", next_prayer: "次の礼拝", menu_qibla: "キブラ", menu_kamus: "辞書", menu_wakaf: "寄付", menu_kanji: "ハラーム漢字", prayer_list: "礼拝時刻表", tahajjud: "タハジュドの時間です。", friday_alert: "金曜日のスンナ：アル・カハフ章", sunnah_amalan: "スンナの行い", hadith_title: "今日のハディース", pr_subuh:"Subuh", pr_syuruq:"Syuruq", pr_dzuhur:"Dzuhur", pr_ashar:"Ashar", pr_maghrib:"Maghrib", pr_isya:"Isya" }
     };
 
     function changeAppLang(l) {
@@ -266,7 +274,6 @@
             let hijriCache = localStorage.getItem('hekinan_hijri');
             let timings;
             
-            // BUG HIJRIAH DIPERBAIKI DI SINI:
             if(data && localStorage.getItem('hekinan_date') === today && hijriCache) {
                 timings = JSON.parse(data);
                 document.getElementById('appHijriDate').innerText = hijriCache;
@@ -357,17 +364,35 @@
             
             let iqomahStr = getIqomahTime(nextP.id);
             document.getElementById('appNextIqomah').innerText = "Iqomah: " + (iqomahStr || "--:--");
-
-            // BUG MINUS DIPERBAIKI DI SINI:
+            
+            // TANDA MINUS DIHILANGKAN DI SINI
             document.getElementById('appCountdown').innerText = `${h}j ${m}m lagi`;
         }, 1000);
     }
 
+    // LOGIKA PWA & MUNCULKAN BANNER JIKA BELUM INSTALL
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Munculkan Banner Hijau di Atas
+        document.getElementById('pwaInstallBanner').classList.remove('hidden');
+    });
+
+    document.getElementById('btnInstallPwa').addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                document.getElementById('pwaInstallBanner').classList.add('hidden');
+            }
+            deferredPrompt = null;
+        }
+    });
+
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(reg => console.log('PWA Ready!'))
-          .catch(err => console.log('PWA Error:', err));
+        navigator.serviceWorker.register('./sw.js').catch(err => console.log('PWA Error:', err));
       });
     }
 
@@ -406,10 +431,11 @@
           btnDzikir.href = "https://rumaysho.com/1638-bacaan-dzikir-petang.html";
       }
 
-      changeAppLang(localStorage.getItem('app_lang') || 'id');
+      // Pastikan selalu ke ID jika baru buka
+      let savedLang = localStorage.getItem('app_lang');
+      if(!savedLang) { savedLang = 'id'; localStorage.setItem('app_lang', 'id'); }
+      changeAppLang(savedLang);
     };
   </script>
-
-  <script type="module" src="./app.js?v=expert3"></script>
 </body>
 </html>
