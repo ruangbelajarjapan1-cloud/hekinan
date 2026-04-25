@@ -889,21 +889,31 @@ function initProgressWakaf() {
 }
 
 // ==========================================
-// 4. BOOTSTRAP 
+// 4. BOOTSTRAP & APP LOGIC
 // ==========================================
-async function boot() {
+async function boot(mode = 'web') {
   const hariIni = new Date().getDay(); 
   const bannerJumat = $("#jumatBanner");
   if (hariIni === 5 && bannerJumat) { bannerJumat.classList.remove("hidden"); }
 
   setLang(currentLang);
+  $("#langToggle")?.addEventListener("click", () => setLang(currentLang === "id" ? "en" : "id"));
+  $("#langToggleMob")?.addEventListener("click", () => setLang(currentLang === "id" ? "en" : "id"));
+  
   if ($("#year")) $("#year").textContent = new Date().getFullYear();
 
+  // Ambil Data dari Google Sheets dulu
   await cekLiveDariSheet(); 
   initLiveStream();         
   initProgressWakaf();      
   initPopup();              
 
+  // --- LOGIKA KHUSUS APP.HTML (TAMPILAN JAMAAH) ---
+  if (mode === 'app-mode' || window.location.pathname.includes('app.html')) {
+      renderAppSholat(); 
+  }
+
+  // --- LOGIKA STANDAR WEBSITE ---
   renderSholat();
   renderContent();
   initCountdown();
@@ -917,15 +927,116 @@ async function boot() {
   initHeroSlider();
   setupAdmin();
 
+  // Tombol Back to Top
   const btnTop = document.getElementById("backToTop");
   if (btnTop) {
       window.addEventListener("scroll", () => {
-        if (window.scrollY > 500) btnTop.classList.remove("translate-y-20", "opacity-0", "pointer-events-none");
-        else btnTop.classList.add("translate-y-20", "opacity-0", "pointer-events-none");
+        if (window.scrollY > 500) {
+            btnTop.classList.remove("translate-y-20", "opacity-0", "pointer-events-none");
+        } else {
+            btnTop.classList.add("translate-y-20", "opacity-0", "pointer-events-none");
+        }
       });
   }
+
+  // Animasi Scroll (Reveal)
   const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add("active") }), { threshold: 0.1 });
   $$(".reveal").forEach(e => obs.observe(e));
+}
+
+// ==========================================
+// FUNGSI PEMBANTU KHUSUS APP.HTML
+// ==========================================
+async function renderAppSholat() {
+    const container = $("#prayerListApp");
+    if(!container) return;
+    
+    // Tarik data API Adzan
+    const d = await fetch(`https://api.aladhan.com/v1/timings?latitude=${HEK_LAT}&longitude=${HEK_LON}&method=3`).then(r => r.json());
+    const timings = d.data.timings;
+    const names = { Fajr:['Subuh','الفجر'], Sunrise:['Syuruq','الشروق'], Dhuhr:['Dzuhur','الظهر'], Asr:['Ashar','العصر'], Maghrib:['Maghrib','المغرب'], Isha:['Isya','العشاء'] };
+    
+    // Tampilkan Hijriah
+    if (d.data && d.data.date && d.data.date.hijri) {
+        const hijri = d.data.date.hijri;
+        if($("#hijriDateApp")) $("#hijriDateApp").textContent = `${hijri.day} ${hijri.month.en} ${hijri.year} H`;
+    }
+
+    container.innerHTML = "";
+    let nextPrayerKey = null;
+
+    Object.keys(names).forEach(key => {
+        const isNext = checkIsNextApp(timings[key]) && !nextPrayerKey; 
+        if(isNext) nextPrayerKey = key;
+
+        const row = document.createElement('div');
+        row.className = `p-6 flex justify-between items-center transition-all ${isNext ? 'prayer-active shadow-lg' : 'hover:bg-white/5 dark:hover:bg-white/5'}`;
+        row.innerHTML = `
+            <div class="flex items-center gap-4">
+                <div class="h-10 w-10 rounded-2xl ${isNext ? 'bg-white/20' : 'bg-slate-200 dark:bg-white/5'} flex items-center justify-center">
+                    <i data-lucide="${getAppIcon(key)}" class="w-5 h-5 ${isNext ? 'text-white' : 'text-slate-500'}"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold ${isNext ? 'text-white' : 'text-slate-800 dark:text-slate-200'}">${names[key][0]}</h4>
+                    <p class="text-[10px] ${isNext ? 'text-emerald-100' : 'text-slate-500'} font-arab" dir="rtl">${names[key][1]}</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <span class="text-xl font-extrabold ${isNext ? 'text-white' : 'text-slate-800 dark:text-slate-200'} tracking-tight">${timings[key]}</span>
+                ${isNext ? '<div class="text-[9px] font-black bg-white/20 px-2 py-0.5 rounded mt-1 uppercase text-white">Next</div>' : ''}
+            </div>`;
+        container.appendChild(row);
+    });
+    
+    if(window.lucide) window.lucide.createIcons();
+    
+    // Update Kotak Besar di Atas (Hero Card)
+    if(nextPrayerKey) {
+        if($("#nextName")) $("#nextName").textContent = names[nextPrayerKey][0];
+        if($("#nextArab")) $("#nextArab").textContent = names[nextPrayerKey][1];
+        if($("#nextTime")) $("#nextTime").textContent = timings[nextPrayerKey];
+        
+        // Mulai Countdown
+        setInterval(() => updateCountdownApp(timings[nextPrayerKey]), 1000);
+    }
+}
+
+function getAppIcon(k) {
+    const m = { Fajr: 'moon', Sunrise: 'sunrise', Dhuhr: 'sun', Asr: 'cloud-sun', Maghrib: 'moon-star', Isha: 'stars' };
+    return m[k] || 'clock';
+}
+
+function checkIsNextApp(timeStr) {
+    const now = new Date();
+    const [h, m] = timeStr.split(':').map(Number);
+    const prayTime = new Date(); 
+    prayTime.setHours(h, m, 0, 0);
+    return prayTime > now;
+}
+
+function updateCountdownApp(targetTimeStr) {
+    const el = $("#countdown");
+    if(!el) return;
+
+    const now = new Date();
+    const [h, m] = targetTimeStr.split(':').map(Number);
+    const target = new Date();
+    target.setHours(h, m, 0, 0);
+
+    const diff = target - now;
+    if (diff < 0) {
+        el.textContent = "Waktu Sholat!";
+        return;
+    }
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+    let text = "";
+    if(hours > 0) text += `${hours}j `;
+    text += `${mins}m ${secs}d`;
+    el.textContent = `- ${text}`;
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
