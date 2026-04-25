@@ -3,168 +3,194 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
-  <title>As-Sunnah App</title>
+  <title>As-Sunnah App - Premium</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Amiri&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
   
   <script>
-    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { app: { bg: '#0A1118', card: '#131E2B' } } } } }
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { app: { dark: '#050B14', card: '#0D1623' } } } } }
   </script>
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0A1118; color: #ffffff; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #050B14; color: #ffffff; -webkit-tap-highlight-color: transparent; }
     .font-arab { font-family: 'Amiri', serif; }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
-    .checkbox-custom:checked + div { background-color: #10b981; border-color: #10b981; }
-    .checkbox-custom:checked + div svg { opacity: 1; }
+    
+    /* Efek Kaca Premium */
+    .glass-ultra { background: rgba(13, 22, 35, 0.4); backdrop-blur: 24px; -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .glass-emerald { background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(4, 47, 46, 0.4) 100%); backdrop-blur: 20px; border: 1px solid rgba(16, 185, 129, 0.2); }
+    
+    /* Animasi Halus */
+    .checkbox-custom:checked + div { background-color: #10b981; border-color: #10b981; box-shadow: 0 0 15px rgba(16,185,129,0.4); }
+    .checkbox-custom:checked + div svg { opacity: 1; transform: scale(1); }
+    .check-icon { opacity: 0; transform: scale(0.5); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
   </style>
 </head>
-<body class="pb-36 bg-app-bg text-white">
+<body class="pb-36 bg-app-dark text-white relative overflow-x-hidden">
 
-  <header class="px-5 pt-8 pb-4 flex justify-between items-center sticky top-0 bg-app-bg/90 backdrop-blur-md z-50">
-    <div class="flex items-center gap-3">
-      <img src="logohekinan.jpeg" alt="Logo" class="w-11 h-11 rounded-full border-2 border-slate-700/50 shadow-md object-cover">
+  <div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+    <div class="absolute -top-[10%] -right-[10%] w-[70vw] h-[70vw] rounded-full bg-emerald-900/20 blur-[80px]"></div>
+    <div class="absolute top-[40%] -left-[20%] w-[60vw] h-[60vw] rounded-full bg-sky-900/10 blur-[80px]"></div>
+  </div>
+
+  <header class="px-6 pt-10 pb-4 flex justify-between items-center relative z-20">
+    <div class="flex items-center gap-4">
+      <div class="relative">
+        <div class="absolute inset-0 bg-emerald-500 rounded-full blur animate-pulse opacity-40"></div>
+        <img src="logohekinan.jpeg" alt="Logo" class="relative w-12 h-12 rounded-full border border-white/10 object-cover shadow-xl">
+      </div>
       <div>
-        <h1 class="text-xl font-extrabold tracking-tight text-white leading-tight">Masjid As-Sunnah</h1>
-        <p id="hijriDateApp" class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Memuat...</p>
+        <h1 id="sapaanWaktu" class="text-sm font-medium text-slate-400">Assalamu'alaikum</h1>
+        <p class="text-lg font-extrabold tracking-tight text-white leading-tight">Jamaah Hekinan</p>
       </div>
     </div>
-    <div class="bg-slate-800/80 p-2 rounded-full border border-slate-700/50">
-      <i data-lucide="bell" class="w-4 h-4 text-slate-400"></i>
+    <div class="glass-ultra p-2.5 rounded-full shadow-lg">
+      <i data-lucide="bell" class="w-5 h-5 text-emerald-400 animate-pulse"></i>
     </div>
   </header>
 
-  <main class="px-5 space-y-6 relative z-10">
+  <main class="px-5 space-y-6 relative z-20">
     
-    <section class="bg-gradient-to-br from-[#1A2938] to-[#0F1722] rounded-[2rem] p-7 relative overflow-hidden border border-slate-700/50 shadow-2xl">
-      <div class="absolute -right-10 -top-10 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="relative z-10 flex justify-between items-start mb-6">
+    <section class="glass-emerald rounded-[2.5rem] p-8 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+      <div class="absolute -right-4 -bottom-6 opacity-[0.04] pointer-events-none select-none text-9xl font-arab">
+        المسجد
+      </div>
+      
+      <div class="relative z-10 flex justify-between items-start mb-8">
         <div>
-          <p class="text-[10px] font-extrabold text-emerald-400 uppercase tracking-[0.2em] mb-1">Selanjutnya</p>
-          <h2 id="nextName" class="text-4xl font-black tracking-tight text-white drop-shadow-md">--</h2>
-          <p id="nextArab" class="text-lg text-emerald-500/80 font-arab mt-1">--</p>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <p class="text-[10px] font-extrabold text-emerald-300 uppercase tracking-[0.2em]">Selanjutnya</p>
+          </div>
+          <h2 id="nextName" class="text-5xl font-black tracking-tighter text-white drop-shadow-lg">--</h2>
+          <p id="nextArab" class="text-xl text-emerald-400/80 font-arab mt-1 drop-shadow-md">--</p>
         </div>
         <div class="text-right">
           <h3 id="nextTime" class="text-4xl font-light tracking-tighter text-white">00:00</h3>
-          <div id="countdown" class="text-[11px] font-bold bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full mt-2 inline-block border border-emerald-500/20 shadow-sm">--:--</div>
+          <div id="countdown" class="text-[11px] font-bold bg-black/30 text-emerald-300 px-3 py-1.5 rounded-full mt-2 inline-block border border-emerald-500/30 backdrop-blur-md">--:--</div>
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-3">
-        <a href="https://qiblafinder.withgoogle.com/" class="flex items-center gap-3 bg-slate-900/50 p-3 rounded-2xl border border-slate-700/50 active:scale-95 transition-transform">
-          <div class="bg-sky-500/20 p-2 rounded-xl"><i data-lucide="compass" class="w-4 h-4 text-sky-400"></i></div>
-          <div>
-            <p class="text-[9px] text-slate-400 font-bold uppercase">Cari Kiblat</p>
-            <p class="text-xs font-bold text-white">Buka Peta</p>
-          </div>
-        </a>
-        <button onclick="window.toggleKamusModal(true)" class="flex items-center gap-3 bg-slate-900/50 p-3 rounded-2xl border border-slate-700/50 active:scale-95 transition-transform text-left">
-          <div class="bg-emerald-500/20 p-2 rounded-xl"><i data-lucide="book" class="w-4 h-4 text-emerald-400"></i></div>
-          <div>
-            <p class="text-[9px] text-slate-400 font-bold uppercase">Bantuan</p>
-            <p class="text-xs font-bold text-white">Kamus Dakwah</p>
-          </div>
-        </button>
+      <div class="flex items-center justify-between pt-4 border-t border-emerald-500/20">
+        <p id="hijriDateApp" class="text-xs font-bold text-emerald-100/70 tracking-wide">Memuat Hijriah...</p>
+        <div class="bg-emerald-500/20 text-emerald-300 text-[10px] px-3 py-1 rounded-lg font-bold border border-emerald-500/30">
+          Hekinan, JP
+        </div>
       </div>
     </section>
 
-    <section class="bg-app-card rounded-[1.5rem] p-5 border border-slate-800">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Checklist Ibadah Hari Ini</h3>
-        <button onclick="resetIbadah()" class="text-[10px] text-emerald-500 font-bold hover:underline">Reset</button>
+    <section class="grid grid-cols-4 gap-3">
+      <a href="https://qiblafinder.withgoogle.com/" target="_blank" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl hover:bg-white/5 transition-all active:scale-90 group border-b-2 border-b-sky-500/30">
+        <i data-lucide="compass" class="w-6 h-6 text-sky-400 mb-2 group-hover:rotate-45 transition-transform"></i>
+        <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Kiblat</span>
+      </a>
+      <a href="index.html#donasi" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl hover:bg-white/5 transition-all active:scale-90 group border-b-2 border-b-amber-500/30">
+        <i data-lucide="heart-handshake" class="w-6 h-6 text-amber-400 mb-2 group-hover:scale-110 transition-transform"></i>
+        <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Wakaf</span>
+      </a>
+      <button onclick="window.toggleKamusModal(true)" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl hover:bg-white/5 transition-all active:scale-90 group border-b-2 border-b-pink-500/30">
+        <i data-lucide="book" class="w-6 h-6 text-pink-400 mb-2 group-hover:scale-110 transition-transform"></i>
+        <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Kamus</span>
+      </button>
+      <a href="index.html#kegiatan" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl hover:bg-white/5 transition-all active:scale-90 group border-b-2 border-b-purple-500/30">
+        <i data-lucide="image" class="w-6 h-6 text-purple-400 mb-2 group-hover:scale-110 transition-transform"></i>
+        <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Galeri</span>
+      </a>
+    </section>
+
+    <section class="glass-ultra rounded-[2rem] p-6 relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-sky-500/5 rounded-full blur-2xl"></div>
+      <div class="flex justify-between items-center mb-5 relative z-10">
+        <h3 class="text-xs font-extrabold text-slate-300 uppercase tracking-widest flex items-center gap-2">
+          <i data-lucide="check-square" class="w-4 h-4 text-sky-400"></i> Mutaba'ah Yaumiyah
+        </h3>
+        <button onclick="resetIbadah()" class="text-[10px] text-slate-500 hover:text-white transition-colors bg-white/5 px-2 py-1 rounded">Reset</button>
       </div>
-      <div class="flex justify-between">
-        <label class="flex flex-col items-center gap-2 cursor-pointer group">
+      
+      <div class="flex justify-between relative z-10">
+        <label class="flex flex-col items-center gap-3 cursor-pointer group">
           <input type="checkbox" class="checkbox-custom hidden" id="chkSubuh" onchange="saveIbadah()">
-          <div class="w-10 h-10 rounded-full border-2 border-slate-600 bg-slate-800 flex items-center justify-center transition-colors group-active:scale-90">
-            <i data-lucide="check" class="w-5 h-5 text-white opacity-0 transition-opacity"></i>
+          <div class="w-12 h-12 rounded-[1rem] border border-white/10 bg-black/30 flex items-center justify-center transition-all duration-300 group-active:scale-90 shadow-inner">
+            <i data-lucide="check" class="w-6 h-6 text-white check-icon"></i>
           </div>
-          <span class="text-[10px] font-bold text-slate-400">Subuh</span>
+          <span class="text-[10px] font-bold text-slate-400 group-hover:text-white transition-colors">Subuh</span>
         </label>
-        <label class="flex flex-col items-center gap-2 cursor-pointer group">
+        <label class="flex flex-col items-center gap-3 cursor-pointer group">
           <input type="checkbox" class="checkbox-custom hidden" id="chkDzuhur" onchange="saveIbadah()">
-          <div class="w-10 h-10 rounded-full border-2 border-slate-600 bg-slate-800 flex items-center justify-center transition-colors group-active:scale-90">
-            <i data-lucide="check" class="w-5 h-5 text-white opacity-0 transition-opacity"></i>
+          <div class="w-12 h-12 rounded-[1rem] border border-white/10 bg-black/30 flex items-center justify-center transition-all duration-300 group-active:scale-90 shadow-inner">
+            <i data-lucide="check" class="w-6 h-6 text-white check-icon"></i>
           </div>
-          <span class="text-[10px] font-bold text-slate-400">Dzuhur</span>
+          <span class="text-[10px] font-bold text-slate-400 group-hover:text-white transition-colors">Dzuhur</span>
         </label>
-        <label class="flex flex-col items-center gap-2 cursor-pointer group">
+        <label class="flex flex-col items-center gap-3 cursor-pointer group">
           <input type="checkbox" class="checkbox-custom hidden" id="chkAshar" onchange="saveIbadah()">
-          <div class="w-10 h-10 rounded-full border-2 border-slate-600 bg-slate-800 flex items-center justify-center transition-colors group-active:scale-90">
-            <i data-lucide="check" class="w-5 h-5 text-white opacity-0 transition-opacity"></i>
+          <div class="w-12 h-12 rounded-[1rem] border border-white/10 bg-black/30 flex items-center justify-center transition-all duration-300 group-active:scale-90 shadow-inner">
+            <i data-lucide="check" class="w-6 h-6 text-white check-icon"></i>
           </div>
-          <span class="text-[10px] font-bold text-slate-400">Ashar</span>
+          <span class="text-[10px] font-bold text-slate-400 group-hover:text-white transition-colors">Ashar</span>
         </label>
-        <label class="flex flex-col items-center gap-2 cursor-pointer group">
+        <label class="flex flex-col items-center gap-3 cursor-pointer group">
           <input type="checkbox" class="checkbox-custom hidden" id="chkMaghrib" onchange="saveIbadah()">
-          <div class="w-10 h-10 rounded-full border-2 border-slate-600 bg-slate-800 flex items-center justify-center transition-colors group-active:scale-90">
-            <i data-lucide="check" class="w-5 h-5 text-white opacity-0 transition-opacity"></i>
+          <div class="w-12 h-12 rounded-[1rem] border border-white/10 bg-black/30 flex items-center justify-center transition-all duration-300 group-active:scale-90 shadow-inner">
+            <i data-lucide="check" class="w-6 h-6 text-white check-icon"></i>
           </div>
-          <span class="text-[10px] font-bold text-slate-400">Maghrib</span>
+          <span class="text-[10px] font-bold text-slate-400 group-hover:text-white transition-colors">Maghrib</span>
         </label>
-        <label class="flex flex-col items-center gap-2 cursor-pointer group">
+        <label class="flex flex-col items-center gap-3 cursor-pointer group">
           <input type="checkbox" class="checkbox-custom hidden" id="chkIsya" onchange="saveIbadah()">
-          <div class="w-10 h-10 rounded-full border-2 border-slate-600 bg-slate-800 flex items-center justify-center transition-colors group-active:scale-90">
-            <i data-lucide="check" class="w-5 h-5 text-white opacity-0 transition-opacity"></i>
+          <div class="w-12 h-12 rounded-[1rem] border border-white/10 bg-black/30 flex items-center justify-center transition-all duration-300 group-active:scale-90 shadow-inner">
+            <i data-lucide="check" class="w-6 h-6 text-white check-icon"></i>
           </div>
-          <span class="text-[10px] font-bold text-slate-400">Isya</span>
+          <span class="text-[10px] font-bold text-slate-400 group-hover:text-white transition-colors">Isya</span>
         </label>
       </div>
     </section>
 
-    <a href="index.html#donasi" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="block bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-[1.5rem] p-4 relative overflow-hidden group active:scale-95 transition-transform">
-      <div class="flex items-center justify-between mb-2">
-        <h3 class="text-xs font-bold text-amber-400 flex items-center gap-1.5"><i data-lucide="target" class="w-4 h-4"></i> Misi Pelunasan Lahan</h3>
-        <span class="bg-amber-500/20 text-amber-400 text-[9px] px-2 py-0.5 rounded font-bold">Mei 2026</span>
+    <section class="glass-ultra rounded-[2rem] overflow-hidden">
+      <div class="p-6 border-b border-white/5 flex items-center gap-2">
+        <i data-lucide="clock" class="w-4 h-4 text-slate-400"></i>
+        <h3 class="font-extrabold text-[10px] uppercase tracking-[0.2em] text-slate-400">Jadwal Shalat Lengkap</h3>
       </div>
-      <div class="w-full bg-slate-800 rounded-full h-1.5 mb-1.5">
-        <div class="bg-amber-500 h-1.5 rounded-full w-[50%]"></div> </div>
-      <p class="text-[10px] text-slate-400">Klik untuk melihat detail progres & gabung wakaf →</p>
-    </a>
-
-    <section class="bg-app-card rounded-[2rem] overflow-hidden border border-slate-800">
-      <div class="p-5 border-b border-slate-800 bg-slate-800/30">
-        <h3 class="font-extrabold text-[10px] uppercase tracking-[0.2em] text-slate-400">Jadwal Shalat</h3>
-      </div>
-      <div id="prayerListApp" class="divide-y divide-slate-800">
+      <div id="prayerListApp" class="divide-y divide-white/5">
         <div class="p-10 text-center"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-emerald-500/50"></i></div>
       </div>
     </section>
   </main>
 
-  <nav class="fixed bottom-0 left-0 right-0 bg-[#0A1118]/95 backdrop-blur-xl border-t border-slate-800 rounded-t-[2.5rem] px-8 pt-4 pb-8 flex justify-between items-center z-[100] shadow-[0_-10px_40px_rgba(0,0,0,0.8)]">
-    <a href="app.html" class="flex flex-col items-center gap-1.5 text-emerald-400">
-      <i data-lucide="home" class="w-6 h-6"></i>
-      <span class="text-[9px] font-black uppercase tracking-wider">App</span>
-    </a>
-    
-    <a href="index.html" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="flex flex-col items-center gap-1.5 text-slate-500 hover:text-white transition-colors">
-      <i data-lucide="globe" class="w-6 h-6"></i>
-      <span class="text-[9px] font-black uppercase tracking-wider">Web</span>
-    </a>
-    
-    <div class="relative -top-8">
-      <a href="index.html#donasi" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="h-16 w-16 rounded-full bg-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-500/30 border-[6px] border-[#0A1118] transform active:scale-95 transition-all">
-        <i data-lucide="heart" class="w-7 h-7 text-white fill-current"></i>
+  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-[100]">
+    <nav class="glass-ultra backdrop-blur-3xl border border-white/10 rounded-full px-6 py-3 flex justify-between items-center shadow-[0_20px_40px_rgba(0,0,0,0.6)]">
+      
+      <a href="app.html" class="flex flex-col items-center gap-1 text-emerald-400">
+        <div class="bg-emerald-500/20 p-2 rounded-full"><i data-lucide="home" class="w-5 h-5"></i></div>
+        <span class="text-[8px] font-black uppercase tracking-wider hidden sm:block">App</span>
       </a>
-    </div>
-    
-    <a href="index.html#info" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="flex flex-col items-center gap-1.5 text-slate-500 hover:text-white transition-colors">
-      <i data-lucide="newspaper" class="w-6 h-6"></i>
-      <span class="text-[9px] font-black uppercase tracking-wider">Berita</span>
-    </a>
-    <button onclick="window.toggleKamusModal(true)" class="flex flex-col items-center gap-1.5 text-slate-500 hover:text-white transition-colors">
-      <i data-lucide="book" class="w-6 h-6"></i>
-      <span class="text-[9px] font-black uppercase tracking-wider">Kamus</span>
-    </button>
-  </nav>
+      
+      <a href="index.html" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition-colors p-2">
+        <i data-lucide="globe" class="w-5 h-5"></i>
+        <span class="text-[8px] font-black uppercase tracking-wider hidden sm:block">Web</span>
+      </a>
+      
+      <a href="index.html#donasi" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="relative -top-6 h-14 w-14 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center shadow-[0_10px_20px_rgba(16,185,129,0.4)] border-4 border-[#050B14] transform active:scale-90 transition-all hover:scale-105 group">
+        <i data-lucide="heart" class="w-6 h-6 text-white fill-current group-hover:animate-pulse"></i>
+      </a>
+      
+      <a href="index.html#video-kajian" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition-colors p-2">
+        <i data-lucide="youtube" class="w-5 h-5"></i>
+        <span class="text-[8px] font-black uppercase tracking-wider hidden sm:block">Video</span>
+      </a>
+      
+      <button onclick="window.toggleSaranModal(true)" class="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition-colors p-2">
+        <i data-lucide="message-circle" class="w-5 h-5"></i>
+        <span class="text-[8px] font-black uppercase tracking-wider hidden sm:block">Tanya</span>
+      </button>
 
-  <div id="modalKamus" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-all text-slate-900">
+    </nav>
+  </div>
+
+  <div id="modalKamus" class="fixed inset-0 z-[150] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-all text-slate-900">
     <div class="bg-white w-full max-w-4xl h-[85vh] rounded-3xl flex flex-col shadow-2xl overflow-hidden">
         <div class="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center shrink-0">
-            <div>
-                <h3 class="text-xl font-extrabold text-slate-800">Kamus Saku Dakwah</h3>
-            </div>
+            <div><h3 class="text-xl font-extrabold text-slate-800">Kamus Saku Dakwah</h3></div>
             <button onclick="toggleKamusModal(false)" class="p-2 rounded-full hover:bg-slate-200 text-slate-400"><i data-lucide="x" class="w-6 h-6"></i></button>
         </div>
         <div class="p-4 border-b border-slate-100 shrink-0">
@@ -181,26 +207,26 @@
   <script>
     if(window.lucide) window.lucide.createIcons();
 
+    // Dinamis: Sapaan Waktu
+   // Sapaan Islami (Sesuai Sunnah)
+    const sapaanEl = document.getElementById("sapaanWaktu");
+    sapaanEl.innerText = "Assalamu'alaikum,";
+
     // Logika Simpan Checklist Ibadah di HP
     const ibadahKeys = ['chkSubuh', 'chkDzuhur', 'chkAshar', 'chkMaghrib', 'chkIsya'];
     const today = new Date().toDateString();
 
     function loadIbadah() {
-      // Cek apakah hari sudah berganti
       if (localStorage.getItem('ibadahDate') !== today) {
         resetIbadah(false);
         localStorage.setItem('ibadahDate', today);
       } else {
-        ibadahKeys.forEach(id => {
-          document.getElementById(id).checked = localStorage.getItem(id) === 'true';
-        });
+        ibadahKeys.forEach(id => { document.getElementById(id).checked = localStorage.getItem(id) === 'true'; });
       }
     }
 
     function saveIbadah() {
-      ibadahKeys.forEach(id => {
-        localStorage.setItem(id, document.getElementById(id).checked);
-      });
+      ibadahKeys.forEach(id => { localStorage.setItem(id, document.getElementById(id).checked); });
     }
 
     function resetIbadah(manual = true) {
@@ -214,6 +240,6 @@
     window.addEventListener('DOMContentLoaded', loadIbadah);
   </script>
 
-  <script type="module" src="./app.js?v=4001"></script>
+  <script type="module" src="./app.js?v=9000"></script>
 </body>
 </html>
