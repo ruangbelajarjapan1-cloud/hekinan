@@ -4,6 +4,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
   <title>As-Sunnah App</title>
+  <script>
+  // Fitur Cerdas: Otomatis buka Aplikasi jika di HP
+  if (window.innerWidth <= 768 && !sessionStorage.getItem('modeWebAktif')) {
+    window.location.replace('app.html');
+  }
+</script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Amiri&display=swap" rel="stylesheet">
