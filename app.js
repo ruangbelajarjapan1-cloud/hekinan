@@ -910,7 +910,7 @@ async function boot(mode = 'web') {
 
   // --- LOGIKA KHUSUS APP.HTML (TAMPILAN JAMAAH) ---
   if (mode === 'app-mode' || window.location.pathname.includes('app.html')) {
-      renderAppSholat(); 
+      if(typeof renderAppSholat === 'function') renderAppSholat(); 
   }
 
   // --- LOGIKA STANDAR WEBSITE ---
@@ -944,6 +944,8 @@ async function boot(mode = 'web') {
   $$(".reveal").forEach(e => obs.observe(e));
 }
 
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => boot()); else boot();
+
 // ==========================================
 // FUNGSI PEMBANTU KHUSUS APP.HTML
 // ==========================================
@@ -951,12 +953,10 @@ async function renderAppSholat() {
     const container = $("#prayerListApp");
     if(!container) return;
     
-    // Tarik data API Adzan
     const d = await fetch(`https://api.aladhan.com/v1/timings?latitude=${HEK_LAT}&longitude=${HEK_LON}&method=3`).then(r => r.json());
     const timings = d.data.timings;
     const names = { Fajr:['Subuh','الفجر'], Sunrise:['Syuruq','الشروق'], Dhuhr:['Dzuhur','الظهر'], Asr:['Ashar','العصر'], Maghrib:['Maghrib','المغرب'], Isha:['Isya','العشاء'] };
     
-    // Tampilkan Hijriah
     if (d.data && d.data.date && d.data.date.hijri) {
         const hijri = d.data.date.hijri;
         if($("#hijriDateApp")) $("#hijriDateApp").textContent = `${hijri.day} ${hijri.month.en} ${hijri.year} H`;
@@ -990,13 +990,10 @@ async function renderAppSholat() {
     
     if(window.lucide) window.lucide.createIcons();
     
-    // Update Kotak Besar di Atas (Hero Card)
     if(nextPrayerKey) {
         if($("#nextName")) $("#nextName").textContent = names[nextPrayerKey][0];
         if($("#nextArab")) $("#nextArab").textContent = names[nextPrayerKey][1];
         if($("#nextTime")) $("#nextTime").textContent = timings[nextPrayerKey];
-        
-        // Mulai Countdown
         setInterval(() => updateCountdownApp(timings[nextPrayerKey]), 1000);
     }
 }
@@ -1017,28 +1014,19 @@ function checkIsNextApp(timeStr) {
 function updateCountdownApp(targetTimeStr) {
     const el = $("#countdown");
     if(!el) return;
-
     const now = new Date();
     const [h, m] = targetTimeStr.split(':').map(Number);
-    const target = new Date();
-    target.setHours(h, m, 0, 0);
-
+    const target = new Date(); target.setHours(h, m, 0, 0);
     const diff = target - now;
-    if (diff < 0) {
-        el.textContent = "Waktu Sholat!";
-        return;
-    }
-
+    if (diff < 0) { el.textContent = "Waktu Sholat!"; return; }
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const secs = Math.floor((diff % (1000 * 60)) / 1000);
-
     let text = "";
     if(hours > 0) text += `${hours}j `;
     text += `${mins}m ${secs}d`;
     el.textContent = `- ${text}`;
 }
-
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 
 // --- EID FESTIVE & TAKBIR ---
