@@ -127,7 +127,7 @@
         <h3 class="font-extrabold text-[10px] uppercase tracking-[0.2em] text-slate-300" data-k="prayer_list">Jadwal Shalat Lengkap</h3>
       </div>
       <div id="appPrayerList" class="divide-y divide-white/5">
-        <div class="p-10 text-center"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-emerald-500/50"></i><p class="text-xs mt-2 text-slate-400">Mengambil data Iqomah...</p></div>
+        <div class="p-10 text-center"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-emerald-500/50"></i></div>
       </div>
     </section>
   </main>
@@ -223,7 +223,6 @@
         else { modal.classList.add('hidden'); modal.classList.remove('flex'); }
     };
 
-    // FUNGSI TARIK IQOMAH DARI SPREADSHEET
     let dbIqomah = {};
     async function fetchIqomah() {
         try {
@@ -233,9 +232,7 @@
             const rows = text.split('\n');
             rows.forEach(row => {
                 const cols = row.split(',');
-                if (cols.length >= 2) {
-                    dbIqomah[cols[0].trim()] = cols[1].trim();
-                }
+                if (cols.length >= 2) { dbIqomah[cols[0].trim()] = cols[1].trim(); }
             });
         } catch(e) { console.error("Gagal load Iqomah", e); }
     }
@@ -247,7 +244,7 @@
         if(type === 'pr_ashar') return dbIqomah['Ashar'];
         if(type === 'pr_maghrib') return dbIqomah['Maghrib'];
         
-        const day = new Date().getDay(); // 0=Minggu, 6=Sabtu, 5=Jumat
+        const day = new Date().getDay(); 
         if(type === 'pr_dzuhur') {
             if (day === 5 && dbIqomah['Jumat']) return dbIqomah['Jumat'];
             return dbIqomah['Dzuhur'];
@@ -262,21 +259,27 @@
     async function loadStandalonePrayer() {
         const lang = localStorage.getItem('app_lang') || 'id';
         try {
-            await fetchIqomah(); // Wajib tunggu Spreadsheet dulu
+            await fetchIqomah();
             
             const today = new Date().toDateString();
             let data = localStorage.getItem('hekinan_prayer');
+            let hijriCache = localStorage.getItem('hekinan_hijri');
             let timings;
             
-            if(data && localStorage.getItem('hekinan_date') === today) {
+            // BUG HIJRIAH DIPERBAIKI DI SINI:
+            if(data && localStorage.getItem('hekinan_date') === today && hijriCache) {
                 timings = JSON.parse(data);
+                document.getElementById('appHijriDate').innerText = hijriCache;
             } else {
                 const res = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Hekinan&country=Japan&method=3');
                 const json = await res.json();
                 timings = json.data.timings;
+                let hStr = json.data.date.hijri.day + " " + json.data.date.hijri.month.en + " " + json.data.date.hijri.year + " H";
+                
                 localStorage.setItem('hekinan_prayer', JSON.stringify(timings));
                 localStorage.setItem('hekinan_date', today);
-                document.getElementById('appHijriDate').innerText = json.data.date.hijri.day + " " + json.data.date.hijri.month.en + " " + json.data.date.hijri.year + " H";
+                localStorage.setItem('hekinan_hijri', hStr);
+                document.getElementById('appHijriDate').innerText = hStr;
             }
             renderPrayerList(timings, lang);
             updateNextPrayerClock(timings, lang);
@@ -352,15 +355,14 @@
             document.getElementById('appNextArab').innerText = nextP.arab;
             document.getElementById('appNextTime').innerText = nextP.time;
             
-            // Tarik Iqomah dari Spreadsheet
             let iqomahStr = getIqomahTime(nextP.id);
             document.getElementById('appNextIqomah').innerText = "Iqomah: " + (iqomahStr || "--:--");
 
-            document.getElementById('appCountdown').innerText = `- ${h}j ${m}m lagi`;
+            // BUG MINUS DIPERBAIKI DI SINI:
+            document.getElementById('appCountdown').innerText = `${h}j ${m}m lagi`;
         }, 1000);
     }
 
-    // REGISTRASI PWA
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
@@ -407,5 +409,7 @@
       changeAppLang(localStorage.getItem('app_lang') || 'id');
     };
   </script>
+
+  <script type="module" src="./app.js?v=expert3"></script>
 </body>
 </html>
