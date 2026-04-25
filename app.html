@@ -4,6 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
   <title>As-Sunnah Premium App</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#050B14">
+  <link rel="apple-touch-icon" href="logohekinan.jpeg">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Amiri:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
@@ -13,7 +16,6 @@
     .font-arab { font-family: 'Amiri', serif; line-height: 1.8; }
     .glass-ultra { background: rgba(13, 22, 35, 0.5); backdrop-blur: 24px; border: 1px solid rgba(255, 255, 255, 0.08); }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
-    
     .tahajjud-mode { background-color: #000000 !important; }
     .tahajjud-card { border: 1px solid rgba(255, 215, 0, 0.3) !important; background: linear-gradient(135deg, #000 0%, #0a0a0a 100%) !important; }
   </style>
@@ -33,7 +35,6 @@
         <p class="text-lg font-extrabold tracking-tight" data-k="jamaah">Jamaah Hekinan</p>
       </div>
     </div>
-    
     <div class="flex gap-1 bg-white/5 p-1.5 rounded-full border border-white/10 backdrop-blur-sm">
       <button onclick="changeAppLang('id')" class="w-8 h-8 rounded-full text-[10px] font-bold text-slate-300 hover:text-white" id="lang-id">ID</button>
       <button onclick="changeAppLang('en')" class="w-8 h-8 rounded-full text-[10px] font-bold text-slate-300 hover:text-white" id="lang-en">EN</button>
@@ -55,10 +56,10 @@
     </a>
 
     <div id="tahajjudAlert" class="hidden bg-amber-500/10 border border-amber-500/30 p-3 rounded-2xl text-[11px] text-amber-200 font-bold flex items-center gap-3">
-      <i data-lucide="moon" class="w-5 h-5 text-amber-400 shrink-0"></i> <span id="tahajjudText" data-k="tahajjud">Waktu Tahajjud. Mari memohon kepada Allah.</span>
+      <i data-lucide="moon" class="w-5 h-5 text-amber-400 shrink-0"></i> <span data-k="tahajjud">Waktu Tahajjud. Mari memohon kepada Allah.</span>
     </div>
     <div id="jumatAlert" class="hidden bg-emerald-500/10 border border-emerald-500/30 p-3 rounded-2xl text-[11px] text-emerald-200 font-bold flex items-center gap-3">
-      <i data-lucide="sparkles" class="w-5 h-5 text-emerald-400 shrink-0"></i> <span id="jumatText" data-k="friday_alert">Sunnah Jum'at: Baca Al-Kahfi & Perbanyak Shalawat.</span>
+      <i data-lucide="sparkles" class="w-5 h-5 text-emerald-400 shrink-0"></i> <span data-k="friday_alert">Sunnah Jum'at: Baca Al-Kahfi & Shalawat.</span>
     </div>
     <div id="puasaAlert" class="hidden bg-sky-500/10 border border-sky-500/30 p-3 rounded-2xl text-[11px] text-sky-200 font-bold flex items-center gap-3">
       <i data-lucide="calendar-heart" class="w-5 h-5 text-sky-400 shrink-0"></i> <span id="puasaText">--</span>
@@ -90,7 +91,8 @@
         </div>
         <div class="text-right">
           <h3 id="appNextTime" class="text-4xl font-light tracking-tighter text-white">--:--</h3>
-          <div id="appCountdown" class="text-[11px] font-bold bg-black/30 text-emerald-300 px-3 py-1.5 rounded-full mt-2 inline-block border border-emerald-500/30 backdrop-blur-md">Tunggu...</div>
+          <p id="appNextIqomah" class="text-[11px] font-bold text-sky-300 mt-1 bg-sky-500/10 px-2.5 py-1 rounded-md inline-block border border-sky-500/20 shadow-sm">Iqomah: --:--</p>
+          <div class="block mt-2"><div id="appCountdown" class="text-[11px] font-bold bg-black/30 text-emerald-300 px-3 py-1.5 rounded-full inline-block border border-emerald-500/30 backdrop-blur-md">Tunggu...</div></div>
         </div>
       </div>
       
@@ -125,7 +127,7 @@
         <h3 class="font-extrabold text-[10px] uppercase tracking-[0.2em] text-slate-300" data-k="prayer_list">Jadwal Shalat Lengkap</h3>
       </div>
       <div id="appPrayerList" class="divide-y divide-white/5">
-        <div class="p-10 text-center"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-emerald-500/50"></i></div>
+        <div class="p-10 text-center"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-emerald-500/50"></i><p class="text-xs mt-2 text-slate-400">Mengambil data Iqomah...</p></div>
       </div>
     </section>
   </main>
@@ -135,35 +137,22 @@
       <a href="app.html" class="flex-1 flex justify-center text-emerald-400 p-2 hover:scale-110 transition-transform"><i data-lucide="home" class="w-6 h-6"></i></a>
       <a href="index.html" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="flex-1 flex justify-center text-slate-400 hover:text-white p-2 hover:scale-110 transition-transform"><i data-lucide="globe" class="w-6 h-6"></i></a>
       <div class="flex-1 flex justify-center relative">
-        <a href="index.html#donasi" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="absolute -top-10 h-14 w-14 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center shadow-[0_10px_20px_rgba(16,185,129,0.4)] border-4 border-[#050B14] transform active:scale-95 transition-all">
-          <i data-lucide="heart" class="w-6 h-6 text-white fill-current"></i>
-        </a>
+        <a href="index.html#donasi" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="absolute -top-10 h-14 w-14 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center shadow-[0_10px_20px_rgba(16,185,129,0.4)] border-4 border-[#050B14] transform active:scale-95 transition-all"><i data-lucide="heart" class="w-6 h-6 text-white fill-current"></i></a>
       </div>
-      <a href="index.html#info" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="flex-1 flex justify-center text-slate-400 hover:text-white p-2 relative hover:scale-110 transition-transform">
-        <i data-lucide="newspaper" class="w-6 h-6"></i>
-      </a>
-      <button onclick="window.toggleSaranModal(true)" class="flex-1 flex justify-center text-slate-400 hover:text-white p-2 hover:scale-110 transition-transform">
-        <i data-lucide="message-circle" class="w-6 h-6"></i>
-      </button>
+      <a href="index.html#info" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="flex-1 flex justify-center text-slate-400 hover:text-white p-2 relative hover:scale-110 transition-transform"><i data-lucide="newspaper" class="w-6 h-6"></i></a>
+      <button onclick="window.toggleSaranModal(true)" class="flex-1 flex justify-center text-slate-400 hover:text-white p-2 hover:scale-110 transition-transform"><i data-lucide="message-circle" class="w-6 h-6"></i></button>
     </nav>
   </div>
 
   <div id="modalHalal" class="fixed inset-0 z-[160] hidden items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-sm transition-all text-slate-900">
     <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden max-h-[85vh]">
       <div class="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
-        <div>
-          <h3 class="text-xl font-extrabold text-slate-800 flex items-center gap-2">
-            <span class="bg-rose-100 text-rose-600 p-1.5 rounded-lg"><i data-lucide="scan-line" class="w-5 h-5"></i></span>
-            <span data-k="kanji_haram">Awas Kanji Haram!</span>
-          </h3>
-          <p class="text-xs text-slate-500 mt-1">Cek komposisi di supermarket Jepang.</p>
-        </div>
+        <div><h3 class="text-xl font-extrabold text-slate-800 flex items-center gap-2"><span class="bg-rose-100 text-rose-600 p-1.5 rounded-lg"><i data-lucide="scan-line" class="w-5 h-5"></i></span><span data-k="kanji_haram">Awas Kanji Haram!</span></h3></div>
         <button onclick="window.toggleHalalModal(false)" class="p-2 rounded-full hover:bg-slate-200 text-slate-400"><i data-lucide="x" class="w-6 h-6"></i></button>
       </div>
       <div class="p-6 overflow-y-auto space-y-3">
         <div class="flex items-center justify-between p-3 bg-rose-50 border border-rose-100 rounded-xl"><span class="font-bold text-rose-800">Babi (Pork)</span><span class="text-xl font-black text-slate-900">豚肉</span></div>
         <div class="flex items-center justify-between p-3 bg-rose-50 border border-rose-100 rounded-xl"><span class="font-bold text-rose-800">Alkohol/Sake</span><span class="text-xl font-black text-slate-900">酒 / アルコール</span></div>
-        <div class="flex items-center justify-between p-3 bg-rose-50 border border-rose-100 rounded-xl"><span class="font-bold text-rose-800">Mirin (Arak Masak)</span><span class="text-xl font-black text-slate-900">みりん</span></div>
         <div class="flex items-center justify-between p-3 bg-amber-50 border border-amber-100 rounded-xl"><span class="font-bold text-amber-800">Lard (Lemak Babi)</span><span class="text-xl font-black text-slate-900">ラード</span></div>
         <div class="flex items-center justify-between p-3 bg-amber-50 border border-amber-100 rounded-xl"><span class="font-bold text-amber-800">Gelatin (Syubhat)</span><span class="text-xl font-black text-slate-900">ゼラチン</span></div>
       </div>
@@ -177,10 +166,7 @@
             <button onclick="window.toggleKamusModal(false)" class="p-2 rounded-full hover:bg-slate-200 text-slate-400"><i data-lucide="x" class="w-6 h-6"></i></button>
         </div>
         <div class="p-4 border-b border-slate-100 shrink-0">
-            <div class="relative">
-                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5"></i>
-                <input type="text" id="inputCariKamus" placeholder="Cari..." class="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none">
-            </div>
+            <div class="relative"><i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5"></i><input type="text" id="inputCariKamus" placeholder="Cari..." class="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 outline-none"></div>
         </div>
         <div id="containerKamusGrid" class="flex-1 overflow-y-auto p-4 grid grid-cols-1 gap-4 bg-slate-50/50"></div>
         <div id="stateKamusKosong" class="hidden flex-1 flex-col items-center justify-center text-slate-400"><p>Tidak ditemukan.</p></div>
@@ -190,9 +176,7 @@
   <div id="modalSaran" class="fixed inset-0 z-[160] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-all text-slate-900">
     <div class="bg-white w-full max-w-lg rounded-3xl flex flex-col shadow-2xl overflow-hidden">
       <div class="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
-        <div>
-          <h3 class="text-xl font-extrabold text-slate-800 flex items-center gap-2"><span class="bg-sky-100 text-sky-600 p-1.5 rounded-lg"><i data-lucide="inbox" class="w-5 h-5"></i></span> Tanya / Saran</h3>
-        </div>
+        <div><h3 class="text-xl font-extrabold text-slate-800 flex items-center gap-2"><span class="bg-sky-100 text-sky-600 p-1.5 rounded-lg"><i data-lucide="inbox" class="w-5 h-5"></i></span> Tanya / Saran</h3></div>
         <button onclick="window.toggleSaranModal(false)" class="p-2 rounded-full hover:bg-slate-200 text-slate-400"><i data-lucide="x" class="w-6 h-6"></i></button>
       </div>
       <div class="p-6 space-y-4">
@@ -205,39 +189,31 @@
   </div>
 
   <script>
-    // 1. DATA HADITS HARIAN
     const HADITH_DB = [
-      { arab: "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ", id: `"Sesungguhnya amalan itu tergantung niatnya." (HR. Bukhari)`, en: `"Actions are judged by intentions." (Sahih Bukhari)`, jp: `"行為はその意図によって評価される。" (ブハーリー)` },
-      { arab: "تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ لَكَ صَدَقَةٌ", id: `"Senyummu di hadapan saudaramu adalah sedekah." (HR. Tirmidzi)`, en: `"Your smile for your brother is a charity." (Tirmidhi)`, jp: `"兄弟への微笑みは施しである。" (ティルミズィー)` },
-      { arab: "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ", id: `"Barangsiapa beriman kepada Allah dan hari akhir, hendaklah berkata baik atau diam." (HR. Bukhari)`, en: `"Whoever believes in Allah and the Last Day, let him speak good or remain silent." (Bukhari)`, jp: `"アッラーと最後の日を信じる者は、良いことを言うか、沈黙しなさい。" (ブハーリー)` },
-      { arab: "الطُّهُورُ شَطْرُ الإِيمَانِ", id: `"Kesucian (kebersihan) itu sebagian dari iman." (HR. Muslim)`, en: `"Purity is half of faith." (Sahih Muslim)`, jp: `"清潔さは信仰の半分である。" (ムスリム)` },
-      { arab: "كُلُّ مَعْرُوفٍ صَدَقَةٌ", id: `"Setiap kebaikan adalah sedekah." (HR. Bukhari)`, en: `"Every good deed is charity." (Sahih Bukhari)`, jp: `"すべての良い行いは施しである。" (ブハーリー)` },
-      { arab: "أَكْثِرُوا عَلَىَّ مِنَ الصَّلاَةِ فِى كُلِّ يَوْمِ جُمُعَةٍ", id: `"Perbanyaklah shalawat kepadaku pada setiap hari Jum'at." (HR. Baihaqi)`, en: `"Increase your supplications for me on Friday." (Al-Bayhaqi)`, jp: `"金曜日は私への祝福の祈りを増やしなさい。" (バイハキー)` },
-      { arab: "مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ طَرِيقًا إِلَى الْجَنَّةِ", id: `"Barangsiapa menempuh jalan untuk menuntut ilmu, Allah mudahkan jalannya menuju Surga." (HR. Muslim)`, en: `"Whoever travels a path seeking knowledge, Allah will make his path to Paradise easy." (Muslim)`, jp: `"知識を求める道を歩む者には、アッラーが楽園への道を容易にしてくださる。" (ムスリム)` }
+      { arab: "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ", id: `"Sesungguhnya amalan itu tergantung niatnya."`, en: `"Actions are judged by intentions."`, jp: `"行為はその意図によって評価される。"` },
+      { arab: "تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ لَكَ صَدَقَةٌ", id: `"Senyummu di hadapan saudaramu adalah sedekah."`, en: `"Your smile for your brother is a charity."`, jp: `"兄弟への微笑みは施しである。"` },
+      { arab: "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ", id: `"Barangsiapa beriman kepada Allah, hendaklah berkata baik atau diam."`, en: `"Let him speak good or remain silent."`, jp: `"良いことを言うか、沈黙しなさい。"` },
+      { arab: "الطُّهُورُ شَطْرُ الإِيمَانِ", id: `"Kesucian itu sebagian dari iman."`, en: `"Purity is half of faith."`, jp: `"清潔さは信仰の半分である。"` },
+      { arab: "كُلُّ مَعْرُوفٍ صَدَقَةٌ", id: `"Setiap kebaikan adalah sedekah."`, en: `"Every good deed is charity."`, jp: `"すべての良い行いは施しである。"` },
+      { arab: "أَكْثِرُوا عَلَىَّ مِنَ الصَّلاَةِ فِى كُلِّ يَوْمِ جُمُعَةٍ", id: `"Perbanyaklah shalawat kepadaku di hari Jum'at."`, en: `"Increase your supplications for me on Friday."`, jp: `"金曜日は私への祝福の祈りを増やしなさい。"` },
+      { arab: "مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ طَرِيقًا إِلَى الْجَنَّةِ", id: `"Siapa menempuh jalan menuntut ilmu, Allah mudahkan jalannya ke Surga."`, en: `"Seeking knowledge makes the path to Paradise easy."`, jp: `"知識を求める者は楽園への道が容易になる。"` }
     ];
 
-    // 2. KAMUS BAHASA UI
     const DICT = {
-      id: { greet: "Assalamu'alaikum,", jamaah: "Jamaah Hekinan", next_prayer: "Selanjutnya", menu_qibla: "Kiblat", menu_kamus: "Kamus", menu_wakaf: "Wakaf", menu_kanji: "Kanji Haram", prayer_list: "Jadwal Shalat Lengkap", tahajjud: "Waktu Tahajjud. Mari memohon kepada Allah.", friday_alert: "Sunnah Jum'at: Baca Al-Kahfi & Shalawat.", sunnah_amalan: "Amalan Sunnah", hadith_title: "Hadits Hari Ini", pr_subuh:"Subuh", pr_syuruq:"Syuruq", pr_dzuhur:"Dzuhur", pr_ashar:"Ashar", pr_maghrib:"Maghrib", pr_isya:"Isya", fast_mon: "Besok disunnahkan Puasa Senin. Mari sahur.", fast_thu: "Besok disunnahkan Puasa Kamis. Mari sahur." },
-      en: { greet: "Peace be upon you,", jamaah: "Hekinan Community", next_prayer: "Next Prayer", menu_qibla: "Qibla", menu_kamus: "Glossary", menu_wakaf: "Donate", menu_kanji: "Haram Kanji", prayer_list: "Complete Prayer Times", tahajjud: "Tahajjud Time. Let us pray to Allah.", friday_alert: "Friday Sunnah: Read Al-Kahf & Salawat.", sunnah_amalan: "Daily Sunnah", hadith_title: "Hadith of the Day", pr_subuh:"Fajr", pr_syuruq:"Sunrise", pr_dzuhur:"Dhuhr", pr_ashar:"Asr", pr_maghrib:"Maghrib", pr_isya:"Isha", fast_mon: "Tomorrow is Sunnah Fasting (Monday).", fast_thu: "Tomorrow is Sunnah Fasting (Thursday)." },
-      jp: { greet: "アッサラーム・アライクム", jamaah: "碧南の皆様", next_prayer: "次の礼拝", menu_qibla: "キブラ", menu_kamus: "辞書", menu_wakaf: "寄付", menu_kanji: "ハラーム漢字", prayer_list: "礼拝時刻表", tahajjud: "タハジュドの時間です。", friday_alert: "金曜日のスンナ：アル・カハフ章と祝福の祈り。", sunnah_amalan: "スンナの行い", hadith_title: "今日のハディース", pr_subuh:"ファジル", pr_syuruq:"日の出", pr_dzuhur:"ズフル", pr_ashar:"アスル", pr_maghrib:"マグリブ", pr_isya:"イシャー", fast_mon: "明日は月曜日のスンナ断食です。", fast_thu: "明日は木曜日のスンナ断食です。" }
+      id: { greet: "Assalamu'alaikum,", jamaah: "Jamaah Hekinan", next_prayer: "Selanjutnya", menu_qibla: "Kiblat", menu_kamus: "Kamus", menu_wakaf: "Wakaf", menu_kanji: "Kanji Haram", prayer_list: "Jadwal Shalat Lengkap", tahajjud: "Waktu Tahajjud. Mari memohon kepada Allah.", friday_alert: "Sunnah Jum'at: Baca Al-Kahfi & Shalawat.", sunnah_amalan: "Amalan Sunnah", hadith_title: "Hadits Hari Ini", pr_subuh:"Subuh", pr_syuruq:"Syuruq", pr_dzuhur:"Dzuhur", pr_ashar:"Ashar", pr_maghrib:"Maghrib", pr_isya:"Isya" },
+      en: { greet: "Peace be upon you,", jamaah: "Hekinan Community", next_prayer: "Next Prayer", menu_qibla: "Qibla", menu_kamus: "Glossary", menu_wakaf: "Donate", menu_kanji: "Haram Kanji", prayer_list: "Prayer Times", tahajjud: "Tahajjud Time. Let us pray to Allah.", friday_alert: "Friday Sunnah: Read Al-Kahf & Salawat.", sunnah_amalan: "Daily Sunnah", hadith_title: "Hadith of the Day", pr_subuh:"Fajr", pr_syuruq:"Sunrise", pr_dzuhur:"Dhuhr", pr_ashar:"Asr", pr_maghrib:"Maghrib", pr_isya:"Isha" },
+      jp: { greet: "アッサラーム・アライクム", jamaah: "碧南の皆様", next_prayer: "次の礼拝", menu_qibla: "キブラ", menu_kamus: "辞書", menu_wakaf: "寄付", menu_kanji: "ハラーム漢字", prayer_list: "礼拝時刻表", tahajjud: "タハジュドの時間です。", friday_alert: "金曜日のスンナ：アル・カハフ章", sunnah_amalan: "スンナの行い", hadith_title: "今日のハディース", pr_subuh:"ファジル", pr_syuruq:"日の出", pr_dzuhur:"ズフル", pr_ashar:"アスル", pr_maghrib:"マグリブ", pr_isya:"イシャー" }
     };
 
     function changeAppLang(l) {
       localStorage.setItem('app_lang', l);
       document.querySelectorAll("[data-k]").forEach(el => { if(DICT[l][el.getAttribute('data-k')]) el.innerText = DICT[l][el.getAttribute('data-k')]; });
-      
       ['id','en','jp'].forEach(x => {
         const btn = document.getElementById('lang-'+x);
         if(x === l) { btn.classList.add('bg-emerald-600', 'text-white'); btn.classList.remove('text-slate-300'); }
         else { btn.classList.remove('bg-emerald-600', 'text-white'); btn.classList.add('text-slate-300'); }
       });
-
-      const day = new Date().getDay();
-      document.getElementById('hadithText').innerText = HADITH_DB[day][l];
-      if (day === 0) document.getElementById('puasaText').innerText = DICT[l].fast_mon;
-      if (day === 3) document.getElementById('puasaText').innerText = DICT[l].fast_thu;
-
+      document.getElementById('hadithText').innerText = HADITH_DB[new Date().getDay()][l];
       loadStandalonePrayer(); 
     }
 
@@ -247,10 +223,47 @@
         else { modal.classList.add('hidden'); modal.classList.remove('flex'); }
     };
 
-    // 4. ENGINE JADWAL SHOLAT MANDIRI (Dengan ID Baru: appPrayerList)
+    // FUNGSI TARIK IQOMAH DARI SPREADSHEET
+    let dbIqomah = {};
+    async function fetchIqomah() {
+        try {
+            const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=420244150&single=true&output=csv";
+            const res = await fetch(url + "&t=" + Date.now());
+            const text = await res.text();
+            const rows = text.split('\n');
+            rows.forEach(row => {
+                const cols = row.split(',');
+                if (cols.length >= 2) {
+                    dbIqomah[cols[0].trim()] = cols[1].trim();
+                }
+            });
+        } catch(e) { console.error("Gagal load Iqomah", e); }
+    }
+
+    function getIqomahTime(type) {
+        if(Object.keys(dbIqomah).length === 0) return null;
+        if(type === 'pr_syuruq') return null;
+        if(type === 'pr_subuh') return dbIqomah['Subuh'];
+        if(type === 'pr_ashar') return dbIqomah['Ashar'];
+        if(type === 'pr_maghrib') return dbIqomah['Maghrib'];
+        
+        const day = new Date().getDay(); // 0=Minggu, 6=Sabtu, 5=Jumat
+        if(type === 'pr_dzuhur') {
+            if (day === 5 && dbIqomah['Jumat']) return dbIqomah['Jumat'];
+            return dbIqomah['Dzuhur'];
+        }
+        if(type === 'pr_isya') {
+            if(day === 0 || day === 6) return dbIqomah['Isya_Weekend'];
+            return dbIqomah['Isya_Weekday'];
+        }
+        return null;
+    }
+
     async function loadStandalonePrayer() {
         const lang = localStorage.getItem('app_lang') || 'id';
         try {
+            await fetchIqomah(); // Wajib tunggu Spreadsheet dulu
+            
             const today = new Date().toDateString();
             let data = localStorage.getItem('hekinan_prayer');
             let timings;
@@ -283,6 +296,9 @@
         ];
         let html = '';
         prayers.forEach(p => {
+            let iqomahStr = getIqomahTime(p.id);
+            let iqomahHtml = iqomahStr ? `<span class="text-[10px] bg-sky-500/10 text-sky-400 px-2 py-0.5 rounded border border-sky-500/20 shadow-sm ml-3">Iqomah ${iqomahStr}</span>` : '';
+            
             html += `
             <div class="flex items-center justify-between p-5 hover:bg-white/5 transition-colors group">
               <div class="flex items-center gap-4">
@@ -292,7 +308,10 @@
                   <p class="text-[10px] text-emerald-500/70 font-arab">${p.arab}</p>
                 </div>
               </div>
-              <h3 class="text-2xl font-bold text-white tracking-tighter drop-shadow-md">${p.time}</h3>
+              <div class="text-right flex items-center">
+                ${iqomahHtml}
+                <h3 class="text-2xl font-bold text-white tracking-tighter drop-shadow-md ml-3">${p.time}</h3>
+              </div>
             </div>`;
         });
         document.getElementById('appPrayerList').innerHTML = html;
@@ -332,17 +351,30 @@
             document.getElementById('appNextName').innerText = nextP.name;
             document.getElementById('appNextArab').innerText = nextP.arab;
             document.getElementById('appNextTime').innerText = nextP.time;
+            
+            // Tarik Iqomah dari Spreadsheet
+            let iqomahStr = getIqomahTime(nextP.id);
+            document.getElementById('appNextIqomah').innerText = "Iqomah: " + (iqomahStr || "--:--");
+
             document.getElementById('appCountdown').innerText = `- ${h}j ${m}m lagi`;
         }, 1000);
     }
 
-    // 5. INIT SISTEM PINTAR
+    // REGISTRASI PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('PWA Ready!'))
+          .catch(err => console.log('PWA Error:', err));
+      });
+    }
+
     window.onload = () => {
       if(window.lucide) window.lucide.createIcons();
       
       const now = new Date();
       const h = now.getHours();
-      const day = now.getDay(); 
+      const day = now.getDay();
       
       document.getElementById('hadithArab').innerText = HADITH_DB[day].arab;
 
@@ -375,7 +407,5 @@
       changeAppLang(localStorage.getItem('app_lang') || 'id');
     };
   </script>
-
-  <script type="module" src="./app.js?v=expert2"></script>
 </body>
 </html>
