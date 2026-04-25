@@ -1,4 +1,4 @@
-// app.js (VERSION: DYNAMIC LINKS FOR EACH SLIDE)
+// app.js (VERSION: FINAL MICRO-GIVING + DYNAMIC SHEET + ALWAYS POPUP)
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -12,18 +12,15 @@ window.globalContentData = [];
 let YOUTUBE_LIVE_ID = ""; 
 
 // --- AUTO FIX GAMBAR RUSAK (QA) ---
-// Letakkan ini di bagian atas app.js (setelah window.globalContentData)
 window.addEventListener('error', function(e) {
     if (e.target && e.target.tagName === 'IMG') {
-        // Hentikan loop jika logo cadangan juga rusak
         if (e.target.src.includes('logohekinan.jpeg')) return;
-        
-        // Ganti gambar rusak dengan logo masjid
         e.target.src = 'logohekinan.jpeg'; 
         e.target.alt = "Gambar tidak tersedia";
-        e.target.classList.add("opacity-50", "grayscale"); // Efek visual biar ketahuan ini placeholder
+        e.target.classList.add("opacity-50", "grayscale"); 
     }
-}, true); // 'true' penting agar error capture phase tertangkap
+}, true); 
+
 let TARGET_DONASI = 42000000;
 let TERKUMPUL_SAAT_INI = 21182533;
 
@@ -31,25 +28,21 @@ let TERKUMPUL_SAAT_INI = 21182533;
 const HEK_LAT = 34.884;
 const HEK_LON = 136.993;
 
-// --- KONFIGURASI SLIDESHOW POPUP (GAMBAR & LINK) ---
-// Slide 1 adalah Poster Ramadhan (sudah ada di HTML).
-// Slide 2, 3, dst ditambahkan di sini:
 const POPUP_SLIDES_DATA = [
      { 
-        src: "assets/foto/d1.jpeg",  // <-- Ganti dengan nama file poster Dauroh Anda
-        link: "https://forms.gle/zJqA2Eba2FaxvrXv6", // <-- MASUKKAN LINK GOOGLE FORM DISINI
-        text: "Daftar Dauroh" // Tulisan di tombol
-    },
-    
-    { 
-        src: "assets/foto/1b.png",  // <-- Ganti dengan nama file
-        link:"https://wa.me/628895941864", // <-- MASUKKAN LINK GOOGLE FORM DISINI
-        text: "Informasi" // Tulisan di tombol
+        src: "assets/foto/d1.jpeg",  
+        link: "https://forms.gle/zJqA2Eba2FaxvrXv6", 
+        text: "Daftar Dauroh" 
     },
     { 
-        src: "assets/foto/d1.jpeg",  // <-- Ganti dengan nama file poster Dauroh Anda
-        link: "https://forms.gle/zJqA2Eba2FaxvrXv6", // <-- MASUKKAN LINK GOOGLE FORM DISINI
-        text: "Daftar Dauroh" // Tulisan di tombol
+        src: "assets/foto/1b.png",  
+        link:"https://wa.me/628895941864", 
+        text: "Informasi" 
+    },
+    { 
+        src: "assets/foto/d1.jpeg",  
+        link: "https://forms.gle/zJqA2Eba2FaxvrXv6", 
+        text: "Daftar Dauroh" 
     },
     { 
         src: "assets/foto/w3.jpeg", 
@@ -68,6 +61,7 @@ const DEFAULT_KAJIAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE
 const DEFAULT_PENGUMUMAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=991747005&single=true&output=csv&t=3";
 const DEFAULT_ARTIKEL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv";
 const DEFAULT_KEGIATAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1910296914&single=true&output=csv";
+const DEFAULT_GALERI_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1255907412&single=true&output=csv&t=2";
 
 const HIJRI_MONTHS_ID = ["Muharram", "Shafar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"];
 
@@ -84,7 +78,6 @@ const DAFTAR_DOA = [
 const TRANSLATIONS = {
   id: {
     nav_sholat: "Jadwal Sholat", nav_kegiatan: "Kegiatan", nav_info: "Info", nav_donasi: "Donasi",
-    nav_ramadhan: "Ramadhan",
     hero_title_1: "Merajut Ukhuwah,", hero_title_2: "Membangun Peradaban.",
     hero_desc: "Pusat kegiatan ibadah, pendidikan anak, dan silaturahmi masyarakat muslim Indonesia di sekitar Hekinan Aichi ken Jepang.",
     hero_btn_wakaf: "Ikut Wakaf", hero_btn_sholat: "Jadwal Sholat", hero_btn_kiblat: "Arah Kiblat",
@@ -98,37 +91,14 @@ const TRANSLATIONS = {
     read_more: "Selengkapnya",
     reminder_label: "Belum bisa transfer sekarang?", reminder_btn: "Buat Komitmen Rutin", reminder_date_label: "Mulai Tanggal:", reminder_freq_label: "Frekuensi:",
     freq_once: "Sekali Saja", freq_monthly: "Rutin Tiap Bulan", btn_save_reminder: "Pasang Pengingat", reminder_note: "*Akan membuka Google Calendar Anda.",
-    reminder_title: "✨ Komitmen Wakaf Masjid Hekinan", reminder_desc: "Pengingat sedekah rutin. Rekening: Yucho 12160-00457031 / BSI 7329283768. Semoga berkah!",
     search_title: "Mencari:", search_people: "Orang Baik Lagi!", search_desc_1: "Jika 1 orang berwakaf", search_desc_2: "maka pelunasan masjid ini akan segera terwujud. Jadilah salah satu dari mereka!",
     joined_label: "Orang Lagi Dibutuhkan", btn_join_movement: "Gabung Gerakan Ini", target_complete: "Menuju Lunas",
-    dedication_check: "Niatkan pahala untuk", dedication_target: "Orang Tua / yang sudah meninggal rahimahumullahu ?", dedication_label: "Nama Orang Tua / yang sudah meninggal rahimahumullahu ", dedication_placeholder: "Contoh: Bpk. Fulan bin Fulan",
+    dedication_check: "Niatkan pahala untuk", dedication_target: "Orang Tua / yang sudah meninggal?", dedication_label: "Nama Orang Tua / yang sudah meninggal", dedication_placeholder: "Contoh: Bpk. Fulan bin Fulan",
     alert_nominal: "Mohon masukkan nominal donasi.", btn_loading: "Membuka WhatsApp...", btn_copied: "Tersalin",
     wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi pembangunan Masjid As-Sunnah Hekinan.", wa_dedication: "🎁 Pahala diniatkan atas nama:", wa_closing: "Mohon dicek. Jazakumullah khairan.",
-    // --- KHUSUS RAMADHAN (ID) ---
-    rmd_page_back: "Kembali", rmd_page_deadline: "Deadline: 31 Mei 2026", rmd_hero_title: "Wakaf M² Surga",
-    rmd_hero_desc: "Barangsiapa membangun masjid karena Allah, maka Allah akan membangunkan baginya rumah di surga.",
-    rmd_card_title: "Paket M² Surga", rmd_card_subtitle: "Investasi pembebasan lahan Masjid Hekinan.",
-    rmd_benefit_1: "Pahala jariyah yang terus mengalir abadi", rmd_benefit_2: "Ikut melunasi bangunan sebelum Mei 2026", rmd_benefit_3: "Didoakan oleh ribuan jamaah & malaikat",
-    rmd_btn_open: "Ambil Bagian Wakaf", rmd_btn_send: "Konfirmasi via WA", rmd_modal_title: "Komitmen Wakaf",
-    rmd_modal_subtitle: "Pilih nominal sedekah rutin", rmd_mode_daily: "Harian (30 Hari)", rmd_mode_weekly: "Pekanan (4 Jumat)",
-    rmd_opt_custom: "Nominal Lainnya", rmd_label_name: "Nama Anda", rmd_ph_name: "Hamba Allah...",
-    rmd_dedication_ask: "Niatkan pahala untuk Orang Tua?", rmd_dedication_note: "Atas nama Ayah/Ibu (hidup/wafat).",
-    rmd_dedication_placeholder: "Contoh: Alm. Bpk Fulan",rmd_social_joined: "Orang Baik telah bergabung.",
-rmd_social_turn: "Giliran Anda sekarang!",rmd_section_title: "Mengapa Wakaf di Ramadhan?",
-rmd_reason_1_title: "Pahala Berlipat Ganda",
-rmd_reason_1_desc: "Sunnah jadi wajib, wajib jadi 70x lipat.",
-rmd_reason_2_title: "Mengejar Deadline Mei",
-rmd_reason_2_desc: "Menyelamatkan aset umat sebelum jatuh tempo.",
-rmd_reason_3_title: "Hadiah Orang Tua",
-rmd_reason_3_desc: "Wakaf atas nama orang tua yang sudah wafat.",
-rmd_reason_4_title: "Naungan di Akhirat",
-rmd_reason_4_desc: "Sedekah akan menjadi naungan di hari kiamat.",
-rmd_social_joined: "Orang Baik telah bergabung.",
-rmd_social_turn: "It's your turn now!",
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
-    nav_ramadhan: "Ramadan",
     hero_title_1: "Weaving Brotherhood,", hero_title_2: "Building Civilization.",
     hero_desc: "Center for worship, children's education, and gathering for the Indonesian Muslim community around Hekinan, Aichi Prefecture, Japan.",
     hero_btn_wakaf: "Donate Now", hero_btn_sholat: "Prayer Times", hero_btn_kiblat: "Qibla Finder",
@@ -142,35 +112,14 @@ rmd_social_turn: "It's your turn now!",
     read_more: "Read More",
     reminder_label: "Can't transfer right now?", reminder_btn: "Make a Commitment", reminder_date_label: "Start Date:", reminder_freq_label: "Frequency:",
     freq_once: "One Time", freq_monthly: "Monthly (Recurring)", btn_save_reminder: "Set Reminder", reminder_note: "*Opens Google Calendar.",
-    reminder_title: "✨ Donation Commitment Hekinan Mosque", reminder_desc: "Routine charity reminder. Bank: Yucho 12160-00457031 / BSI 7329283768. Jazakumullah Khairan!",
     search_title: "Mission to Find:", search_people: "Good People More!", search_desc_1: "If 1 person donates", search_desc_2: "then this mosque will be fully paid off soon. Be one of them!",
     joined_label: "People Still Needed", btn_join_movement: "Join This Movement", target_complete: "Towards Completion",
     dedication_check: "Intend reward for", dedication_target: "Parents / Deceased?", dedication_label: "Name of Parents / Deceased", dedication_placeholder: "Ex: Mr. Fulan bin Fulan",
     alert_nominal: "Please enter donation amount.", btn_loading: "Opening WhatsApp...", btn_copied: "Copied",
     wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque construction.", wa_dedication: "🎁 Reward intended for:", wa_closing: "Please check. Jazakumullah Khairan.",
-    // --- KHUSUS RAMADHAN (EN) ---
-    rmd_page_back: "Back", rmd_page_deadline: "Deadline: May 31, 2026", rmd_hero_title: "Waqf M² for Jannah",
-    rmd_hero_desc: "Whoever builds a mosque for Allah, Allah will build for him a house in Paradise.",
-    rmd_card_title: "Waqf Package", rmd_card_subtitle: "Investment for Hekinan Mosque land.",
-    rmd_benefit_1: "Everlasting rewards (Sadaqah Jariyah)", rmd_benefit_2: "Help pay off the land by May 2026", rmd_benefit_3: "Prayers from thousands of congregants",
-    rmd_btn_open: "Take Part in Waqf", rmd_btn_send: "Confirm via WhatsApp", rmd_modal_title: "Waqf Commitment",
-    rmd_modal_subtitle: "Choose your routine charity", rmd_mode_daily: "Daily (30 Days)", rmd_mode_weekly: "Weekly (4 Fridays)",
-    rmd_opt_custom: "Other Amount", rmd_label_name: "Your Name", rmd_ph_name: "Anonymous...",
-    rmd_dedication_ask: "Intend reward for parents?", rmd_dedication_note: "On behalf of Father/Mother.",
-    rmd_dedication_placeholder: "Ex: Mr. John Doe",rmd_social_joined: "Good people have joined.",
-rmd_social_turn: "It's your turn now!",rmd_section_title: "Why Waqf in Ramadan?",
-rmd_reason_1_title: "Multiplied Rewards",
-rmd_reason_1_desc: "Sunnah becomes mandatory, mandatory acts 70x rewards.",
-rmd_reason_2_title: "Chasing May Deadline",
-rmd_reason_2_desc: "Saving community assets before the deadline.",
-rmd_reason_3_title: "Gift for Parents",
-rmd_reason_3_desc: "Waqf on behalf of deceased parents.",
-rmd_reason_4_title: "Shade in the Hereafter",
-rmd_reason_4_desc: "Charity will be a shade on the Day of Judgment.",
-rmd_social_joined: "Good people have joined.",
-rmd_social_turn: "It's your turn now!",
   }
 };
+
 // ==========================================
 // 2. HELPER FUNCTIONS
 // ==========================================
@@ -208,7 +157,6 @@ function renderHijri(apiData = null) {
 function setLang(lang) {
   currentLang = lang; 
   localStorage.setItem("lang", lang);
-  
   const t = TRANSLATIONS[lang];
   if (!t) return;
 
@@ -218,68 +166,41 @@ function setLang(lang) {
   });
 
   $$("[data-placeholder]").forEach(el => { 
-    const k = el.getAttribute("data-placeholder"); 
     const key = el.getAttribute("data-placeholder");
     if (t[key]) el.placeholder = t[key]; 
   });
 
   const langBtn = $("#langToggle");
   const langBtnMob = $("#langToggleMob");
-  if (langBtn) {
-    langBtn.innerHTML = lang === "id" ? 'ID | <span class="opacity-50">EN</span>' : '<span class="opacity-50">ID</span> | EN';
-  }
-  if (langBtnMob) {
-    langBtnMob.innerHTML = lang === "id" ? 'ID | <span class="opacity-50">EN</span>' : '<span class="opacity-50">ID</span> | EN';
-  }
+  if (langBtn) langBtn.innerHTML = lang === "id" ? 'ID | <span class="opacity-50">EN</span>' : '<span class="opacity-50">ID</span> | EN';
+  if (langBtnMob) langBtnMob.innerHTML = lang === "id" ? 'ID | <span class="opacity-50">EN</span>' : '<span class="opacity-50">ID</span> | EN';
 
   renderHadith(); 
   renderHijri();
   document.dispatchEvent(new Event('langChanged'));
 }
-// --- TAMBAHAN KEAMANAN (Paste di app.js bagian Helper) ---
 
-// Fungsi untuk membersihkan teks dari script jahat tapi tetap membolehkan formatting dasar
 function sanitizeHTML(str) {
   if (!str) return "";
-  // 1. Ganti karakter berbahaya dasar
-  let temp = str.replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-
-  // 2. (Opsional) Kembalikan formatting aman jika Anda ingin bold/italic/breakline dari CSV
-  // Ini membolehkan Anda menulis [b]teks[/b] atau [br] di Excel/CSV
+  let temp = str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
   temp = temp.replace(/\[b\]/g, "<b>").replace(/\[\/b\]/g, "</b>")
              .replace(/\[i\]/g, "<i>").replace(/\[\/i\]/g, "</i>")
-             .replace(/\[br\]/g, "<br>")
-             .replace(/\n/g, "<br>"); // Ganti enter jadi <br>
-             
+             .replace(/\[br\]/g, "<br>").replace(/\n/g, "<br>"); 
   return temp;
 }
-// --- FUNGSI SMART CACHE UNTUK GOOGLE SHEET ---
+
 async function loadCsv(url) {
-  // 1. Buat "Kunci" unik untuk setiap URL (Iqomah, Kajian, Artikel)
   const cacheKey = "cache_data_" + url;
   const cacheTimeKey = "cache_time_" + url;
-  
-  // 2. Atur Durasi Simpan (Contoh: 60 menit)
-  // 60 menit * 60 detik * 1000 milidetik
   const CACHE_DURATION = 60 * 60 * 1000; 
-  
-  // 3. Cek memori HP (localStorage) apakah data masih segar
   const cachedData = localStorage.getItem(cacheKey);
   const cachedTime = localStorage.getItem(cacheTimeKey);
   const now = new Date().getTime();
 
-  // Jika data ada dan belum kedaluwarsa, langsung tampilkan (0 loading!)
   if (cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
-      console.log("⚡ Data diambil dari Cache (Super Cepat!):", url);
       return JSON.parse(cachedData);
   }
 
-  // 4. Jika memori kosong atau data sudah usang (> 60 menit), ambil baru dari Google
-  console.log("🔄 Mengunduh data baru dari Google Sheet:", url);
   try {
     const t = await fetch(url, { cache: "no-store" }).then(r => r.text());
     const r = []; let i = 0, c = "", row = [], q = false;
@@ -291,20 +212,15 @@ async function loadCsv(url) {
       c += char; i++;
     }
     if (c || row.length) { row.push(c); r.push(row); }
-    
-    // Jika sheet ternyata kosong
     if (r.length === 0 || !r[0]) return [];
 
     const h = r[0].map(x => x.trim().toLowerCase());
     const finalData = r.slice(1).map(v => { const o = {}; h.forEach((k, x) => o[k] = v[x]?.trim() || ""); return o; });
     
-    // 5. Simpan data baru ke memori HP agar kunjungan berikutnya instan
     localStorage.setItem(cacheKey, JSON.stringify(finalData));
     localStorage.setItem(cacheTimeKey, now.toString());
-
     return finalData;
   } catch { 
-    // Fallback: Jika internet mati/Google error, coba pakai data usang di memori (jika ada)
     if (cachedData) return JSON.parse(cachedData);
     return []; 
   }
@@ -313,20 +229,16 @@ async function loadCsv(url) {
 window.openArticleModal = (index) => {
   const data = window.globalContentData[index];
   const modal = document.getElementById("articleModal"); 
-  
   if (!modal || !data) return;
 
   document.getElementById("modalTitle").textContent = data.title || "";
   document.getElementById("modalDate").innerHTML = `<i data-lucide="calendar" class="w-3 h-3"></i> ${data.date || "-"}`;
   document.getElementById("modalTag").textContent = data.tag || "Info";
-  // Tambahkan logika poster di dalam modal
+  
   let posterDetail = "";
   if (data.poster && data.poster.length > 5) {
-      // Menggunakan object-contain agar poster utuh tidak terpotong
       posterDetail = `<img src="${sanitizeHTML(data.poster)}" class="w-full rounded-xl mb-5 object-contain max-h-[60vh] bg-slate-50 border border-slate-100" alt="Poster Detail">`;
   }
-
-  // Gabungkan poster dengan teks deskripsi
   document.getElementById("modalContent").innerHTML = posterDetail + sanitizeHTML(data.content || data.desc || "");
 
   const modalFooter = modal.querySelector(".border-t"); 
@@ -341,26 +253,20 @@ window.openArticleModal = (index) => {
       btn.rel = "noopener noreferrer";
       btn.className = "flex items-center gap-2 text-xs font-bold text-white bg-sky-600 hover:bg-sky-700 px-4 py-2 rounded-lg transition-colors shadow-sm ml-auto mr-2";
       btn.innerHTML = `<i data-lucide="edit" class="w-3 h-3"></i> Daftar Kegiatan`;
-      
       const closeBtn = document.getElementById("closeArticleBtnBottom");
       if(closeBtn && modalFooter) modalFooter.insertBefore(btn, closeBtn);
   } else if (data.link) {
       const extBtn = document.getElementById("modalExternalLink");
       if(extBtn) {
          extBtn.href = data.link;
-         extBtn.classList.remove("hidden");
-         extBtn.classList.add("flex");
+         extBtn.classList.remove("hidden"); extBtn.classList.add("flex");
       }
   } else {
       const extBtn = document.getElementById("modalExternalLink");
-      if(extBtn) {
-         extBtn.classList.add("hidden");
-         extBtn.classList.remove("flex");
-      }
+      if(extBtn) { extBtn.classList.add("hidden"); extBtn.classList.remove("flex"); }
   }
 
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
+  modal.classList.remove("hidden"); modal.classList.add("flex");
   if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
 };
 
@@ -375,13 +281,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function renderContent() {
-    // Di dalam async function renderContent() { ...
-// TEMPEL INI DI BARIS PERTAMA FUNGSI:
-
   const showSkeleton = (id, count = 3) => {
       const el = document.getElementById(id);
       if (!el) return;
-      // HTML untuk kotak abu-abu berdenyut
       const skeletonHTML = `
         <div class="animate-pulse bg-white rounded-2xl border border-slate-100 p-5 shadow-sm h-full">
             <div class="flex justify-between mb-4">
@@ -392,41 +294,30 @@ async function renderContent() {
             <div class="h-4 w-full bg-slate-200 rounded mb-2"></div>
             <div class="h-4 w-2/3 bg-slate-200 rounded mb-6"></div>
             <div class="h-10 w-full bg-slate-200 rounded-xl"></div>
-        </div>
-      `;
-      // Ulangi sebanyak 'count' kali
+        </div>`;
       el.innerHTML = Array(count).fill(skeletonHTML).join("");
   };
 
-  // Tampilkan skeleton sementara data loading
   showSkeleton("wrapPengumuman", 3);
   showSkeleton("artikelList", 3);
   showSkeleton("kajianList", 3);
 
-  // ... (lanjutkan ke kode fetch data di bawahnya biarkan saja)
   window.globalContentData = []; 
 
-const mkCard = (x, type, index) => {
-    // 1. LOGIKA WARNA TAG
+  const mkCard = (x, type, index) => {
     let tagColor = "bg-slate-100 text-slate-600 border-slate-200";
     let tagName = x.tag || (type === 'artikel' ? "Artikel" : "Info");
-    
     const t = tagName.toLowerCase();
-    if (t.includes('dauroh') || t.includes('kajian')) {
-        tagColor = "bg-purple-50 text-purple-700 border-purple-100";
-    } else if (t.includes('penting') || t.includes('mendesak')) {
-        tagColor = "bg-red-50 text-red-700 border-red-100";
-    } else if (t.includes('ramadhan')) {
-        tagColor = "bg-emerald-50 text-emerald-700 border-emerald-100";
-    }
+    
+    if (t.includes('dauroh') || t.includes('kajian')) tagColor = "bg-purple-50 text-purple-700 border-purple-100";
+    else if (t.includes('penting') || t.includes('mendesak')) tagColor = "bg-red-50 text-red-700 border-red-100";
+    else if (t.includes('ramadhan')) tagColor = "bg-emerald-50 text-emerald-700 border-emerald-100";
 
-    // 2. LOGIKA THUMBNAIL POSTER (UTUH & BISA DIKLIK)
     let thumbnailHtml = "";
     if (x.poster && x.poster.length > 5) {
         thumbnailHtml = `
         <div onclick="window.openArticleModal(${index})" class="w-full mb-4 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 cursor-pointer relative group shadow-sm">
             <img src="${sanitizeHTML(x.poster)}" alt="Thumbnail" class="w-full h-auto object-contain block group-hover:scale-105 transition-transform duration-500" loading="lazy">
-            
             <div class="absolute inset-0 bg-black/0 group-hover:bg-slate-900/10 transition-colors flex items-center justify-center">
                 <div class="bg-white/95 backdrop-blur text-slate-800 px-3 py-1.5 rounded-full text-[10px] font-extrabold opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 shadow-md flex items-center gap-1 border border-slate-200">
                     <i data-lucide="zoom-in" class="w-3 h-3 text-sky-600"></i> Lihat Detail
@@ -435,21 +326,13 @@ const mkCard = (x, type, index) => {
         </div>`;
     }
 
-    // 3. LOGIKA TOMBOL 
     let actionButton = "";
     if (x.link_daftar && x.link_daftar.length > 5) {
-        actionButton = `
-        <a href="${x.link_daftar}" target="_blank" rel="noopener noreferrer" class="relative z-10 mt-3 w-full block text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md shadow-sky-200 flex items-center justify-center gap-2">
-           <i data-lucide="edit" class="w-4 h-4"></i> Daftar Sekarang
-        </a>`;
+        actionButton = `<a href="${x.link_daftar}" target="_blank" rel="noopener noreferrer" class="relative z-10 mt-3 w-full block text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2"><i data-lucide="edit" class="w-4 h-4"></i> Daftar Sekarang</a>`;
     } else {
-        actionButton = `
-        <button onclick="window.openArticleModal(${index})" class="relative z-10 mt-3 w-full block text-center bg-slate-50 hover:bg-slate-100 text-slate-600 font-bold py-2 rounded-xl text-sm transition-all border border-slate-200">
-           Selengkapnya
-        </button>`;
+        actionButton = `<button onclick="window.openArticleModal(${index})" class="relative z-10 mt-3 w-full block text-center bg-slate-50 hover:bg-slate-100 text-slate-600 font-bold py-2 rounded-xl text-sm transition-all border border-slate-200">Selengkapnya</button>`;
     }
 
-    // 4. SANITASI DATA (Perbaikan Spasi Teks)
     const safeTitle = sanitizeHTML(x.title || "(Tanpa Judul)");
     const rawDesc = (type === 'artikel' ? x.excerpt : x.desc) || "";
     const safeDesc = sanitizeHTML(rawDesc).replace(/<br\s*[\/]?>/gi, ' ').replace(/<[^>]*>?/gm, '');
@@ -462,10 +345,9 @@ const mkCard = (x, type, index) => {
             <i data-lucide="calendar" class="w-3 h-3"></i> ${sanitizeHTML(x.date || "-")}
           </span>
         </div>
-        
-        ${thumbnailHtml} <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors">${safeTitle}</h3>
+        ${thumbnailHtml} 
+        <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors">${safeTitle}</h3>
         <p class="text-sm text-slate-500 mb-4 line-clamp-3 flex-grow leading-relaxed">${safeDesc || "Klik tombol di bawah untuk melihat detail informasi ini."}</p>
-        
         <div class="mt-auto pt-3 border-t border-slate-50">${actionButton}</div>
       </article>`;
   };
@@ -479,12 +361,10 @@ const mkCard = (x, type, index) => {
 
     if (d.length > 0) {
         pW.innerHTML = d.map((x, i) => mkCard(x, 'info', startIdx + i)).join("");
-        const emptyMsg = document.getElementById("boardEmpty");
-        if(emptyMsg) emptyMsg.classList.add("hidden");
+        document.getElementById("boardEmpty")?.classList.add("hidden");
     } else {
         pW.innerHTML = "";
-        const emptyMsg = document.getElementById("boardEmpty");
-        if(emptyMsg) emptyMsg.classList.remove("hidden");
+        document.getElementById("boardEmpty")?.classList.remove("hidden");
     }
   }
 
@@ -498,17 +378,15 @@ const mkCard = (x, type, index) => {
     const filter = (q) => {
       const filtered = d.map((item, i) => ({item, idx: startIdx + i})).filter(o => (o.item.title || "").toLowerCase().includes(q));
       aL.innerHTML = filtered.length ? filtered.map(o => mkCard(o.item, 'artikel', o.idx)).join("") : "";
-      const emptyArt = document.getElementById("artikelEmpty");
-      if(emptyArt) emptyArt.classList.toggle("hidden", filtered.length > 0);
-      if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+      document.getElementById("artikelEmpty")?.classList.toggle("hidden", filtered.length > 0);
+      if(window.lucide) window.lucide.createIcons();
     };
     filter("");
-    const searchInput = document.getElementById("searchArtikel");
-    if(searchInput) { searchInput.addEventListener("input", e => filter(e.target.value.toLowerCase())); }
+    document.getElementById("searchArtikel")?.addEventListener("input", e => filter(e.target.value.toLowerCase()));
   }
-  if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+  if(window.lucide) window.lucide.createIcons();
 }
-// --- FUNGSI TAB SWITCHER (Tambahkan ini di app.js) ---
+
 function initTabs() {
   const btnP = $("#tabPengumuman");
   const btnA = $("#tabArtikel");
@@ -518,34 +396,19 @@ function initTabs() {
 
   if (!btnP || !btnA || !tabsContainer) return;
 
-  // Logika Klik Tab Pengumuman
   btnP.addEventListener("click", () => {
-    // Geser slider ke kiri
-    tabsContainer.classList.remove("tab-right");
-    tabsContainer.classList.add("tab-left");
-    
-    // Tampilkan konten Pengumuman, Sembunyikan Artikel
-    wrapP.classList.remove("hidden");
-    wrapA.classList.add("hidden");
-    
-    // Animasi fade in (opsional, biar halus)
+    tabsContainer.classList.remove("tab-right"); tabsContainer.classList.add("tab-left");
+    wrapP.classList.remove("hidden"); wrapA.classList.add("hidden");
     wrapP.classList.add("animate-[fadeUp_0.3s_ease-out]");
   });
 
-  // Logika Klik Tab Artikel
   btnA.addEventListener("click", () => {
-    // Geser slider ke kanan
-    tabsContainer.classList.remove("tab-left");
-    tabsContainer.classList.add("tab-right");
-    
-    // Tampilkan konten Artikel, Sembunyikan Pengumuman
-    wrapP.classList.add("hidden");
-    wrapA.classList.remove("hidden");
-    
-    // Animasi fade in
+    tabsContainer.classList.remove("tab-left"); tabsContainer.classList.add("tab-right");
+    wrapP.classList.add("hidden"); wrapA.classList.remove("hidden");
     wrapA.classList.add("animate-[fadeUp_0.3s_ease-out]");
   });
 }
+
 // --- ADMIN ---
 const isAdmin = () => new URLSearchParams(location.search).get("admin") === "1" && localStorage.getItem("is_admin") === "1";
 function setupAdmin() {
@@ -557,19 +420,87 @@ function setupAdmin() {
 }
 const getCsvUrl = (k) => isAdmin() && localStorage.getItem(`sheet_${k}`) || (k === "kajian" ? DEFAULT_KAJIAN_CSV : k === "pengumuman" ? DEFAULT_PENGUMUMAN_CSV : DEFAULT_ARTIKEL_CSV);
 
-
 function initHeroSlider() {
   const slides = $$(".hero-slide"); if (slides.length < 2) return;
   let current = 0; setInterval(() => { slides[current].classList.remove("active"); current = (current + 1) % slides.length; slides[current].classList.add("active"); }, 5000);
 }
 
+// =======================================================
+// SISTEM LIVE STREAMING & SHEET SYNC
+// =======================================================
+let currentWebLiveId = "";
+
+async function cekLiveDariSheet() {
+    const CSV_SETELAN = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1608872178&single=true&output=csv"; 
+    try {
+        const response = await fetch(CSV_SETELAN + "&t=" + new Date().getTime());
+        const text = await response.text();
+        const rows = text.split('\n');
+        let foundId = "";
+        
+        for (let row of rows) {
+            const cols = row.split(',');
+            if (cols[0] && cols[1]) {
+                const key = cols[0].trim().toLowerCase();
+                const val = cols[1].trim().replace(/['"\r]/g, '');
+
+                if (key === "live_id") foundId = val;
+                if (key === "target_donasi" && !isNaN(val) && val !== "") TARGET_DONASI = Number(val);
+                if (key === "terkumpul_donasi" && !isNaN(val) && val !== "") TERKUMPUL_SAAT_INI = Number(val);
+            }
+        }
+        
+        YOUTUBE_LIVE_ID = foundId;
+        initLiveStream(); 
+        if (typeof initProgressWakaf === 'function') initProgressWakaf();
+        
+    } catch (error) { 
+        console.error("Gagal cek Setelan dari Sheet", error); 
+    }
+}
+
+function initLiveStream() {
+    const container = $("#liveStreamContainer");
+    const wrapper = $("#liveStreamWrapper");
+    if (!container || !wrapper) return;
+
+    if (YOUTUBE_LIVE_ID !== "") {
+        if (currentWebLiveId !== YOUTUBE_LIVE_ID) {
+            currentWebLiveId = YOUTUBE_LIVE_ID;
+            wrapper.innerHTML = `<iframe src="https://www.youtube.com/embed/${YOUTUBE_LIVE_ID}?autoplay=1&mute=0&rel=0" title="Live" frameborder="0" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>`;
+            container.classList.remove("hidden");
+
+            let qaBtn = document.getElementById("qaLiveBtn");
+            if (!qaBtn) {
+                qaBtn = document.createElement("a");
+                qaBtn.id = "qaLiveBtn";
+                qaBtn.href = "https://forms.gle/JHutLtmzPTeBtmoR6"; 
+                qaBtn.target = "_blank";
+                qaBtn.className = "mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold py-3.5 rounded-xl animate-pulse shadow-lg";
+                qaBtn.innerHTML = `💬 Kirim Pertanyaan ke Ustadz`;
+                container.appendChild(qaBtn);
+            }
+        }
+    } else {
+        if (currentWebLiveId !== "") {
+            currentWebLiveId = "";
+            wrapper.innerHTML = "";
+            container.classList.add("hidden");
+            const qaBtn = document.getElementById("qaLiveBtn");
+            if (qaBtn) qaBtn.remove();
+        }
+    }
+}
+setInterval(cekLiveDariSheet, 30000);
+
+// ==========================================
+// FITUR POPUP (SELALU MUNCUL & PROGRESS BAR)
+// ==========================================
 function initPopup() {
   const popup = $("#popupPromo");
   const track = $("#popupTrack");
   
   if (!popup || !track) return;
-
-  // KODE PEMBATAS WAKTU SUDAH DIHAPUS DI SINI AGAR SELALU MUNCUL
 
   const persentase = Math.min((TERKUMPUL_SAAT_INI / TARGET_DONASI) * 100, 100).toFixed(1);
   const sisa = new Intl.NumberFormat('id-ID').format(TARGET_DONASI - TERKUMPUL_SAAT_INI);
@@ -619,8 +550,9 @@ function initPopup() {
   
   popup.classList.remove("hidden");
   popup.classList.add("flex");
-  if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+  if(window.lucide) window.lucide.createIcons();
 }
+
 function initVideoAjakan() { 
     const container = $("#videoAjakanContainer"); if (!container || !VIDEO_DONASI_LIST.length) return; 
     container.innerHTML = ""; 
@@ -633,81 +565,6 @@ function initVideoKajian() {
     grid.innerHTML = ""; 
     YOUTUBE_VIDEOS.forEach(id => { const card = document.createElement("div"); card.className = "rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-white group hover:-translate-y-1 transition-transform duration-300"; card.innerHTML = `<div class="relative w-full pt-[56.25%] bg-black"><iframe src="https://www.youtube.com/embed/${id}" title="Video Kajian" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe></div>`; grid.appendChild(card); }); 
 }
-// =======================================================
-// SISTEM LIVE STREAMING + Q&A (AUTO-UPDATE 30 DETIK)
-// =======================================================
-let currentWebLiveId = "";
-
-async function cekLiveDariSheet() {
-    const CSV_SETELAN = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1608872178&single=true&output=csv"; 
-    
-    try {
-        const response = await fetch(CSV_SETELAN + "&t=" + new Date().getTime());
-        const text = await response.text();
-        const rows = text.split('\n');
-        let foundId = "";
-        
-        for (let row of rows) {
-            const cols = row.split(',');
-            if (cols[0] && cols[1]) {
-                const key = cols[0].trim().toLowerCase();
-                const val = cols[1].trim().replace(/['"\r]/g, '');
-
-                if (key === "live_id") foundId = val;
-                if (key === "target_donasi" && !isNaN(val) && val !== "") TARGET_DONASI = Number(val);
-                if (key === "terkumpul_donasi" && !isNaN(val) && val !== "") TERKUMPUL_SAAT_INI = Number(val);
-            }
-        }
-        
-        YOUTUBE_LIVE_ID = foundId;
-        initLiveStream(); 
-        if (typeof initProgressWakaf === 'function') initProgressWakaf();
-        
-    } catch (error) { 
-        console.error("Gagal cek Setelan dari Sheet", error); 
-    }
-}
-
-function initLiveStream() {
-    const container = $("#liveStreamContainer");
-    const wrapper = $("#liveStreamWrapper");
-    if (!container || !wrapper) return;
-
-    if (YOUTUBE_LIVE_ID !== "") {
-        if (currentWebLiveId !== YOUTUBE_LIVE_ID) {
-            currentWebLiveId = YOUTUBE_LIVE_ID;
-            
-            // Memunculkan video YouTube
-            wrapper.innerHTML = `<iframe src="https://www.youtube.com/embed/${YOUTUBE_LIVE_ID}?autoplay=1&mute=0&rel=0" title="Live" frameborder="0" allowfullscreen class="absolute top-0 left-0 w-full h-full"></iframe>`;
-            container.classList.remove("hidden");
-
-            // Memunculkan Tombol Tanya Ustadz
-            let qaBtn = document.getElementById("qaLiveBtn");
-            if (!qaBtn) {
-                qaBtn = document.createElement("a");
-                qaBtn.id = "qaLiveBtn";
-                
-                // MASUKKAN LINK GOOGLE FORM ANDA DI BAWAH INI:
-                qaBtn.href = "https://forms.gle/JHutLtmzPTeBtmoR6"; 
-                
-                qaBtn.target = "_blank";
-                qaBtn.className = "mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold py-3.5 rounded-xl animate-pulse shadow-lg";
-                qaBtn.innerHTML = `💬 Kirim Pertanyaan ke Ustadz`;
-                container.appendChild(qaBtn);
-            }
-        }
-    } else {
-        if (currentWebLiveId !== "") {
-            currentWebLiveId = "";
-            wrapper.innerHTML = "";
-            container.classList.add("hidden");
-            const qaBtn = document.getElementById("qaLiveBtn");
-            if (qaBtn) qaBtn.remove();
-        }
-    }
-}
-// Jalankan pengecekan otomatis setiap 30 detik
-setInterval(cekLiveDariSheet, 30000);
 
 function initDoa() { 
     const elArab = $("#doaArab"), elArti = $("#doaArti"), btn = $("#btnGantiDoa"); 
@@ -716,111 +573,72 @@ function initDoa() {
     acakDoa(); btn?.addEventListener("click", acakDoa); 
 }
 
-// Tambahkan konstanta URL Sheet Galeri di bagian atas (Jika belum ada)
-const DEFAULT_GALERI_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1255907412&single=true&output=csv&t=2";
-
 async function initSmartCarousel() {
   const track = $("#kgTrack"); 
   if (!track) return;
-  
-  track.innerHTML = "Loading Galeri..."; // Feedback UX
-  
-  // Ambil data dari Google Sheet
+  track.innerHTML = "Loading Galeri...";
   const dataGaleri = await loadCsv(DEFAULT_GALERI_CSV); 
   
   if (dataGaleri.length === 0) {
-    track.innerHTML = "<p>Belum ada dokumentasi.</p>";
-    return;
+    track.innerHTML = "<p>Belum ada dokumentasi.</p>"; return;
   }
 
-  // 1. Render Gambar Galeri
   track.innerHTML = "";
   dataGaleri.forEach(item => {
     const el = document.createElement("figure");
     el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-slate-100 relative group border border-slate-200 flex items-center justify-center";
-    
-    el.innerHTML = `
-      <img src="${item.url_gambar}" 
-           class="max-w-full max-h-full object-contain w-full h-full group-hover:scale-105 transition-transform duration-700" 
-           loading="lazy" 
-           alt="${item.keterangan || 'Kegiatan'}">`;
+    el.innerHTML = `<img src="${item.url_gambar}" class="max-w-full max-h-full object-contain w-full h-full group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="${item.keterangan || 'Kegiatan'}">`;
     track.appendChild(el);
   });
 
-  // 2. LOGIKA TOMBOL MANUAL & AUTOPLAY SLIDESHOW
-  const btnPrev = $("#kgPrev");
-  const btnNext = $("#kgNext");
-  
-  // Menghitung seberapa jauh harus menggeser (Lebar 1 gambar + jarak gap)
+  const btnPrev = $("#kgPrev"), btnNext = $("#kgNext");
   const getScrollAmount = () => track.children[0] ? track.children[0].offsetWidth + 16 : 300; 
 
-  // Fungsi Tombol Manual
   if (btnPrev) btnPrev.onclick = () => track.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
   if (btnNext) btnNext.onclick = () => track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
 
-  // Fungsi Autoplay
   let autoScroll = setInterval(() => {
-    // Jika galeri sudah mentok di ujung kanan, kembali mulus ke paling kiri
-    if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
-        track.scrollTo({ left: 0, behavior: 'smooth' });
-    } else {
-        // Jika belum mentok, geser ke kanan perlahan
-        track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-    }
-  }, 3000); // 3000 = Gambar berganti setiap 3 detik (Bisa Anda sesuaikan)
+    if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) track.scrollTo({ left: 0, behavior: 'smooth' });
+    else track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+  }, 3000); 
 
-  // Pause Autoplay saat disentuh/di-hover agar pengguna bisa fokus melihat
   track.addEventListener('mouseenter', () => clearInterval(autoScroll));
   track.addEventListener('touchstart', () => clearInterval(autoScroll));
-  
-  // Lanjutkan Autoplay saat mouse/jari dilepas
   const resumeAutoScroll = () => {
-      clearInterval(autoScroll); // Bersihkan interval yang dobel
+      clearInterval(autoScroll); 
       autoScroll = setInterval(() => {
-        if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
-            track.scrollTo({ left: 0, behavior: 'smooth' });
-        } else {
-            track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-        }
+        if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) track.scrollTo({ left: 0, behavior: 'smooth' });
+        else track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
       }, 3000);
   };
-  
   track.addEventListener('mouseleave', resumeAutoScroll);
   track.addEventListener('touchend', resumeAutoScroll);
 }
 
 // ----------------------------------------------------
-// UPDATE: JADWAL SHOLAT (API) + IQOMAH (SPREADSHEET) DI KARTU
+// JADWAL SHOLAT (API) + IQOMAH (SPREADSHEET)
 // ----------------------------------------------------
 async function renderSholat() { 
     const g = $("#sholatGrid"); const l = $("#locLabel"); 
     if (!g) return; 
-    
     g.innerHTML = `<div class="w-full text-center py-4"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto text-slate-400"></i></div>`;
     
     try {
         if (l) l.textContent = `Hekinan, Japan (${HEK_LAT}, ${HEK_LON})`;
-        
-        // 1. Ambil Jam Adzan (API Aladhan - Presisi Salatuk MWL)
         const d = await fetch(`https://api.aladhan.com/v1/timings?latitude=${HEK_LAT}&longitude=${HEK_LON}&method=3&school=0&tune=0,2,0,1,1,0,2,1`).then(r => r.json()); 
         if (d.data && d.data.date && d.data.date.hijri) renderHijri(d.data.date.hijri); 
         
-        // 2. Ambil Jam Jamaah (Spreadsheet)
         let iqomahData = [];
-        try {
-            iqomahData = await loadCsv(DEFAULT_IQOMAH_CSV); // Pastikan DEFAULT_IQOMAH_CSV sudah dideklarasi di atas
-        } catch(e) { console.error("Gagal load Iqomah CSV", e); }
+        try { iqomahData = await loadCsv(DEFAULT_IQOMAH_CSV); } catch(e) { console.error(e); }
 
         const now = new Date();
-        const dayOfWeek = now.getDay(); // 0=Minggu, 5=Jumat
+        const dayOfWeek = now.getDay(); 
 
-        // Fungsi pencari jam jamaah dari data CSV
         const getIqomah = (namaSholat) => {
             if (iqomahData.length === 0) return "-";
             let key = namaSholat;
             if (namaSholat === "Isya") key = (dayOfWeek === 0 || dayOfWeek === 6) ? "Isya_Weekend" : "Isya_Weekday";
             if (namaSholat === "Dzuhur" && dayOfWeek === 5) key = "Jumat";
-            
             const row = iqomahData.find(x => x.sholat && x.sholat.toLowerCase() === key.toLowerCase());
             return row ? row.jam : "-";
         };
@@ -828,28 +646,21 @@ async function renderSholat() {
         const m = { Fajr: ["Subuh", "sunrise"], Sunrise: ["Syuruq", "sun"], Dhuhr: ["Dzuhur", "sun"], Asr: ["Ashar", "cloud-sun"], Maghrib: ["Maghrib", "moon"], Isha: ["Isya", "star"] }; 
         g.innerHTML = ""; 
         
-        // 3. Render Kartu per waktu sholat
         Object.keys(m).forEach(k => { 
             const namaSholat = m[k][0];
             const timeStr = d.data.timings[k];
-            const [hours, minutes] = timeStr.split(':').map(Number);
+            const [hours] = timeStr.split(':').map(Number);
             const isCurrentHour = now.getHours() === hours;
-
             let iqomahTime = getIqomah(namaSholat);
             let displayNamaSholat = (namaSholat === "Dzuhur" && dayOfWeek === 5) ? "Jum'at" : namaSholat;
 
-            // Logika UI: Highlight warna jika masuk waktu sholat
-            let cardClass = isCurrentHour 
-                ? "bg-emerald-50 border-emerald-400 shadow-md ring-1 ring-emerald-200" // Waktu aktif
-                : "bg-white border-slate-100 shadow-sm hover:border-emerald-200 hover:shadow-md"; // Waktu normal
-            
+            let cardClass = isCurrentHour ? "bg-emerald-50 border-emerald-400 shadow-md ring-1 ring-emerald-200" : "bg-white border-slate-100 shadow-sm hover:border-emerald-200 hover:shadow-md"; 
             let iconClass = isCurrentHour ? "text-emerald-600 animate-pulse" : "text-slate-400";
             let labelClass = isCurrentHour ? "text-emerald-700" : "text-slate-500";
             let textClass = isCurrentHour ? "text-emerald-900" : "text-slate-800";
 
-            // UI Kotak Hijau Jamaah persis seperti Screenshot
             let iqomahHtml = namaSholat === "Syuruq" 
-                ? `<div class="mt-4 text-[10px] text-transparent select-none py-1.5">-</div>` // Kosongkan untuk syuruq
+                ? `<div class="mt-4 text-[10px] text-transparent select-none py-1.5">-</div>` 
                 : `<div class="mt-4 flex items-center justify-between text-[11px] font-bold py-1.5 px-3 rounded-lg border border-emerald-200 bg-white text-emerald-600 shadow-sm">
                      <span>Jamaah:</span> <span class="text-sm font-extrabold">${iqomahTime}</span>
                    </div>`;
@@ -864,23 +675,20 @@ async function renderSholat() {
                 ${iqomahHtml}
               </div>`; 
         }); 
-        
-        if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+        if(window.lucide) window.lucide.createIcons();
 
-        // 4. Aktifkan Tombol Scroll Kiri/Kanan
         const grid = document.getElementById("sholatGrid");
-        document.getElementById("btnScrollLeft")?.addEventListener("click", () => {
-            grid.scrollBy({ left: -160, behavior: "smooth" });
-        });
-        document.getElementById("btnScrollRight")?.addEventListener("click", () => {
-            grid.scrollBy({ left: 160, behavior: "smooth" });
-        });
+        document.getElementById("btnScrollLeft")?.addEventListener("click", () => grid.scrollBy({ left: -160, behavior: "smooth" }));
+        document.getElementById("btnScrollRight")?.addEventListener("click", () => grid.scrollBy({ left: 160, behavior: "smooth" }));
 
     } catch { 
-        g.innerHTML = `<p class="w-full text-center text-red-400 text-xs">Gagal memuat jadwal. Pastikan Link CSV benar.</p>`; 
+        g.innerHTML = `<p class="w-full text-center text-red-400 text-xs">Gagal memuat jadwal.</p>`; 
     } 
 }
 
+// ==========================================
+// FITUR MICRO-GIVING (DONASI)
+// ==========================================
 function initDonasi() {
   const inputEl = $("#inputNominal");
   const currencyEl = $("#currencyToggle");
@@ -889,65 +697,65 @@ function initDonasi() {
   const btnWA = $("#donasiBtn");
   const checkDedikasi = $("#checkDedikasi");
 
-  // --- 1. LOGIKA COPY NOMOR REKENING ---
   $$("[data-copy]").forEach(b => b.addEventListener("click", () => {
     navigator.clipboard.writeText($(b.dataset.copy).innerText);
     const t = TRANSLATIONS[currentLang] || TRANSLATIONS["id"];
     const originalText = b.innerHTML; const originalClass = b.className;
     b.className = "text-xs font-bold text-emerald-600 flex items-center gap-1 transition-all duration-300";
     b.innerHTML = `<i data-lucide="check-circle" class="w-3 h-3"></i> ${t.btn_copied}`;
-    window.lucide?.createIcons?.();
-    setTimeout(() => { b.className = originalClass; b.innerHTML = originalText; window.lucide?.createIcons?.(); }, 2000);
+    if(window.lucide) window.lucide.createIcons();
+    setTimeout(() => { b.className = originalClass; b.innerHTML = originalText; if(window.lucide) window.lucide.createIcons(); }, 2000);
   }));
 
-  // Jika form donasi tidak ada di halaman ini, hentikan eksekusi script selanjutnya
   if (!inputEl || !currencyEl) return;
 
-  // --- 2. UPDATE FORMAT UANG & TOMBOL CEPAT ---
   const updateUI = () => {
     const currency = currencyEl.value;
     const val = inputEl.value;
     
-    // Update Tombol Cepat berdasarkan Mata Uang
+    // Tampilan Paket Micro-Giving (Menggantikan tombol nominal biasa)
     if (currency === "JPY") {
       quickWrapper.innerHTML = `
-        <button class="q-btn text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1.5 rounded-lg text-slate-300 font-bold transition-colors" data-v="1000">¥1.000</button>
-        <button class="q-btn text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1.5 rounded-lg text-slate-300 font-bold transition-colors" data-v="10000">¥10.000</button>`;
+        <button class="q-btn flex flex-col items-center justify-center bg-slate-800/40 hover:bg-emerald-600/30 border border-slate-600 hover:border-emerald-500 px-3 py-2 rounded-xl transition-all w-full" data-v="3000">
+            <span class="text-[10px] text-emerald-300 uppercase tracking-widest font-bold mb-1">Pahala Harian</span>
+            <span class="text-base font-black text-white">¥3.000</span>
+            <span class="text-[9px] text-slate-400 mt-1">Setara ¥100 / hari</span>
+        </button>
+        <button class="q-btn flex flex-col items-center justify-center bg-slate-800/40 hover:bg-sky-600/30 border border-slate-600 hover:border-sky-500 px-3 py-2 rounded-xl transition-all w-full" data-v="4000">
+            <span class="text-[10px] text-sky-300 uppercase tracking-widest font-bold mb-1">Berkah Jumat</span>
+            <span class="text-base font-black text-white">¥4.000</span>
+            <span class="text-[9px] text-slate-400 mt-1">Setara ¥1.000 / Jumat</span>
+        </button>`;
     } else {
       quickWrapper.innerHTML = `
-        <button class="q-btn text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1.5 rounded-lg text-slate-300 font-bold transition-colors" data-v="50000">Rp50rb</button>
-        <button class="q-btn text-[10px] bg-white/10 hover:bg-white/30 px-3 py-1.5 rounded-lg text-slate-300 font-bold transition-colors" data-v="100000">Rp100rb</button>`;
+        <button class="q-btn flex flex-col items-center justify-center bg-slate-800/40 hover:bg-emerald-600/30 border border-slate-600 hover:border-emerald-500 px-3 py-2 rounded-xl transition-all w-full" data-v="50000">
+            <span class="text-[10px] text-emerald-300 uppercase tracking-widest font-bold mb-1">Sedekah Subuh</span>
+            <span class="text-base font-black text-white">Rp 50.000</span>
+        </button>
+        <button class="q-btn flex flex-col items-center justify-center bg-slate-800/40 hover:bg-sky-600/30 border border-slate-600 hover:border-sky-500 px-3 py-2 rounded-xl transition-all w-full" data-v="100000">
+            <span class="text-[10px] text-sky-300 uppercase tracking-widest font-bold mb-1">Pahala Jariyah</span>
+            <span class="text-base font-black text-white">Rp 100.000</span>
+        </button>`;
     }
 
-    // Pasang event listener untuk tombol baru
     $$(".q-btn").forEach(b => b.addEventListener("click", (e) => {
-      e.preventDefault();
-      inputEl.value = b.dataset.v;
-      updateUI();
+      e.preventDefault(); inputEl.value = b.dataset.v; updateUI();
     }));
 
-    // Tampilkan format ribuan yang cantik di bawah input
     if (val) {
       const prefix = currency === 'JPY' ? '¥' : 'Rp';
       hintEl.textContent = `${prefix} ${new Intl.NumberFormat('id-ID').format(val)}`;
-    } else {
-      hintEl.textContent = "";
-    }
+    } else { hintEl.textContent = ""; }
   };
 
   currencyEl.addEventListener("change", () => { inputEl.value = ""; updateUI(); });
-  inputEl.addEventListener("input", () => {
-     // Cegah input huruf di kolom number
-     inputEl.value = inputEl.value.replace(/\D/g, ''); 
-     updateUI();
-  });
+  inputEl.addEventListener("input", () => { inputEl.value = inputEl.value.replace(/\D/g, ''); updateUI(); });
   updateUI();
 
-  // --- 3. LOGIKA KIRIM WHATSAPP ---
   btnWA?.addEventListener("click", () => {
     const nominal = inputEl.value;
     const currency = currencyEl.value;
-    const kategori = $("#kategoriDonasi")?.value || "Umum";
+    const kategori = $("#kategoriDonasi")?.value || "Pembebasan Lahan (Wakaf)";
     const namaDedikasi = $("#inputNamaDedikasi")?.value;
     const t = TRANSLATIONS[currentLang] || TRANSLATIONS["id"];
 
@@ -972,9 +780,7 @@ function initDonasi() {
 }
 
 function initCountdown() {
-  const elDays = $("#cdDays");
-  const elHours = $("#cdHours");
-  const elMin = $("#cdMin");
+  const elDays = $("#cdDays"), elHours = $("#cdHours"), elMin = $("#cdMin");
   if (!elDays || !elHours || !elMin) return;
 
   const end = new Date("2026-05-31T23:59:59").getTime();
@@ -985,31 +791,18 @@ function initCountdown() {
     elMin.innerText = Math.floor((gap%3600000)/60000);
   }, 1000);
 }
-// --- FITUR KAMUS DAKWAH (MODAL VERSION) ---
-// Taruh di app.js
 
-// 1. Fungsi Buka/Tutup Modal (Global)
+// --- FITUR KAMUS DAKWAH ---
 window.toggleKamusModal = (show) => {
     const m = document.getElementById("modalKamus");
-    if(show) {
-        m.classList.remove("hidden");
-        m.classList.add("flex");
-        document.getElementById("inputCariKamus").focus();
-    } else {
-        m.classList.add("hidden");
-        m.classList.remove("flex");
-    }
+    if(show) { m.classList.remove("hidden"); m.classList.add("flex"); document.getElementById("inputCariKamus").focus(); } 
+    else { m.classList.add("hidden"); m.classList.remove("flex"); }
 };
 
-// 2. Logika Render Kamus
 function initKamusApp() {
-    const grid = document.getElementById("containerKamusGrid");
-    const search = document.getElementById("inputCariKamus");
-    const empty = document.getElementById("stateKamusKosong");
-
+    const grid = document.getElementById("containerKamusGrid"), search = document.getElementById("inputCariKamus"), empty = document.getElementById("stateKamusKosong");
     if(!grid || !search) return;
 
-    // DATA KAMUS
     const dataKamus = [
         { title: "Izin Sholat Sebentar", indo: "Maaf, sudah waktunya sholat. Bolehkah saya istirahat 10 menit?", jp: "すみません、お祈りの時間ですので、10分ほど休憩をいただいてもよろしいでしょうか？", romaji: "Sumimasen, oinori no jikan desunode, juppun hodo kyuukei o itadaitemo yoroshii deshouka?" },
         { title: "Tidak Makan Babi", indo: "Saya Muslim, jadi saya tidak bisa makan daging babi.", jp: "私はイスラム教徒ですので、豚肉を食べることができません。", romaji: "Watashi wa isuramu kyouto desunode, butaniku o taberu koto ga dekimasen." },
@@ -1022,146 +815,81 @@ function initKamusApp() {
 
     const render = (items) => {
         grid.innerHTML = "";
-        if(items.length === 0) {
-            empty.classList.remove("hidden");
-            empty.classList.add("flex");
-        } else {
-            empty.classList.add("hidden");
-            empty.classList.remove("flex");
-            
+        if(items.length === 0) { empty.classList.remove("hidden"); empty.classList.add("flex"); } 
+        else {
+            empty.classList.add("hidden"); empty.classList.remove("flex"); 
             items.forEach(item => {
                 const el = document.createElement("div");
                 el.className = "bg-white p-5 rounded-xl border border-slate-200 hover:border-pink-300 hover:shadow-md transition-all group relative";
                 el.innerHTML = `
                     <div class="flex justify-between items-start mb-2">
                         <h4 class="font-bold text-slate-800 text-sm uppercase text-pink-600">${item.title}</h4>
-                        <button class="btn-copy text-slate-400 hover:text-pink-600 p-1" title="Salin">
-                            <i data-lucide="copy" class="w-4 h-4"></i>
-                        </button>
+                        <button class="btn-copy text-slate-400 hover:text-pink-600 p-1" title="Salin"><i data-lucide="copy" class="w-4 h-4"></i></button>
                     </div>
                     <p class="text-xs text-slate-400 italic mb-3">"${item.indo}"</p>
                     <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 group-hover:bg-pink-50/30 transition-colors">
                         <p class="text-base font-bold text-slate-800 mb-1 font-sans select-all">${item.jp}</p>
                         <p class="text-[10px] text-slate-500 font-mono select-all">${item.romaji}</p>
-                    </div>
-                `;
-                
-                // Copy Event
-                el.querySelector(".btn-copy").addEventListener("click", () => {
-                    navigator.clipboard.writeText(item.jp);
-                    if(window.showToast) window.showToast("Teks Jepang tersalin!");
-                });
-
+                    </div>`;
+                el.querySelector(".btn-copy").addEventListener("click", () => { navigator.clipboard.writeText(item.jp); });
                 grid.appendChild(el);
             });
             if(window.lucide) window.lucide.createIcons();
         }
     };
-
     render(dataKamus);
-
     search.addEventListener("input", (e) => {
         const q = e.target.value.toLowerCase();
-        const filtered = dataKamus.filter(i => 
-            i.title.toLowerCase().includes(q) || i.indo.toLowerCase().includes(q)
-        );
-        render(filtered);
+        render(dataKamus.filter(i => i.title.toLowerCase().includes(q) || i.indo.toLowerCase().includes(q)));
     });
 }
-// ==========================================
-// FITUR POPUP JADWAL JAMAAH VIA SPREADSHEET
-// ==========================================
-window.bukaPopupJamaah = async () => {
-    const modal = $("#modalJamaah");
-    const container = $("#isiJadwalJamaah");
-    if (!modal || !container) return;
 
-    // Tampilkan Popup
-    modal.classList.remove("hidden");
-    modal.classList.add("flex");
+// --- POPUP JADWAL JAMAAH ---
+window.bukaPopupJamaah = async () => {
+    const modal = $("#modalJamaah"); const container = $("#isiJadwalJamaah");
+    if (!modal || !container) return;
+    modal.classList.remove("hidden"); modal.classList.add("flex");
     if(window.lucide) window.lucide.createIcons();
 
     try {
-        // Ambil data dari Spreadsheet (CSV)
         const d = await loadCsv(DEFAULT_IQOMAH_CSV);
-        
-        if (d.length === 0) {
-            container.innerHTML = `<p class="text-center text-xs text-red-500">Data jadwal belum tersedia di Spreadsheet.</p>`;
-            return;
-        }
-
-        // Render HTML
+        if (d.length === 0) { container.innerHTML = `<p class="text-center text-xs text-red-500">Data jadwal belum tersedia di Spreadsheet.</p>`; return; }
         container.innerHTML = "";
         d.forEach(item => {
-            // Abaikan jika baris kosong
             if(!item.sholat || !item.jam) return;
-            
-            // Format teks agar rapi (Contoh: isya_weekend -> Isya Weekend)
             let nama = item.sholat.replace(/_/g, ' ').toUpperCase();
-            
-            // Desain Baris Jadwal
             container.innerHTML += `
             <div class="flex justify-between items-center bg-slate-50 border border-slate-100 p-3 rounded-xl hover:bg-emerald-50 hover:border-emerald-100 transition-colors">
                 <span class="text-xs font-bold text-slate-600">${nama}</span>
                 <span class="text-sm font-extrabold text-emerald-700 bg-white border border-emerald-200 px-3 py-1 rounded-lg shadow-sm">${item.jam}</span>
-            </div>
-            `;
+            </div>`;
         });
-
-    } catch (e) {
-        container.innerHTML = `<p class="text-center text-xs text-red-500">Gagal mengambil data. Cek koneksi atau Link CSV.</p>`;
-    }
+    } catch (e) { container.innerHTML = `<p class="text-center text-xs text-red-500">Gagal mengambil data.</p>`; }
 };
+window.tutupPopupJamaah = () => { const m = $("#modalJamaah"); if(m){ m.classList.add("hidden"); m.classList.remove("flex"); } };
 
-window.tutupPopupJamaah = () => {
-    const modal = $("#modalJamaah");
-    if (modal) {
-        modal.classList.add("hidden");
-        modal.classList.remove("flex");
-    }
-};
-// ==========================================
-// FITUR KALKULASI PROGRESS WAKAF
-// ==========================================
+// --- PROGRESS WAKAF ---
 function initProgressWakaf() {
-  
-    const targetDonasi = TARGET_DONASI;
-    const terkumpulSaatIni = TERKUMPUL_SAAT_INI;
-    const kekurangan = targetDonasi - terkumpulSaatIni;
-
-    let persentase = (terkumpulSaatIni / targetDonasi) * 100;
+    const kekurangan = TARGET_DONASI - TERKUMPUL_SAAT_INI;
+    let persentase = (TERKUMPUL_SAAT_INI / TARGET_DONASI) * 100;
     if (persentase > 100) persentase = 100; 
 
-    const sisaOrang = Math.ceil(kekurangan / 1000);
-    const formatAngka = (angka) => new Intl.NumberFormat('id-ID').format(angka);
+    const formatAngka = (a) => new Intl.NumberFormat('id-ID').format(a);
+    const updateTeks = (id, teks) => { const el = document.getElementById(id); if (el) el.textContent = teks; };
+    const updateLebar = (id, persen) => { const el = document.getElementById(id); if (el) el.style.width = `${persen}%`; };
 
-    const updateTeks = (id, teks) => {
-        const elemen = document.getElementById(id);
-        if (elemen) elemen.textContent = teks;
-    };
-
-    const updateLebar = (id, persen) => {
-        const elemen = document.getElementById(id);
-        if (elemen) elemen.style.width = `${persen}%`;
-    };
-
-    // Update target orang di visual
-    updateTeks('targetOrang', formatAngka(sisaOrang));
-    updateTeks('terkumpulOrang', formatAngka(sisaOrang));
-
-    // Update animasi bar hijau
+    updateTeks('targetOrang', formatAngka(Math.ceil(kekurangan / 1000)));
+    updateTeks('terkumpulOrang', formatAngka(Math.ceil(kekurangan / 1000)));
     updateLebar('progressOrang', persentase);
     updateLebar('progressBar', persentase);
-
-    // Update nominal di bawah bar
-    updateTeks('terkumpulLabel', `¥${formatAngka(terkumpulSaatIni)}`);
+    updateTeks('terkumpulLabel', `¥${formatAngka(TERKUMPUL_SAAT_INI)}`);
     updateTeks('kekuranganLabel', `¥${formatAngka(kekurangan)}`);
-    updateTeks('targetLabel', `¥${formatAngka(targetDonasi)}`);
+    updateTeks('targetLabel', `¥${formatAngka(TARGET_DONASI)}`);
     updateTeks('percentLabel', persentase.toFixed(1));
 }
 
 // ==========================================
-// 4. BOOTSTRAP (UPDATE TERBARU)
+// 4. BOOTSTRAP 
 // ==========================================
 async function boot() {
   const hariIni = new Date().getDay(); 
@@ -1169,15 +897,12 @@ async function boot() {
   if (hariIni === 5 && bannerJumat) { bannerJumat.classList.remove("hidden"); }
 
   setLang(currentLang);
-  
   if ($("#year")) $("#year").textContent = new Date().getFullYear();
 
-  // --- URUTAN BARU AGAR DATA GOOGLE SHEET DIAMBIL LEBIH DULU ---
   await cekLiveDariSheet(); 
   initLiveStream();         
   initProgressWakaf();      
   initPopup();              
-  // -------------------------------------------------------------
 
   renderSholat();
   renderContent();
@@ -1192,78 +917,34 @@ async function boot() {
   initHeroSlider();
   setupAdmin();
 
-  // Tombol Back to Top
   const btnTop = document.getElementById("backToTop");
   if (btnTop) {
       window.addEventListener("scroll", () => {
-        if (window.scrollY > 500) {
-            btnTop.classList.remove("translate-y-20", "opacity-0", "pointer-events-none");
-        } else {
-            btnTop.classList.add("translate-y-20", "opacity-0", "pointer-events-none");
-        }
+        if (window.scrollY > 500) btnTop.classList.remove("translate-y-20", "opacity-0", "pointer-events-none");
+        else btnTop.classList.add("translate-y-20", "opacity-0", "pointer-events-none");
       });
   }
-
-  // Animasi Scroll (Reveal)
   const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add("active") }), { threshold: 0.1 });
   $$(".reveal").forEach(e => obs.observe(e));
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
-// ==========================================
-// 5. EID FESTIVE & TAKBIR FUNCTIONS (NEW)
-// ==========================================
 
+// --- EID FESTIVE & TAKBIR ---
 window.openTakbirModal = () => {
-  // 1. Trigger Efek Confetti Elegan (Warna Masjid: Emerald, Emas, Putih)
   if (typeof confetti === 'function') {
-    const duration = 2000;
-    const end = Date.now() + duration;
-    const colors = ['#059669', '#f59e0b', '#ffffff']; // Emerald, Amber, Putih
-
+    const end = Date.now() + 2000; const colors = ['#059669', '#f59e0b', '#ffffff']; 
     (function frame() {
-      confetti({
-        particleCount: 4,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: colors,
-        disableForReducedMotion: true
-      });
-      confetti({
-        particleCount: 4,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: colors,
-        disableForReducedMotion: true
-      });
-
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
-      }
+      confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0 }, colors, disableForReducedMotion: true });
+      confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1 }, colors, disableForReducedMotion: true });
+      if (Date.now() < end) requestAnimationFrame(frame);
     }());
   }
-
-  // 2. Tampilkan Modal Teks Takbir (Meneruskan dari Modal Kamus)
-  const modal = document.getElementById("modalKamus");
-  const grid = document.getElementById("containerKamusGrid");
-  const searchInput = document.getElementById("inputCariKamus");
-  const emptyState = document.getElementById("stateKamusKosong");
-  
+  const modal = document.getElementById("modalKamus"), grid = document.getElementById("containerKamusGrid"), searchInput = document.getElementById("inputCariKamus"), emptyState = document.getElementById("stateKamusKosong");
   if (!modal || !grid) return;
+  if(searchInput?.parentElement) searchInput.parentElement.classList.add("hidden"); 
+  if(emptyState){ emptyState.classList.add("hidden"); emptyState.classList.remove("flex"); }
 
-  // Sembunyikan input pencarian kamus sementara karena ini mode Takbir
-  if(searchInput && searchInput.parentElement) {
-      searchInput.parentElement.classList.add("hidden"); 
-  }
-  
-  if(emptyState) {
-      emptyState.classList.add("hidden");
-      emptyState.classList.remove("flex");
-  }
-
-  // Isi Layout Teks Takbir
   grid.innerHTML = `
     <div class="col-span-full bg-amber-50 border border-amber-200 p-6 md:p-10 rounded-2xl shadow-sm relative overflow-hidden animate-[fadeUp_0.4s_ease-out]">
         <div class="absolute -right-4 -top-4 opacity-10"><i data-lucide="mic" class="w-32 h-32 text-amber-900"></i></div>
@@ -1271,68 +952,33 @@ window.openTakbirModal = () => {
             <i data-lucide="volume-2" class="w-6 h-6"></i> Lafadz Takbir Idul Fitri
         </h4>
         <div class="text-right text-3xl md:text-4xl mt-4 space-y-6 font-arab leading-loose text-slate-800 relative z-10" dir="rtl">
-            <p>اللَّهُ أَكْبَرُ اللَّهُ أَكْبَرُ اللَّهُ أَكْبَرُ</p>
-            <p>لَا إِلَهَ إِلَّا اللَّهُ وَاللَّهُ أَكْبَرُ</p>
-            <p>اللَّهُ أَكْبَرُ وَلِلَّهِ الْحَمْدُ</p>
+            <p>اللَّهُ أَكْبَرُ اللَّهُ أَكْبَرُ اللَّهُ أَكْبَرُ</p>
+            <p>لَا إِلَهَ إِلَّا اللَّهُ وَاللَّهُ أَكْبَرُ</p>
+            <p>اللَّهُ أَكْبَرُ وَلِلَّهِ الْحَمْدُ</p>
         </div>
-        <div class="text-sm text-slate-600 mt-8 border-t border-amber-200/60 pt-5 relative z-10 font-medium">
-            <p class="italic leading-relaxed">"Allah Maha Besar, Allah Maha Besar, Allah Maha Besar. Tidak ada ilah (yang berhak disembah) kecuali Allah, dan Allah Maha Besar. Allah Maha Besar dan segala puji hanya bagi Allah."</p>
-            <p class="mt-3 text-xs text-amber-700/80 font-bold">(Sesuai riwayat Ibnu Abi Syaibah dari Ibnu Mas'ud radhiyallahu 'anhu)</p>
-        </div>
-    </div>
-  `;
-
-  if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
-
-  // Buka Modal
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
+    </div>`;
+  if(window.lucide) window.lucide.createIcons();
+  modal.classList.remove("hidden"); modal.classList.add("flex");
 };
 
-// 3. Modifikasi fungsi tutup modal agar saat Kamus dibuka lagi, bentuknya tidak nyangkut di Teks Takbir
 const originalToggle = window.toggleKamusModal;
 window.toggleKamusModal = (show) => {
     if(!show) {
-        // Jika modal ditutup, kembalikan kotak pencarian Kamus
         const searchInput = document.getElementById("inputCariKamus");
-        if(searchInput && searchInput.parentElement) {
-            searchInput.parentElement.classList.remove("hidden");
-            searchInput.value = ""; 
-        }
-        // Render ulang isi kamus ke awal
+        if(searchInput?.parentElement) { searchInput.parentElement.classList.remove("hidden"); searchInput.value = ""; }
         if(typeof initKamusApp === 'function') initKamusApp();
     }
-    // Panggil fungsi bawaan untuk membuka/menutup
-    if(typeof originalToggle === 'function') {
-        originalToggle(show);
-    } else {
-        const m = document.getElementById("modalKamus");
-        if(show) {
-            m.classList.remove("hidden"); m.classList.add("flex");
-        } else {
-            m.classList.add("hidden"); m.classList.remove("flex");
-        }
-    }
+    if(typeof originalToggle === 'function') originalToggle(show);
+    else { const m = document.getElementById("modalKamus"); if(show){ m.classList.remove("hidden"); m.classList.add("flex"); } else { m.classList.add("hidden"); m.classList.remove("flex"); } }
 };
-// ==========================================
-// FITUR KOTAK SARAN & KRITIK
-// ==========================================
 
+// --- KOTAK SARAN ---
 window.toggleSaranModal = (show) => {
     const modal = document.getElementById("modalSaran");
     if (!modal) return;
-
-    if (show) {
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-        // Reset form saat dibuka
-        document.getElementById("pesanSaran").value = "";
-        document.getElementById("namaSaran").value = "";
-    } else {
-        modal.classList.add("hidden");
-        modal.classList.remove("flex");
-    }
-    if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+    if (show) { modal.classList.remove("hidden"); modal.classList.add("flex"); document.getElementById("pesanSaran").value = ""; document.getElementById("namaSaran").value = ""; } 
+    else { modal.classList.add("hidden"); modal.classList.remove("flex"); }
+    if (window.lucide) window.lucide.createIcons();
 };
 
 window.kirimSaran = () => {
@@ -1341,30 +987,18 @@ window.kirimSaran = () => {
     let nama = document.getElementById("namaSaran").value.trim();
     const btn = document.getElementById("kirimSaranBtn");
 
-    if (!pesan) {
-        alert("Mohon isi pesan Anda terlebih dahulu.");
-        return;
-    }
-
+    if (!pesan) { alert("Mohon isi pesan Anda terlebih dahulu."); return; }
     if (!nama) nama = "Hamba Allah (Anonim)";
 
-    // Animasi Loading
     const originalText = btn.innerHTML;
     btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Memproses...`;
     btn.classList.add("opacity-75", "cursor-wait");
-    if (window.lucide && window.lucide.createIcons) window.lucide.createIcons();
+    if (window.lucide) window.lucide.createIcons();
 
-    // Format Pesan untuk WhatsApp (Bisa diganti ke fetch GAS API nantinya)
-    let msg = `Assalamu'alaikum, saya ingin menyampaikan pesan melalui Website Masjid Hekinan:\n\n`;
-    msg += `📌 *Kategori:* ${kategori}\n`;
-    msg += `👤 *Dari:* ${nama}\n\n`;
-    msg += `💬 *Pesan:*\n"${pesan}"`;
+    let msg = `Assalamu'alaikum, saya ingin menyampaikan pesan melalui Website Masjid Hekinan:\n\n📌 *Kategori:* ${kategori}\n👤 *Dari:* ${nama}\n\n💬 *Pesan:*\n"${pesan}"`;
 
     setTimeout(() => {
-        // Ganti nomor dengan nomor Admin/Ustadz penerima keluhan
         window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
-        
-        // Kembalikan UI
         btn.innerHTML = originalText;
         btn.classList.remove("opacity-75", "cursor-wait");
         toggleSaranModal(false);
