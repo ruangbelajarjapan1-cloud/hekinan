@@ -348,52 +348,7 @@
         <div id="stateKamusKosong" class="hidden flex-1 flex-col items-center justify-center text-slate-400"><p>Tidak ditemukan.</p></div>
     </div>
   </div>
-<!-- MODAL DONASI DAUROH (KHUSUS APP.HTML) -->
-  <div id="modalDonasiDauroh" class="fixed inset-0 z-[160] hidden items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-sm transition-all text-slate-900">
-    <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden max-h-[85vh]">
-      
-      <!-- Header -->
-      <div class="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center shrink-0">
-        <div>
-            <h3 class="text-xl font-extrabold text-slate-800 flex items-center gap-2">
-                <span class="bg-amber-100 text-amber-600 p-1.5 rounded-lg"><i data-lucide="gift" class="w-5 h-5"></i></span>
-                Donasi Dauroh
-            </h3>
-            <p class="text-xs text-slate-500 mt-1">Dukung kelancaran Dauroh Golden Week.</p>
-        </div>
-        <button onclick="window.tutupDonasiDauroh()" class="p-2 rounded-full hover:bg-slate-200 text-slate-400"><i data-lucide="x" class="w-6 h-6"></i></button>
-      </div>
 
-      <!-- Body -->
-      <div class="p-6 overflow-y-auto space-y-4 bg-slate-50/50 flex-1">
-        <!-- Hadits Penyemangat -->
-        <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl relative">
-          <div class="absolute -right-2 -top-2 opacity-20"><i data-lucide="quote" class="w-12 h-12 text-amber-600"></i></div>
-          <p class="text-[10px] font-bold text-amber-700 uppercase tracking-widest mb-1.5 relative z-10">Penyemangat Sedekah</p>
-          <p class="text-xs italic mb-1.5 relative z-10 text-slate-700 leading-relaxed">“Barang siapa bersedekah dengan sebutir kurma dari hasil yang baik, maka Allah akan mengembangkannya...” <br><span class="font-bold text-[9px] text-amber-600">(HR. Bukhari & Muslim)</span></p>
-        </div>
-
-        <!-- Rekening Info -->
-        <div class="bg-white border border-slate-200 p-5 rounded-2xl text-center shadow-sm">
-            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Rekening JP Post</p>
-            <h4 id="rekDaurohApp" class="text-2xl font-black text-slate-800 tracking-widest mb-1 font-mono">12020-23353981</h4>
-            <p class="text-xs font-extrabold text-slate-600 uppercase tracking-wide">ムハマド イフサン</p>
-            <button data-copy="#rekDaurohApp" class="mt-3 text-[10px] font-bold text-sky-600 bg-sky-50 px-4 py-2 rounded-full border border-sky-100 hover:bg-sky-100 inline-flex items-center gap-1 shadow-sm active:scale-95 transition-all">
-                <i data-lucide="copy" class="w-3 h-3"></i> Salin
-            </button>
-        </div>
-      </div>
-
-      <!-- Footer Tombol WA -->
-      <div class="p-5 border-t border-slate-100 bg-white shrink-0">
-        <p class="text-[9px] text-center text-slate-400 mb-2 font-bold uppercase tracking-wider">Info: Ihsan Abu Rumaysha</p>
-        <button onclick="window.konfirmasiDaurohWA()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-2 text-sm">
-          <i data-lucide="message-circle" class="w-5 h-5"></i> Konfirmasi Transfer via WA
-        </button>
-      </div>
-
-    </div>
-  </div>
   
   <div id="modalSaran" class="fixed inset-0 z-[160] hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-all text-slate-900">
     <div class="bg-white w-full max-w-lg rounded-3xl flex flex-col shadow-2xl overflow-hidden">
@@ -510,7 +465,7 @@
     </div>
   </div>
 
-<!-- MODAL DONASI DAUROH & LOGISTIK (DESAIN BARU) -->
+<!-- MODAL DONASI DAUROH & LOGISTIK (DESAIN FINAL) -->
 <div id="modalDonasiDauroh" class="fixed inset-0 z-[200] hidden items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm transition-all text-slate-800">
   <div class="bg-white w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-[420px] sm:rounded-[2rem] flex flex-col shadow-2xl overflow-hidden animate-[fadeUp_0.3s_ease-out]">
     
@@ -598,7 +553,7 @@
     </div>
 
   </div>
-</div> 
+</div>
   <script>
     const HADITH_DB = [
       { arab: "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ", id: `"Sesungguhnya amalan itu tergantung niatnya."`, en: `"Actions are judged by intentions."`, jp: `"行為はその意図によって評価される。"` },
