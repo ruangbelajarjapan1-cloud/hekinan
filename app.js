@@ -392,7 +392,7 @@ async function renderContent() {
     filter("");
     document.getElementById("searchArtikel")?.addEventListener("input", e => filter(e.target.value.toLowerCase()));
   }
-
+ }
 function initTabs() {
   const btnP = $("#tabPengumuman");
   const btnA = $("#tabArtikel");
