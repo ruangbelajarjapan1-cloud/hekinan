@@ -1227,9 +1227,17 @@ window.tutupDonasiDauroh = () => {
     if(modal) { modal.classList.add("hidden"); modal.classList.remove("flex"); }
 };
 
-window.konfirmasiDaurohWA = () => {
-    // Teks otomatis dan nomor WA Ihsan Abu Rumaysha
-    let msg = "Assalamu'alaikum Akhi Ihsan, saya ingin konfirmasi transfer Donasi Dauroh Golden Week. Mohon dicek. Jazakumullah khairan.";
+window.konfirmasiDaurohWA = (jenis) => {
+    let msg = "";
+    
+    if (jenis === 'uang') {
+        msg = "Assalamu'alaikum Akhi Ihsan, saya ingin konfirmasi telah melakukan *Transfer Donasi* untuk Dauroh Golden Week. Mohon dicek. Jazakumullah khairan.";
+    } else if (jenis === 'barang') {
+        msg = "Assalamu'alaikum Akhi Ihsan, insyaAllah saya ingin berpartisipasi menyumbang *Logistik/Konsumsi* untuk Dauroh Golden Week berupa:\n\n1. [Sebutkan barangnya]\n\nInsyaAllah akan saya bawa saat hari H. Jazakumullah khairan.";
+    } else {
+        msg = "Assalamu'alaikum Akhi Ihsan, saya ingin bertanya seputar Donasi Dauroh Golden Week.";
+    }
+    
     window.open(`https://wa.me/819061432121?text=${encodeURIComponent(msg)}`, "_blank");
 };
 
