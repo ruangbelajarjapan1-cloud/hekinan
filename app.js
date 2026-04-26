@@ -532,8 +532,7 @@ function initPopup() {
         slide.style.pointerEvents = index === 0 ? "auto" : "none";
         
         // HAPUS teks mengambang, sekarang murni hanya gambar!
-        slide.innerHTML = `<img src="${data.src}" class="w-full h-full object-cover" alt="${data.text}">`;
-        
+       slide.innerHTML = `<img src="${data.src}" class="w-full h-full object-contain" alt="${data.text}">`;
         track.appendChild(slide);
         slides.push(slide);
     });
