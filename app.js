@@ -39,8 +39,8 @@ const POPUP_SLIDES_DATA = [
     },
     { 
         src: "assets/foto/d1.jpeg",  
-        link: "https://forms.gle/zJqA2Eba2FaxvrXv6", 
-        text: "Daftar Dauroh" 
+        link: "javascript:window.bukaDonasiDauroh()",
+        text: "Donasi Dauroh"
     },
     { 
         src: "assets/foto/w3.jpeg", 
@@ -1209,6 +1209,30 @@ window.kirimSaran = () => {
         toggleSaranModal(false);
     }, 1000);
 };
+// ==========================================
+// FITUR MODAL DONASI DAUROH (GOLDEN WEEK)
+// ==========================================
+window.bukaDonasiDauroh = () => {
+    // Tutup popup promo utama jika sedang terbuka
+    const popupPromo = $("#popupPromo");
+    if(popupPromo) { popupPromo.classList.add("hidden"); popupPromo.classList.remove("flex"); }
+    
+    // Buka modal donasi dauroh
+    const modal = $("#modalDonasiDauroh");
+    if(modal) { modal.classList.remove("hidden"); modal.classList.add("flex"); }
+};
+
+window.tutupDonasiDauroh = () => {
+    const modal = $("#modalDonasiDauroh");
+    if(modal) { modal.classList.add("hidden"); modal.classList.remove("flex"); }
+};
+
+window.konfirmasiDaurohWA = () => {
+    // Teks otomatis dan nomor WA Ihsan Abu Rumaysha
+    let msg = "Assalamu'alaikum Akhi Ihsan, saya ingin konfirmasi transfer Donasi Dauroh Golden Week. Mohon dicek. Jazakumullah khairan.";
+    window.open(`https://wa.me/819061432121?text=${encodeURIComponent(msg)}`, "_blank");
+};
+
 // ==========================================
 // FITUR INVENTARIS ASET (ADMIN)
 // ==========================================
