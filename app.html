@@ -22,18 +22,13 @@
 </head>
 <body class="pb-36 bg-[#050B14]">
 
-  <div id="pwaInstallBanner" class="hidden bg-emerald-600 text-white text-xs px-5 py-3 flex justify-between items-center z-[100] relative shadow-md">
-  <div class="flex items-center gap-2"><i data-lucide="download-cloud" class="w-4 h-4"></i><span class="font-semibold">Install Aplikasi As-Sunnah di HP Anda.</span></div>
-  <button id="btnInstallPwa" class="bg-white text-emerald-700 px-3 py-1.5 rounded-full font-bold shadow-sm active:scale-95 transition-transform text-[10px] uppercase tracking-wide">Install</button>
-</div>
-
-<div id="pwaInstallBanner" style="display: none;" class="bg-emerald-600 text-white text-xs px-5 py-3 flex justify-between items-center z-[100] relative shadow-md">
-  <div class="flex items-center gap-2">
-      <i data-lucide="download-cloud" class="w-4 h-4"></i>
-      <span id="pwaText" class="font-semibold">Install Aplikasi As-Sunnah di HP Anda.</span>
+  <div id="pwaInstallBanner" style="display: none;" class="bg-emerald-600 text-white text-xs px-5 py-3 justify-between items-center z-[100] relative shadow-md">
+    <div class="flex items-center gap-2">
+        <i data-lucide="download-cloud" class="w-4 h-4"></i>
+        <span id="pwaText" class="font-semibold">Install Aplikasi As-Sunnah di HP Anda.</span>
+    </div>
+    <button id="btnInstallPwa" class="bg-white text-emerald-700 px-3 py-1.5 rounded-full font-bold shadow-sm active:scale-95 transition-transform text-[10px] uppercase tracking-wide">Install</button>
   </div>
-  <button id="btnInstallPwa" class="bg-white text-emerald-700 px-3 py-1.5 rounded-full font-bold shadow-sm active:scale-95 transition-transform text-[10px] uppercase tracking-wide">Install</button>
-</div>
 
   <div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
     <div class="absolute -top-[10%] -right-[10%] w-[70vw] h-[70vw] rounded-full bg-emerald-900/10 blur-[80px]"></div>
@@ -68,16 +63,30 @@
       <div class="bg-white/5 p-2 rounded-full"><i data-lucide="chevron-right" class="w-4 h-4 text-slate-300"></i></div>
     </a>
 
-    <div id="tahajjudAlert" class="hidden bg-amber-500/10 border border-amber-500/30 p-3 rounded-2xl text-[11px] text-amber-200 font-bold flex items-center gap-3">
+    <div id="tahajjudAlert" style="display: none;" class="bg-amber-500/10 border border-amber-500/30 p-3 rounded-2xl text-[11px] text-amber-200 font-bold items-center gap-3">
       <i data-lucide="moon" class="w-5 h-5 text-amber-400 shrink-0"></i> <span data-k="tahajjud">Waktu Tahajjud. Mari memohon kepada Allah.</span>
     </div>
-    <div id="jumatAlert" class="hidden bg-emerald-500/10 border border-emerald-500/30 p-3 rounded-2xl text-[11px] text-emerald-200 font-bold flex items-center gap-3">
+    
+    <div id="jumatAlert" style="display: none;" class="bg-emerald-500/10 border border-emerald-500/30 p-3 rounded-2xl text-[11px] text-emerald-200 font-bold items-center gap-3">
       <i data-lucide="sparkles" class="w-5 h-5 text-emerald-400 shrink-0"></i> <span data-k="friday_alert">Sunnah Jum'at: Baca Al-Kahfi & Shalawat.</span>
     </div>
     
-    <div id="puasaAlert" class="hidden bg-sky-500/10 border border-sky-500/30 p-3 rounded-2xl text-[11px] text-sky-200 font-bold flex items-center gap-3">
+    <div id="puasaAlert" style="display: none;" class="bg-sky-500/10 border border-sky-500/30 p-3 rounded-2xl text-[11px] text-sky-200 font-bold items-center gap-3">
       <i data-lucide="calendar-heart" class="w-5 h-5 text-sky-400 shrink-0"></i> <span id="puasaText"></span>
     </div>
+
+    <a id="kegiatanAlert" href="index.html#info" style="display: none;" class="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/30 p-3 rounded-2xl items-center justify-between group transition-all shadow-sm">
+      <div class="flex items-center gap-3 overflow-hidden">
+        <div class="bg-purple-500/20 p-2 rounded-lg group-hover:scale-110 transition-transform shrink-0">
+          <i data-lucide="megaphone" class="w-4 h-4 text-purple-400 animate-pulse"></i>
+        </div>
+        <div class="truncate">
+          <p class="text-[9px] font-bold text-purple-300 uppercase tracking-widest mb-0.5">Info Kegiatan</p>
+          <p id="kegiatanText" class="text-xs font-bold text-white truncate">Memuat pengumuman...</p>
+        </div>
+      </div>
+      <i data-lucide="chevron-right" class="w-4 h-4 text-purple-400 shrink-0 ml-2"></i>
+    </a>
 
     <section class="glass-ultra rounded-[2rem] p-6 border-white/5 relative overflow-hidden">
       <div class="absolute top-0 right-0 p-4 opacity-10"><i data-lucide="quote" class="w-16 h-16 text-white"></i></div>
@@ -301,13 +310,13 @@
 
   <script>
     const HADITH_DB = [
-      { arab: "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ", id: `"Sesungguhnya amalan itu tergantung niatnya."`, en: `"Actions are judged by intentions."`, jp: `"行為はその意図によって評価される。"` },
-      { arab: "تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ لَكَ صَدَقَةٌ", id: `"Senyummu di hadapan saudaramu adalah sedekah."`, en: `"Your smile for your brother is a charity."`, jp: `"兄弟への微笑みは施しである。"` },
-      { arab: "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ", id: `"Barangsiapa beriman kepada Allah, hendaklah berkata baik atau diam."`, en: `"Let him speak good or remain silent."`, jp: `"良いことを言うか、沈黙しなさい。"` },
-      { arab: "الطُّهُورُ شَطْرُ الإِيمَانِ", id: `"Kesucian itu sebagian dari iman."`, en: `"Purity is half of faith."`, jp: `"清潔さは信仰の半分である。"` },
-      { arab: "كُلُّ مَعْرُوفٍ صَدَقَةٌ", id: `"Setiap kebaikan adalah sedekah."`, en: `"Every good deed is charity."`, jp: `"すべての良い行いは施しである。"` },
-      { arab: "أَكْثِرُوا عَلَىَّ مِنَ الصَّلاَةِ فِى كُلِّ يَوْمِ جُمُعَةٍ", id: `"Perbanyaklah shalawat kepadaku di hari Jum'at."`, en: `"Increase your supplications for me on Friday."`, jp: `"金曜日は私への祝福の祈りを増やしなさい。"` },
-      { arab: "مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ طَرِيقًا إِلَى الْجَنَّةِ", id: `"Siapa menempuh jalan menuntut ilmu, Allah mudahkan jalannya ke Surga."`, en: `"Seeking knowledge makes the path to Paradise easy."`, jp: `"知識を求める者は楽園への道が容易になる。"` }
+      { arab: "إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ", id: `"Sesungguhnya amalan itu tergantung niatnya."`, en: `"Actions are judged by intentions."`, jp: `"行為はその意図によって評価される。"` },
+      { arab: "تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ لَكَ صَدَقَةٌ", id: `"Senyummu di hadapan saudaramu adalah sedekah."`, en: `"Your smile for your brother is a charity."`, jp: `"兄弟への微笑みは施しである。"` },
+      { arab: "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ", id: `"Barangsiapa beriman kepada Allah, hendaklah berkata baik atau diam."`, en: `"Let him speak good or remain silent."`, jp: `"良いことを言うか、沈黙しなさい。"` },
+      { arab: "الطُّهُورُ شَطْرُ الإِيمَانِ", id: `"Kesucian itu sebagian dari iman."`, en: `"Purity is half of faith."`, jp: `"清潔さは信仰の半分である。"` },
+      { arab: "كُلُّ مَعْرُوفٍ صَدَقَةٌ", id: `"Setiap kebaikan adalah sedekah."`, en: `"Every good deed is charity."`, jp: `"すべての良い行いは施しである。"` },
+      { arab: "أَكْثِرُوا عَلَىَّ مِنَ الصَّلاَةِ فِى كُلِّ يَوْمِ جُمُعَةٍ", id: `"Perbanyaklah shalawat kepadaku di hari Jum'at."`, en: `"Increase your supplications for me on Friday."`, jp: `"金曜日は私への祝福の祈りを増やしなさい。"` },
+      { arab: "مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ طَرِيقًا إِلَى الْجَنَّةِ", id: `"Siapa menempuh jalan menuntut ilmu, Allah mudahkan jalannya ke Surga."`, en: `"Seeking knowledge makes the path to Paradise easy."`, jp: `"知識を求める者は楽園への道が容易になる。"` }
     ];
 
     const DICT = {
@@ -431,42 +440,41 @@
         }, 1000);
     }
 
-  let deferredPrompt;
-const pwaBanner = document.getElementById('pwaInstallBanner');
-const btnInstall = document.getElementById('btnInstallPwa');
-const pwaText = document.getElementById('pwaText');
+    let deferredPrompt;
+    const pwaBanner = document.getElementById('pwaInstallBanner');
+    const btnInstall = document.getElementById('btnInstallPwa');
+    const pwaText = document.getElementById('pwaText');
 
-// Deteksi iOS & Standalone Mode
-const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    // Deteksi iOS & Standalone Mode
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-if (!isStandalone) {
-    if (isIOS) {
-        // Fallback untuk Apple iOS (Safari tidak mendukung beforeinstallprompt)
-        pwaBanner.style.display = 'flex';
-        pwaText.innerHTML = "Tap ikon Share di bawah, lalu pilih 'Add to Home Screen'.";
-        btnInstall.innerText = "Tutup";
-        btnInstall.addEventListener('click', () => pwaBanner.style.display = 'none');
-    } else {
-        // Native PWA Prompt untuk Android/Chrome
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
+    if (!isStandalone) {
+        if (isIOS) {
             pwaBanner.style.display = 'flex';
-        });
+            pwaText.innerHTML = "Tap ikon Share di bawah, lalu pilih 'Add to Home Screen'.";
+            btnInstall.innerText = "Tutup";
+            btnInstall.addEventListener('click', () => pwaBanner.style.display = 'none');
+        } else {
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                pwaBanner.style.display = 'flex';
+            });
 
-        btnInstall.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') pwaBanner.style.display = 'none';
-                deferredPrompt = null;
-            } else {
-                 pwaBanner.style.display = 'none';
-            }
-        });
+            btnInstall.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') pwaBanner.style.display = 'none';
+                    deferredPrompt = null;
+                } else {
+                     pwaBanner.style.display = 'none';
+                }
+            });
+        }
     }
-}
+
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('PWA Error:', err)); });
     }
@@ -484,17 +492,17 @@ if (!isStandalone) {
       if(h >= 2 && h < 4) { 
         document.body.classList.add('tahajjud-mode');
         document.getElementById('heroCard').classList.add('tahajjud-card');
-        document.getElementById('tahajjudAlert').classList.remove('hidden');
+        document.getElementById('tahajjudAlert').style.display = 'flex';
       }
       
-      if(day === 5) { document.getElementById('jumatAlert').classList.remove('hidden'); }
+      if(day === 5) { document.getElementById('jumatAlert').style.display = 'flex'; }
       
-      // LOGIKA PUASA YANG SUDAH DIJAMIN BEBAS "--"
+      // LOGIKA ALERT PUASA & DZIKIR (Menggunakan style.display agar tidak tabrakan dengan flex)
       const puasaAlert = document.getElementById('puasaAlert');
       if(day === 0 || day === 3) { 
-          puasaAlert.classList.remove('hidden'); 
+          puasaAlert.style.display = 'flex'; 
       } else {
-          puasaAlert.classList.add('hidden');
+          puasaAlert.style.display = 'none';
       }
 
       const dzikirText = document.getElementById("dzikirText");
@@ -517,6 +525,41 @@ if (!isStandalone) {
       let savedLang = localStorage.getItem('app_lang');
       if(!savedLang) { savedLang = 'id'; localStorage.setItem('app_lang', 'id'); }
       changeAppLang(savedLang);
+
+      // --- LOGIKA FETCH INFO KEGIATAN DARI SPREADSHEET ---
+      async function loadInfoKegiatanApp() {
+          try {
+              const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1910296914&single=true&output=csv";
+              const res = await fetch(url + "&t=" + Date.now());
+              const text = await res.text();
+              const rows = text.split('\n');
+              
+              if (rows.length > 1) {
+                  let firstDataRow = rows[1];
+                  let cols = [];
+                  let i = 0, c = "", q = false;
+                  
+                  // Parse CSV dengan aman
+                  while (i < firstDataRow.length) {
+                      let char = firstDataRow[i];
+                      if (char === '"') { if (q && firstDataRow[i + 1] === '"') { c += '"'; i += 2; continue; } q = !q; i++; continue; }
+                      if (!q && char === ',') { cols.push(c); c = ""; i++; continue; }
+                      c += char; i++;
+                  }
+                  cols.push(c);
+                  
+                  let title = cols[0]; // Kolom A: Title
+                  if (title && title.trim() !== "") {
+                      document.getElementById('kegiatanAlert').style.display = 'flex';
+                      document.getElementById('kegiatanText').innerText = title.trim();
+                  }
+              }
+          } catch(e) { 
+              console.error("Gagal memuat notifikasi kegiatan di App", e); 
+          }
+      }
+      
+      loadInfoKegiatanApp();
     });
   </script>
 
