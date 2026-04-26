@@ -61,7 +61,7 @@ const DEFAULT_PENGUMUMAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1
 const DEFAULT_ARTIKEL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1625529193&single=true&output=csv";
 const DEFAULT_KEGIATAN_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1910296914&single=true&output=csv";
 const DEFAULT_GALERI_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1255907412&single=true&output=csv&t=2";
-
+const DEFAULT_JUMAT_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1921353770&single=true&output=csv";
 const HIJRI_MONTHS_ID = ["Muharram", "Shafar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"];
 
 const HADITHS = [
@@ -955,13 +955,37 @@ function initProgressWakaf() {
     updateLebar('progressBar', persentase);
     updateTeks('terkumpulLabel', `¥${formatAngka(TERKUMPUL_SAAT_INI)}`);
     updateTeks('kekuranganLabel', `¥${formatAngka(kekurangan)}`);
-    updateTeks('targetLabel', `¥${formatAngka(TARGET_DONASI)}`);
-    updateTeks('percentLabel', persentase.toFixed(1));
+updateTeks('targetLabel', `¥${formatAngka(TARGET_DONASI)}`);
+    updateTeks('percentLabel', persentase.toFixed(1));
 }
+
+// ---> TAMBAHKAN BLOK INI <---
+// ==========================================
+// FITUR JADWAL PETUGAS JUM'AT
+// ==========================================
+async function initJadwalJumat() {
+    const container = document.getElementById("jadwalJumatContainer");
+    if (!container) return;
+
+    try {
+        const data = await loadCsv(DEFAULT_JUMAT_CSV);
+        if (data && data.length > 0) {
+            const jumat = data[0]; 
+            document.getElementById("jjTanggal").innerText = jumat.tanggal || "-";
+            document.getElementById("jjKhatib").innerText = jumat.khatib || "-";
+            document.getElementById("jjImam").innerText = jumat.imam || "-";
+            container.classList.remove("hidden");
+        }
+    } catch (e) {
+        console.error("Gagal memuat jadwal jumat:", e);
+    }
+}
+// ---> BATAS PENAMBAHAN <---
 
 // ==========================================
 // 4. BOOTSTRAP (SISTEM ANTI CRASH DITERAPKAN)
 // ==========================================
+
 async function boot(mode = 'web') {
   const hariIni = new Date().getDay(); 
   const bannerJumat = $("#jumatBanner");
@@ -977,6 +1001,7 @@ async function boot(mode = 'web') {
   try { renderSholat(); } catch(e) { console.error("Error di renderSholat:", e); }
   try { renderContent(); } catch(e) { console.error("Error di renderContent:", e); }
   try { initCountdown(); } catch(e) { console.error("Error di initCountdown:", e); }
+    try { initJadwalJumat(); } catch(e) { console.error("Error di initJadwalJumat:", e); }
   try { initDonasi(); } catch(e) { console.error("Error di initDonasi:", e); }
   try { initProgressWakaf(); } catch(e) { console.error("Error di initProgressWakaf:", e); }
   try { initSmartCarousel(); } catch(e) { console.error("Error di initSmartCarousel:", e); }
