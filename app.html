@@ -510,7 +510,7 @@
     </div>
   </div>
 
-  <!-- MODAL DONASI DAUROH GOLDEN WEEK -->
+<!-- MODAL DONASI DAUROH & LOGISTIK -->
 <div id="modalDonasiDauroh" class="fixed inset-0 z-[200] hidden items-center justify-center p-4 bg-slate-900/90 backdrop-blur-sm transition-all">
   <div class="bg-white w-full max-w-lg rounded-3xl flex flex-col shadow-2xl overflow-hidden animate-[fadeUp_0.3s_ease-out] max-h-[90vh]">
     
@@ -521,7 +521,7 @@
           <span class="bg-amber-100 text-amber-600 p-1.5 rounded-lg"><i data-lucide="gift" class="w-5 h-5"></i></span>
           Donasi Dauroh
         </h3>
-        <p class="text-xs text-slate-500 mt-1">Dukung kelancaran Dauroh Golden Week</p>
+        <p class="text-xs text-slate-500 mt-1">Dukung lewat dana atau logistik konsumsi.</p>
       </div>
       <button onclick="window.tutupDonasiDauroh()" class="p-2 rounded-full hover:bg-slate-200 text-slate-400 transition-colors">
         <i data-lucide="x" class="w-6 h-6"></i>
@@ -529,46 +529,71 @@
     </div>
 
     <!-- Body (Bisa di-scroll) -->
-    <div class="p-6 overflow-y-auto space-y-5 flex-1 text-slate-700 text-sm leading-relaxed">
+    <div class="p-6 overflow-y-auto space-y-6 flex-1 bg-slate-50/50">
       
-      <!-- Pesan Ajakan -->
-      <div class="text-center">
-        <p class="font-medium">InsyaAllah di libur Golden Week ini kita kembali mengadakan daurah. Agar daurah bisa berjalan lancar, mari saling membantu dengan kemampuan yang kita punya.</p>
-        <p class="mt-2 font-bold text-emerald-600">Kami mengajak teman-teman untuk berdonasi dalam bentuk dan sekecil apapun!</p>
-      </div>
-
-      <!-- Kotak Hadits -->
-      <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl relative">
-        <div class="absolute -right-2 -top-2 opacity-20"><i data-lucide="quote" class="w-12 h-12 text-amber-600"></i></div>
-        <p class="text-xs font-bold text-amber-700 uppercase tracking-widest mb-2 relative z-10">Penyemangat Sedekah</p>
-        <p class="italic mb-3 relative z-10">“Barang siapa bersedekah dengan sebutir kurma dari hasil yang baik, maka Allah akan menerimanya dan mengembangkannya sebagaimana seseorang memelihara anak kudanya hingga menjadi besar.” <br><span class="font-bold text-[10px] text-amber-600">(HR. Bukhari & Muslim)</span></p>
-        <p class="italic relative z-10">“Setiap orang akan berada di bawah naungan sedekahnya pada hari kiamat.” <br><span class="font-bold text-[10px] text-amber-600">(HR. Ahmad)</span></p>
-      </div>
-
-      <!-- Kotak Rekening -->
-      <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl text-center relative overflow-hidden">
-        <div class="absolute inset-0 bg-white/50"></div>
-        <div class="relative z-10">
-            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Rekening Donasi Dauroh</p>
-            <div class="flex justify-center items-center mb-2">
-                <span class="bg-green-100 text-green-700 border border-green-200 text-xs font-bold px-3 py-1 rounded-full shadow-sm">JP POST BANK</span>
-            </div>
-            <h4 id="rekDauroh" class="text-2xl font-black text-slate-800 tracking-widest mb-1 font-mono">12020-23353981</h4>
+      <!-- OPSI 1: DONASI UANG -->
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="wallet" class="w-5 h-5 text-sky-600"></i>
+          <h4 class="font-bold text-slate-800 text-sm uppercase tracking-wide">Opsi 1: Donasi Dana</h4>
+        </div>
+        <div class="bg-white border border-slate-200 p-5 rounded-2xl text-center shadow-sm relative overflow-hidden">
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Rekening JP Post</p>
+            <h4 id="rekDaurohApp" class="text-2xl font-black text-slate-800 tracking-widest mb-1 font-mono">12020-23353981</h4>
             <p class="text-xs font-extrabold text-slate-600 uppercase tracking-wide">ムハマド イフサン (Muhammad Ihsan)</p>
-            <button data-copy="#rekDauroh" class="mt-4 text-xs font-bold text-sky-600 bg-sky-50 px-5 py-2.5 rounded-full border border-sky-100 hover:bg-sky-100 transition-colors inline-flex items-center gap-1 shadow-sm active:scale-95">
-                <i data-lucide="copy" class="w-3 h-3"></i> Salin Rekening
+            
+            <div class="flex justify-center gap-2 mt-4">
+                <button data-copy="#rekDaurohApp" class="text-[10px] font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 px-4 py-2 rounded-full transition-colors inline-flex items-center gap-1 shadow-sm active:scale-95">
+                    <i data-lucide="copy" class="w-3 h-3"></i> Salin
+                </button>
+                <button onclick="window.konfirmasiDaurohWA('uang')" class="text-[10px] font-bold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-4 py-2 rounded-full transition-colors inline-flex items-center gap-1 shadow-sm active:scale-95">
+                    <i data-lucide="message-circle" class="w-3 h-3"></i> Konfirmasi Transfer
+                </button>
+            </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 py-2">
+        <div class="h-px bg-slate-200 flex-1"></div>
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">ATAU</span>
+        <div class="h-px bg-slate-200 flex-1"></div>
+      </div>
+
+      <!-- OPSI 2: DONASI BARANG / KONSUMSI -->
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="shopping-bag" class="w-5 h-5 text-amber-600"></i>
+          <h4 class="font-bold text-slate-800 text-sm uppercase tracking-wide">Opsi 2: Donasi Barang / Konsumsi</h4>
+        </div>
+        <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl shadow-sm">
+            <p class="text-xs text-amber-800 font-medium mb-3 leading-relaxed">Selain dana, panitia juga menerima donasi dalam bentuk barang untuk kebutuhan acara. Kebutuhan saat ini:</p>
+            
+            <ul class="space-y-2 mb-4">
+                <li class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-amber-100">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-2"><i data-lucide="cup-soda" class="w-4 h-4 text-sky-500"></i> Air Mineral (Botol)</span>
+                    <span class="text-[10px] font-bold text-amber-600 bg-amber-100 px-2 py-1 rounded">Butuh: 5 Dus</span>
+                </li>
+                <li class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-amber-100">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-2"><i data-lucide="coffee" class="w-4 h-4 text-orange-500"></i> Teh / Kopi Kemasan</span>
+                    <span class="text-[10px] font-bold text-amber-600 bg-amber-100 px-2 py-1 rounded">Sesuai Keikhlasan</span>
+                </li>
+                <li class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-amber-100">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-2"><i data-lucide="cookie" class="w-4 h-4 text-pink-500"></i> Snack / Cemilan Peserta</span>
+                    <span class="text-[10px] font-bold text-amber-600 bg-amber-100 px-2 py-1 rounded">Sesuai Keikhlasan</span>
+                </li>
+            </ul>
+
+            <button onclick="window.konfirmasiDaurohWA('barang')" class="w-full text-xs font-bold text-amber-700 bg-amber-200 hover:bg-amber-300 py-3 rounded-xl transition-colors inline-flex items-center justify-center gap-2 shadow-sm active:scale-95">
+                <i data-lucide="package-plus" class="w-4 h-4"></i> Konfirmasi Bawa Barang ke WA
             </button>
         </div>
       </div>
 
     </div>
 
-    <!-- Footer Tombol Konfirmasi -->
-    <div class="p-5 border-t border-slate-100 bg-slate-50 shrink-0">
-      <p class="text-[10px] text-center text-slate-500 mb-3 font-bold uppercase tracking-wider">Info & Konfirmasi: Ihsan Abu Rumaysha</p>
-      <button onclick="window.konfirmasiDaurohWA()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-500/30 transition-transform transform active:scale-95 flex items-center justify-center gap-2">
-        <i data-lucide="message-circle" class="w-5 h-5"></i> Konfirmasi Transfer via WA
-      </button>
+    <!-- Footer Hadits Pendek -->
+    <div class="p-4 border-t border-slate-100 bg-white shrink-0 text-center">
+      <p class="text-[10px] text-slate-500 italic">"Setiap orang akan berada di bawah naungan sedekahnya pada hari kiamat." (HR. Ahmad)</p>
     </div>
 
   </div>
