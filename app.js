@@ -943,18 +943,18 @@ async function boot(mode = 'web') {
   try { initTabs(); } catch(e) { console.error("Error di initTabs:", e); }
   try { initKamusApp(); } catch(e) { console.error("Error di initKamusApp:", e); }
 
+ // --- SISTEM LIVE OTOMATIS & POP-UP DARI SPREADSHEET ---
   try {
-    // Jalankan popup segera agar muncul tanpa menunggu delay fetch data
-    initPopup(); 
-    
-    // Mulai proses ambil data Live ID dan Progres Donasi terbaru
-    await cekLiveDariSheet(); 
-    initLiveStream();         
-    
-    // Perbarui tampilan progres di dalam popup setelah data Sheet masuk
-    initProgressWakaf();
-    initPopup();              
-} catch(e) { console.error("Error di Live/Popup:", e); }
+      // 1. Tampilkan Pop-Up SECARA INSTAN saat web pertama dibuka
+      initPopup();              
+      
+      // 2. Baru kemudian jalan di latar belakang untuk mengecek Google Sheet
+      await cekLiveDariSheet(); 
+      initLiveStream();         
+      
+      // 3. Update isi Pop-up jika ada data baru dari Sheet yang masuk
+      initPopup();              
+  } catch(e) { console.error("Error di Live/Popup:", e); }
   if (mode === 'app-mode' || window.location.pathname.includes('app.html')) {
       if(typeof renderAppSholat === 'function') {
           try { renderAppSholat(); } catch(e) { console.error(e); }
