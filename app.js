@@ -912,13 +912,18 @@ async function boot(mode = 'web') {
   try { initTabs(); } catch(e) { console.error("Error di initTabs:", e); }
   try { initKamusApp(); } catch(e) { console.error("Error di initKamusApp:", e); }
 
-  // --- SISTEM LIVE OTOMATIS & POP-UP DARI SPREADSHEET ---
   try {
-      await cekLiveDariSheet(); 
-      initLiveStream();         
-      initPopup();              
-  } catch(e) { console.error("Error di Live/Popup:", e); }
-
+    // Jalankan popup segera agar muncul tanpa menunggu delay fetch data
+    initPopup(); 
+    
+    // Mulai proses ambil data Live ID dan Progres Donasi terbaru
+    await cekLiveDariSheet(); 
+    initLiveStream();         
+    
+    // Perbarui tampilan progres di dalam popup setelah data Sheet masuk
+    initProgressWakaf();
+    initPopup();              
+} catch(e) { console.error("Error di Live/Popup:", e); }
   if (mode === 'app-mode' || window.location.pathname.includes('app.html')) {
       if(typeof renderAppSholat === 'function') {
           try { renderAppSholat(); } catch(e) { console.error(e); }
