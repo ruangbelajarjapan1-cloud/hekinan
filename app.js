@@ -268,40 +268,51 @@ window.openArticleModal = (index) => {
   modal.classList.remove("hidden"); modal.classList.add("flex");
   if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
 };
-// --- FUNGSI SUBMIT DAUROH NATIVE ---
+// --- FUNGSI SUBMIT DAUROH NATIVE + AUTO WA ---
 window.submitDauroh = async () => {
-    const nama = $("#dNama").value;
-    const nowa = $("#dWA").value;
-    const domisili = $("#dDomisili").value;
-    const btn = $("#btnSubmitDauroh");
+    const nama = $("#dNama").value;
+    const nowa = $("#dWA").value;
+    const domisili = $("#dDomisili").value;
+    const btn = $("#btnSubmitDauroh");
 
-    if(!nama || !nowa) { alert("Nama dan No WA wajib diisi!"); return; }
+    if(!nama || !nowa) { alert("Nama dan No WA wajib diisi!"); return; }
 
-    btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Memproses...`;
-    btn.disabled = true;
-    if(window.lucide) window.lucide.createIcons();
+    btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Memproses...`;
+    btn.disabled = true;
+    if(window.lucide) window.lucide.createIcons();
 
-    try {
-        const res = await fetch(APPS_SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify({ action: "daftar_dauroh", nama, nowa, domisili })
-        });
-        const result = await res.json();
-        if(result.status === "success") {
-            btn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> Berhasil!`;
-            btn.className = "w-full bg-emerald-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2";
-            if(window.lucide) window.lucide.createIcons();
-            setTimeout(() => {
-                $("#modalDauroh").classList.replace('flex','hidden');
-                btn.disabled = false; 
-                btn.innerHTML = "Daftar Sekarang";
-                btn.className = "w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2";
-            }, 2500);
-        }
-    } catch(e) {
-        alert("Gagal terhubung ke server.");
-        btn.disabled = false; btn.innerHTML = "Coba Lagi";
-    }
+    try {
+        const res = await fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "daftar_dauroh", nama, nowa, domisili })
+        });
+        const result = await res.json();
+        
+        if(result.status === "success") {
+            btn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> Berhasil!`;
+            btn.className = "w-full bg-emerald-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2";
+            if(window.lucide) window.lucide.createIcons();
+
+            // Rangkai Pesan WhatsApp
+            let waMsg = `Assalamu'alaikum Admin, saya telah mendaftar Dauroh Golden Week 2026.\n\n*Nama:* ${nama}\n*Domisili:* ${domisili}\n*No WA:* ${nowa}\n\nMohon konfirmasinya. Jazakumullah khairan.`;
+            
+            // Jeda 1 detik, lalu buka WA otomatis
+            setTimeout(() => {
+                window.open(`https://wa.me/818013909425?text=${encodeURIComponent(waMsg)}`, "_blank");
+            }, 1000);
+
+            // Reset tombol dan tutup popup setelah 2.5 detik
+            setTimeout(() => {
+                $("#modalDauroh").classList.replace('flex','hidden');
+                btn.disabled = false; 
+                btn.innerHTML = "Daftar Sekarang";
+                btn.className = "w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2";
+            }, 2500);
+        }
+    } catch(e) {
+        alert("Gagal terhubung ke server.");
+        btn.disabled = false; btn.innerHTML = "Coba Lagi";
+    }
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1170,4 +1181,91 @@ window.kirimSaran = () => {
         btn.classList.remove("opacity-75", "cursor-wait");
         toggleSaranModal(false);
     }, 1000);
+};
+// ==========================================
+// FITUR INVENTARIS ASET (ADMIN)
+// ==========================================
+let currentAsetRow = 0; 
+
+window.bukaInventaris = () => {
+    const modal = $("#modalInventaris");
+    if(modal) { modal.classList.remove("hidden"); modal.classList.add("flex"); }
+};
+
+window.tutupInventaris = () => {
+    const modal = $("#modalInventaris");
+    if(modal) { modal.classList.add("hidden"); modal.classList.remove("flex"); }
+};
+
+window.scanAset = async () => {
+    const idBarang = $("#inputIdAset").value;
+    const btn = $("#btnScanAset");
+    const hasilDiv = $("#hasilScanAset");
+
+    if(!idBarang) { alert("Masukkan ID Barang terlebih dahulu!"); return; }
+
+    btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Mencari...`;
+    btn.disabled = true;
+    if(window.lucide) window.lucide.createIcons();
+
+    try {
+        const res = await fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "scan_aset", id_barang: idBarang })
+        });
+        const result = await res.json();
+        
+        if(result.status === "success") {
+            currentAsetRow = result.row; 
+            hasilDiv.innerHTML = `
+                <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl mt-4 animate-[fadeUp_0.3s_ease-out]">
+                    <h4 class="font-extrabold text-slate-800 text-lg">${result.data.nama}</h4>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">Kondisi</span>
+                        <span class="text-xs font-bold px-2 py-1 bg-white border border-slate-200 rounded text-slate-700 uppercase">${result.data.kondisi}</span>
+                    </div>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">Perawatan Terakhir</span>
+                        <span class="text-xs font-bold text-sky-600">${result.data.dirawat || "Belum Pernah"}</span>
+                    </div>
+                    
+                    <button onclick="window.updatePerawatanAset()" id="btnUpdateAset" class="mt-5 w-full bg-sky-600 hover:bg-sky-700 text-white text-sm font-bold py-3 rounded-xl flex justify-center items-center gap-2 transition-all shadow-md">
+                        <i data-lucide="wrench" class="w-4 h-4"></i> Catat Perawatan Hari Ini
+                    </button>
+                </div>
+            `;
+        } else {
+            hasilDiv.innerHTML = `<p class="text-sm font-bold text-red-500 mt-4 text-center bg-red-50 py-3 rounded-xl border border-red-100"><i data-lucide="x-circle" class="w-4 h-4 inline mb-0.5"></i> Aset tidak ditemukan.</p>`;
+        }
+    } catch(e) {
+        hasilDiv.innerHTML = `<p class="text-sm text-red-500 mt-4 text-center">Gagal terhubung ke server.</p>`;
+    }
+    
+    btn.innerHTML = `<i data-lucide="search" class="w-4 h-4"></i> Cek Aset`;
+    btn.disabled = false;
+    if(window.lucide) window.lucide.createIcons();
+};
+
+window.updatePerawatanAset = async () => {
+    const btn = $("#btnUpdateAset");
+    btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Menyimpan...`;
+    btn.disabled = true;
+
+    try {
+        const res = await fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "update_aset", row: currentAsetRow })
+        });
+        const result = await res.json();
+        if(result.status === "success") {
+            btn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> Berhasil Dicatat!`;
+            btn.classList.replace("bg-sky-600", "bg-emerald-600");
+            btn.classList.replace("hover:bg-sky-700", "hover:bg-emerald-700");
+        }
+    } catch(e) {
+        alert("Gagal mencatat perawatan.");
+        btn.innerHTML = "Coba Lagi";
+        btn.disabled = false;
+    }
+    if(window.lucide) window.lucide.createIcons();
 };
