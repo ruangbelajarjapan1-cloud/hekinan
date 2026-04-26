@@ -501,15 +501,28 @@ function initPopup() {
     const track = $("#popupTrack");
     if (!popup || !track) return;
 
-    track.innerHTML = ""; // Bersihkan isi lama
+    track.innerHTML = ""; 
 
-    // Ambil data dari POPUP_SLIDES_DATA (termasuk Daftar Dauroh)
     if (!POPUP_SLIDES_DATA || POPUP_SLIDES_DATA.length === 0) return;
+
+    // Ambil tombol kosong/tersembunyi di sebelah tombol "Share Info"
+    const actionContainer = track.nextElementSibling;
+    const dynamicBtn = actionContainer ? actionContainer.querySelector("a") : null;
+
+    // Fungsi untuk mengubah teks dan link tombol hijau di bawah gambar
+    const updateDynamicButton = (index) => {
+        if (!dynamicBtn) return;
+        const data = POPUP_SLIDES_DATA[index];
+        dynamicBtn.href = data.link;
+        // Menghapus class 'hidden' dan memaksanya tampil
+        dynamicBtn.className = "flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all";
+        dynamicBtn.innerHTML = `${data.text} <i data-lucide="external-link" class="w-4 h-4"></i>`;
+        if (window.lucide) window.lucide.createIcons();
+    };
 
     let currentIndex = 0;
     const slides = [];
 
-    // Loop untuk membuat slide dari data yang Wahyu isi
     POPUP_SLIDES_DATA.forEach((data, index) => {
         const slide = document.createElement("a");
         slide.href = data.link;
@@ -518,21 +531,20 @@ function initPopup() {
         slide.style.opacity = index === 0 ? "1" : "0";
         slide.style.pointerEvents = index === 0 ? "auto" : "none";
         
-        slide.innerHTML = `
-            <img src="${data.src}" class="w-full h-full object-cover" alt="${data.text}">
-            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 text-white text-[10px] px-4 py-2 rounded-full backdrop-blur-md border border-white/20 font-bold">
-                ${data.text} <i data-lucide="external-link" class="w-3 h-3 inline ml-1"></i>
-            </div>
-        `;
+        // HAPUS teks mengambang, sekarang murni hanya gambar!
+        slide.innerHTML = `<img src="${data.src}" class="w-full h-full object-cover" alt="${data.text}">`;
+        
         track.appendChild(slide);
         slides.push(slide);
     });
 
-    // Tambahkan Navigasi jika gambar lebih dari satu
+    // Set tombol hijau pertama kali
+    updateDynamicButton(0);
+
     if (slides.length > 1) {
         const createBtn = (icon, posClass) => {
             const btn = document.createElement("button");
-            btn.className = `absolute top-1/2 -translate-y-1/2 ${posClass} bg-black/30 text-white p-2 rounded-full z-20 hover:bg-black/60 transition-all`;
+            btn.className = `absolute top-1/2 -translate-y-1/2 ${posClass} bg-black/30 hover:bg-black/60 text-white p-2 rounded-full z-20 transition-all border border-white/20`;
             btn.innerHTML = `<i data-lucide="${icon}" class="w-5 h-5"></i>`;
             return btn;
         };
@@ -546,15 +558,20 @@ function initPopup() {
             currentIndex = (currentIndex + dir + slides.length) % slides.length;
             slides[currentIndex].style.opacity = "1";
             slides[currentIndex].style.pointerEvents = "auto";
+            
+            // Ubah teks dan link tombol hijau setiap kali gambar bergeser
+            updateDynamicButton(currentIndex);
         };
 
-        btnPrev.onclick = (e) => { e.preventDefault(); move(-1); };
-        btnNext.onclick = (e) => { e.preventDefault(); move(1); };
+        btnPrev.onclick = (e) => { e.preventDefault(); e.stopPropagation(); move(-1); };
+        btnNext.onclick = (e) => { e.preventDefault(); e.stopPropagation(); move(1); };
+        
         track.appendChild(btnPrev);
         track.appendChild(btnNext);
         
-        // Auto-putar setiap 5 detik
-        setInterval(() => move(1), 5000);
+        let autoSlide = setInterval(() => move(1), 5000);
+        track.onmouseenter = () => clearInterval(autoSlide);
+        track.onmouseleave = () => { autoSlide = setInterval(() => move(1), 5000); };
     }
 
     const close = () => { popup.classList.add("hidden"); popup.classList.remove("flex"); };
