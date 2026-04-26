@@ -497,60 +497,91 @@ setInterval(cekLiveDariSheet, 30000);
 // FITUR POPUP (SELALU MUNCUL & PROGRESS BAR)
 // ==========================================
 function initPopup() {
-  const popup = $("#popupPromo");
-  const track = $("#popupTrack");
-  
-  if (!popup || !track) return;
+    const popup = $("#popupPromo");
+    const track = $("#popupTrack");
+    
+    if (!popup || !track) return;
 
-  const persentase = Math.min((TERKUMPUL_SAAT_INI / TARGET_DONASI) * 100, 100).toFixed(1);
-  const sisa = new Intl.NumberFormat('id-ID').format(TARGET_DONASI - TERKUMPUL_SAAT_INI);
+    // Bersihkan kontainer
+    track.innerHTML = "";
 
-  track.innerHTML = "";
+    // Hentikan jika POPUP_SLIDES_DATA kosong
+    if (!POPUP_SLIDES_DATA || POPUP_SLIDES_DATA.length === 0) return;
 
-  const mainSlide = document.createElement("div");
-  mainSlide.className = "popup-slide transition-opacity duration-700 ease-in-out absolute inset-0 w-full h-full z-10 opacity-100";
-  mainSlide.innerHTML = `
-      <a href="#donasi" onclick="document.getElementById('closePopupBtn').click();" class="block w-full h-full relative cursor-pointer group">
-          <div class="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900"></div>
-          <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 z-10">
-              <span class="inline-block px-3 py-1 rounded-full bg-red-500/20 border border-red-500/50 text-red-200 text-[10px] font-bold uppercase tracking-widest mb-4 backdrop-blur-sm animate-pulse">
-                  Darurat Pelunasan
-              </span>
-              
-              <h3 class="text-2xl font-extrabold text-white mb-2 leading-tight">Amankan Aset Umat</h3>
-              <p class="text-xs text-slate-300 mb-6">Mari ambil bagian dalam pembebasan lahan Masjid Hekinan sebelum Mei 2026.</p>
-              
-              <div class="w-full bg-white/10 border border-white/10 rounded-2xl p-4 mb-6 backdrop-blur-sm">
-                  <div class="flex justify-between items-end mb-2">
-                      <span class="text-[10px] font-bold text-sky-300 uppercase tracking-wider">Progres Pelunasan</span>
-                      <span class="text-lg font-black text-white">${persentase}%</span>
-                  </div>
-                  <div class="w-full bg-slate-700 rounded-full h-2.5 overflow-hidden border border-white/5">
-                      <div class="bg-gradient-to-r from-sky-400 to-emerald-400 h-full rounded-full transition-all duration-1000" style="width: ${persentase}%"></div>
-                  </div>
-                  <p class="text-[9px] text-slate-400 mt-2">Kekurangan: <span class="text-emerald-400 font-bold">¥${sisa}</span> lagi</p>
-              </div>
+    let currentIndex = 0;
+    let slides = [];
 
-              <div class="flex items-center gap-2 text-white text-sm font-bold bg-emerald-600 px-6 py-3 rounded-xl border border-emerald-500 hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-900/20">
-                  <span>Wakaf Sekarang</span>
-                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
-              </div>
-          </div>
-      </a>
-  `;
-  track.appendChild(mainSlide);
-  
-  const close = () => { 
-    popup.classList.add("hidden"); 
-    popup.classList.remove("flex"); 
-  };
+    // Render semua gambar dari POPUP_SLIDES_DATA ke dalam slider
+    POPUP_SLIDES_DATA.forEach((data, index) => {
+        const slide = document.createElement("a");
+        slide.href = data.link;
+        slide.target = "_blank";
+        slide.className = "absolute inset-0 w-full h-full transition-opacity duration-500 z-10";
+        slide.style.opacity = index === 0 ? "1" : "0";
+        slide.style.pointerEvents = index === 0 ? "auto" : "none";
+        
+        slide.innerHTML = `
+            <img src="${data.src}" class="w-full h-full object-cover" alt="${data.text}">
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 text-white text-[10px] px-4 py-1.5 rounded-full backdrop-blur-md whitespace-nowrap border border-white/20 shadow-lg font-bold tracking-wide">
+                ${data.text} <i data-lucide="external-link" class="w-3 h-3 inline ml-1"></i>
+            </div>
+        `;
+        track.appendChild(slide);
+        slides.push(slide);
+    });
 
-  $("#closePopupBtn")?.addEventListener("click", close);
-  $("#closePopupBackdrop")?.addEventListener("click", close);
-  
-  popup.classList.remove("hidden");
-  popup.classList.add("flex");
-  if(window.lucide) window.lucide.createIcons();
+    // Tambahkan Tombol Navigasi jika gambar lebih dari 1
+    if (POPUP_SLIDES_DATA.length > 1) {
+        // Tombol Prev
+        const btnPrev = document.createElement("button");
+        btnPrev.className = "absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/80 text-white p-2 rounded-full z-20 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all border border-white/20";
+        btnPrev.innerHTML = `<i data-lucide="chevron-left" class="w-5 h-5"></i>`;
+
+        // Tombol Next
+        const btnNext = document.createElement("button");
+        btnNext.className = "absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/80 text-white p-2 rounded-full z-20 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all border border-white/20";
+        btnNext.innerHTML = `<i data-lucide="chevron-right" class="w-5 h-5"></i>`;
+
+        // Logika Perpindahan Slide
+        const updateSlide = (newIndex) => {
+            slides[currentIndex].style.opacity = "0";
+            slides[currentIndex].style.pointerEvents = "none";
+            
+            currentIndex = newIndex;
+            if (currentIndex < 0) currentIndex = slides.length - 1;
+            if (currentIndex >= slides.length) currentIndex = 0;
+            
+            slides[currentIndex].style.opacity = "1";
+            slides[currentIndex].style.pointerEvents = "auto";
+        };
+
+        btnPrev.onclick = (e) => { e.preventDefault(); e.stopPropagation(); updateSlide(currentIndex - 1); };
+        btnNext.onclick = (e) => { e.preventDefault(); e.stopPropagation(); updateSlide(currentIndex + 1); };
+
+        track.appendChild(btnPrev);
+        track.appendChild(btnNext);
+
+        // Auto-Slide (Ganti gambar otomatis tiap 4 detik)
+        let autoSlide = setInterval(() => { updateSlide(currentIndex + 1); }, 4000);
+        track.onmouseenter = () => clearInterval(autoSlide);
+        track.onmouseleave = () => { autoSlide = setInterval(() => { updateSlide(currentIndex + 1); }, 4000); };
+    }
+
+    // Fungsi Tutup Pop Up
+    const closePopup = () => { 
+        popup.classList.add("hidden"); 
+        popup.classList.remove("flex"); 
+    };
+
+    $("#closePopupBtn")?.addEventListener("click", closePopup);
+    $("#closePopupBackdrop")?.addEventListener("click", closePopup);
+    
+    // Tampilkan Popup
+    popup.classList.remove("hidden");
+    popup.classList.add("flex");
+    
+    // Render icon Lucide yang baru ditambahkan
+    if(window.lucide) window.lucide.createIcons();
 }
 
 function initVideoAjakan() { 
