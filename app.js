@@ -785,29 +785,29 @@ function initDonasi() {
 
   if (!inputEl || !currencyEl) return;
 
-  const updateUI = () => {
+const updateUI = () => {
     const currency = currencyEl.value;
     const val = inputEl.value;
-    
+    
     if (currency === "JPY") {
       quickWrapper.innerHTML = `
-        <button class="q-btn flex flex-col items-center justify-center bg-slate-800/40 hover:bg-emerald-600/30 border border-slate-600 hover:border-emerald-500 px-3 py-2 rounded-xl transition-all w-full" data-v="3000">
+        <button class="q-btn flex flex-1 flex-col items-center justify-center bg-slate-800/40 hover:bg-emerald-600/30 border border-slate-600 hover:border-emerald-500 px-3 py-2 rounded-xl transition-all" data-v="3000">
             <span class="text-[10px] text-emerald-300 uppercase tracking-widest font-bold mb-1">Pahala Harian</span>
             <span class="text-base font-black text-white">¥3.000</span>
             <span class="text-[9px] text-slate-400 mt-1">Setara ¥100 / hari</span>
         </button>
-        <button class="q-btn flex flex-col items-center justify-center bg-slate-800/40 hover:bg-sky-600/30 border border-slate-600 hover:border-sky-500 px-3 py-2 rounded-xl transition-all w-full" data-v="4000">
+        <button class="q-btn flex flex-1 flex-col items-center justify-center bg-slate-800/40 hover:bg-sky-600/30 border border-slate-600 hover:border-sky-500 px-3 py-2 rounded-xl transition-all" data-v="4000">
             <span class="text-[10px] text-sky-300 uppercase tracking-widest font-bold mb-1">Berkah Jumat</span>
             <span class="text-base font-black text-white">¥4.000</span>
             <span class="text-[9px] text-slate-400 mt-1">Setara ¥1.000 / Jumat</span>
         </button>`;
     } else {
       quickWrapper.innerHTML = `
-        <button class="q-btn flex flex-col items-center justify-center bg-slate-800/40 hover:bg-emerald-600/30 border border-slate-600 hover:border-emerald-500 px-3 py-2 rounded-xl transition-all w-full" data-v="50000">
+        <button class="q-btn flex flex-1 flex-col items-center justify-center bg-slate-800/40 hover:bg-emerald-600/30 border border-slate-600 hover:border-emerald-500 px-3 py-2 rounded-xl transition-all" data-v="50000">
             <span class="text-[10px] text-emerald-300 uppercase tracking-widest font-bold mb-1">Sedekah Subuh</span>
             <span class="text-base font-black text-white">Rp 50.000</span>
         </button>
-        <button class="q-btn flex flex-col items-center justify-center bg-slate-800/40 hover:bg-sky-600/30 border border-slate-600 hover:border-sky-500 px-3 py-2 rounded-xl transition-all w-full" data-v="100000">
+        <button class="q-btn flex flex-1 flex-col items-center justify-center bg-slate-800/40 hover:bg-sky-600/30 border border-slate-600 hover:border-sky-500 px-3 py-2 rounded-xl transition-all" data-v="100000">
             <span class="text-[10px] text-sky-300 uppercase tracking-widest font-bold mb-1">Pahala Jariyah</span>
             <span class="text-base font-black text-white">Rp 100.000</span>
         </button>`;
@@ -816,7 +816,6 @@ function initDonasi() {
     $$(".q-btn").forEach(b => b.addEventListener("click", (e) => {
       e.preventDefault(); inputEl.value = b.dataset.v; updateUI();
     }));
-
     if (val) {
       const prefix = currency === 'JPY' ? '¥' : 'Rp';
       hintEl.textContent = `${prefix} ${new Intl.NumberFormat('id-ID').format(val)}`;
