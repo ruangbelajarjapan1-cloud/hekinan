@@ -1188,10 +1188,27 @@ window.kirimSaran = () => {
 let currentAsetRow = 0; 
 
 window.bukaInventaris = () => {
+    // 1. Cek apakah HP ini sudah pernah login sebagai pengurus
+    const isPengurus = localStorage.getItem("pengurus_aset") === "sah";
+    
+    // 2. Jika belum, minta PIN rahasia
+    if (!isPengurus) {
+        const pin = prompt("🔒 Area Pengurus. Masukkan PIN Admin:");
+        
+        // Ganti "1390" dengan PIN rahasia yang Anda inginkan
+        if (pin === "0312") { 
+            localStorage.setItem("pengurus_aset", "sah");
+            alert("✅ Akses Pengurus Diberikan!");
+        } else {
+            if (pin !== null) alert("❌ PIN Salah! Akses ditolak.");
+            return; // Hentikan proses di sini, modal TIDAK akan terbuka
+        }
+    }
+    
+    // 3. Jika sudah lolos (atau sudah pernah login sebelumnya), buka modal
     const modal = $("#modalInventaris");
     if(modal) { modal.classList.remove("hidden"); modal.classList.add("flex"); }
 };
-
 window.tutupInventaris = () => {
     const modal = $("#modalInventaris");
     if(modal) { modal.classList.add("hidden"); modal.classList.remove("flex"); }
