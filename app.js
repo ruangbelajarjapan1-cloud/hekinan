@@ -733,21 +733,23 @@ async function renderSholat() { 
             let labelClass = isCurrentHour ? "text-emerald-700" : "text-slate-500";
             let textClass = isCurrentHour ? "text-emerald-900" : "text-slate-800";
 
-            let iqomahHtml = namaSholat === "Syuruq" 
-                ? `<div class="mt-4 text-[10px] text-transparent select-none py-1.5">-</div>` 
-                : `<div class="mt-4 flex items-center justify-between text-[11px] font-bold py-1.5 px-3 rounded-lg border border-emerald-200 bg-white text-emerald-600 shadow-sm">
-                     <span>Jamaah:</span> <span class="text-sm font-extrabold">${iqomahTime}</span>
-                   </div>`;
+           let iqomahHtml = namaSholat === "Syuruq" 
+                ? `<div class="mt-auto pt-4 text-[10px] text-transparent select-none py-1.5">-</div>` 
+                : `<div class="mt-auto pt-4 w-full">
+                     <div class="flex items-center justify-between text-[11px] font-bold py-1.5 px-3 rounded-lg border border-emerald-200 bg-white text-emerald-600 shadow-sm">
+                       <span>Jamaah:</span> <span class="text-sm font-extrabold">${iqomahTime}</span>
+                     </div>
+                   </div>`;
 
-            g.innerHTML += `
-              <div class="snap-center shrink-0 w-[140px] md:w-[150px] lg:flex-1 rounded-2xl border p-4 text-center transition-all duration-300 flex flex-col justify-between ${cardClass}">
-                <div>
-                  <i data-lucide="${m[k][1]}" class="w-6 h-6 mx-auto mb-3 ${iconClass}"></i>
-                  <div class="text-[10px] uppercase font-bold tracking-widest ${labelClass}">${displayNamaSholat}</div>
-                  <div class="mt-1 text-3xl font-extrabold tracking-tight ${textClass}">${timeStr}</div>
-                </div>
-                ${iqomahHtml}
-              </div>`; 
+            g.innerHTML += `
+              <div class="snap-center shrink-0 w-[140px] md:w-[150px] lg:flex-1 rounded-2xl border p-4 text-center transition-all duration-300 flex flex-col h-full ${cardClass}">
+                <div>
+                  <i data-lucide="${m[k][1]}" class="w-6 h-6 mx-auto mb-3 ${iconClass}"></i>
+                  <div class="text-[10px] uppercase font-bold tracking-widest ${labelClass}">${displayNamaSholat}</div>
+                  <div class="mt-1 text-3xl font-extrabold tracking-tight ${textClass}">${timeStr}</div>
+                </div>
+                ${iqomahHtml}
+              </div>`;
         }); 
         if(window.lucide) window.lucide.createIcons();
 
