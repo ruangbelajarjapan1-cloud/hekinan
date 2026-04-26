@@ -1,4 +1,4 @@
-// app.js (VERSION: FINAL MICRO-GIVING + DYNAMIC SHEET + ALWAYS POPUP)
+// app.js (VERSION: FINAL MICRO-GIVING + DYNAMIC SHEET + ALWAYS POPUP + ANTI CRASH)
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -713,7 +713,6 @@ function initDonasi() {
     const currency = currencyEl.value;
     const val = inputEl.value;
     
-    // Tampilan Paket Micro-Giving (Menggantikan tombol nominal biasa)
     if (currency === "JPY") {
       quickWrapper.innerHTML = `
         <button class="q-btn flex flex-col items-center justify-center bg-slate-800/40 hover:bg-emerald-600/30 border border-slate-600 hover:border-emerald-500 px-3 py-2 rounded-xl transition-all w-full" data-v="3000">
@@ -792,15 +791,12 @@ function initCountdown() {
   }, 1000);
 }
 
-// --- FITUR KAMUS DAKWAH ---
-window.toggleKamusModal = (show) => {
-    const m = document.getElementById("modalKamus");
-    if(show) { m.classList.remove("hidden"); m.classList.add("flex"); document.getElementById("inputCariKamus").focus(); } 
-    else { m.classList.add("hidden"); m.classList.remove("flex"); }
-};
-
+// --- PENGAMANAN FITUR KAMUS DAKWAH AGAR TIDAK CRASH ---
 function initKamusApp() {
-    const grid = document.getElementById("containerKamusGrid"), search = document.getElementById("inputCariKamus"), empty = document.getElementById("stateKamusKosong");
+    const grid = document.getElementById("containerKamusGrid");
+    const search = document.getElementById("inputCariKamus");
+    const empty = document.getElementById("stateKamusKosong");
+
     if(!grid || !search) return;
 
     const dataKamus = [
@@ -815,9 +811,10 @@ function initKamusApp() {
 
     const render = (items) => {
         grid.innerHTML = "";
-        if(items.length === 0) { empty.classList.remove("hidden"); empty.classList.add("flex"); } 
-        else {
-            empty.classList.add("hidden"); empty.classList.remove("flex"); 
+        if(items.length === 0) { 
+            if(empty) { empty.classList.remove("hidden"); empty.classList.add("flex"); }
+        } else {
+            if(empty) { empty.classList.add("hidden"); empty.classList.remove("flex"); }
             items.forEach(item => {
                 const el = document.createElement("div");
                 el.className = "bg-white p-5 rounded-xl border border-slate-200 hover:border-pink-300 hover:shadow-md transition-all group relative";
@@ -889,7 +886,7 @@ function initProgressWakaf() {
 }
 
 // ==========================================
-// 4. BOOTSTRAP & APP LOGIC
+// 4. BOOTSTRAP (SISTEM ANTI CRASH DITERAPKAN)
 // ==========================================
 async function boot(mode = 'web') {
   const hariIni = new Date().getDay(); 
@@ -902,44 +899,43 @@ async function boot(mode = 'web') {
   
   if ($("#year")) $("#year").textContent = new Date().getFullYear();
 
-  // Ambil Data dari Google Sheets dulu
-  await cekLiveDariSheet(); 
-  initLiveStream();         
-  initProgressWakaf();      
-  initPopup();              
+  // EKSEKUSI AMAN (JIKA SATU ERROR, YANG LAIN TETAP JALAN!)
+  try { renderSholat(); } catch(e) { console.error("Error di renderSholat:", e); }
+  try { renderContent(); } catch(e) { console.error("Error di renderContent:", e); }
+  try { initCountdown(); } catch(e) { console.error("Error di initCountdown:", e); }
+  try { initDonasi(); } catch(e) { console.error("Error di initDonasi:", e); }
+  try { initProgressWakaf(); } catch(e) { console.error("Error di initProgressWakaf:", e); }
+  try { initSmartCarousel(); } catch(e) { console.error("Error di initSmartCarousel:", e); }
+  try { initVideoKajian(); } catch(e) { console.error("Error di initVideoKajian:", e); }
+  try { initVideoAjakan(); } catch(e) { console.error("Error di initVideoAjakan:", e); }
+  try { initDoa(); } catch(e) { console.error("Error di initDoa:", e); }
+  try { initTabs(); } catch(e) { console.error("Error di initTabs:", e); }
+  try { initKamusApp(); } catch(e) { console.error("Error di initKamusApp:", e); }
 
-  // --- LOGIKA KHUSUS APP.HTML (TAMPILAN JAMAAH) ---
+  // --- SISTEM LIVE OTOMATIS & POP-UP DARI SPREADSHEET ---
+  try {
+      await cekLiveDariSheet(); 
+      initLiveStream();         
+      initPopup();              
+  } catch(e) { console.error("Error di Live/Popup:", e); }
+
   if (mode === 'app-mode' || window.location.pathname.includes('app.html')) {
-      if(typeof renderAppSholat === 'function') renderAppSholat(); 
+      if(typeof renderAppSholat === 'function') {
+          try { renderAppSholat(); } catch(e) { console.error(e); }
+      }
   }
 
-  // --- LOGIKA STANDAR WEBSITE ---
-  renderSholat();
-  renderContent();
-  initCountdown();
-  initDonasi();
-  initSmartCarousel();
-  initVideoKajian();
-  initVideoAjakan();
-  initDoa();
-  initTabs();
-  initKamusApp();
-  initHeroSlider();
-  setupAdmin();
+  try { initHeroSlider(); } catch(e) { console.error(e); }
+  try { setupAdmin(); } catch(e) { console.error(e); }
 
-  // Tombol Back to Top
   const btnTop = document.getElementById("backToTop");
   if (btnTop) {
       window.addEventListener("scroll", () => {
-        if (window.scrollY > 500) {
-            btnTop.classList.remove("translate-y-20", "opacity-0", "pointer-events-none");
-        } else {
-            btnTop.classList.add("translate-y-20", "opacity-0", "pointer-events-none");
-        }
+        if (window.scrollY > 500) btnTop.classList.remove("translate-y-20", "opacity-0", "pointer-events-none");
+        else btnTop.classList.add("translate-y-20", "opacity-0", "pointer-events-none");
       });
   }
 
-  // Animasi Scroll (Reveal)
   const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add("active") }), { threshold: 0.1 });
   $$(".reveal").forEach(e => obs.observe(e));
 }
@@ -949,7 +945,6 @@ if (document.readyState === "loading") document.addEventListener("DOMContentLoad
 // ==========================================
 // FUNGSI PEMBANTU KHUSUS APP.HTML
 // ==========================================
-if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => boot()); else boot();
 async function renderAppSholat() {
     const container = $("#prayerListApp");
     if(!container) return;
@@ -1028,15 +1023,14 @@ function updateCountdownApp(targetTimeStr) {
     text += `${mins}m ${secs}d`;
     el.textContent = `- ${text}`;
 }
-if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 
 // --- EID FESTIVE & TAKBIR ---
 window.openTakbirModal = () => {
   if (typeof confetti === 'function') {
     const end = Date.now() + 2000; const colors = ['#059669', '#f59e0b', '#ffffff']; 
     (function frame() {
-      confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0 }, colors, disableForReducedMotion: true });
-      confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1 }, colors, disableForReducedMotion: true });
+      confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0 }, colors: colors, disableForReducedMotion: true });
+      confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1 }, colors: colors, disableForReducedMotion: true });
       if (Date.now() < end) requestAnimationFrame(frame);
     }());
   }
@@ -1082,9 +1076,9 @@ window.toggleSaranModal = (show) => {
 };
 
 window.kirimSaran = () => {
-    const kategori = document.getElementById("kategoriSaran").value;
-    const pesan = document.getElementById("pesanSaran").value.trim();
-    let nama = document.getElementById("namaSaran").value.trim();
+    const kategori = document.getElementById("kategoriSaran")?.value || "Saran";
+    const pesan = document.getElementById("pesanSaran")?.value.trim();
+    let nama = document.getElementById("namaSaran")?.value.trim();
     const btn = document.getElementById("kirimSaranBtn");
 
     if (!pesan) { alert("Mohon isi pesan Anda terlebih dahulu."); return; }
