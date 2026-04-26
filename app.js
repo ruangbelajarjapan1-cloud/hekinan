@@ -268,52 +268,7 @@ window.openArticleModal = (index) => {
   modal.classList.remove("hidden"); modal.classList.add("flex");
   if(window.lucide && window.lucide.createIcons) window.lucide.createIcons();
 };
-// --- FUNGSI SUBMIT DAUROH NATIVE + AUTO WA ---
-window.submitDauroh = async () => {
-    const nama = $("#dNama").value;
-    const nowa = $("#dWA").value;
-    const domisili = $("#dDomisili").value;
-    const btn = $("#btnSubmitDauroh");
 
-    if(!nama || !nowa) { alert("Nama dan No WA wajib diisi!"); return; }
-
-    btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Memproses...`;
-    btn.disabled = true;
-    if(window.lucide) window.lucide.createIcons();
-
-    try {
-        const res = await fetch(APPS_SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify({ action: "daftar_dauroh", nama, nowa, domisili })
-        });
-        const result = await res.json();
-        
-        if(result.status === "success") {
-            btn.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4"></i> Berhasil!`;
-            btn.className = "w-full bg-emerald-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2";
-            if(window.lucide) window.lucide.createIcons();
-
-            // Rangkai Pesan WhatsApp
-            let waMsg = `Assalamu'alaikum Admin, saya telah mendaftar Dauroh Golden Week 2026.\n\n*Nama:* ${nama}\n*Domisili:* ${domisili}\n*No WA:* ${nowa}\n\nMohon konfirmasinya. Jazakumullah khairan.`;
-            
-            // Jeda 1 detik, lalu buka WA otomatis
-            setTimeout(() => {
-                window.open(`https://wa.me/818013909425?text=${encodeURIComponent(waMsg)}`, "_blank");
-            }, 1000);
-
-            // Reset tombol dan tutup popup setelah 2.5 detik
-            setTimeout(() => {
-                $("#modalDauroh").classList.replace('flex','hidden');
-                btn.disabled = false; 
-                btn.innerHTML = "Daftar Sekarang";
-                btn.className = "w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2";
-            }, 2500);
-        }
-    } catch(e) {
-        alert("Gagal terhubung ke server.");
-        btn.disabled = false; btn.innerHTML = "Coba Lagi";
-    }
-};
 
 document.addEventListener("DOMContentLoaded", () => {
   const modal = $("#articleModal");
@@ -1286,7 +1241,7 @@ window.scanAset = async () => {
     try {
         const res = await fetch(APPS_SCRIPT_URL, {
             method: "POST",
-            body: JSON.stringify({ action: "scan_aset", id_barang: idBarang })
+body: JSON.stringify({ app_token: "H3k1n4n_S3cur3_2026!", action: "scan_aset", id_barang: idBarang })
         });
         const result = await res.json();
         
@@ -1329,7 +1284,7 @@ window.updatePerawatanAset = async () => {
     try {
         const res = await fetch(APPS_SCRIPT_URL, {
             method: "POST",
-            body: JSON.stringify({ action: "update_aset", row: currentAsetRow })
+           body: JSON.stringify({ app_token: "H3k1n4n_S3cur3_2026!", action: "update_aset", row: currentAsetRow })
         });
         const result = await res.json();
         if(result.status === "success") {
