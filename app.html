@@ -23,9 +23,17 @@
 <body class="pb-36 bg-[#050B14]">
 
   <div id="pwaInstallBanner" class="hidden bg-emerald-600 text-white text-xs px-5 py-3 flex justify-between items-center z-[100] relative shadow-md">
-    <div class="flex items-center gap-2"><i data-lucide="download-cloud" class="w-4 h-4"></i><span class="font-semibold">Install Aplikasi As-Sunnah di HP Anda.</span></div>
-    <button id="btnInstallPwa" class="bg-white text-emerald-700 px-3 py-1.5 rounded-full font-bold shadow-sm active:scale-95 transition-transform text-[10px] uppercase tracking-wide">Install</button>
+  <div class="flex items-center gap-2"><i data-lucide="download-cloud" class="w-4 h-4"></i><span class="font-semibold">Install Aplikasi As-Sunnah di HP Anda.</span></div>
+  <button id="btnInstallPwa" class="bg-white text-emerald-700 px-3 py-1.5 rounded-full font-bold shadow-sm active:scale-95 transition-transform text-[10px] uppercase tracking-wide">Install</button>
+</div>
+
+<div id="pwaInstallBanner" style="display: none;" class="bg-emerald-600 text-white text-xs px-5 py-3 flex justify-between items-center z-[100] relative shadow-md">
+  <div class="flex items-center gap-2">
+      <i data-lucide="download-cloud" class="w-4 h-4"></i>
+      <span id="pwaText" class="font-semibold">Install Aplikasi As-Sunnah di HP Anda.</span>
   </div>
+  <button id="btnInstallPwa" class="bg-white text-emerald-700 px-3 py-1.5 rounded-full font-bold shadow-sm active:scale-95 transition-transform text-[10px] uppercase tracking-wide">Install</button>
+</div>
 
   <div class="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
     <div class="absolute -top-[10%] -right-[10%] w-[70vw] h-[70vw] rounded-full bg-emerald-900/10 blur-[80px]"></div>
@@ -423,22 +431,42 @@
         }, 1000);
     }
 
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        document.getElementById('pwaInstallBanner').classList.remove('hidden');
-    });
+  let deferredPrompt;
+const pwaBanner = document.getElementById('pwaInstallBanner');
+const btnInstall = document.getElementById('btnInstallPwa');
+const pwaText = document.getElementById('pwaText');
 
-    document.getElementById('btnInstallPwa').addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') document.getElementById('pwaInstallBanner').classList.add('hidden');
-            deferredPrompt = null;
-        }
-    });
+// Deteksi iOS & Standalone Mode
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
+if (!isStandalone) {
+    if (isIOS) {
+        // Fallback untuk Apple iOS (Safari tidak mendukung beforeinstallprompt)
+        pwaBanner.style.display = 'flex';
+        pwaText.innerHTML = "Tap ikon Share di bawah, lalu pilih 'Add to Home Screen'.";
+        btnInstall.innerText = "Tutup";
+        btnInstall.addEventListener('click', () => pwaBanner.style.display = 'none');
+    } else {
+        // Native PWA Prompt untuk Android/Chrome
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            pwaBanner.style.display = 'flex';
+        });
+
+        btnInstall.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') pwaBanner.style.display = 'none';
+                deferredPrompt = null;
+            } else {
+                 pwaBanner.style.display = 'none';
+            }
+        });
+    }
+}
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.log('PWA Error:', err)); });
     }
