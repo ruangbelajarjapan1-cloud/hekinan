@@ -499,30 +499,28 @@ setInterval(cekLiveDariSheet, 30000);
 function initPopup() {
     const popup = $("#popupPromo");
     const track = $("#popupTrack");
-    
     if (!popup || !track) return;
 
-    // Bersihkan kontainer
-    track.innerHTML = "";
+    track.innerHTML = ""; // Bersihkan isi lama
 
-    // Hentikan jika POPUP_SLIDES_DATA kosong
+    // Ambil data dari POPUP_SLIDES_DATA (termasuk Daftar Dauroh)
     if (!POPUP_SLIDES_DATA || POPUP_SLIDES_DATA.length === 0) return;
 
     let currentIndex = 0;
-    let slides = [];
+    const slides = [];
 
-    // Render semua gambar dari POPUP_SLIDES_DATA ke dalam slider
+    // Loop untuk membuat slide dari data yang Wahyu isi
     POPUP_SLIDES_DATA.forEach((data, index) => {
         const slide = document.createElement("a");
         slide.href = data.link;
         slide.target = "_blank";
-        slide.className = "absolute inset-0 w-full h-full transition-opacity duration-500 z-10";
+        slide.className = "absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out";
         slide.style.opacity = index === 0 ? "1" : "0";
         slide.style.pointerEvents = index === 0 ? "auto" : "none";
         
         slide.innerHTML = `
             <img src="${data.src}" class="w-full h-full object-cover" alt="${data.text}">
-            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 text-white text-[10px] px-4 py-1.5 rounded-full backdrop-blur-md whitespace-nowrap border border-white/20 shadow-lg font-bold tracking-wide">
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 text-white text-[10px] px-4 py-2 rounded-full backdrop-blur-md border border-white/20 font-bold">
                 ${data.text} <i data-lucide="external-link" class="w-3 h-3 inline ml-1"></i>
             </div>
         `;
@@ -530,57 +528,41 @@ function initPopup() {
         slides.push(slide);
     });
 
-    // Tambahkan Tombol Navigasi jika gambar lebih dari 1
-    if (POPUP_SLIDES_DATA.length > 1) {
-        // Tombol Prev
-        const btnPrev = document.createElement("button");
-        btnPrev.className = "absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/80 text-white p-2 rounded-full z-20 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all border border-white/20";
-        btnPrev.innerHTML = `<i data-lucide="chevron-left" class="w-5 h-5"></i>`;
+    // Tambahkan Navigasi jika gambar lebih dari satu
+    if (slides.length > 1) {
+        const createBtn = (icon, posClass) => {
+            const btn = document.createElement("button");
+            btn.className = `absolute top-1/2 -translate-y-1/2 ${posClass} bg-black/30 text-white p-2 rounded-full z-20 hover:bg-black/60 transition-all`;
+            btn.innerHTML = `<i data-lucide="${icon}" class="w-5 h-5"></i>`;
+            return btn;
+        };
 
-        // Tombol Next
-        const btnNext = document.createElement("button");
-        btnNext.className = "absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/80 text-white p-2 rounded-full z-20 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all border border-white/20";
-        btnNext.innerHTML = `<i data-lucide="chevron-right" class="w-5 h-5"></i>`;
+        const btnPrev = createBtn("chevron-left", "left-2");
+        const btnNext = createBtn("chevron-right", "right-2");
 
-        // Logika Perpindahan Slide
-        const updateSlide = (newIndex) => {
+        const move = (dir) => {
             slides[currentIndex].style.opacity = "0";
             slides[currentIndex].style.pointerEvents = "none";
-            
-            currentIndex = newIndex;
-            if (currentIndex < 0) currentIndex = slides.length - 1;
-            if (currentIndex >= slides.length) currentIndex = 0;
-            
+            currentIndex = (currentIndex + dir + slides.length) % slides.length;
             slides[currentIndex].style.opacity = "1";
             slides[currentIndex].style.pointerEvents = "auto";
         };
 
-        btnPrev.onclick = (e) => { e.preventDefault(); e.stopPropagation(); updateSlide(currentIndex - 1); };
-        btnNext.onclick = (e) => { e.preventDefault(); e.stopPropagation(); updateSlide(currentIndex + 1); };
-
+        btnPrev.onclick = (e) => { e.preventDefault(); move(-1); };
+        btnNext.onclick = (e) => { e.preventDefault(); move(1); };
         track.appendChild(btnPrev);
         track.appendChild(btnNext);
-
-        // Auto-Slide (Ganti gambar otomatis tiap 4 detik)
-        let autoSlide = setInterval(() => { updateSlide(currentIndex + 1); }, 4000);
-        track.onmouseenter = () => clearInterval(autoSlide);
-        track.onmouseleave = () => { autoSlide = setInterval(() => { updateSlide(currentIndex + 1); }, 4000); };
+        
+        // Auto-putar setiap 5 detik
+        setInterval(() => move(1), 5000);
     }
 
-    // Fungsi Tutup Pop Up
-    const closePopup = () => { 
-        popup.classList.add("hidden"); 
-        popup.classList.remove("flex"); 
-    };
-
-    $("#closePopupBtn")?.addEventListener("click", closePopup);
-    $("#closePopupBackdrop")?.addEventListener("click", closePopup);
+    const close = () => { popup.classList.add("hidden"); popup.classList.remove("flex"); };
+    $("#closePopupBtn")?.addEventListener("click", close);
+    $("#closePopupBackdrop")?.addEventListener("click", close);
     
-    // Tampilkan Popup
     popup.classList.remove("hidden");
     popup.classList.add("flex");
-    
-    // Render icon Lucide yang baru ditambahkan
     if(window.lucide) window.lucide.createIcons();
 }
 
