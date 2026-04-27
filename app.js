@@ -353,35 +353,21 @@ async function renderContent() {
   };
 
 const pW = document.getElementById("wrapPengumuman");
-  if (pW) {
+if (pW) {
     const urlKegiatan = isAdmin() && localStorage.getItem("sheet_pengumuman") ? localStorage.getItem("sheet_pengumuman") : DEFAULT_KEGIATAN_CSV;
     const d = await loadCsv(urlKegiatan);
     const startIdx = window.globalContentData.length;
     d.forEach(item => window.globalContentData.push(item));
 
-  if (d.length > 0) {
-    pW.innerHTML = d.map((x, i) => mkCard(x, 'info', startIdx + i)).join("");
-    document.getElementById("boardEmpty")?.classList.add("hidden");
-}
-  }
+    if (d.length > 0) {
+        // Cukup sisakan baris ini saja, biarkan Tailwind di HTML yang bekerja
+        pW.innerHTML = d.map((x, i) => mkCard(x, 'info', startIdx + i)).join("");
+        document.getElementById("boardEmpty")?.classList.add("hidden");
+    } else {
+        pW.innerHTML = "";
+        document.getElementById("boardEmpty")?.classList.remove("hidden");
+    }
 
-  const aL = document.getElementById("artikelList");
-  if (aL) {
-    const urlArtikel = getCsvUrl("artikel");
-    const d = await loadCsv(urlArtikel);
-    const startIdx = window.globalContentData.length;
-    d.forEach(item => window.globalContentData.push(item));
-    
-   const filter = (q) => {
-    const filtered = d.map((item, i) => ({item, idx: startIdx + i})).filter(o => (o.item.title || "").toLowerCase().includes(q));
-    
-    aL.innerHTML = filtered.length ? filtered.map(o => mkCard(o.item, 'artikel', o.idx)).join("") : "";
-    document.getElementById("artikelEmpty")?.classList.toggle("hidden", filtered.length > 0);
-    if(window.lucide) window.lucide.createIcons();
-};
-    filter("");
-    document.getElementById("searchArtikel")?.addEventListener("input", e => filter(e.target.value.toLowerCase()));
-  }
  }
 function initTabs() {
   const btnP = $("#tabPengumuman");
