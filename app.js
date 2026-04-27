@@ -602,47 +602,9 @@ function initDoa() { 
 }
 
 async function initSmartCarousel() {
-  const track = $("#kgTrack"); 
-  if (!track) return;
-  track.innerHTML = "Loading Galeri...";
-  const dataGaleri = await loadCsv(DEFAULT_GALERI_CSV); 
-  
-  if (dataGaleri.length === 0) {
-    track.innerHTML = "<p>Belum ada dokumentasi.</p>"; return;
-  }
-
-  track.innerHTML = "";
-  dataGaleri.forEach(item => {
-    const el = document.createElement("figure");
-    el.className = "snap-item shrink-0 w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] h-64 rounded-2xl overflow-hidden shadow-md bg-slate-100 relative group border border-slate-200 flex items-center justify-center";
-    el.innerHTML = `<img src="${item.url_gambar}" class="max-w-full max-h-full object-contain w-full h-full group-hover:scale-105 transition-transform duration-700" loading="lazy" alt="${item.keterangan || 'Kegiatan'}">`;
-    track.appendChild(el);
-  });
-
-  const btnPrev = $("#kgPrev"), btnNext = $("#kgNext");
-  const getScrollAmount = () => track.children[0] ? track.children[0].offsetWidth + 16 : 300; 
-
-  if (btnPrev) btnPrev.onclick = () => track.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
-  if (btnNext) btnNext.onclick = () => track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-
-  let autoScroll = setInterval(() => {
-    if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) track.scrollTo({ left: 0, behavior: 'smooth' });
-    else track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-  }, 3000); 
-
-  track.addEventListener('mouseenter', () => clearInterval(autoScroll));
-  track.addEventListener('touchstart', () => clearInterval(autoScroll));
-  const resumeAutoScroll = () => {
-      clearInterval(autoScroll); 
-      autoScroll = setInterval(() => {
-        if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) track.scrollTo({ left: 0, behavior: 'smooth' });
-        else track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-      }, 3000);
-  };
-  track.addEventListener('mouseleave', resumeAutoScroll);
-  track.addEventListener('touchend', resumeAutoScroll);
+  // Fungsi ini dinonaktifkan karena galeri sekarang menggunakan Elfsight Social Feed
+  return;
 }
-
 // ----------------------------------------------------
 // JADWAL SHOLAT (API) + IQOMAH (SPREADSHEET)
 // ----------------------------------------------------
