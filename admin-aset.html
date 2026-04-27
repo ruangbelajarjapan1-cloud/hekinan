@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Aset - Hekinan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 font-sans p-6">
+  <div class="max-w-md mx-auto bg-white rounded-3xl shadow-xl p-6 border border-slate-200">
+    <h3 class="text-xl font-extrabold text-slate-800 flex items-center gap-2 mb-1">
+        <span class="bg-slate-200 text-slate-700 p-1.5 rounded-lg"><i data-lucide="package-check" class="w-5 h-5"></i></span> 
+        Inventaris Aset
+    </h3>
+    <p class="text-xs text-slate-500 mb-6">Area khusus pengurus DKM Hekinan.</p>
+
+    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">ID / Kode Barang</label>
+    <div class="relative mt-1 mb-4 flex gap-2">
+        <input id="inputIdAset" type="text" placeholder="Contoh: AC-01" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 font-mono outline-none focus:border-emerald-500 transition-colors shadow-sm">
+        <button id="btnScanAset" onclick="scanAset()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-4 py-3 rounded-xl transition-all shadow-md shrink-0 flex items-center gap-2 text-sm">
+            <i data-lucide="scan-line" class="w-4 h-4"></i> Scan
+        </button>
+    </div>
+    
+    <div id="hasilScanAset" class="min-h-[120px] border-t border-slate-200 pt-4">
+        <div class="flex flex-col items-center justify-center text-slate-400 mt-6 opacity-60">
+            <i data-lucide="box" class="w-12 h-12 mb-2"></i>
+            <p class="text-xs font-medium">Masukkan ID barang untuk memuat data.</p>
+        </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+    let currentAsetRow = 0;
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZ7VngoyvmLTWdfSTTjLKQ0G2kguCSkx8z-L6Vku1TgPQBOCUyoWVbjhZQhptj_mIkww/exec";
+
+    // Fitur Cek PIN sebelum tampil
+    window.onload = () => {
+        if (localStorage.getItem("pengurus_aset") !== "sah") {
+            const pin = prompt("🔒 Masukkan PIN Admin:");
+            if (pin === "0312") {
+                localStorage.setItem("pengurus_aset", "sah");
+            } else {
+                document.body.innerHTML = "<h1 class='text-center mt-20 text-red-500 font-bold'>Akses Ditolak!</h1>";
+            }
+        }
+    };
+
+    async function scanAset() {
+        const idBarang = document.getElementById("inputIdAset").value;
+        const btn = document.getElementById("btnScanAset");
+        const hasilDiv = document.getElementById("hasilScanAset");
+
+        if(!idBarang) { alert("Masukkan ID Barang terlebih dahulu!"); return; }
+
+        btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>`;
+        btn.disabled = true;
+        lucide.createIcons();
+
+        try {
+            const res = await fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ app_token: "H3k1n4n_S3cur3_2026!", action: "scan_aset", id_barang: idBarang })
+            });
+            const result = await res.json();
+            
+            if(result.status === "success") {
+                currentAsetRow = result.row; 
+                hasilDiv.innerHTML = `
+                    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl mt-4">
+                        <h4 class="font-extrabold text-slate-800 text-lg">${result.data.nama}</h4>
+                        <div class="flex justify-between mt-2 text-xs font-bold text-slate-500 uppercase">
+                            <span>Kondisi</span> <span class="text-slate-700 bg-white border border-slate-200 px-2 py-1 rounded">${result.data.kondisi}</span>
+                        </div>
+                        <div class="flex justify-between mt-2 text-xs font-bold text-slate-500 uppercase">
+                            <span>Perawatan</span> <span class="text-sky-600">${result.data.dirawat || "Belum Pernah"}</span>
+                        </div>
+                        <button onclick="updatePerawatanAset()" id="btnUpdateAset" class="mt-5 w-full bg-sky-600 hover:bg-sky-700 text-white text-sm font-bold py-3 rounded-xl flex justify-center gap-2">
+                            <i data-lucide="wrench" class="w-4 h-4"></i> Catat Perawatan
+                        </button>
+                    </div>`;
+            } else {
+                hasilDiv.innerHTML = `<p class="text-sm font-bold text-red-500 mt-4 text-center bg-red-50 py-3 rounded-xl border border-red-100">Aset tidak ditemukan.</p>`;
+            }
+        } catch(e) {
+            hasilDiv.innerHTML = `<p class="text-sm text-red-500 mt-4 text-center">Gagal terhubung ke server.</p>`;
+        }
+        btn.innerHTML = `<i data-lucide="scan-line" class="w-4 h-4"></i> Scan`;
+        btn.disabled = false;
+        lucide.createIcons();
+    }
+
+    async function updatePerawatanAset() {
+        const btn = document.getElementById("btnUpdateAset");
+        btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Menyimpan...`;
+        btn.disabled = true;
+
+        try {
+            const res = await fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ app_token: "H3k1n4n_S3cur3_2026!", action: "update_aset", row: currentAsetRow })
+            });
+            const result = await res.json();
+            if(result.status === "success") {
+                btn.innerHTML = `Berhasil Dicatat!`;
+                btn.classList.replace("bg-sky-600", "bg-emerald-600");
+            }
+        } catch(e) {
+            alert("Gagal mencatat perawatan.");
+            btn.innerHTML = "Coba Lagi";
+            btn.disabled = false;
+        }
+    }
+  </script>
+</body>
+</html>
