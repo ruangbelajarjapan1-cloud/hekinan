@@ -768,5 +768,12 @@
   </script>
 
   <script type="module" src="./app.js?v=tuntas2"></script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => { 
+      navigator.serviceWorker.register('./sw.js').catch(err => console.log('PWA Error:', err)); 
+    });
+  }
+</script>
 </body>
 </html>
