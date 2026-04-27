@@ -11,14 +11,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Amiri:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
   
-  <style>
-    body { font-family: 'Plus Jakarta Sans', 'Noto Sans JP', sans-serif; background-color: #050B14; color: #ffffff; overflow-x: hidden; transition: background 1s ease; -webkit-tap-highlight-color: transparent; }
-    .font-arab { font-family: 'Amiri', serif; line-height: 1.8; }
-    .glass-ultra { background: rgba(13, 22, 35, 0.5); backdrop-blur: 24px; border: 1px solid rgba(255, 255, 255, 0.08); }
-    .hide-scrollbar::-webkit-scrollbar { display: none; }
-    .tahajjud-mode { background-color: #000000 !important; }
-    .tahajjud-card { border: 1px solid rgba(255, 215, 0, 0.3) !important; background: linear-gradient(135deg, #000 0%, #0a0a0a 100%) !important; }
-  </style>
+ <link rel="stylesheet" href="style.css">
 </head>
 <body class="pb-36 bg-[#050B14]">
 
@@ -194,11 +187,7 @@
         <i data-lucide="map-pin" class="w-6 h-6 text-green-400 mb-2 group-hover:scale-110 transition-transform"></i>
         <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Radar</span>
       </button>
-      <!-- Tombol Menu Inventaris Aset -->
-      <button onclick="window.bukaInventaris()" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-slate-500/30 group">
-        <i data-lucide="package-check" class="w-6 h-6 text-slate-400 mb-2 group-hover:scale-110 transition-transform"></i>
-        <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Aset</span>
-      </button>
+     
       <!-- Tombol Donasi Dauroh (Melengkapi Grid 3x3) -->
       <button onclick="window.bukaDonasiDauroh()" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-amber-500/30 group">
         <i data-lucide="gift" class="w-6 h-6 text-amber-400 mb-2 group-hover:scale-110 transition-transform"></i>
@@ -427,43 +416,7 @@
       </div>
     </div>
   </div>
-  <!-- MODAL INVENTARIS ASET (KHUSUS APP.HTML) -->
-  <div id="modalInventaris" class="fixed inset-0 z-[160] hidden items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-sm transition-all text-slate-900">
-    <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden max-h-[85vh]">
-      
-      <!-- Header Modal -->
-      <div class="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center shrink-0">
-        <div>
-            <h3 class="text-xl font-extrabold text-slate-800 flex items-center gap-2">
-                <span class="bg-slate-200 text-slate-700 p-1.5 rounded-lg"><i data-lucide="package-check" class="w-5 h-5"></i></span> 
-                Inventaris Aset
-            </h3>
-            <p class="text-xs text-slate-500 mt-1">Pengecekan & riwayat perawatan masjid.</p>
-        </div>
-        <button onclick="window.tutupInventaris()" class="p-2 rounded-full hover:bg-slate-200 text-slate-400"><i data-lucide="x" class="w-6 h-6"></i></button>
-      </div>
-
-      <!-- Isi / Body Modal -->
-      <div class="p-6 overflow-y-auto bg-slate-50/50 flex-1">
-        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">ID / Kode Barang</label>
-        <div class="relative mt-1 mb-4 flex gap-2">
-            <input id="inputIdAset" type="text" placeholder="Contoh: AC-01" class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 font-mono outline-none focus:border-emerald-500 transition-colors shadow-sm">
-            <button id="btnScanAset" onclick="window.scanAset()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-4 py-3 rounded-xl transition-all shadow-md shrink-0 flex items-center gap-2 text-sm">
-                <i data-lucide="scan-line" class="w-4 h-4"></i> Scan
-            </button>
-        </div>
-        
-        <!-- Area Hasil Scan (Akan diisi otomatis oleh app.js) -->
-        <div id="hasilScanAset" class="min-h-[120px] border-t border-slate-200 pt-4">
-            <div class="flex flex-col items-center justify-center text-slate-400 mt-6 opacity-60">
-                <i data-lucide="box" class="w-12 h-12 mb-2"></i>
-                <p class="text-xs font-medium">Masukkan ID barang untuk memuat data.</p>
-            </div>
-        </div>
-      </div>
-      
-    </div>
-  </div>
+ 
 
 <!-- MODAL DONASI DAUROH & LOGISTIK (DESAIN FINAL) -->
 <div id="modalDonasiDauroh" class="fixed inset-0 z-[200] hidden items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm transition-all text-slate-800">
