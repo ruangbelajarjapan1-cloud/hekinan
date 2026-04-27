@@ -18,7 +18,7 @@
 <meta name="apple-mobile-web-app-title" content="As-Sunnah">
 <link rel="apple-touch-icon" href="logohekinan.jpeg">
 <link rel="icon" href="logohekinan.jpeg" type="image/jpeg">
-
+<link rel="stylesheet" href="style.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -41,43 +41,7 @@
   }
 </script>
 
-<style>
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: #f1f5f9; }
-  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-  .scrollx-snap { scroll-snap-type: x mandatory; }
-  .snap-item { scroll-snap-align: center; }
-  .hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
-  .hide-scrollbar::-webkit-scrollbar { display: none; }
-  .tab-slider { position: absolute; bottom: 0; height: 3px; width: 50%; background: #0EA5E9; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 3px 3px 0 0; }
-  .tab-left .tab-slider { transform: translateX(0); }
-  .tab-right .tab-slider { transform: translateX(100%); }
-  .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
-  .reveal.active { opacity: 1; transform: translateY(0); }
-  @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
-  .font-arab { font-family: 'Amiri', serif; line-height: 2; }
-  body { 
-    overflow-x: hidden;
-    background-color: #f8fafc;
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230ea5e9' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  }
-  /* GANTI CSS .hero-slide dan .hero-slide.active DENGAN INI */
-.hero-slide {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transform: scale(1); /* Posisi awal normal */
-  transition: opacity 1.5s ease-in-out, transform 10s ease-out; /* Animasi zoom selama 10 detik */
-}
 
-.hero-slide.active {
-  opacity: 1;
-  transform: scale(1.1); /* Zoom in sedikit (110%) saat aktif */
-}
-</style>
 </head>
 
 <body class="font-sans text-fig-text pb-32 md:pb-0">
