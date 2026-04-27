@@ -32,16 +32,17 @@ const POPUP_SLIDES_DATA = [
         link: "https://forms.gle/zJqA2Eba2FaxvrXv6", 
         text: "Daftar Dauroh" 
     },
-    { 
-        src: "assets/foto/1b.png",  
-        link:"https://wa.me/628895941864", 
-        text: "Informasi" 
-    },
-    { 
+     { 
         src: "assets/foto/d1.jpeg",  
         link: "javascript:window.bukaDonasiDauroh()",
         text: "Donasi Dauroh"
     },
+   
+     { 
+        src: "assets/foto/d1.jpeg", // Pastikan ini path gambar poster Dauroh yang baru Anda upload
+        link: "https://drive.google.com/file/d/1oPTpt7Sy1AmzwotGvCmPoZ4LW-zeAe0P/view?usp=sharing", 
+        text: "Download Kitab" 
+    },
     { 
         src: "assets/foto/w3.jpeg", 
         link: "https://wa.me/818013909425", 
