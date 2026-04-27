@@ -352,7 +352,7 @@ async function renderContent() {
       </article>`;
   };
 
- const pW = document.getElementById("wrapPengumuman");
+const pW = document.getElementById("wrapPengumuman");
   if (pW) {
     const urlKegiatan = isAdmin() && localStorage.getItem("sheet_pengumuman") ? localStorage.getItem("sheet_pengumuman") : DEFAULT_KEGIATAN_CSV;
     const d = await loadCsv(urlKegiatan);
@@ -360,9 +360,15 @@ async function renderContent() {
     d.forEach(item => window.globalContentData.push(item));
 
     if (d.length > 0) {
-        // --- PAKSA JADI GRID RATA KIRI ---
-        pW.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch w-full text-left transition-all duration-300";
-        // ---------------------------------
+        // --- FIX RATA KIRI (PENGUMUMAN) ---
+        pW.className = "w-full text-left transition-all duration-300";
+        pW.style.display = "grid";
+        pW.style.gridTemplateColumns = "repeat(auto-fill, minmax(280px, 1fr))";
+        pW.style.gap = "1.5rem";
+        pW.style.justifyContent = "start";
+        pW.style.alignItems = "stretch";
+        // ----------------------------------
+
         pW.innerHTML = d.map((x, i) => mkCard(x, 'info', startIdx + i)).join("");
         document.getElementById("boardEmpty")?.classList.add("hidden");
     } else {
@@ -381,10 +387,15 @@ async function renderContent() {
     const filter = (q) => {
       const filtered = d.map((item, i) => ({item, idx: startIdx + i})).filter(o => (o.item.title || "").toLowerCase().includes(q));
       
-      // --- PAKSA JADI GRID RATA KIRI ---
-      aL.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch w-full text-left";
-      // ---------------------------------
-      
+      // --- FIX RATA KIRI (ARTIKEL) ---
+      aL.className = "w-full text-left";
+      aL.style.display = "grid";
+      aL.style.gridTemplateColumns = "repeat(auto-fill, minmax(280px, 1fr))";
+      aL.style.gap = "1.5rem";
+      aL.style.justifyContent = "start";
+      aL.style.alignItems = "stretch";
+      // -------------------------------
+
       aL.innerHTML = filtered.length ? filtered.map(o => mkCard(o.item, 'artikel', o.idx)).join("") : "";
       document.getElementById("artikelEmpty")?.classList.toggle("hidden", filtered.length > 0);
       if(window.lucide) window.lucide.createIcons();
