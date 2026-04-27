@@ -360,15 +360,10 @@ const pW = document.getElementById("wrapPengumuman");
     d.forEach(item => window.globalContentData.push(item));
 
     if (d.length > 0) {
-        // --- FIX RATA KIRI (PENGUMUMAN) ---
-        pW.className = "w-full text-left transition-all duration-300";
-        pW.style.display = "grid";
-        pW.style.gridTemplateColumns = "repeat(auto-fill, minmax(280px, 1fr))";
-        pW.style.gap = "1.5rem";
-        pW.style.justifyContent = "start";
-        pW.style.alignItems = "stretch";
-        // ----------------------------------
-
+        // --- PAKSA RATA KIRI 1000% ANTI GAGAL ---
+        pW.className = "w-full transition-all duration-300";
+        pW.style.cssText = "display: grid !important; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; gap: 1.5rem !important; justify-content: start !important; text-align: left !important;";
+        // ----------------------------------------
         pW.innerHTML = d.map((x, i) => mkCard(x, 'info', startIdx + i)).join("");
         document.getElementById("boardEmpty")?.classList.add("hidden");
     } else {
@@ -387,14 +382,10 @@ const pW = document.getElementById("wrapPengumuman");
     const filter = (q) => {
       const filtered = d.map((item, i) => ({item, idx: startIdx + i})).filter(o => (o.item.title || "").toLowerCase().includes(q));
       
-      // --- FIX RATA KIRI (ARTIKEL) ---
-      aL.className = "w-full text-left";
-      aL.style.display = "grid";
-      aL.style.gridTemplateColumns = "repeat(auto-fill, minmax(280px, 1fr))";
-      aL.style.gap = "1.5rem";
-      aL.style.justifyContent = "start";
-      aL.style.alignItems = "stretch";
-      // -------------------------------
+      // --- PAKSA RATA KIRI 1000% ANTI GAGAL ---
+      aL.className = "w-full transition-all duration-300";
+      aL.style.cssText = "display: grid !important; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; gap: 1.5rem !important; justify-content: start !important; text-align: left !important;";
+      // ----------------------------------------
 
       aL.innerHTML = filtered.length ? filtered.map(o => mkCard(o.item, 'artikel', o.idx)).join("") : "";
       document.getElementById("artikelEmpty")?.classList.toggle("hidden", filtered.length > 0);
