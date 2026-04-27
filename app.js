@@ -359,17 +359,10 @@ const pW = document.getElementById("wrapPengumuman");
     const startIdx = window.globalContentData.length;
     d.forEach(item => window.globalContentData.push(item));
 
-    if (d.length > 0) {
-        // --- PAKSA RATA KIRI 1000% ANTI GAGAL ---
-        pW.className = "w-full transition-all duration-300";
-        pW.style.cssText = "display: grid !important; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; gap: 1.5rem !important; justify-content: start !important; text-align: left !important;";
-        // ----------------------------------------
-        pW.innerHTML = d.map((x, i) => mkCard(x, 'info', startIdx + i)).join("");
-        document.getElementById("boardEmpty")?.classList.add("hidden");
-    } else {
-        pW.innerHTML = "";
-        document.getElementById("boardEmpty")?.classList.remove("hidden");
-    }
+  if (d.length > 0) {
+    pW.innerHTML = d.map((x, i) => mkCard(x, 'info', startIdx + i)).join("");
+    document.getElementById("boardEmpty")?.classList.add("hidden");
+}
   }
 
   const aL = document.getElementById("artikelList");
@@ -379,18 +372,13 @@ const pW = document.getElementById("wrapPengumuman");
     const startIdx = window.globalContentData.length;
     d.forEach(item => window.globalContentData.push(item));
     
-    const filter = (q) => {
-      const filtered = d.map((item, i) => ({item, idx: startIdx + i})).filter(o => (o.item.title || "").toLowerCase().includes(q));
-      
-      // --- PAKSA RATA KIRI 1000% ANTI GAGAL ---
-      aL.className = "w-full transition-all duration-300";
-      aL.style.cssText = "display: grid !important; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; gap: 1.5rem !important; justify-content: start !important; text-align: left !important;";
-      // ----------------------------------------
-
-      aL.innerHTML = filtered.length ? filtered.map(o => mkCard(o.item, 'artikel', o.idx)).join("") : "";
-      document.getElementById("artikelEmpty")?.classList.toggle("hidden", filtered.length > 0);
-      if(window.lucide) window.lucide.createIcons();
-    };
+   const filter = (q) => {
+    const filtered = d.map((item, i) => ({item, idx: startIdx + i})).filter(o => (o.item.title || "").toLowerCase().includes(q));
+    
+    aL.innerHTML = filtered.length ? filtered.map(o => mkCard(o.item, 'artikel', o.idx)).join("") : "";
+    document.getElementById("artikelEmpty")?.classList.toggle("hidden", filtered.length > 0);
+    if(window.lucide) window.lucide.createIcons();
+};
     filter("");
     document.getElementById("searchArtikel")?.addEventListener("input", e => filter(e.target.value.toLowerCase()));
   }
