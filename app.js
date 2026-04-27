@@ -281,94 +281,111 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function renderContent() {
-  const showSkeleton = (id, count = 3) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const skeletonHTML = `
-        <div class="animate-pulse bg-white rounded-2xl border border-slate-100 p-5 shadow-sm h-full">
-            <div class="flex justify-between mb-4">
-                <div class="h-4 w-16 bg-slate-200 rounded"></div>
-                <div class="h-4 w-20 bg-slate-200 rounded"></div>
-            </div>
-            <div class="h-6 w-3/4 bg-slate-200 rounded mb-3"></div>
-            <div class="h-4 w-full bg-slate-200 rounded mb-2"></div>
-            <div class="h-4 w-2/3 bg-slate-200 rounded mb-6"></div>
-            <div class="h-10 w-full bg-slate-200 rounded-xl"></div>
-        </div>`;
-      el.innerHTML = Array(count).fill(skeletonHTML).join("");
-  };
+  const showSkeleton = (id, count = 3) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const skeletonHTML = `
+        <div class="animate-pulse bg-white rounded-2xl border border-slate-100 p-5 shadow-sm h-full">
+            <div class="flex justify-between mb-4">
+                <div class="h-4 w-16 bg-slate-200 rounded"></div>
+                <div class="h-4 w-20 bg-slate-200 rounded"></div>
+            </div>
+            <div class="h-6 w-3/4 bg-slate-200 rounded mb-3"></div>
+            <div class="h-4 w-full bg-slate-200 rounded mb-2"></div>
+            <div class="h-4 w-2/3 bg-slate-200 rounded mb-6"></div>
+            <div class="h-10 w-full bg-slate-200 rounded-xl"></div>
+        </div>`;
+      el.innerHTML = Array(count).fill(skeletonHTML).join("");
+  };
 
-  showSkeleton("wrapPengumuman", 3);
-  showSkeleton("artikelList", 3);
-  showSkeleton("kajianList", 3);
+  showSkeleton("wrapPengumuman", 3);
+  showSkeleton("artikelList", 3);
+  showSkeleton("kajianList", 3);
 
-  window.globalContentData = []; 
+  window.globalContentData = []; 
 
-  const mkCard = (x, type, index) => {
-    let tagColor = "bg-slate-100 text-slate-600 border-slate-200";
-    let tagName = x.tag || (type === 'artikel' ? "Artikel" : "Info");
-    const t = tagName.toLowerCase();
-    
-    if (t.includes('dauroh') || t.includes('kajian')) tagColor = "bg-purple-50 text-purple-700 border-purple-100";
-    else if (t.includes('penting') || t.includes('mendesak')) tagColor = "bg-red-50 text-red-700 border-red-100";
-    else if (t.includes('ramadhan')) tagColor = "bg-emerald-50 text-emerald-700 border-emerald-100";
+  const mkCard = (x, type, index) => {
+    let tagColor = "bg-slate-100 text-slate-600 border-slate-200";
+    let tagName = x.tag || (type === 'artikel' ? "Artikel" : "Info");
+    const t = tagName.toLowerCase();
+    
+    if (t.includes('dauroh') || t.includes('kajian')) tagColor = "bg-purple-50 text-purple-700 border-purple-100";
+    else if (t.includes('penting') || t.includes('mendesak')) tagColor = "bg-red-50 text-red-700 border-red-100";
+    else if (t.includes('ramadhan')) tagColor = "bg-emerald-50 text-emerald-700 border-emerald-100";
 
-    let thumbnailHtml = "";
-    if (x.poster && x.poster.length > 5) {
-        thumbnailHtml = `
-        <div onclick="window.openArticleModal(${index})" class="w-full mb-4 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 cursor-pointer relative group shadow-sm">
-            <img src="${sanitizeHTML(x.poster)}" alt="Thumbnail" class="w-full h-auto object-contain block group-hover:scale-105 transition-transform duration-500" loading="lazy">
-            <div class="absolute inset-0 bg-black/0 group-hover:bg-slate-900/10 transition-colors flex items-center justify-center">
-                <div class="bg-white/95 backdrop-blur text-slate-800 px-3 py-1.5 rounded-full text-[10px] font-extrabold opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 shadow-md flex items-center gap-1 border border-slate-200">
-                    <i data-lucide="zoom-in" class="w-3 h-3 text-sky-600"></i> Lihat Detail
-                </div>
-            </div>
-        </div>`;
-    }
-
-    let actionButton = "";
-    if (x.link_daftar && x.link_daftar.length > 5) {
-        actionButton = `<a href="${x.link_daftar}" target="_blank" rel="noopener noreferrer" class="relative z-10 mt-3 w-full block text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2"><i data-lucide="edit" class="w-4 h-4"></i> Daftar Sekarang</a>`;
-    } else {
-        actionButton = `<button onclick="window.openArticleModal(${index})" class="relative z-10 mt-3 w-full block text-center bg-slate-50 hover:bg-slate-100 text-slate-600 font-bold py-2 rounded-xl text-sm transition-all border border-slate-200">Selengkapnya</button>`;
-    }
-
-    const safeTitle = sanitizeHTML(x.title || "(Tanpa Judul)");
-    const rawDesc = (type === 'artikel' ? x.excerpt : x.desc) || "";
-    const safeDesc = sanitizeHTML(rawDesc).replace(/<br\s*[\/]?>/gi, ' ').replace(/<[^>]*>?/gm, '');
-
-    return `
-      <article class="group relative flex flex-col h-full bg-white rounded-2xl border border-slate-100 p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-        <div class="flex items-center justify-between mb-3">
-          <span class="${tagColor} border px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">${sanitizeHTML(tagName)}</span>
-          <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1">
-            <i data-lucide="calendar" class="w-3 h-3"></i> ${sanitizeHTML(x.date || "-")}
-          </span>
-        </div>
-        ${thumbnailHtml} 
-        <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors">${safeTitle}</h3>
-        <p class="text-sm text-slate-500 mb-4 line-clamp-3 flex-grow leading-relaxed">${safeDesc || "Klik tombol di bawah untuk melihat detail informasi ini."}</p>
-        <div class="mt-auto pt-3 border-t border-slate-50">${actionButton}</div>
-      </article>`;
-  };
-
-const pW = document.getElementById("wrapPengumuman");
-if (pW) {
-    const urlKegiatan = isAdmin() && localStorage.getItem("sheet_pengumuman") ? localStorage.getItem("sheet_pengumuman") : DEFAULT_KEGIATAN_CSV;
-    const d = await loadCsv(urlKegiatan);
-    const startIdx = window.globalContentData.length;
-    d.forEach(item => window.globalContentData.push(item));
-
-    if (d.length > 0) {
-        // Cukup sisakan baris ini saja, biarkan Tailwind di HTML yang bekerja
-        pW.innerHTML = d.map((x, i) => mkCard(x, 'info', startIdx + i)).join("");
-        document.getElementById("boardEmpty")?.classList.add("hidden");
-    } else {
-        pW.innerHTML = "";
-        document.getElementById("boardEmpty")?.classList.remove("hidden");
+    let thumbnailHtml = "";
+    if (x.poster && x.poster.length > 5) {
+        thumbnailHtml = `
+        <div onclick="window.openArticleModal(${index})" class="w-full mb-4 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 cursor-pointer relative group shadow-sm">
+            <img src="${sanitizeHTML(x.poster)}" alt="Thumbnail" class="w-full h-auto object-contain block group-hover:scale-105 transition-transform duration-500" loading="lazy">
+            <div class="absolute inset-0 bg-black/0 group-hover:bg-slate-900/10 transition-colors flex items-center justify-center">
+                <div class="bg-white/95 backdrop-blur text-slate-800 px-3 py-1.5 rounded-full text-[10px] font-extrabold opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 shadow-md flex items-center gap-1 border border-slate-200">
+                    <i data-lucide="zoom-in" class="w-3 h-3 text-sky-600"></i> Lihat Detail
+                </div>
+            </div>
+        </div>`;
     }
 
- }
+    let actionButton = "";
+    if (x.link_daftar && x.link_daftar.length > 5) {
+        actionButton = `<a href="${x.link_daftar}" target="_blank" rel="noopener noreferrer" class="relative z-10 mt-3 w-full block text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2"><i data-lucide="edit" class="w-4 h-4"></i> Daftar Sekarang</a>`;
+    } else {
+        actionButton = `<button onclick="window.openArticleModal(${index})" class="relative z-10 mt-3 w-full block text-center bg-slate-50 hover:bg-slate-100 text-slate-600 font-bold py-2 rounded-xl text-sm transition-all border border-slate-200">Selengkapnya</button>`;
+    }
+
+    const safeTitle = sanitizeHTML(x.title || "(Tanpa Judul)");
+    const rawDesc = (type === 'artikel' ? x.excerpt : x.desc) || "";
+    const safeDesc = sanitizeHTML(rawDesc).replace(/<br\s*[\/]?>/gi, ' ').replace(/<[^>]*>?/gm, '');
+
+    return `
+      <article class="group relative flex flex-col h-full bg-white rounded-2xl border border-slate-100 p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+        <div class="flex items-center justify-between mb-3">
+          <span class="${tagColor} border px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider">${sanitizeHTML(tagName)}</span>
+          <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1">
+            <i data-lucide="calendar" class="w-3 h-3"></i> ${sanitizeHTML(x.date || "-")}
+          </span>
+        </div>
+        ${thumbnailHtml} 
+        <h3 class="text-lg font-bold text-slate-800 leading-snug mb-2 line-clamp-2 group-hover:text-sky-600 transition-colors">${safeTitle}</h3>
+        <p class="text-sm text-slate-500 mb-4 line-clamp-3 flex-grow leading-relaxed">${safeDesc || "Klik tombol di bawah untuk melihat detail informasi ini."}</p>
+        <div class="mt-auto pt-3 border-t border-slate-50">${actionButton}</div>
+      </article>`;
+  };
+
+  const pW = document.getElementById("wrapPengumuman");
+  if (pW) {
+      const urlKegiatan = isAdmin() && localStorage.getItem("sheet_pengumuman") ? localStorage.getItem("sheet_pengumuman") : DEFAULT_KEGIATAN_CSV;
+      const d = await loadCsv(urlKegiatan);
+      const startIdx = window.globalContentData.length;
+      d.forEach(item => window.globalContentData.push(item));
+
+      if (d.length > 0) {
+          pW.innerHTML = d.map((x, i) => mkCard(x, 'info', startIdx + i)).join("");
+          document.getElementById("boardEmpty")?.classList.add("hidden");
+      } else {
+          pW.innerHTML = "";
+          document.getElementById("boardEmpty")?.classList.remove("hidden");
+      }
+  }
+
+  const aL = document.getElementById("artikelList");
+  if (aL) {
+      const urlArtikel = getCsvUrl("artikel");
+      const d = await loadCsv(urlArtikel);
+      const startIdx = window.globalContentData.length;
+      d.forEach(item => window.globalContentData.push(item));
+      
+      const filter = (q) => {
+          const filtered = d.map((item, i) => ({item, idx: startIdx + i})).filter(o => (o.item.title || "").toLowerCase().includes(q));
+          
+          aL.innerHTML = filtered.length ? filtered.map(o => mkCard(o.item, 'artikel', o.idx)).join("") : "";
+          document.getElementById("artikelEmpty")?.classList.toggle("hidden", filtered.length > 0);
+          if(window.lucide) window.lucide.createIcons();
+      };
+      filter("");
+      document.getElementById("searchArtikel")?.addEventListener("input", e => filter(e.target.value.toLowerCase()));
+  }
+}
 function initTabs() {
   const btnP = $("#tabPengumuman");
   const btnA = $("#tabArtikel");
