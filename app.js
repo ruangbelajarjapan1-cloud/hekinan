@@ -50,7 +50,7 @@ const POPUP_SLIDES_DATA = [
     }
 ]; 
 
-const VIDEO_DONASI_LIST = ["GemAgh-FA5Q", "dQwgXcQ"];
+const VIDEO_DONASI_LIST = ["GemAgh-FA5Q", "8B-0qWT-WWI"];
 const YOUTUBE_VIDEOS = ["SQBmP-frKNg", "pCTZQmBQi_8", "oQjqwQb6atA"];
 const LOCAL_IMAGES = ["1a.png","1b.png","1.jpeg", "2.jpeg", "3.jpeg", "1a.png", "1b.png", "w3.jpeg"];
 
