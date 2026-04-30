@@ -192,7 +192,7 @@ function sanitizeHTML(str) {
 async function loadCsv(url) {
   const cacheKey = "cache_data_" + url;
   const cacheTimeKey = "cache_time_" + url;
-  const CACHE_DURATION = 60 * 60 * 1000; 
+  const CACHE_DURATION = 1 * 60 * 1000; 
   const cachedData = localStorage.getItem(cacheKey);
   const cachedTime = localStorage.getItem(cacheTimeKey);
   const now = new Date().getTime();
