@@ -38,7 +38,13 @@
         <p class="text-lg font-extrabold tracking-tight" data-k="jamaah">Jamaah Hekinan</p>
       </div>
     </div>
-    <div class="flex gap-1 bg-white/5 p-1.5 rounded-full border border-white/10 backdrop-blur-sm">
+   <div class="flex gap-1 bg-white/5 p-1.5 rounded-full border border-white/10 backdrop-blur-sm">
+      
+      <!-- Tombol Notifikasi Pengumuman -->
+      <button onclick="aktifkanNotifikasiKajian()" class="w-8 h-8 flex items-center justify-center rounded-full text-amber-400 hover:bg-amber-400/20 transition-colors mr-1" title="Aktifkan Notifikasi Kajian">
+        <i data-lucide="megaphone" class="w-4 h-4"></i>
+      </button>
+
       <button onclick="changeAppLang('id')" class="w-8 h-8 rounded-full text-[10px] font-bold text-slate-300 hover:text-white" id="lang-id">ID</button>
       <button onclick="changeAppLang('en')" class="w-8 h-8 rounded-full text-[10px] font-bold text-slate-300 hover:text-white" id="lang-en">EN</button>
       <button onclick="changeAppLang('jp')" class="w-8 h-8 rounded-full text-[10px] font-bold text-slate-300 hover:text-white" id="lang-jp">JP</button>
@@ -824,13 +830,63 @@
     });
   </script>
 
-  <script type="module" src="./app.js?v=tuntas2"></script>
+<script type="module" src="./app.js?v=tuntas2"></script>
   <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => { 
       navigator.serviceWorker.register('./sw.js').catch(err => console.log('PWA Error:', err)); 
     });
   }
-</script>
+  </script>
+
+  <!-- PASTE KODE SCRIPT NOTIFIKASI DI SINI -->
+  <script>
+    // 1. Fungsi Meminta Izin Notifikasi
+    function aktifkanNotifikasiKajian() {
+        if (!("Notification" in window)) {
+            alert("Maaf, browser HP Anda belum mendukung fitur notifikasi web.");
+            return;
+        }
+        
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                alert("Alhamdulillah! Notifikasi Kajian berhasil diaktifkan.");
+                // Tes kirim notifikasi pertama
+                kirimNotifLokal(
+                  "Notifikasi Aktif 📢", 
+                  "Anda akan menerima pengingat 30 menit sebelum kajian dimulai."
+                );
+            } else {
+                alert("Izin notifikasi ditolak. Anda bisa mengubahnya di pengaturan browser.");
+            }
+        });
+    }
+
+    // 2. Fungsi Eksekusi Notifikasi via Service Worker
+    function kirimNotifLokal(judul, pesan) {
+        if (Notification.permission === "granted") {
+            navigator.serviceWorker.ready.then(registration => {
+                registration.showNotification(judul, {
+                    body: pesan,
+                    icon: 'logohekinan.jpeg',
+                    badge: 'logohekinan.jpeg',
+                    vibrate: [200, 100, 200, 100, 200], // Getaran khas
+                    tag: 'kajian-reminder', // Mencegah notifikasi menumpuk
+                    requireInteraction: true // Notifikasi tidak hilang sampai di-klik
+                });
+            });
+        }
+    }
+
+    // 3. Logika Simulator Pengecekan Jadwal
+    function cekJadwalKajianOtomatis() {
+        // Logika aslinya akan dihubungkan ke CSV nantinya
+    }
+
+    // Cek setiap 5 menit (300000 milidetik) di background
+    setInterval(cekJadwalKajianOtomatis, 300000); 
+  </script>
+  <!-- BATAS KODE SCRIPT NOTIFIKASI -->
+
 </body>
 </html>
