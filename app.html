@@ -166,45 +166,56 @@
     </section>
     </section>
 
-    <section class="grid grid-cols-3 gap-3">
+ <section class="grid grid-cols-3 gap-3">
+      <!-- 1. KIBLAT -->
       <a href="https://qiblafinder.withgoogle.com/" target="_blank" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-sky-500/30 group">
         <i data-lucide="compass" class="w-6 h-6 text-sky-400 mb-2 group-hover:rotate-45 transition-transform"></i>
         <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300" data-k="menu_qibla">Kiblat</span>
       </a>
-     <button onclick="document.getElementById('modalAsatidz').classList.replace('hidden','flex')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-red-500/30 group">
-  <!-- Ikon diganti ke monitor-play agar dipastikan muncul -->
-  <i data-lucide="monitor-play" class="w-6 h-6 text-red-400 mb-2 group-hover:scale-110 transition-transform"></i>
-  <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Kajian</span>
-</button>
+      
+      <!-- 2. KAMUS -->
+      <button onclick="document.getElementById('modalKamus').classList.replace('hidden','flex')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-pink-500/30 group">
+        <i data-lucide="book" class="w-6 h-6 text-pink-400 mb-2 group-hover:scale-110 transition-transform"></i>
+        <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300" data-k="menu_kamus">Kamus</span>
+      </button>
+
+      <!-- 3. AL-QUR'AN (Menggantikan Kanji) -->
       <a href="https://quran.com/id" target="_blank" rel="noopener noreferrer" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-emerald-500/30 group">
-  <i data-lucide="book-open" class="w-6 h-6 text-emerald-400 mb-2 group-hover:scale-110 transition-transform"></i>
-  <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Al-Qur'an</span>
-</a>
-   <button onclick="document.getElementById('modalAsatidz').classList.replace('hidden','flex')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-red-500/30 group">
-  
-  <!-- Pastikan baris ikon ini ada di atas tag span -->
-  <i data-lucide="youtube" class="w-6 h-6 text-red-400 mb-2 group-hover:scale-110 transition-transform"></i>
-  
-  <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Kajian</span>
-</button>
+        <i data-lucide="book-open" class="w-6 h-6 text-emerald-400 mb-2 group-hover:scale-110 transition-transform"></i>
+        <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Al-Qur'an</span>
+      </a>
+
+      <!-- 4. KAJIAN (Menggantikan Komunikasi) -->
+      <button onclick="document.getElementById('modalAsatidz').classList.replace('hidden','flex')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-red-500/30 group">
+        <i data-lucide="monitor-play" class="w-6 h-6 text-red-400 mb-2 group-hover:scale-110 transition-transform"></i>
+        <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Kajian</span>
+      </button>
+
+      <!-- 5. MUSAFIR -->
       <button onclick="document.getElementById('modalSafar').classList.replace('hidden','flex')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-teal-500/30 group">
         <i data-lucide="train-front" class="w-6 h-6 text-teal-400 mb-2 group-hover:translate-x-1 transition-transform"></i>
         <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300" data-k="menu_safar">Musafir</span>
       </button>
+
+      <!-- 6. WAKAF -->
       <button onclick="document.getElementById('modalDonasi').classList.replace('hidden','flex')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-amber-500/30 group">
         <i data-lucide="heart-handshake" class="w-6 h-6 text-amber-400 mb-2 group-hover:scale-110 transition-transform"></i>
         <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300" data-k="menu_wakaf">Wakaf</span>
       </button>
+
+      <!-- 7. RADAR -->
       <button onclick="document.getElementById('modalRadar').classList.replace('hidden','flex')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-green-500/30 group">
         <i data-lucide="map-pin" class="w-6 h-6 text-green-400 mb-2 group-hover:scale-110 transition-transform"></i>
         <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Radar</span>
       </button>
-     
-      <!-- Tombol Donasi Dauroh (Melengkapi Grid 3x3) -->
+      
+      <!-- 8. DONASI DAUROH -->
       <button onclick="window.bukaDonasiDauroh()" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-amber-500/30 group">
         <i data-lucide="gift" class="w-6 h-6 text-amber-400 mb-2 group-hover:scale-110 transition-transform"></i>
         <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Donasi Dauroh</span>
       </button>
+
+      <!-- 9. KITAB DAUROH -->
       <a href="https://drive.google.com/file/d/1oPTpt7Sy1AmzwotGvCmPoZ4LW-zeAe0P/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-emerald-500/30 group relative overflow-hidden">
         <div class="absolute inset-0 bg-emerald-500/10 animate-pulse opacity-50"></div>
         <i data-lucide="book-down" class="w-6 h-6 text-emerald-400 mb-2 group-hover:translate-y-1 transition-transform relative z-10"></i>
