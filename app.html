@@ -167,14 +167,14 @@
         <i data-lucide="book" class="w-6 h-6 text-pink-400 mb-2 group-hover:scale-110 transition-transform"></i>
         <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300" data-k="menu_kamus">Kamus</span>
       </button>
-      <button onclick="document.getElementById('modalHalal').classList.replace('hidden','flex')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-rose-500/30 group">
-        <i data-lucide="scan-line" class="w-6 h-6 text-rose-400 mb-2 group-hover:scale-110 transition-transform"></i>
-        <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300" data-k="menu_kanji">Kanji</span>
-      </button>
-      <button onclick="document.getElementById('modalSaku').classList.replace('hidden','flex')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-indigo-500/30 group">
-        <i data-lucide="languages" class="w-6 h-6 text-indigo-400 mb-2 group-hover:scale-110 transition-transform"></i>
-        <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300" data-k="menu_saku">Komunikasi</span>
-      </button>
+      <a href="https://quran.com/id" target="_blank" rel="noopener noreferrer" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-emerald-500/30 group">
+  <i data-lucide="book-open" class="w-6 h-6 text-emerald-400 mb-2 group-hover:scale-110 transition-transform"></i>
+  <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Al-Qur'an</span>
+</a>
+    <button onclick="document.getElementById('modalAsatidz').classList.replace('hidden','flex')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-red-500/30 group">
+  <i data-lucide="youtube" class="w-6 h-6 text-red-400 mb-2 group-hover:scale-110 transition-transform"></i>
+  <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Kajian</span>
+</button>
       <button onclick="document.getElementById('modalSafar').classList.replace('hidden','flex')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-teal-500/30 group">
         <i data-lucide="train-front" class="w-6 h-6 text-teal-400 mb-2 group-hover:translate-x-1 transition-transform"></i>
         <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300" data-k="menu_safar">Musafir</span>
@@ -304,19 +304,66 @@
     </div>
   </div>
 
-  <div id="modalSaku" class="fixed inset-0 z-[160] hidden items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-sm transition-all text-slate-900">
-    <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden max-h-[85vh]">
-      <div class="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
-        <div><h3 class="text-xl font-extrabold text-slate-800 flex items-center gap-2"><span class="bg-indigo-100 text-indigo-600 p-1.5 rounded-lg"><i data-lucide="languages" class="w-5 h-5"></i></span> Tunjukkan ke Jepang</h3></div>
-        <button onclick="document.getElementById('modalSaku').classList.replace('flex','hidden')" class="p-2 rounded-full hover:bg-slate-200 text-slate-400"><i data-lucide="x" class="w-6 h-6"></i></button>
+ <!-- Modal Daftar YouTube Asatidz -->
+<div id="modalAsatidz" class="fixed inset-0 z-[160] hidden items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-sm transition-all text-slate-900">
+  <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden max-h-[85vh]">
+    <div class="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+      <div>
+        <h3 class="text-xl font-extrabold text-slate-800 flex items-center gap-2">
+          <span class="bg-red-100 text-red-600 p-1.5 rounded-lg"><i data-lucide="youtube" class="w-5 h-5"></i></span> 
+          Kajian Asatidz
+        </h3>
       </div>
-      <div class="p-6 overflow-y-auto space-y-4">
-        <div class="p-4 bg-white border-2 border-indigo-100 rounded-2xl shadow-sm"><p class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest mb-2">Izin Sholat 10 Menit</p><p class="text-xl font-black text-slate-800 leading-snug">申し訳ありませんが、お祈りの時間です。10分ほどお休みをいただいてもよろしいでしょうか。</p></div>
-        <div class="p-4 bg-white border-2 border-rose-100 rounded-2xl shadow-sm"><p class="text-[10px] font-bold text-rose-500 uppercase tracking-widest mb-2">Menolak Babi & Alkohol</p><p class="text-xl font-black text-slate-800 leading-snug">私はイスラム教徒なので、豚肉とアルコールを口にすることができません。</p></div>
-        <div class="p-4 bg-white border-2 border-sky-100 rounded-2xl shadow-sm"><p class="text-[10px] font-bold text-sky-500 uppercase tracking-widest mb-2">Sedang Puasa</p><p class="text-xl font-black text-slate-800 leading-snug">現在断食中のため、日没まで飲食を控えております。</p></div>
-      </div>
+      <button onclick="document.getElementById('modalAsatidz').classList.replace('flex','hidden')" class="p-2 rounded-full hover:bg-slate-200 text-slate-400">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+    
+    <div class="p-6 overflow-y-auto space-y-3 bg-slate-50/50">
+      
+      <a href="https://www.youtube.com/@MuhammadNuzulDzikri" target="_blank" class="flex items-center p-4 bg-white border border-slate-200 rounded-2xl hover:border-red-300 hover:shadow-md transition-all group">
+        <div class="bg-red-50 p-3 rounded-xl text-red-500 group-hover:bg-red-600 group-hover:text-white transition-colors mr-4">
+          <i data-lucide="play-circle" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h4 class="font-bold text-slate-800 text-sm">Ustadz Nuzul Dzikri</h4>
+          <p class="text-[10px] text-slate-500 mt-0.5">Kajian & Mutiara Hikmah</p>
+        </div>
+      </a>
+
+      <a href="https://www.youtube.com/@FirandaAndirja" target="_blank" class="flex items-center p-4 bg-white border border-slate-200 rounded-2xl hover:border-red-300 hover:shadow-md transition-all group">
+        <div class="bg-red-50 p-3 rounded-xl text-red-500 group-hover:bg-red-600 group-hover:text-white transition-colors mr-4">
+          <i data-lucide="play-circle" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h4 class="font-bold text-slate-800 text-sm">Ustadz Firanda Andirja</h4>
+          <p class="text-[10px] text-slate-500 mt-0.5">Fikih, Sirah & Aqidah</p>
+        </div>
+      </a>
+
+      <a href="https://www.youtube.com/@AbdullahRoyOfficial" target="_blank" class="flex items-center p-4 bg-white border border-slate-200 rounded-2xl hover:border-red-300 hover:shadow-md transition-all group">
+        <div class="bg-red-50 p-3 rounded-xl text-red-500 group-hover:bg-red-600 group-hover:text-white transition-colors mr-4">
+          <i data-lucide="play-circle" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h4 class="font-bold text-slate-800 text-sm">Ustadz Abdullah Roy</h4>
+          <p class="text-[10px] text-slate-500 mt-0.5">Silsilah Ilmiah & Tauhid</p>
+        </div>
+      </a>
+
+      <a href="https://www.youtube.com/@AmmiNurBaits" target="_blank" class="flex items-center p-4 bg-white border border-slate-200 rounded-2xl hover:border-red-300 hover:shadow-md transition-all group">
+        <div class="bg-red-50 p-3 rounded-xl text-red-500 group-hover:bg-red-600 group-hover:text-white transition-colors mr-4">
+          <i data-lucide="play-circle" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h4 class="font-bold text-slate-800 text-sm">Ustadz Ammi Nur Baits</h4>
+          <p class="text-[10px] text-slate-500 mt-0.5">Fikih Muamalah & Kontemporer</p>
+        </div>
+      </a>
+
     </div>
   </div>
+</div>
 
   <div id="modalSafar" class="fixed inset-0 z-[160] hidden items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-sm transition-all text-slate-900">
     <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden max-h-[85vh]">
