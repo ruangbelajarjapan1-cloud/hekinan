@@ -249,7 +249,23 @@
     <h2 class="text-2xl font-extrabold text-slate-900" data-i18n="video_appeal_title">Mengapa Kita Perlu Membangun Masjid?</h2>
     <p class="text-slate-500 mt-1" data-i18n="video_appeal_desc">Simak pesan berikut ini.</p>
   </div>
-  <div id="videoAjakanContainer" class="max-w-4xl mx-auto reveal"></div>
+<!-- BUNGKUSAN BARU AGAR BISA DIGESER DI LAPTOP/PC -->
+      <div class="relative group max-w-full mx-auto">
+        
+        <!-- Tombol Kiri -->
+        <button onclick="document.getElementById('videoAjakanContainer').scrollBy({ left: -400, behavior: 'smooth' })" class="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-slate-800/90 hover:bg-slate-900 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all backdrop-blur-sm shadow-xl hidden md:flex cursor-pointer border-2 border-white">
+           <i data-lucide="chevron-left" class="w-6 h-6"></i>
+        </button>
+
+        <!-- Kontainer Video Asli (Jangan ubah ID-nya) -->
+        <div id="videoAjakanContainer" class="max-w-4xl mx-auto reveal"></div>
+
+        <!-- Tombol Kanan -->
+        <button onclick="document.getElementById('videoAjakanContainer').scrollBy({ left: 400, behavior: 'smooth' })" class="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-slate-800/90 hover:bg-slate-900 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all backdrop-blur-sm shadow-xl hidden md:flex cursor-pointer border-2 border-white">
+           <i data-lucide="chevron-right" class="w-6 h-6"></i>
+        </button>
+
+      </div>
 </section>
 
 <section id="donasi" class="bg-white py-16 border-t border-slate-200">
