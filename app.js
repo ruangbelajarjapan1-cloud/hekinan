@@ -91,8 +91,11 @@ const TRANSLATIONS = {
     read_more: "Selengkapnya",
     reminder_label: "Belum bisa transfer sekarang?", reminder_btn: "Buat Komitmen Rutin", reminder_date_label: "Mulai Tanggal:", reminder_freq_label: "Frekuensi:",
     freq_once: "Sekali Saja", freq_monthly: "Rutin Tiap Bulan", btn_save_reminder: "Pasang Pengingat", reminder_note: "*Akan membuka Google Calendar Anda.",
-    search_title: "Mencari:", search_people: "Orang Baik Lagi!", search_desc_1: "Jika 1 orang berwakaf", search_desc_2: "maka pelunasan masjid ini akan segera terwujud. Jadilah salah satu dari mereka!",
-    joined_label: "Orang Lagi Dibutuhkan", btn_join_movement: "Gabung Gerakan Ini", target_complete: "Menuju Lunas",
+    search_title: "Mencari:", search_people: "Unit AC Sentral!",
+search_desc_1: "Jika 1 orang berinfaq",
+search_desc_2: "maka pengadaan AC ini akan segera terwujud. Jadilah salah satu dari mereka!",
+joined_label: "Unit Lagi Dibutuhkan",
+wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi untuk pengadaan AC Masjid As-Sunnah Hekinan.", btn_join_movement: "Gabung Gerakan Ini", target_complete: "Menuju Lunas",
     dedication_check: "Niatkan pahala untuk", dedication_target: "Orang Tua / yang sudah meninggal?", dedication_label: "Nama Orang Tua / yang sudah meninggal", dedication_placeholder: "Contoh: Bpk. Fulan bin Fulan",
     alert_nominal: "Mohon masukkan nominal donasi.", btn_loading: "Membuka WhatsApp...", btn_copied: "Tersalin",
     wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi untuk Masjid As-Sunnah Hekinan.",
@@ -112,8 +115,11 @@ const TRANSLATIONS = {
     read_more: "Read More",
     reminder_label: "Can't transfer right now?", reminder_btn: "Make a Commitment", reminder_date_label: "Start Date:", reminder_freq_label: "Frequency:",
     freq_once: "One Time", freq_monthly: "Monthly (Recurring)", btn_save_reminder: "Set Reminder", reminder_note: "*Opens Google Calendar.",
-    search_title: "Mission to Find:", search_people: "Good People More!", search_desc_1: "If 1 person donates", search_desc_2: "then this mosque will be fully paid off soon. Be one of them!",
-    joined_label: "People Still Needed", btn_join_movement: "Join This Movement", target_complete: "Towards Completion",
+    search_title: "Mission to Find:", search_people: "Central AC Units!",
+search_desc_1: "If 1 person donates",
+search_desc_2: "then this AC installation will be fully paid off soon. Be one of them!",
+joined_label: "Units Still Needed",
+wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque AC facilities.", btn_join_movement: "Join This Movement", target_complete: "Towards Completion",
     dedication_check: "Intend reward for", dedication_target: "Parents / Deceased?", dedication_label: "Name of Parents / Deceased", dedication_placeholder: "Ex: Mr. Fulan bin Fulan",
     alert_nominal: "Please enter donation amount.", btn_loading: "Opening WhatsApp...", btn_copied: "Copied",
 wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque facilities.", wa_dedication: "🎁 Reward intended for:", wa_closing: "Please check. Jazakumullah Khairan.",
@@ -857,23 +863,30 @@ window.bukaPopupJamaah = async () => {
 };
 window.tutupPopupJamaah = () => { const m = $("#modalJamaah"); if(m){ m.classList.add("hidden"); m.classList.remove("flex"); } };
 
-// --- PROGRESS WAKAF ---
+// Harga AC Sentral per unit
+const HARGA_PER_UNIT_AC = 300000; 
+
 function initProgressWakaf() {
-    const kekurangan = TARGET_DONASI - TERKUMPUL_SAAT_INI;
-    let persentase = (TERKUMPUL_SAAT_INI / TARGET_DONASI) * 100;
-    if (persentase > 100) persentase = 100; 
+    const kekurangan = TARGET_DONASI - TERKUMPUL_SAAT_INI;
+    let persentase = (TERKUMPUL_SAAT_INI / TARGET_DONASI) * 100;
+    if (persentase > 100) persentase = 100; 
 
-    const formatAngka = (a) => new Intl.NumberFormat('id-ID').format(a);
-    const updateTeks = (id, teks) => { const el = document.getElementById(id); if (el) el.textContent = teks; };
-    const updateLebar = (id, persen) => { const el = document.getElementById(id); if (el) el.style.width = `${persen}%`; };
+    const formatAngka = (a) => new Intl.NumberFormat('id-ID').format(a);
+    const updateTeks = (id, teks) => { const el = document.getElementById(id); if (el) el.innerHTML = teks; };
+    const updateLebar = (id, persen) => { const el = document.getElementById(id); if (el) el.style.width = `${persen}%`; };
 
-    updateTeks('targetOrang', formatAngka(Math.ceil(kekurangan / 1000)));
-    updateTeks('terkumpulOrang', formatAngka(Math.ceil(kekurangan / 1000)));
-    updateLebar('progressOrang', persentase);
-    updateLebar('progressBar', persentase);
-    updateTeks('terkumpulLabel', `¥${formatAngka(TERKUMPUL_SAAT_INI)}`);
-    updateTeks('kekuranganLabel', `¥${formatAngka(kekurangan)}`);
-updateTeks('targetLabel', `¥${formatAngka(TARGET_DONASI)}`);
+    // LOGIKA BARU: Menghitung sisa Unit AC (Pembulatan ke atas)
+    const sisaUnit = Math.ceil(kekurangan / HARGA_PER_UNIT_AC);
+
+    // Update Label di UI (ID HTML tetap 'targetOrang' agar tidak merusak struktur)
+    updateTeks('targetOrang', sisaUnit); 
+    updateTeks('terkumpulOrang', sisaUnit);
+    
+    updateLebar('progressOrang', persentase);
+    updateLebar('progressBar', persentase);
+    updateTeks('terkumpulLabel', `¥${formatAngka(TERKUMPUL_SAAT_INI)}`);
+    updateTeks('kekuranganLabel', `¥${formatAngka(kekurangan)}`);
+    updateTeks('targetLabel', `¥${formatAngka(TARGET_DONASI)}`);
     updateTeks('percentLabel', persentase.toFixed(1));
 }
 
@@ -899,7 +912,48 @@ async function initJadwalJumat() {
     }
 }
 // ---> BATAS PENAMBAHAN <---
+function showSuccessLunasPopup() {
+    const popup = document.getElementById("popupPromo");
+    const track = document.getElementById("popupTrack");
+    if (!popup || !track) return;
 
+    // Matikan slider promo lama
+    track.onmouseenter = null;
+    track.onmouseleave = null;
+
+    // Desain HTML Popup Lunas
+    track.innerHTML = `
+        <div class="flex flex-col items-center justify-center h-full p-6 text-center bg-gradient-to-b from-emerald-50 to-white relative">
+            <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=\\'20\\' height=\\'20\\' viewBox=\\'0 0 20 20\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Ccircle cx=\\'3\\' cy=\\'3\\' r=\\'3\\' fill=\\'%23059669\\'/%3E%3C/svg%3E');"></div>
+            <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-4 shadow-inner z-10">
+                <i data-lucide="check-circle" class="w-12 h-12 text-emerald-600"></i>
+            </div>
+            <h2 class="text-2xl font-black text-slate-800 mb-2 z-10">ALHAMDULILLAH!</h2>
+            <p class="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-4 z-10">Wakaf Lahan Telah Lunas</p>
+            <p class="text-[13px] text-slate-600 leading-relaxed italic mb-4 z-10">
+                "Alhamdulillahilladzi bi ni'matihi tatimmush shalihat." <br>
+                Segenap pengurus mengucapkan Jazakumullahu Khairan kepada para Muhsinin.
+            </p>
+            <div class="w-full py-2.5 bg-emerald-600 text-white rounded-xl font-bold text-[11px] shadow-md tracking-wider z-10 animate-pulse">
+                MAJU KE TAHAP: PENGADAAN AC
+            </div>
+        </div>
+    `;
+
+    // Ubah tombol di bawah popup menjadi Tombol Donasi AC
+    const actionContainer = track.nextElementSibling;
+    if (actionContainer) {
+        actionContainer.innerHTML = `
+            <a href="#donasi" onclick="document.getElementById('popupPromo').classList.add('hidden')" class="col-span-full flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all">
+                <i data-lucide="snowflake" class="w-4 h-4"></i> Donasi AC Sekarang
+            </a>
+        `;
+    }
+
+    popup.classList.remove("hidden");
+    popup.classList.add("flex");
+    if(window.lucide) window.lucide.createIcons();
+}
 // ==========================================
 // 4. BOOTSTRAP (SISTEM ANTI CRASH DITERAPKAN)
 // ==========================================
@@ -930,17 +984,16 @@ async function boot(mode = 'web') {
   try { initKamusApp(); } catch(e) { console.error("Error di initKamusApp:", e); }
 
  // --- SISTEM LIVE OTOMATIS & POP-UP DARI SPREADSHEET ---
-  try {
-      // 1. Tampilkan Pop-Up SECARA INSTAN saat web pertama dibuka
-      initPopup();              
-      
-      // 2. Baru kemudian jalan di latar belakang untuk mengecek Google Sheet
-      await cekLiveDariSheet(); 
-      initLiveStream();         
-      
-      // 3. Update isi Pop-up jika ada data baru dari Sheet yang masuk
-      initPopup();              
-  } catch(e) { console.error("Error di Live/Popup:", e); }
+try {
+        // 1. Tampilkan Pop-Up LUNAS SECARA INSTAN saat web pertama dibuka
+        showSuccessLunasPopup();              
+        
+        // 2. Baru kemudian jalan di latar belakang untuk mengecek Google Sheet
+        await cekLiveDariSheet(); 
+        initLiveStream();         
+        
+        // Catatan: initPopup() default dimatikan agar Popup Lunas tidak tertimpa
+    } catch(e) { console.error("Error di Live/Popup:", e); }
   if (mode === 'app-mode' || window.location.pathname.includes('app.html')) {
       if(typeof renderAppSholat === 'function') {
           try { renderAppSholat(); } catch(e) { console.error(e); }
