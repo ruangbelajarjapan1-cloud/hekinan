@@ -434,37 +434,36 @@ function initHeroSlider() {
 // =======================================================
 // SISTEM LIVE STREAMING & SHEET SYNC
 // =======================================================
-let currentWebLiveId = "";
-
 async function cekLiveDariSheet() {
-    const CSV_SETELAN = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1608872178&single=true&output=csv"; 
-    try {
-        const response = await fetch(CSV_SETELAN + "&t=" + new Date().getTime());
-        const text = await response.text();
-        const rows = text.split('\n');
-        let foundId = "";
-        
-        for (let row of rows) {
-            const cols = row.split(',');
-            if (cols[0] && cols[1]) {
-                const key = cols[0].trim().toLowerCase();
-                const val = cols[1].trim().replace(/['"\r]/g, '');
+    const CSV_SETELAN = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1608872178&single=true&output=csv"; 
+    try {
+        const response = await fetch(CSV_SETELAN + "&t=" + new Date().getTime());
+        const text = await response.text();
+        const rows = text.split('\n');
+        let foundId = "";
+        
+        for (let row of rows) {
+            const cols = row.split(',');
+            // LOGIKA BARU: Pastikan kolom key ada, meski kolom value kosong
+            if (cols[0] !== undefined) {
+                const key = cols[0].trim().toLowerCase();
+                // Jika kolom kedua kosong/dihapus, paksa jadi string kosong ""
+                const val = cols[1] !== undefined ? cols[1].trim().replace(/['"\r]/g, '') : "";
 
-                if (key === "live_id") foundId = val;
-                if (key === "target_donasi" && !isNaN(val) && val !== "") TARGET_DONASI = Number(val);
-                if (key === "terkumpul_donasi" && !isNaN(val) && val !== "") TERKUMPUL_SAAT_INI = Number(val);
-            }
-        }
-        
-        YOUTUBE_LIVE_ID = foundId;
-        initLiveStream(); 
-        if (typeof initProgressWakaf === 'function') initProgressWakaf();
-        
-    } catch (error) { 
-        console.error("Gagal cek Setelan dari Sheet", error); 
-    }
+                if (key === "live_id") foundId = val;
+                if (key === "target_donasi" && !isNaN(val) && val !== "") TARGET_DONASI = Number(val);
+                if (key === "terkumpul_donasi" && !isNaN(val) && val !== "") TERKUMPUL_SAAT_INI = Number(val);
+            }
+        }
+        
+        YOUTUBE_LIVE_ID = foundId;
+        initLiveStream(); 
+        if (typeof initProgressWakaf === 'function') initProgressWakaf();
+        
+    } catch (error) { 
+        console.error("Gagal cek Setelan dari Sheet", error); 
+    }
 }
-
 function initLiveStream() {
     const container = $("#liveStreamContainer");
     const wrapper = $("#liveStreamWrapper");
