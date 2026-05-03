@@ -95,7 +95,7 @@ const TRANSLATIONS = {
     joined_label: "Orang Lagi Dibutuhkan", btn_join_movement: "Gabung Gerakan Ini", target_complete: "Menuju Lunas",
     dedication_check: "Niatkan pahala untuk", dedication_target: "Orang Tua / yang sudah meninggal?", dedication_label: "Nama Orang Tua / yang sudah meninggal", dedication_placeholder: "Contoh: Bpk. Fulan bin Fulan",
     alert_nominal: "Mohon masukkan nominal donasi.", btn_loading: "Membuka WhatsApp...", btn_copied: "Tersalin",
-    wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi pembangunan Masjid As-Sunnah Hekinan.", wa_dedication: "🎁 Pahala diniatkan atas nama:", wa_closing: "Mohon dicek. Jazakumullah khairan.",
+    wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi untuk Masjid As-Sunnah Hekinan.",
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
@@ -116,7 +116,7 @@ const TRANSLATIONS = {
     joined_label: "People Still Needed", btn_join_movement: "Join This Movement", target_complete: "Towards Completion",
     dedication_check: "Intend reward for", dedication_target: "Parents / Deceased?", dedication_label: "Name of Parents / Deceased", dedication_placeholder: "Ex: Mr. Fulan bin Fulan",
     alert_nominal: "Please enter donation amount.", btn_loading: "Opening WhatsApp...", btn_copied: "Copied",
-    wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque construction.", wa_dedication: "🎁 Reward intended for:", wa_closing: "Please check. Jazakumullah Khairan.",
+wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque facilities.", wa_dedication: "🎁 Reward intended for:", wa_closing: "Please check. Jazakumullah Khairan.",
   }
 };
 
