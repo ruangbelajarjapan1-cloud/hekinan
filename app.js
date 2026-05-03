@@ -19,8 +19,8 @@ window.addEventListener('error', function(e) {
     }
 }, true); 
 
-let TARGET_DONASI = 42000000;
-let TERKUMPUL_SAAT_INI = 21182533;
+let TARGET_DONASI = 1200000;
+let TERKUMPUL_SAAT_INI = 0;
 
 // Koordinat Hekinan, Jepang
 const HEK_LAT = 34.884;
@@ -916,6 +916,11 @@ function showSuccessLunasPopup() {
     const popup = document.getElementById("popupPromo");
     const track = document.getElementById("popupTrack");
     if (!popup || !track) return;
+
+    // --- MENGAKTIFKAN KEMBALI TOMBOL CLOSE ---
+    const closePopup = () => { popup.classList.add("hidden"); popup.classList.remove("flex"); };
+    document.getElementById("closePopupBtn")?.addEventListener("click", closePopup);
+    document.getElementById("closePopupBackdrop")?.addEventListener("click", closePopup);
 
     // Matikan slider promo lama
     track.onmouseenter = null;
