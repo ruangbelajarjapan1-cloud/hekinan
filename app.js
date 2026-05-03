@@ -19,8 +19,8 @@ window.addEventListener('error', function(e) {
     }
 }, true); 
 
-let TARGET_DONASI = 1200000;
-let TERKUMPUL_SAAT_INI = 0;
+let TARGET_DONASI = 42000000;
+let TERKUMPUL_SAAT_INI = 21182533;
 
 // Koordinat Hekinan, Jepang
 const HEK_LAT = 34.884;
@@ -84,21 +84,18 @@ const TRANSLATIONS = {
     hadith_label: "Mutiara Hadits", sholat_title: "Jadwal Sholat", gallery_title: "Kabar Terbaru", gallery_desc: "Ikuti terus pembaruan dan aktivitas terkini dari media sosial kami.",
     tab_announcement: "Pengumuman", tab_article: "Artikel & Faedah", empty_data: "Belum ada data terbaru.", empty_search: "Tidak ditemukan.",
     donasi_badge: "Peluang Amal Jariyah", donasi_title: "Investasi Kekal Akhirat", deadline_label: "Batas Waktu Wakaf (Tahap 1)",
-    progress_title: "Progres Pengadaan AC", collected: "Terkumpul", needed: "Kekurangan",
+    progress_title: "Progres Pembangunan", collected: "Terkumpul", needed: "Kekurangan",
     confirm_title: "Konfirmasi Donasi", confirm_desc: "Masukkan nominal yang telah ditransfer.", or: "ATAU", btn_confirm: "Konfirmasi via WA",
     footer_links: "Tautan", footer_follow: "Lokasi", btn_zakat: "Hitung Zakat", btn_donate_now: "Donasi Sekarang", btn_popup_wakaf: "Ikut Wakaf Sekarang",
     video_appeal_title: "Mengapa Kita Perlu Membangun Masjid?", video_appeal_desc: "Simak pesan berikut ini.", view_all: "Lihat Semua", view_channel: "Lihat Channel YouTube", contact_title: "Hubungi Kami",
     read_more: "Selengkapnya",
     reminder_label: "Belum bisa transfer sekarang?", reminder_btn: "Buat Komitmen Rutin", reminder_date_label: "Mulai Tanggal:", reminder_freq_label: "Frekuensi:",
     freq_once: "Sekali Saja", freq_monthly: "Rutin Tiap Bulan", btn_save_reminder: "Pasang Pengingat", reminder_note: "*Akan membuka Google Calendar Anda.",
-    search_title: "Mencari:", search_people: "Unit AC Sentral!",
-search_desc_1: "Jika 1 orang berinfaq",
-search_desc_2: "maka pengadaan AC ini akan segera terwujud. Jadilah salah satu dari mereka!",
-joined_label: "Unit Lagi Dibutuhkan",
-wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi untuk pengadaan AC Masjid As-Sunnah Hekinan.", btn_join_movement: "Gabung Gerakan Ini", target_complete: "Menuju Lunas",
+    search_title: "Mencari:", search_people: "Orang Baik Lagi!", search_desc_1: "Jika 1 orang berwakaf", search_desc_2: "maka pelunasan masjid ini akan segera terwujud. Jadilah salah satu dari mereka!",
+    joined_label: "Orang Lagi Dibutuhkan", btn_join_movement: "Gabung Gerakan Ini", target_complete: "Menuju Lunas",
     dedication_check: "Niatkan pahala untuk", dedication_target: "Orang Tua / yang sudah meninggal?", dedication_label: "Nama Orang Tua / yang sudah meninggal", dedication_placeholder: "Contoh: Bpk. Fulan bin Fulan",
     alert_nominal: "Mohon masukkan nominal donasi.", btn_loading: "Membuka WhatsApp...", btn_copied: "Tersalin",
-    wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi untuk Masjid As-Sunnah Hekinan.",
+    wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi pembangunan Masjid As-Sunnah Hekinan.", wa_dedication: "🎁 Pahala diniatkan atas nama:", wa_closing: "Mohon dicek. Jazakumullah khairan.",
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
@@ -108,21 +105,18 @@ wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi untuk pengadaan AC M
     hadith_label: "Daily Hadith", sholat_title: "Prayer Times", gallery_title: "As Sunnah Hekinan Update", gallery_desc: "Documentation of community activities.",
     tab_announcement: "Announcements", tab_article: "Articles", empty_data: "No updates.", empty_search: "Not found.",
     donasi_badge: "Charity Opportunity", donasi_title: "Invest for Hereafter", deadline_label: "Donation Deadline",
-    progress_title: "AC Procurement Progress", collected: "Collected", needed: "Remaining",
+    progress_title: "Construction Progress", collected: "Collected", needed: "Remaining",
     confirm_title: "Confirm Donation", confirm_desc: "Enter transferred amount.", or: "OR", btn_confirm: "Confirm via WA",
     footer_links: "Links", footer_follow: "Location", btn_zakat: "Zakat Calculator", btn_donate_now: "Donate Now", btn_popup_wakaf: "Donate Now",
     video_appeal_title: "Why Do We Need to Build a Mosque?", video_appeal_desc: "Watch the following message.", view_all: "View All", view_channel: "Visit YouTube Channel", contact_title: "Contact Us",
     read_more: "Read More",
     reminder_label: "Can't transfer right now?", reminder_btn: "Make a Commitment", reminder_date_label: "Start Date:", reminder_freq_label: "Frequency:",
     freq_once: "One Time", freq_monthly: "Monthly (Recurring)", btn_save_reminder: "Set Reminder", reminder_note: "*Opens Google Calendar.",
-    search_title: "Mission to Find:", search_people: "Central AC Units!",
-search_desc_1: "If 1 person donates",
-search_desc_2: "then this AC installation will be fully paid off soon. Be one of them!",
-joined_label: "Units Still Needed",
-wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque AC facilities.", btn_join_movement: "Join This Movement", target_complete: "Towards Completion",
+    search_title: "Mission to Find:", search_people: "Good People More!", search_desc_1: "If 1 person donates", search_desc_2: "then this mosque will be fully paid off soon. Be one of them!",
+    joined_label: "People Still Needed", btn_join_movement: "Join This Movement", target_complete: "Towards Completion",
     dedication_check: "Intend reward for", dedication_target: "Parents / Deceased?", dedication_label: "Name of Parents / Deceased", dedication_placeholder: "Ex: Mr. Fulan bin Fulan",
     alert_nominal: "Please enter donation amount.", btn_loading: "Opening WhatsApp...", btn_copied: "Copied",
-wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque facilities.", wa_dedication: "🎁 Reward intended for:", wa_closing: "Please check. Jazakumullah Khairan.",
+    wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque construction.", wa_dedication: "🎁 Reward intended for:", wa_closing: "Please check. Jazakumullah Khairan.",
   }
 };
 
@@ -434,36 +428,37 @@ function initHeroSlider() {
 // =======================================================
 // SISTEM LIVE STREAMING & SHEET SYNC
 // =======================================================
-async function cekLiveDariSheet() {
-    const CSV_SETELAN = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1608872178&single=true&output=csv"; 
-    try {
-        const response = await fetch(CSV_SETELAN + "&t=" + new Date().getTime());
-        const text = await response.text();
-        const rows = text.split('\n');
-        let foundId = "";
-        
-        for (let row of rows) {
-            const cols = row.split(',');
-            // LOGIKA BARU: Pastikan kolom key ada, meski kolom value kosong
-            if (cols[0] !== undefined) {
-                const key = cols[0].trim().toLowerCase();
-                // Jika kolom kedua kosong/dihapus, paksa jadi string kosong ""
-                const val = cols[1] !== undefined ? cols[1].trim().replace(/['"\r]/g, '') : "";
+let currentWebLiveId = "";
 
-                if (key === "live_id") foundId = val;
-                if (key === "target_donasi" && !isNaN(val) && val !== "") TARGET_DONASI = Number(val);
-                if (key === "terkumpul_donasi" && !isNaN(val) && val !== "") TERKUMPUL_SAAT_INI = Number(val);
-            }
-        }
-        
-        YOUTUBE_LIVE_ID = foundId;
-        initLiveStream(); 
-        if (typeof initProgressWakaf === 'function') initProgressWakaf();
-        
-    } catch (error) { 
-        console.error("Gagal cek Setelan dari Sheet", error); 
-    }
+async function cekLiveDariSheet() {
+    const CSV_SETELAN = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1608872178&single=true&output=csv"; 
+    try {
+        const response = await fetch(CSV_SETELAN + "&t=" + new Date().getTime());
+        const text = await response.text();
+        const rows = text.split('\n');
+        let foundId = "";
+        
+        for (let row of rows) {
+            const cols = row.split(',');
+            if (cols[0] && cols[1]) {
+                const key = cols[0].trim().toLowerCase();
+                const val = cols[1].trim().replace(/['"\r]/g, '');
+
+                if (key === "live_id") foundId = val;
+                if (key === "target_donasi" && !isNaN(val) && val !== "") TARGET_DONASI = Number(val);
+                if (key === "terkumpul_donasi" && !isNaN(val) && val !== "") TERKUMPUL_SAAT_INI = Number(val);
+            }
+        }
+        
+        YOUTUBE_LIVE_ID = foundId;
+        initLiveStream(); 
+        if (typeof initProgressWakaf === 'function') initProgressWakaf();
+        
+    } catch (error) { 
+        console.error("Gagal cek Setelan dari Sheet", error); 
+    }
 }
+
 function initLiveStream() {
     const container = $("#liveStreamContainer");
     const wrapper = $("#liveStreamWrapper");
@@ -862,30 +857,23 @@ window.bukaPopupJamaah = async () => {
 };
 window.tutupPopupJamaah = () => { const m = $("#modalJamaah"); if(m){ m.classList.add("hidden"); m.classList.remove("flex"); } };
 
-// Harga AC Sentral per unit
-const HARGA_PER_UNIT_AC = 300000; 
-
+// --- PROGRESS WAKAF ---
 function initProgressWakaf() {
-    const kekurangan = TARGET_DONASI - TERKUMPUL_SAAT_INI;
-    let persentase = (TERKUMPUL_SAAT_INI / TARGET_DONASI) * 100;
-    if (persentase > 100) persentase = 100; 
+    const kekurangan = TARGET_DONASI - TERKUMPUL_SAAT_INI;
+    let persentase = (TERKUMPUL_SAAT_INI / TARGET_DONASI) * 100;
+    if (persentase > 100) persentase = 100; 
 
-    const formatAngka = (a) => new Intl.NumberFormat('id-ID').format(a);
-    const updateTeks = (id, teks) => { const el = document.getElementById(id); if (el) el.innerHTML = teks; };
-    const updateLebar = (id, persen) => { const el = document.getElementById(id); if (el) el.style.width = `${persen}%`; };
+    const formatAngka = (a) => new Intl.NumberFormat('id-ID').format(a);
+    const updateTeks = (id, teks) => { const el = document.getElementById(id); if (el) el.textContent = teks; };
+    const updateLebar = (id, persen) => { const el = document.getElementById(id); if (el) el.style.width = `${persen}%`; };
 
-    // LOGIKA BARU: Menghitung sisa Unit AC (Pembulatan ke atas)
-    const sisaUnit = Math.ceil(kekurangan / HARGA_PER_UNIT_AC);
-
-    // Update Label di UI (ID HTML tetap 'targetOrang' agar tidak merusak struktur)
-    updateTeks('targetOrang', sisaUnit); 
-    updateTeks('terkumpulOrang', sisaUnit);
-    
-    updateLebar('progressOrang', persentase);
-    updateLebar('progressBar', persentase);
-    updateTeks('terkumpulLabel', `¥${formatAngka(TERKUMPUL_SAAT_INI)}`);
-    updateTeks('kekuranganLabel', `¥${formatAngka(kekurangan)}`);
-    updateTeks('targetLabel', `¥${formatAngka(TARGET_DONASI)}`);
+    updateTeks('targetOrang', formatAngka(Math.ceil(kekurangan / 1000)));
+    updateTeks('terkumpulOrang', formatAngka(Math.ceil(kekurangan / 1000)));
+    updateLebar('progressOrang', persentase);
+    updateLebar('progressBar', persentase);
+    updateTeks('terkumpulLabel', `¥${formatAngka(TERKUMPUL_SAAT_INI)}`);
+    updateTeks('kekuranganLabel', `¥${formatAngka(kekurangan)}`);
+updateTeks('targetLabel', `¥${formatAngka(TARGET_DONASI)}`);
     updateTeks('percentLabel', persentase.toFixed(1));
 }
 
@@ -911,53 +899,7 @@ async function initJadwalJumat() {
     }
 }
 // ---> BATAS PENAMBAHAN <---
-function showSuccessLunasPopup() {
-    const popup = document.getElementById("popupPromo");
-    const track = document.getElementById("popupTrack");
-    if (!popup || !track) return;
 
-    // --- MENGAKTIFKAN KEMBALI TOMBOL CLOSE ---
-    const closePopup = () => { popup.classList.add("hidden"); popup.classList.remove("flex"); };
-    document.getElementById("closePopupBtn")?.addEventListener("click", closePopup);
-    document.getElementById("closePopupBackdrop")?.addEventListener("click", closePopup);
-
-    // Matikan slider promo lama
-    track.onmouseenter = null;
-    track.onmouseleave = null;
-
-    // Desain HTML Popup Lunas
-    track.innerHTML = `
-        <div class="flex flex-col items-center justify-center h-full p-6 text-center bg-gradient-to-b from-emerald-50 to-white relative">
-            <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=\\'20\\' height=\\'20\\' viewBox=\\'0 0 20 20\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Ccircle cx=\\'3\\' cy=\\'3\\' r=\\'3\\' fill=\\'%23059669\\'/%3E%3C/svg%3E');"></div>
-            <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-4 shadow-inner z-10">
-                <i data-lucide="check-circle" class="w-12 h-12 text-emerald-600"></i>
-            </div>
-            <h2 class="text-2xl font-black text-slate-800 mb-2 z-10">ALHAMDULILLAH!</h2>
-            <p class="text-xs font-bold text-emerald-700 uppercase tracking-widest mb-4 z-10">Wakaf Lahan Telah Lunas</p>
-            <p class="text-[13px] text-slate-600 leading-relaxed italic mb-4 z-10">
-                "Alhamdulillahilladzi bi ni'matihi tatimmush shalihat." <br>
-                Segenap pengurus mengucapkan Jazakumullahu Khairan kepada para Muhsinin.
-            </p>
-            <div class="w-full py-2.5 bg-emerald-600 text-white rounded-xl font-bold text-[11px] shadow-md tracking-wider z-10 animate-pulse">
-                MAJU KE TAHAP: PENGADAAN AC
-            </div>
-        </div>
-    `;
-
-    // Ubah tombol di bawah popup menjadi Tombol Donasi AC
-    const actionContainer = track.nextElementSibling;
-    if (actionContainer) {
-        actionContainer.innerHTML = `
-            <a href="#donasi" onclick="document.getElementById('popupPromo').classList.add('hidden')" class="col-span-full flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all">
-                <i data-lucide="snowflake" class="w-4 h-4"></i> Donasi AC Sekarang
-            </a>
-        `;
-    }
-
-    popup.classList.remove("hidden");
-    popup.classList.add("flex");
-    if(window.lucide) window.lucide.createIcons();
-}
 // ==========================================
 // 4. BOOTSTRAP (SISTEM ANTI CRASH DITERAPKAN)
 // ==========================================
@@ -988,16 +930,17 @@ async function boot(mode = 'web') {
   try { initKamusApp(); } catch(e) { console.error("Error di initKamusApp:", e); }
 
  // --- SISTEM LIVE OTOMATIS & POP-UP DARI SPREADSHEET ---
-try {
-        // 1. Tampilkan Pop-Up LUNAS SECARA INSTAN saat web pertama dibuka
-        showSuccessLunasPopup();              
-        
-        // 2. Baru kemudian jalan di latar belakang untuk mengecek Google Sheet
-        await cekLiveDariSheet(); 
-        initLiveStream();         
-        
-        // Catatan: initPopup() default dimatikan agar Popup Lunas tidak tertimpa
-    } catch(e) { console.error("Error di Live/Popup:", e); }
+  try {
+      // 1. Tampilkan Pop-Up SECARA INSTAN saat web pertama dibuka
+      initPopup();              
+      
+      // 2. Baru kemudian jalan di latar belakang untuk mengecek Google Sheet
+      await cekLiveDariSheet(); 
+      initLiveStream();         
+      
+      // 3. Update isi Pop-up jika ada data baru dari Sheet yang masuk
+      initPopup();              
+  } catch(e) { console.error("Error di Live/Popup:", e); }
   if (mode === 'app-mode' || window.location.pathname.includes('app.html')) {
       if(typeof renderAppSholat === 'function') {
           try { renderAppSholat(); } catch(e) { console.error(e); }
