@@ -92,6 +92,11 @@ const TRANSLATIONS = {
     dedication_check: "Niatkan pahala untuk", dedication_target: "Orang Tua / yang sudah meninggal?", dedication_label: "Nama Orang Tua / yang sudah meninggal", dedication_placeholder: "Contoh: Bpk. Fulan bin Fulan",
     alert_nominal: "Mohon masukkan nominal donasi.", btn_loading: "Membuka WhatsApp...", btn_copied: "Tersalin",
     wa_opening: "Assalamu'alaikum, saya ingin konfirmasi donasi pembangunan Masjid As-Sunnah Hekinan.", wa_dedication: "🎁 Pahala diniatkan atas nama:", wa_closing: "Mohon dicek. Jazakumullah khairan.",
+          ann_official: "📢 PEMBERITAHUAN RESMI",
+    ann_title: "WAKAF DITUTUP",
+    ann_p1: "Alhamdulillah, dengan izin Allah Ta'ala, penerimaan wakaf pembelian lahan dan bangunan Masjid As-Sunnah Hekinan kami tutup sementara mulai saat ini.",
+    ann_p2: "Dana wakaf dari Indonesia diperkirakan telah mencukupi kekurangan. Kami menunggu konfirmasi transfer seluruh dana dari Indonesia ke Jepang selesai sepenuhnya sebelum membuka kembali penerimaan.",
+    ann_p3: "Bagi jamaah yang masih ingin beramal, donasi tetap dibuka dan akan dialihkan sepenuhnya untuk Infaq Operasional Masjid. Jazākumullāhu khayran.",
   },
   en: {
     nav_sholat: "Prayer Times", nav_kegiatan: "Gallery", nav_info: "Info", nav_donasi: "Donate",
@@ -113,7 +118,12 @@ const TRANSLATIONS = {
     dedication_check: "Intend reward for", dedication_target: "Parents / Deceased?", dedication_label: "Name of Parents / Deceased", dedication_placeholder: "Ex: Mr. Fulan bin Fulan",
     alert_nominal: "Please enter donation amount.", btn_loading: "Opening WhatsApp...", btn_copied: "Copied",
     wa_opening: "Assalamu'alaikum, I would like to confirm my donation for As-Sunnah Hekinan Mosque construction.", wa_dedication: "🎁 Reward intended for:", wa_closing: "Please check. Jazakumullah Khairan.",
-  }
+ ann_official: "📢 OFFICIAL ANNOUNCEMENT",
+    ann_title: "WAQF CLOSED",
+    ann_p1: "Alhamdulillah, by the permission of Allah Ta’ala, the waqf fundraising for the purchase of the land and building of Masjid As-Sunnah Hekinan is now officially closed.",
+    ann_p2: "The waqf funds collected from Indonesia are estimated to have covered the remaining amount needed. We are currently awaiting confirmation that the full transfer of funds from Indonesia to Japan has been completed before reopening.",
+    ann_p3: "For those who still wish to contribute, donations remain open and will be fully allocated to the Mosque Operational Fund. Jazaakumullaahu khayran.",
+  }
 };
 
 // ==========================================
