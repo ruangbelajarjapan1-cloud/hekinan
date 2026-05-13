@@ -27,24 +27,22 @@ const HEK_LAT = 34.884;
 const HEK_LON = 136.993;
 
 const POPUP_SLIDES_DATA = [
-     { 
-        src: "wakaf-tutup-id.jpeg", // Gambar poster baru 
-        link: "#donasi", 
+    { 
+        src: "wakaf-tutup-id.jpeg",
+        link: "pengumuman-wakaf",
         text: "Baca Pengumuman" 
     },
-    { 
-        src: "wakaf-tutup-en.jpeg", // Gambar poster baru versi Inggris
-        link: "#donasi", 
+    { 
+        src: "wakaf-tutup-en.jpeg",
+        link: "pengumuman-wakaf",
         text: "Read Announcement" 
     },
-   
-    
-    { 
-        src: "assets/foto/w3.jpeg", 
-        link: "https://wa.me/818013909425", 
-        text: "Hubungi Admin" 
-    }
-]; 
+    { 
+        src: "assets/foto/w3.jpeg", 
+        link: "https://wa.me/818013909425", 
+        text: "Hubungi Admin" 
+    }
+];
 
 const VIDEO_DONASI_LIST = ["8B-0qWT-WWI","J-qjzvpC2lw","GemAgh-FA5Q","hI3InnD1bBY"];
 const YOUTUBE_VIDEOS = ["SQBmP-frKNg", "pCTZQmBQi_8", "oQjqwQb6atA"];
@@ -511,29 +509,82 @@ function initPopup() {
 
     if (!POPUP_SLIDES_DATA || POPUP_SLIDES_DATA.length === 0) return;
 
-    // Ambil tombol kosong/tersembunyi di sebelah tombol "Share Info"
-    const actionContainer = track.nextElementSibling;
-    const dynamicBtn = actionContainer ? actionContainer.querySelector("a") : null;
+      // Ambil tombol kosong/tersembunyi di sebelah tombol "Share Info"
+    const actionContainer = track.nextElementSibling;
+    const dynamicBtn = actionContainer ? actionContainer.querySelector("a") : null;
 
-    // Fungsi untuk mengubah teks dan link tombol hijau di bawah gambar
-    const updateDynamicButton = (index) => {
-        if (!dynamicBtn) return;
-        const data = POPUP_SLIDES_DATA[index];
-        dynamicBtn.href = data.link;
-        // Menghapus class 'hidden' dan memaksanya tampil
-        dynamicBtn.className = "flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all";
-        dynamicBtn.innerHTML = `${data.text} <i data-lucide="external-link" class="w-4 h-4"></i>`;
-        if (window.lucide) window.lucide.createIcons();
-    };
+    const closePopup = () => {
+        popup.classList.add("hidden");
+        popup.classList.remove("flex");
+    };
+
+    const bukaTujuanPopup = (data) => {
+        if (!data) return;
+
+        // Khusus untuk pengumuman wakaf
+        if (data.link === "pengumuman-wakaf") {
+            closePopup();
+
+            // Kalau sedang di app.html, buka modal Papan Info
+            const modalInfo = document.getElementById("modalInfo");
+            if (modalInfo) {
+                modalInfo.classList.remove("hidden");
+                modalInfo.classList.add("flex");
+                return;
+            }
+
+            // Kalau sedang di index.html, scroll ke bagian donasi/pengumuman
+            const donasiSection = document.getElementById("donasi");
+            if (donasiSection) {
+                donasiSection.scrollIntoView({ behavior: "smooth" });
+                return;
+            }
+
+            // Cadangan kalau halaman tidak punya modalInfo/donasi
+            window.location.href = "index.html#donasi";
+            return;
+        }
+
+        // Untuk link eksternal seperti WhatsApp
+        if (data.link && data.link.startsWith("http")) {
+            window.open(data.link, "_blank", "noopener,noreferrer");
+            return;
+        }
+
+        // Untuk anchor biasa
+        if (data.link && data.link.startsWith("#")) {
+            closePopup();
+            document.querySelector(data.link)?.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
+    // Fungsi untuk mengubah teks dan link tombol hijau di bawah gambar
+    const updateDynamicButton = (index) => {
+        if (!dynamicBtn) return;
+        const data = POPUP_SLIDES_DATA[index];
+
+        dynamicBtn.href = "#";
+        dynamicBtn.onclick = (e) => {
+            e.preventDefault();
+            bukaTujuanPopup(data);
+        };
+
+        dynamicBtn.className = "flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all";
+        dynamicBtn.innerHTML = `${data.text} <i data-lucide="external-link" class="w-4 h-4"></i>`;
+        if (window.lucide) window.lucide.createIcons();
+    };
 
     let currentIndex = 0;
     const slides = [];
 
     POPUP_SLIDES_DATA.forEach((data, index) => {
-        const slide = document.createElement("a");
-        slide.href = data.link;
-        slide.target = "_blank";
-        slide.className = "absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out";
+            const slide = document.createElement("a");
+        slide.href = "#";
+        slide.onclick = (e) => {
+            e.preventDefault();
+            bukaTujuanPopup(data);
+        };
+        slide.className = "absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out cursor-pointer";
         slide.style.opacity = index === 0 ? "1" : "0";
         slide.style.pointerEvents = index === 0 ? "auto" : "none";
         
