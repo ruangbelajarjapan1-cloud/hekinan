@@ -945,17 +945,97 @@ async function initJadwalJumat() {
     const container = document.getElementById("jadwalJumatContainer");
     if (!container) return;
 
+    const setText = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = value || "-";
+    };
+
+    const parseTanggalJumat = (value) => {
+        if (!value) return null;
+
+        const raw = String(value).trim();
+        const parts = raw.replace(/\./g, "/").replace(/-/g, "/").split("/");
+
+        if (parts.length !== 3) return null;
+
+        let y, m, d;
+
+        // Format Google Sheet Anda: 5/1/2026 atau 5/15/2026
+        if (parts[2].length === 4) {
+            m = Number(parts[0]) - 1;
+            d = Number(parts[1]);
+            y = Number(parts[2]);
+        }
+        // Cadangan kalau nanti formatnya 2026/5/1
+        else if (parts[0].length === 4) {
+            y = Number(parts[0]);
+            m = Number(parts[1]) - 1;
+            d = Number(parts[2]);
+        } else {
+            return null;
+        }
+
+        const date = new Date(y, m, d);
+        date.setHours(0, 0, 0, 0);
+
+        return isNaN(date.getTime()) ? null : date;
+    };
+
+    const formatTanggalID = (date) => {
+        return new Intl.DateTimeFormat("id-ID", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        }).format(date);
+    };
+
     try {
         const data = await loadCsv(DEFAULT_JUMAT_CSV);
-        if (data && data.length > 0) {
-            const jumat = data[0]; 
-            document.getElementById("jjTanggal").innerText = jumat.tanggal || "-";
-            document.getElementById("jjKhatib").innerText = jumat.khatib || "-";
-            document.getElementById("jjImam").innerText = jumat.imam || "-";
+
+        if (!data || data.length === 0) {
+            setText("jjTanggal", "Belum ada jadwal");
+            setText("jjKhatib", "-");
+            setText("jjImam", "-");
             container.classList.remove("hidden");
+            return;
         }
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const kandidat = data
+            .map(row => ({
+                row,
+                date: parseTanggalJumat(row.tanggal)
+            }))
+            .filter(item => item.date && item.date >= today)
+            .sort((a, b) => a.date - b.date);
+
+        const selected = kandidat.length > 0 ? kandidat[0] : null;
+
+        if (!selected) {
+            setText("jjTanggal", "Belum diperbarui");
+            setText("jjKhatib", "-");
+            setText("jjImam", "-");
+            container.classList.remove("hidden");
+            return;
+        }
+
+        setText("jjTanggal", formatTanggalID(selected.date));
+        setText("jjKhatib", selected.row.khatib || "-");
+        setText("jjImam", selected.row.imam || "-");
+
+        container.classList.remove("hidden");
+
+        if (window.lucide) window.lucide.createIcons();
+
     } catch (e) {
-        console.error("Gagal memuat jadwal jumat:", e);
+        console.error("Gagal memuat jadwal Jumat:", e);
+        setText("jjTanggal", "Gagal memuat");
+        setText("jjKhatib", "-");
+        setText("jjImam", "-");
+        container.classList.remove("hidden");
     }
 }
 // ---> BATAS PENAMBAHAN <---
