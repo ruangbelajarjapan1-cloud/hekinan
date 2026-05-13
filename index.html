@@ -297,49 +297,49 @@
             <i data-lucide="users" class="w-48 h-48"></i>
           </div>
 
+              <div class="mb-10 reveal">
+        <div class="bg-gradient-to-r from-emerald-900 to-slate-900 rounded-3xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden border border-emerald-700/40">
+          <div class="absolute top-0 right-0 opacity-10 transform translate-x-10 -translate-y-10">
+            <i data-lucide="shield-check" class="w-48 h-48"></i>
+          </div>
+
           <div class="relative z-10">
-            <h3 class="text-xl md:text-2xl font-bold mb-2 text-sky-300">
-              <span data-i18n="search_title">Mencari:</span> <span id="targetOrang">0</span> <span data-i18n="search_people">Orang Baik Lagi!</span>
+            <div class="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest mb-4">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+              Wakaf Lahan Ditutup Sementara
+            </div>
+
+            <h3 class="text-xl md:text-2xl font-bold mb-3 text-white">
+              Alhamdulillah, Dana Wakaf Diperkirakan Telah Mencukupi
             </h3>
-            <p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-xl mb-6">
-              <span data-i18n="search_desc_1">Jika 1 orang berwakaf</span> <span class="font-bold text-white bg-white/20 px-2 py-0.5 rounded">¥1.000</span> (atau Rp100rb), <span data-i18n="search_desc_2">maka pelunasan masjid ini akan segera terwujud. Jadilah salah satu dari mereka!</span>
+
+            <p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-2xl mb-6">
+              Saat ini panitia sedang menunggu konfirmasi transfer dana dari Indonesia ke Jepang. Donasi yang masuk setelah pengumuman ini akan dialihkan untuk <strong class="text-emerald-300">Infaq Operasional Masjid</strong>, seperti listrik, air, kebersihan, perlengkapan ibadah, dan kegiatan dakwah.
             </p>
 
-            <div class="flex items-end gap-2 mb-2">
-              <span id="terkumpulOrang" class="text-4xl md:text-5xl font-extrabold text-white">0</span>
-              <span class="text-sm md:text-base text-emerald-400 font-bold mb-1.5 pb-1" data-i18n="joined_label">Orang Lagi Dibutuhkan</span>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+              <div class="bg-white/10 border border-white/10 rounded-2xl p-4">
+                <p class="text-[10px] uppercase tracking-widest text-emerald-300 font-bold mb-1">Status Wakaf</p>
+                <p class="text-sm font-extrabold text-white">Ditutup Sementara</p>
+              </div>
+              <div class="bg-white/10 border border-white/10 rounded-2xl p-4">
+                <p class="text-[10px] uppercase tracking-widest text-sky-300 font-bold mb-1">Tahap Saat Ini</p>
+                <p class="text-sm font-extrabold text-white">Konfirmasi Transfer</p>
+              </div>
+              <div class="bg-white/10 border border-white/10 rounded-2xl p-4">
+                <p class="text-[10px] uppercase tracking-widest text-amber-300 font-bold mb-1">Donasi Baru</p>
+                <p class="text-sm font-extrabold text-white">Infaq Operasional</p>
+              </div>
             </div>
 
-            <div class="w-full bg-slate-700 rounded-full h-4 overflow-hidden shadow-inner border border-slate-600 mb-6">
-              <div id="progressOrang" class="bg-gradient-to-r from-sky-400 to-emerald-400 h-full rounded-full transition-all duration-1000 ease-out w-0 relative">
-                  <div class="absolute inset-0 bg-white/20 animate-[shimmer_2s_infinite]"></div>
-              </div>
-            </div>
-            
-            <div class="flex flex-wrap items-center gap-4 justify-between">
-              <div class="text-xs text-slate-400 font-mono">
-                <span data-i18n="target_complete">Menuju Lunas</span>
-              </div>
-              
-              <button onclick="document.getElementById('rekeningArea').scrollIntoView({behavior: 'smooth'})" class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2 rounded-full font-bold text-sm shadow-lg shadow-emerald-500/30 transition-all flex items-center gap-2 transform active:scale-95">
-                <span data-i18n="btn_join_movement">Gabung Gerakan Ini</span> <i data-lucide="arrow-down" class="w-4 h-4"></i>
-              </button>
-            </div>
+            <button onclick="document.getElementById('rekeningArea').scrollIntoView({behavior: 'smooth'})" class="bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-lg shadow-emerald-500/30 transition-all flex items-center gap-2 transform active:scale-95">
+              Lihat Rekening Infaq <i data-lucide="arrow-down" class="w-4 h-4"></i>
+            </button>
           </div>
         </div>
       </div>
 
-      <div class="flex justify-center mb-12 reveal">
-        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col items-center">
-          <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2" data-i18n="deadline_label">Batas Waktu Wakaf (Tahap 1)</p>
-          <div class="flex gap-4 text-center">
-            <div><span id="cdDays" class="text-2xl font-bold text-slate-800">00</span><br><span class="text-[10px] text-slate-500">HARI</span></div><div class="text-slate-300 text-xl font-bold">:</div>
-            <div><span id="cdHours" class="text-2xl font-bold text-slate-800">00</span><br><span class="text-[10px] text-slate-500">JAM</span></div><div class="text-slate-300 text-xl font-bold">:</div>
-            <div><span id="cdMin" class="text-2xl font-bold text-slate-800">00</span><br><span class="text-[10px] text-slate-500">MENIT</span></div>
-          </div>
-          <p class="text-[10px] text-red-500 mt-2 font-medium">Deadline: 31 Mei 2026</p>
-        </div>
-      </div>
+  
       
       <div class="grid lg:grid-cols-5 gap-8 items-start">
         
@@ -347,12 +347,12 @@
           <h3 class="font-bold text-lg text-slate-800 mb-6 flex items-center gap-2"><span class="bg-sky-100 p-2 rounded-lg text-fig-primary"><i data-lucide="trending-up" class="w-5 h-5"></i></span><span data-i18n="progress_title">Progres Pembangunan</span></h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 relative z-10">
             <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm">
-              <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-2" data-i18n="collected">Terkumpul</p>
-              <p id="terkumpulLabel" class="text-2xl md:text-3xl font-extrabold text-fig-primary leading-none truncate">0</p>
+            <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-2">Estimasi Dana Wakaf</p>
+             <p id="kekuranganLabel" class="text-2xl md:text-3xl font-extrabold text-amber-600 leading-none truncate">0</p>
             </div>
             <div class="p-4 rounded-2xl bg-amber-50 border border-amber-100 shadow-sm">
               <p class="text-xs text-amber-600 font-semibold uppercase tracking-wider mb-2" data-i18n="needed">Kekurangan</p>
-              <p id="kekuranganLabel" class="text-2xl md:text-3xl font-extrabold text-amber-600 leading-none truncate">0</p>
+             <p id="kekuranganLabel" class="text-lg md:text-xl font-extrabold text-amber-600 leading-snug">Menunggu Konfirmasi</p>
             </div>
           </div>
           <div class="relative mb-8">
@@ -378,8 +378,8 @@
         <i data-lucide="check" class="w-5 h-5 text-emerald-600 stroke-[3]"></i>
       </div>
       <div>
-        <h5 class="font-bold text-emerald-800 text-sm">Niat & Survey Lokasi</h5>
-        <p class="text-xs text-slate-500 mt-1">Tim terbentuk & lokasi strategis di Hekinan telah ditemukan.</p>
+        <h5 class="font-bold text-emerald-800 text-sm">Niat, Survey Lokasi & Pembentukan Tim</h5>
+        <p class="text-xs text-slate-500 mt-1">Lokasi strategis di Hekinan telah ditemukan dan proses wakaf mulai berjalan.</p>
         <span class="inline-block mt-2 px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded border border-emerald-100">Selesai</span>
       </div>
     </div>
@@ -389,49 +389,60 @@
         <i data-lucide="check" class="w-5 h-5 text-emerald-600 stroke-[3]"></i>
       </div>
       <div>
-        <h5 class="font-bold text-emerald-800 text-sm">Akad & Pembayaran Awal (DP)</h5>
-        <p class="text-xs text-slate-500 mt-1">Kesepakatan jual beli telah terkunci (booking).</p>
+        <h5 class="font-bold text-emerald-800 text-sm">Akad & Pembayaran Awal</h5>
+        <p class="text-xs text-slate-500 mt-1">Kesepakatan awal pembelian tanah dan bangunan telah dilakukan.</p>
         <span class="inline-block mt-2 px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded border border-emerald-100">Selesai</span>
       </div>
     </div>
 
     <div class="relative flex gap-4 pb-8 group">
-      <div class="w-10 h-10 rounded-full bg-red-500 border-4 border-white shadow-lg shadow-red-200 flex items-center justify-center shrink-0 z-10 relative">
-        <div class="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-20"></div>
-        <i data-lucide="target" class="w-5 h-5 text-white animate-pulse"></i>
+      <div class="w-10 h-10 rounded-full bg-emerald-500 border-4 border-white shadow-lg shadow-emerald-200 flex items-center justify-center shrink-0 z-10 relative">
+        <div class="absolute inset-0 bg-emerald-500 rounded-full animate-ping opacity-20"></div>
+        <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
       </div>
       
-      <div class="bg-gradient-to-r from-red-50 to-orange-50 p-4 rounded-xl border border-red-100 w-full relative">
-        <div class="absolute top-3 -left-2 w-4 h-4 bg-red-50 border-b border-l border-red-100 transform rotate-45"></div>
+      <div class="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 rounded-xl border border-emerald-100 w-full relative">
+        <div class="absolute top-3 -left-2 w-4 h-4 bg-emerald-50 border-b border-l border-emerald-100 transform rotate-45"></div>
         
-        <h5 class="font-bold text-red-700 text-sm flex items-center gap-2">
-           Pelunasan Aset Wakaf
-           <span class="bg-red-600 text-white text-[9px] px-2 py-0.5 rounded-full animate-pulse">URGENT</span>
+        <h5 class="font-bold text-emerald-700 text-sm flex items-center gap-2">
+           Wakaf Lahan Ditutup Sementara
+           <span class="bg-emerald-600 text-white text-[9px] px-2 py-0.5 rounded-full">SAAT INI</span>
         </h5>
         <p class="text-xs text-slate-700 mt-1 leading-relaxed font-medium">
-           Fokus utama saat ini: Mengumpulkan dana untuk melunasi pembayaran tanah & bangunan sesuai tenggat waktu.
+           Dana wakaf diperkirakan telah mencukupi. Panitia menunggu konfirmasi transfer dana dari Indonesia ke Jepang selesai sepenuhnya.
         </p>
         
         <div class="mt-3">
             <div class="flex justify-between text-[10px] font-bold text-slate-500 mb-1">
-                <span>Proses Dana</span>
-                <span class="text-red-600">Sedang Dikejar</span>
+                <span>Progress Amanah</span>
+                <span class="text-emerald-600">Menunggu Konfirmasi</span>
             </div>
             <div class="w-full bg-slate-200 rounded-full h-1.5">
-                <div class="bg-red-500 h-1.5 rounded-full w-[25%]"></div> 
+                <div class="bg-emerald-500 h-1.5 rounded-full w-[85%]"></div> 
             </div>
         </div>
       </div>
     </div>
 
-    <div class="relative flex gap-4 opacity-50 grayscale">
+    <div class="relative flex gap-4 pb-8 group">
+      <div class="w-10 h-10 rounded-full bg-sky-100 border-4 border-white shadow-sm flex items-center justify-center shrink-0 z-10">
+        <i data-lucide="send" class="w-4 h-4 text-sky-600"></i>
+      </div>
+      <div>
+        <h5 class="font-bold text-slate-700 text-sm">Transfer Dana Indonesia ke Jepang</h5>
+        <p class="text-xs text-slate-400 mt-1">Proses administrasi dan konfirmasi dana lintas negara.</p>
+        <span class="inline-block mt-2 px-2 py-0.5 bg-sky-50 text-sky-600 text-[10px] font-bold rounded border border-sky-100">Dalam Proses</span>
+      </div>
+    </div>
+
+    <div class="relative flex gap-4 opacity-70">
       <div class="w-10 h-10 rounded-full bg-slate-100 border-4 border-white shadow-sm flex items-center justify-center shrink-0 z-10">
         <i data-lucide="key" class="w-4 h-4 text-slate-400"></i>
       </div>
       <div>
-        <h5 class="font-bold text-slate-700 text-sm">Serah Terima Kunci</h5>
-        <p class="text-xs text-slate-400 mt-1">Resmi menjadi milik umat Islam</p>
-        <span class="inline-block mt-2 px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded">Menunggu Pelunasan</span>
+        <h5 class="font-bold text-slate-700 text-sm">Pelunasan, Legalitas & Pemakmuran Masjid</h5>
+        <p class="text-xs text-slate-400 mt-1">Setelah dana terkonfirmasi, proses dilanjutkan ke pelunasan, serah terima, dan operasional masjid.</p>
+        <span class="inline-block mt-2 px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded">Tahap Berikutnya</span>
       </div>
     </div>
 
@@ -799,13 +810,13 @@
   <span class="hidden md:inline font-bold text-sm">Kalkulator Zakat</span>
 </a>
 
-<a href="#donasi" class="fixed bottom-24 left-4 md:bottom-8 md:left-8 z-50 group flex items-center gap-3 bg-white p-2 md:pr-5 rounded-full shadow-[0_8px_30px_rgba(245,158,11,0.2)] border border-amber-200 hover:border-amber-400 hover:shadow-[0_8px_30px_rgba(245,158,11,0.4)] transition-all duration-300 transform hover:-translate-y-1">
-  <div class="bg-gradient-to-br from-amber-400 to-orange-500 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-white shadow-inner group-hover:scale-110 transition-transform">
+<a href="#donasi" class="fixed bottom-24 left-4 md:bottom-8 md:left-8 z-50 group flex items-center gap-3 bg-white p-2 md:pr-5 rounded-full shadow-[0_8px_30px_rgba(245,158,11,0.2)] border border-emerald-200 hover:border-emerald-400 hover:shadow-[0_8px_30px_rgba(16,185,129,0.35)] transition-all duration-300 transform hover:-translate-y-1">
+  <div class="bg-gradient-to-br from-emerald-500 to-teal-500 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-white shadow-inner group-hover:scale-110 transition-transform">
     <i data-lucide="alert-circle" class="w-5 h-5 md:w-6 md:h-6 fill-current text-white"></i>
   </div>
   <div class="hidden md:block text-left leading-none">
-    <span class="block text-[10px] text-amber-600 font-extrabold uppercase tracking-wider mb-0.5">Deadline Mei 2026</span>
-    <span class="block text-sm font-bold text-slate-800">Darurat Pelunasan Lahan</span>
+  <span class="block text-[10px] text-emerald-600 font-extrabold uppercase tracking-wider mb-0.5">Update Wakaf</span>
+<span class="block text-sm font-bold text-slate-800">Infaq Operasional Dibuka</span>
   </div>
 </a>
 <div id="popupPromo" class="fixed inset-0 z-[60] hidden items-center justify-center p-4">
