@@ -27,22 +27,18 @@ const HEK_LAT = 34.884;
 const HEK_LON = 136.993;
 
 const POPUP_SLIDES_DATA = [
-     { 
-        src: "assets/foto/d1.jpeg",  
-        link: "https://forms.gle/zJqA2Eba2FaxvrXv6", 
-        text: "Daftar Dauroh" 
-    },
-     { 
-        src: "assets/foto/d1.jpeg",  
-        link: "javascript:window.bukaDonasiDauroh()",
-        text: "Donasi Dauroh"
-    },
-   
-     { 
-        src: "assets/foto/d1.jpeg", // Pastikan ini path gambar poster Dauroh yang baru Anda upload
-        link: "https://drive.google.com/file/d/1oPTpt7Sy1AmzwotGvCmPoZ4LW-zeAe0P/view?usp=sharing", 
-        text: "Download Kitab" 
+     { 
+        src: "wakaf-tutup-id.jpeg", // Gambar poster baru 
+        link: "#donasi", 
+        text: "Baca Pengumuman" 
     },
+    { 
+        src: "wakaf-tutup-en.jpeg", // Gambar poster baru versi Inggris
+        link: "#donasi", 
+        text: "Read Announcement" 
+    },
+   
+    
     { 
         src: "assets/foto/w3.jpeg", 
         link: "https://wa.me/818013909425", 
