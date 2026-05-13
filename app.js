@@ -914,24 +914,27 @@ window.bukaPopupJamaah = async () => {
 };
 window.tutupPopupJamaah = () => { const m = $("#modalJamaah"); if(m){ m.classList.add("hidden"); m.classList.remove("flex"); } };
 
-// --- PROGRESS WAKAF ---
 function initProgressWakaf() {
-    const kekurangan = TARGET_DONASI - TERKUMPUL_SAAT_INI;
-    let persentase = (TERKUMPUL_SAAT_INI / TARGET_DONASI) * 100;
-    if (persentase > 100) persentase = 100; 
+    const formatAngka = (a) => new Intl.NumberFormat('id-ID').format(a);
+    const updateTeks = (id, teks) => { 
+        const el = document.getElementById(id); 
+        if (el) el.textContent = teks; 
+    };
+    const updateLebar = (id, persen) => { 
+        const el = document.getElementById(id); 
+        if (el) el.style.width = `${persen}%`; 
+    };
 
-    const formatAngka = (a) => new Intl.NumberFormat('id-ID').format(a);
-    const updateTeks = (id, teks) => { const el = document.getElementById(id); if (el) el.textContent = teks; };
-    const updateLebar = (id, persen) => { const el = document.getElementById(id); if (el) el.style.width = `${persen}%`; };
+    // Karena wakaf lahan ditutup sementara, jangan lagi tampilkan kekurangan.
+    updateTeks('targetOrang', '✓');
+    updateTeks('terkumpulOrang', 'Amanah');
+    updateLebar('progressOrang', 100);
+    updateLebar('progressBar', 100);
 
-    updateTeks('targetOrang', formatAngka(Math.ceil(kekurangan / 1000)));
-    updateTeks('terkumpulOrang', formatAngka(Math.ceil(kekurangan / 1000)));
-    updateLebar('progressOrang', persentase);
-    updateLebar('progressBar', persentase);
-    updateTeks('terkumpulLabel', `¥${formatAngka(TERKUMPUL_SAAT_INI)}`);
-    updateTeks('kekuranganLabel', `¥${formatAngka(kekurangan)}`);
-updateTeks('targetLabel', `¥${formatAngka(TARGET_DONASI)}`);
-    updateTeks('percentLabel', persentase.toFixed(1));
+    updateTeks('terkumpulLabel', `¥${formatAngka(TERKUMPUL_SAAT_INI)}`);
+    updateTeks('kekuranganLabel', 'Menunggu Konfirmasi');
+    updateTeks('targetLabel', 'Wakaf Ditutup Sementara');
+    updateTeks('percentLabel', '100');
 }
 
 // ---> TAMBAHKAN BLOK INI <---
