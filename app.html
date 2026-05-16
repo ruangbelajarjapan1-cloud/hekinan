@@ -17,7 +17,7 @@
   
  <link rel="stylesheet" href="style.css">
 </head>
-<body class="pb-36 bg-[#050B14]">
+<body class="pb-36 bg-[#050B14] min-h-screen overflow-x-hidden text-white">
 
   <div id="pwaInstallBanner" style="display: none;" class="bg-emerald-600 text-white text-xs px-5 py-3 justify-between items-center z-[100] relative shadow-md">
     <div class="flex items-center gap-2">
@@ -32,7 +32,7 @@
     <div class="absolute top-[40%] -left-[20%] w-[60vw] h-[60vw] rounded-full bg-sky-900/10 blur-[80px]"></div>
   </div>
 
- <header class="px-6 pt-8 pb-4 flex justify-between items-center relative z-20">
+ <header class="px-6 pt-8 pb-4 flex justify-between items-center relative z-20 w-full max-w-md mx-auto">
     <div class="flex items-center gap-4">
       <a href="admin-aset.html"><img src="logohekinan.jpeg" alt="Logo" class="w-12 h-12 rounded-full border border-white/10 shadow-xl object-cover"></a>
       <div>
@@ -53,7 +53,7 @@
     </div>
   </header>
 
-  <main class="px-5 space-y-5 relative z-10">
+  <main class="px-5 space-y-5 relative z-10 w-full max-w-md mx-auto">
     
     <a id="btnDzikirHarian" href="#" target="_blank" class="flex justify-between items-center bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-md shadow-lg hover:bg-white/10 transition-all group">
       <div class="flex items-center gap-4">
@@ -168,56 +168,54 @@
     </section>
     </section>
 
-<section class="grid grid-cols-2 md:grid-cols-3 gap-3 auto-rows-[110px] md:auto-rows-[120px] items-stretch">
+<section class="grid grid-cols-2 gap-3 auto-rows-[106px] items-stretch">
       <!-- 1. KIBLAT -->
-      <a href="https://qiblafinder.withgoogle.com/" target="_blank" class="glass-ultra h-full min-h-[110px] md:min-h-[120px] flex flex-col items-center justify-center px-3 py-4 rounded-3xl text-center active:scale-90 transition-all border-b-2 border-sky-500/30 group">
+      <a href="https://qiblafinder.withgoogle.com/" target="_blank" rel="noopener noreferrer" class="glass-ultra h-full flex flex-col items-center justify-center px-3 py-4 rounded-3xl text-center active:scale-95 transition-all border-b-2 border-sky-500/30 group">
         <i data-lucide="compass" class="w-6 h-6 text-sky-400 mb-2 group-hover:rotate-45 transition-transform"></i>
         <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300" data-k="menu_qibla">Kiblat</span>
       </a>
-      
+
       <!-- 2. KAMUS -->
-      <button onclick="document.getElementById('modalKamus').classList.replace('hidden','flex')" class="glass-ultra h-full min-h-[110px] md:min-h-[120px] flex flex-col items-center justify-center px-3 py-4 rounded-3xl text-center active:scale-90 transition-all border-b-2 border-pink-500/30 group">
+      <button type="button" onclick="document.getElementById('modalKamus').classList.replace('hidden','flex')" class="glass-ultra h-full flex flex-col items-center justify-center px-3 py-4 rounded-3xl text-center active:scale-95 transition-all border-b-2 border-pink-500/30 group">
         <i data-lucide="book" class="w-6 h-6 text-pink-400 mb-2 group-hover:scale-110 transition-transform"></i>
         <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300" data-k="menu_kamus">Kamus</span>
       </button>
 
-      <!-- 3. AL-QUR'AN (Menggantikan Kanji) -->
-      <a href="https://quran.com/id" target="_blank" rel="noopener noreferrer" class="glass-ultra h-full min-h-[110px] md:min-h-[120px] flex flex-col items-center justify-center px-3 py-4 rounded-3xl text-center active:scale-90 transition-all border-b-2 border-emerald-500/30 group">
+      <!-- 3. AL-QUR'AN -->
+      <a href="https://quran.com/id" target="_blank" rel="noopener noreferrer" class="glass-ultra h-full flex flex-col items-center justify-center px-3 py-4 rounded-3xl text-center active:scale-95 transition-all border-b-2 border-emerald-500/30 group">
         <i data-lucide="book-open" class="w-6 h-6 text-emerald-400 mb-2 group-hover:scale-110 transition-transform"></i>
         <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Al-Qur'an</span>
       </a>
 
-      <!-- 4. KAJIAN (Menggantikan Komunikasi) -->
-      <button onclick="document.getElementById('modalAsatidz').classList.replace('hidden','flex')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-red-500/30 group">
+      <!-- 4. KAJIAN -->
+      <button type="button" onclick="document.getElementById('modalAsatidz').classList.replace('hidden','flex')" class="glass-ultra h-full flex flex-col items-center justify-center px-3 py-4 rounded-3xl text-center active:scale-95 transition-all border-b-2 border-red-500/30 group">
         <i data-lucide="monitor-play" class="w-6 h-6 text-red-400 mb-2 group-hover:scale-110 transition-transform"></i>
         <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Kajian</span>
       </button>
 
       <!-- 5. MUSAFIR -->
-      <button onclick="document.getElementById('modalSafar').classList.replace('hidden','flex')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-teal-500/30 group">
+      <button type="button" onclick="document.getElementById('modalSafar').classList.replace('hidden','flex')" class="glass-ultra h-full flex flex-col items-center justify-center px-3 py-4 rounded-3xl text-center active:scale-95 transition-all border-b-2 border-teal-500/30 group">
         <i data-lucide="train-front" class="w-6 h-6 text-teal-400 mb-2 group-hover:translate-x-1 transition-transform"></i>
         <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300" data-k="menu_safar">Musafir</span>
       </button>
 
-    <!-- 6. INFAQ -->
-<button onclick="document.getElementById('modalDonasi').classList.replace('hidden','flex')" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-emerald-500/30 group">
-  <i data-lucide="heart-handshake" class="w-6 h-6 text-emerald-400 mb-2 group-hover:scale-110 transition-transform"></i>
-  <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Infaq</span>
-</button>
+      <!-- 6. INFAQ -->
+      <button type="button" onclick="document.getElementById('modalDonasi').classList.replace('hidden','flex')" class="glass-ultra h-full flex flex-col items-center justify-center px-3 py-4 rounded-3xl text-center active:scale-95 transition-all border-b-2 border-emerald-500/30 group">
+        <i data-lucide="heart-handshake" class="w-6 h-6 text-emerald-400 mb-2 group-hover:scale-110 transition-transform"></i>
+        <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Infaq</span>
+      </button>
 
       <!-- 7. RADAR -->
-    <button onclick="window.bukaDonasiDauroh()" class="glass-ultra h-full min-h-[110px] md:min-h-[120px] flex flex-col items-center justify-center px-3 py-4 rounded-3xl text-center active:scale-90 transition-all border-b-2 border-sky-500/30 group">
+      <button type="button" onclick="document.getElementById('modalRadar').classList.replace('hidden','flex')" class="glass-ultra h-full flex flex-col items-center justify-center px-3 py-4 rounded-3xl text-center active:scale-95 transition-all border-b-2 border-green-500/30 group">
         <i data-lucide="map-pin" class="w-6 h-6 text-green-400 mb-2 group-hover:scale-110 transition-transform"></i>
         <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Radar</span>
       </button>
-      
-     <!-- 8. AGENDA -->
-<button onclick="window.bukaDonasiDauroh()" class="glass-ultra flex flex-col items-center justify-center p-4 rounded-3xl active:scale-90 transition-all border-b-2 border-sky-500/30 group">
-  <i data-lucide="calendar-days" class="w-6 h-6 text-sky-400 mb-2 group-hover:scale-110 transition-transform"></i>
-  <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Agenda</span>
-</button>
 
-    <a href="https://drive.google.com/file/d/1oPTpt7Sy1AmzwotGvCmPoZ4LW-zeAe0P/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="glass-ultra h-full min-h-[110px] md:min-h-[120px] flex flex-col items-center justify-center px-3 py-4 rounded-3xl text-center active:scale-90 transition-all border-b-2 border-emerald-500/30 group relative overflow-hidden">
+      <!-- 8. AGENDA -->
+      <button type="button" onclick="window.bukaDonasiDauroh()" class="glass-ultra h-full flex flex-col items-center justify-center px-3 py-4 rounded-3xl text-center active:scale-95 transition-all border-b-2 border-sky-500/30 group">
+        <i data-lucide="calendar-days" class="w-6 h-6 text-sky-400 mb-2 group-hover:scale-110 transition-transform"></i>
+        <span class="text-[9px] font-bold uppercase tracking-wider text-slate-300">Agenda</span>
+      </button>
     </section>
 
     <section class="glass-ultra rounded-[2rem] overflow-hidden mb-6">
@@ -490,7 +488,7 @@
 
       <div class="p-4 overflow-y-auto space-y-3 bg-slate-50/50 flex-1">
         
-        <a href="http://googleusercontent.com/maps.google.com/3" target="_blank" class="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl hover:border-green-300 hover:shadow-md transition-all group">
+        <a href="https://googleusercontent.com/maps.google.com/3" target="_blank" class="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl hover:border-green-300 hover:shadow-md transition-all group">
           <div class="flex items-center gap-3">
             <div class="bg-slate-100 p-2 rounded-xl text-slate-500 group-hover:text-green-600 transition-colors">
     <i data-lucide="moon-star" class="w-5 h-5"></i>
@@ -503,7 +501,7 @@
           <div class="bg-green-50 p-2.5 rounded-full text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors"><i data-lucide="navigation" class="w-4 h-4"></i></div>
         </a>
 
-        <a href="http://googleusercontent.com/maps.google.com/4" target="_blank" class="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl hover:border-green-300 hover:shadow-md transition-all group">
+        <a href="https://googleusercontent.com/maps.google.com/4" target="_blank" class="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl hover:border-green-300 hover:shadow-md transition-all group">
           <div class="flex items-center gap-3">
               <div class="bg-slate-100 p-2 rounded-xl text-slate-500 group-hover:text-green-600 transition-colors"><i data-lucide="shopping-bag" class="w-5 h-5"></i></div>
               <div>
@@ -514,7 +512,7 @@
           <div class="bg-green-50 p-2.5 rounded-full text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors"><i data-lucide="navigation" class="w-4 h-4"></i></div>
         </a>
 
-        <a href="http://googleusercontent.com/maps.google.com/5" target="_blank" class="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl hover:border-green-300 hover:shadow-md transition-all group">
+        <a href="https://googleusercontent.com/maps.google.com/5" target="_blank" class="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl hover:border-green-300 hover:shadow-md transition-all group">
           <div class="flex items-center gap-3">
               <div class="bg-slate-100 p-2 rounded-xl text-slate-500 group-hover:text-green-600 transition-colors"><i data-lucide="utensils-crossed" class="w-5 h-5"></i></div>
               <div>
