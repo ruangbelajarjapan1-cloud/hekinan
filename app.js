@@ -285,6 +285,50 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// ==========================================
+// BACKEND HELPER AS-SUNNAH
+// Jangan pakai Content-Type application/json agar tidak kena CORS preflight.
+// ==========================================
+const AS_BACKEND_TOKEN = "H3k1n4n_S3cur3_2026!";
+
+async function asSunnahPost(action, payload = {}) {
+  const res = await fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      app_token: AS_BACKEND_TOKEN,
+      action,
+      ...payload
+    })
+  });
+
+  const json = await res.json();
+
+  if (!json || json.status !== "success") {
+    throw new Error(json?.message || "Request backend gagal.");
+  }
+
+  return json;
+}
+
+function setBtnLoading(btn, isLoading, loadingText = "Memproses...") {
+  if (!btn) return "";
+
+  if (isLoading) {
+    const original = btn.innerHTML;
+    btn.dataset.originalHtml = original;
+    btn.disabled = true;
+    btn.classList.add("opacity-70", "cursor-wait");
+    btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> ${loadingText}`;
+    if (window.lucide) window.lucide.createIcons();
+    return original;
+  }
+
+  btn.disabled = false;
+  btn.classList.remove("opacity-70", "cursor-wait");
+  btn.innerHTML = btn.dataset.originalHtml || btn.innerHTML;
+  if (window.lucide) window.lucide.createIcons();
+}
+
 async function renderContent() {
   const showSkeleton = (id, count = 3) => {
       const el = document.getElementById(id);
@@ -1242,28 +1286,58 @@ window.toggleSaranModal = (show) => {
     if (window.lucide) window.lucide.createIcons();
 };
 
-window.kirimSaran = () => {
-    const kategori = document.getElementById("kategoriSaran")?.value || "Saran";
-    const pesan = document.getElementById("pesanSaran")?.value.trim();
-    let nama = document.getElementById("namaSaran")?.value.trim();
-    const btn = document.getElementById("kirimSaranBtn");
+window.kirimSaran = async () => {
+  const kategori = document.getElementById("kategoriSaran")?.value || "Saran Umum";
+  const pesanEl = document.getElementById("pesanSaran");
+  const namaEl = document.getElementById("namaSaran");
+  const btn = document.getElementById("kirimSaranBtn");
 
-    if (!pesan) { alert("Mohon isi pesan Anda terlebih dahulu."); return; }
-    if (!nama) nama = "Hamba Allah (Anonim)";
+  const pesan = (pesanEl?.value || "").trim();
+  const nama = (namaEl?.value || "").trim() || "Anonim";
 
-    const originalText = btn.innerHTML;
-    btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Memproses...`;
-    btn.classList.add("opacity-75", "cursor-wait");
-    if (window.lucide) window.lucide.createIcons();
+  if (!pesan) {
+    alert("Pesan belum diisi.");
+    pesanEl?.focus();
+    return;
+  }
 
-    let msg = `Assalamu'alaikum, saya ingin menyampaikan pesan melalui Website Masjid Hekinan:\n\n📌 *Kategori:* ${kategori}\n👤 *Dari:* ${nama}\n\n💬 *Pesan:*\n"${pesan}"`;
+  try {
+    setBtnLoading(btn, true, "Mengirim...");
 
-    setTimeout(() => {
-        window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
-        btn.innerHTML = originalText;
-        btn.classList.remove("opacity-75", "cursor-wait");
-        toggleSaranModal(false);
-    }, 1000);
+    const result = await asSunnahPost("kirim_saran", {
+      kategori,
+      nama,
+      pesan,
+      halaman: location.pathname,
+      user_agent: navigator.userAgent
+    });
+
+    alert(result.message || "Pesan berhasil dikirim.");
+
+    if (pesanEl) pesanEl.value = "";
+    if (namaEl) namaEl.value = "";
+
+    const modal = document.getElementById("modalSaran");
+    if (modal) {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+  } catch (err) {
+    console.error("Gagal kirim saran:", err);
+
+    const msg =
+      `Assalamu'alaikum, saya ingin menyampaikan pesan melalui Aplikasi Masjid Hekinan:\n\n` +
+      `📌 *Kategori:* ${kategori}\n` +
+      `👤 *Dari:* ${nama}\n\n` +
+      `💬 *Pesan:*\n"${pesan}"`;
+
+    alert("Gagal menyimpan ke database. WhatsApp akan dibuka sebagai cadangan.");
+    window.open(`https://wa.me/818013909425?text=${encodeURIComponent(msg)}`, "_blank");
+
+  } finally {
+    setBtnLoading(btn, false);
+  }
 };
 // ==========================================
 // FITUR MODAL DONASI DAUROH (GOLDEN WEEK)
