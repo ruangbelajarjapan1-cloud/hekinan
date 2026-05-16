@@ -5,12 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <meta name="description" content="Pusat dakwah dan ibadah masyarakat muslim Indonesia di Hekinan, Jepang.">
 <title>Masjid As-Sunnah Hekinan</title>
-  <script>
-  // Fitur Cerdas: Otomatis buka Aplikasi jika di HP
-  if (window.innerWidth <= 768 && !sessionStorage.getItem('modeWebAktif')) {
-    window.location.replace('app.html');
-  }
-</script>
+  <!-- Mobile tidak diarahkan paksa ke app. Banner pilihan ditampilkan di body. -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#059669">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -43,6 +38,21 @@
 </head>
 
 <body class="font-sans text-fig-text pb-32 md:pb-0">
+<!-- KAIZEN: BANNER PILIHAN APP UNTUK PENGUNJUNG MOBILE -->
+<div id="mobileAppChoice" class="md:hidden sticky top-0 z-[70] bg-slate-950 text-white border-b border-emerald-500/30 shadow-lg">
+  <div class="px-4 py-3 flex items-center gap-3">
+    <div class="w-9 h-9 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center shrink-0">
+      <i data-lucide="smartphone" class="w-5 h-5 text-emerald-300"></i>
+    </div>
+    <div class="flex-1 min-w-0">
+      <p class="text-[11px] font-extrabold tracking-wide text-emerald-300 uppercase">App Jamaah tersedia</p>
+      <p class="text-xs text-slate-300 truncate">Jadwal shalat, iqomah, info Jumat, dan kajian harian.</p>
+    </div>
+    <button type="button" onclick="sessionStorage.setItem('modeWebAktif','true'); document.getElementById('mobileAppChoice')?.remove();" class="text-[10px] font-bold text-slate-300 px-2 py-1 rounded-lg border border-white/10">Web</button>
+    <a href="app.html" class="text-[10px] font-black bg-emerald-500 text-white px-3 py-2 rounded-xl shadow-sm">Buka</a>
+  </div>
+</div>
+
 <div id="jumatBanner" class="hidden bg-emerald-600 text-white text-center py-2 px-4 relative z-[60] animate-pulse">
   <div class="container mx-auto flex justify-center items-center gap-2">
     <span class="bg-white text-emerald-600 text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wide">Jumat Berkah</span>
@@ -116,8 +126,8 @@
           <i data-lucide="gift" class="w-5 h-5"></i> <span>Info Infaq</span>
         </a>
         
-        <a href="https://drive.google.com/file/d/1oPTpt7Sy1AmzwotGvCmPoZ4LW-zeAe0P/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="rounded-full bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 font-bold shadow-lg shadow-emerald-900/20 transition-all flex items-center justify-center gap-2 border border-emerald-500/30 transform active:scale-95">
-          <i data-lucide="download" class="w-5 h-5"></i> <span>Kitab Dauroh</span>
+        <a href="app.html" class="rounded-full bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 font-bold shadow-lg shadow-emerald-900/20 transition-all flex items-center justify-center gap-2 border border-emerald-500/30 transform active:scale-95">
+          <i data-lucide="smartphone" class="w-5 h-5"></i> <span>Buka App Jamaah</span>
         </a>
 
         <a href="https://qiblafinder.withgoogle.com/" target="_blank" class="rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 px-8 py-4 font-bold transition-all flex items-center justify-center gap-2">
@@ -138,6 +148,42 @@
         <p id="hadithTerjemah" class="text-sm md:text-base text-slate-600 italic">...</p>
         <p id="hadithRiwayat" class="text-xs text-slate-400 mt-2 font-bold">...</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- KAIZEN: SEGMENTASI MANFAAT WEBSITE -->
+<section class="container mx-auto px-4 py-6 relative z-10">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-6 reveal">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-extrabold uppercase tracking-widest border border-emerald-100">
+        <i data-lucide="sparkles" class="w-3 h-3"></i> Portal Jamaah
+      </span>
+      <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-3">Website ini membantu siapa?</h2>
+      <p class="text-slate-500 text-sm mt-2 max-w-2xl mx-auto">Pintu depan resmi untuk jamaah, muslim baru di Hekinan, donatur, dan pengurus masjid.</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 reveal">
+      <a href="app.html" class="group bg-white border border-slate-100 rounded-3xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all">
+        <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors"><i data-lucide="users" class="w-5 h-5"></i></div>
+        <h3 class="font-extrabold text-slate-900">Untuk Jamaah</h3>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Jadwal shalat, iqomah, info Jumat, kajian, dan pengumuman harian.</p>
+      </a>
+      <a href="#panduan-muslim" class="group bg-white border border-slate-100 rounded-3xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all">
+        <div class="w-11 h-11 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center mb-4 group-hover:bg-sky-600 group-hover:text-white transition-colors"><i data-lucide="map" class="w-5 h-5"></i></div>
+        <h3 class="font-extrabold text-slate-900">Muslim Baru di Hekinan</h3>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Lokasi masjid, makanan halal, transportasi, sampah, dan kamus Jepang-Muslim.</p>
+      </a>
+      <a href="#donasi" class="group bg-white border border-slate-100 rounded-3xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all">
+        <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4 group-hover:bg-amber-600 group-hover:text-white transition-colors"><i data-lucide="hand-coins" class="w-5 h-5"></i></div>
+        <h3 class="font-extrabold text-slate-900">Untuk Donatur</h3>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Rekening resmi, status amanah, konfirmasi infaq, dan transparansi ringkas.</p>
+      </a>
+      <button type="button" onclick="toggleSaranModal(true)" class="group bg-white border border-slate-100 rounded-3xl p-5 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all text-left">
+        <div class="w-11 h-11 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4 group-hover:bg-rose-600 group-hover:text-white transition-colors"><i data-lucide="message-circle-question" class="w-5 h-5"></i></div>
+        <h3 class="font-extrabold text-slate-900">Butuh Bantuan?</h3>
+        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Tanya pengurus, kirim saran, atau lapor fasilitas masjid.</p>
+      </button>
     </div>
   </div>
 </section>
@@ -223,6 +269,40 @@
     </div>
 
     <p class="mt-2 text-center text-xs text-slate-400" id="locLabel">Mendeteksi lokasi...</p>
+  </div>
+</section>
+
+<!-- KAIZEN: INFO JUMAT PEKAN INI, TERHUBUNG KE DEFAULT_JUMAT_CSV DI app.js -->
+<section id="jadwalJumatContainer" class="hidden container mx-auto px-4 py-6 relative z-10">
+  <div class="rounded-3xl bg-gradient-to-br from-emerald-900 to-slate-900 text-white p-6 md:p-8 shadow-xl border border-emerald-700/30 reveal active relative overflow-hidden">
+    <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-emerald-400/10 blur-2xl"></div>
+    <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+      <div>
+        <div class="inline-flex items-center gap-2 bg-emerald-500/15 text-emerald-300 border border-emerald-400/20 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest mb-3">
+          <i data-lucide="calendar-days" class="w-3 h-3"></i> Info Jumat Pekan Ini
+        </div>
+        <h2 class="text-2xl md:text-3xl font-extrabold">Jumat di Masjid As-Sunnah Hekinan</h2>
+        <p id="jjTanggal" class="text-sm text-slate-300 mt-2">Memuat jadwal...</p>
+      </div>
+      <div class="grid grid-cols-2 gap-3 w-full md:w-auto md:min-w-[320px]">
+        <div class="bg-white/10 border border-white/10 rounded-2xl p-4">
+          <p class="text-[10px] uppercase tracking-widest text-emerald-300 font-bold mb-1">Khatib</p>
+          <p id="jjKhatib" class="text-base font-extrabold text-white">-</p>
+        </div>
+        <div class="bg-white/10 border border-white/10 rounded-2xl p-4">
+          <p class="text-[10px] uppercase tracking-widest text-sky-300 font-bold mb-1">Imam</p>
+          <p id="jjImam" class="text-base font-extrabold text-white">-</p>
+        </div>
+      </div>
+    </div>
+    <div class="relative z-10 mt-5 flex flex-col sm:flex-row gap-3">
+      <a href="https://www.google.com/maps/search/?api=1&query=Masjid+As-Sunnah+Hekinan" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-white text-slate-900 px-5 py-3 rounded-full text-sm font-extrabold hover:bg-emerald-50 transition-colors">
+        <i data-lucide="map-pin" class="w-4 h-4"></i> Buka Lokasi
+      </a>
+      <a href="app.html" class="inline-flex items-center justify-center gap-2 bg-emerald-500 text-white px-5 py-3 rounded-full text-sm font-extrabold hover:bg-emerald-600 transition-colors">
+        <i data-lucide="smartphone" class="w-4 h-4"></i> Buka App Jamaah
+      </a>
+    </div>
   </div>
 </section>
 
@@ -667,7 +747,7 @@
         </div>
   </div>
 </section>
-<section class="py-16 bg-slate-50 border-t border-slate-200 relative overflow-hidden">
+<section id="panduan-muslim" class="py-16 bg-slate-50 border-t border-slate-200 relative overflow-hidden">
   <div class="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-emerald-100 rounded-full blur-3xl opacity-50"></div>
   <div class="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-sky-100 rounded-full blur-3xl opacity-50"></div>
 
@@ -734,6 +814,32 @@
   </div>
 </section>
   
+
+<!-- KAIZEN: HALAMAN SINGKAT JAMAAH BARU -->
+<section id="jamaah-baru" class="py-16 bg-white border-t border-slate-200">
+  <div class="container mx-auto px-4">
+    <div class="max-w-5xl mx-auto grid lg:grid-cols-2 gap-8 items-center">
+      <div class="reveal">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 text-sky-700 text-[10px] font-extrabold uppercase tracking-widest border border-sky-100">
+          <i data-lucide="compass" class="w-3 h-3"></i> Saya baru di Hekinan
+        </span>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mt-4 leading-tight">Mulai dari sini untuk mengenal masjid dan komunitas.</h2>
+        <p class="text-slate-600 mt-4 leading-relaxed">Bagian ini membantu jamaah baru menemukan lokasi masjid, kontak pengurus, panduan halal, transportasi, dan kebutuhan dasar muslim di Hekinan.</p>
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <a href="https://www.google.com/maps/search/?api=1&query=Masjid+As-Sunnah+Hekinan" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-slate-900 text-white px-5 py-3 rounded-full text-sm font-bold hover:bg-slate-800 transition-colors"><i data-lucide="navigation" class="w-4 h-4"></i> Rute ke Masjid</a>
+          <button onclick="toggleSaranModal(true)" class="inline-flex items-center justify-center gap-2 bg-emerald-600 text-white px-5 py-3 rounded-full text-sm font-bold hover:bg-emerald-700 transition-colors"><i data-lucide="message-circle" class="w-4 h-4"></i> Tanya Pengurus</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 reveal">
+        <a href="#sholat" class="p-5 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-lg transition-all"><i data-lucide="clock" class="w-6 h-6 text-emerald-600 mb-3"></i><h3 class="font-bold text-slate-900">Jadwal Shalat</h3><p class="text-xs text-slate-500 mt-1">Waktu shalat dan info jamaah.</p></a>
+        <a href="#panduan-muslim" class="p-5 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-lg transition-all"><i data-lucide="utensils" class="w-6 h-6 text-orange-600 mb-3"></i><h3 class="font-bold text-slate-900">Halal & Harian</h3><p class="text-xs text-slate-500 mt-1">Kuliner halal, sampah, kereta.</p></a>
+        <a href="#video-kajian" class="p-5 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-lg transition-all"><i data-lucide="youtube" class="w-6 h-6 text-red-600 mb-3"></i><h3 class="font-bold text-slate-900">Kajian</h3><p class="text-xs text-slate-500 mt-1">Live, rekaman, dan materi.</p></a>
+        <a href="app.html" class="p-5 rounded-3xl bg-emerald-50 border border-emerald-100 hover:shadow-lg transition-all"><i data-lucide="smartphone" class="w-6 h-6 text-emerald-600 mb-3"></i><h3 class="font-bold text-slate-900">App Jamaah</h3><p class="text-xs text-slate-500 mt-1">Akses cepat dari HP.</p></a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer class="bg-white border-t border-slate-200 pb-28 md:pb-24">
   <div class="container mx-auto px-4 py-12">
  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 items-start">
