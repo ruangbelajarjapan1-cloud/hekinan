@@ -196,6 +196,18 @@
           <p class="text-[10px] text-slate-400 mt-0.5">Saran / pertanyaan</p>
         </button>
 
+        <button type="button" onclick="document.getElementById('kategoriSaran').value='Lapor Fasilitas'; document.getElementById('modalSaran').classList.replace('hidden','flex'); setTimeout(()=>document.getElementById('pesanSaran')?.focus(),100);" class="bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 rounded-2xl p-3 text-left active:scale-95 transition-all">
+          <i data-lucide="wrench" class="w-5 h-5 text-orange-300 mb-2"></i>
+          <p class="text-xs font-extrabold text-white">Lapor Fasilitas</p>
+          <p class="text-[10px] text-slate-400 mt-0.5">Toilet, AC, karpet</p>
+        </button>
+
+        <a href="tel:119" class="bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 rounded-2xl p-3 text-left active:scale-95 transition-all">
+          <i data-lucide="siren" class="w-5 h-5 text-red-300 mb-2"></i>
+          <p class="text-xs font-extrabold text-white">Darurat Jepang</p>
+          <p class="text-[10px] text-slate-400 mt-0.5">119 ambulans/api</p>
+        </a>
+
         <a href="https://www.google.com/maps/search/?api=1&query=愛知県碧南市道場山町１丁目８" target="_blank" rel="noopener noreferrer" class="bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 rounded-2xl p-3 text-left active:scale-95 transition-all">
           <i data-lucide="navigation" class="w-5 h-5 text-green-300 mb-2"></i>
           <p class="text-xs font-extrabold text-white">Lokasi Masjid</p>
@@ -514,12 +526,7 @@
       <div class="p-6 space-y-4">
         <div>
           <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Kategori</label>
-          <select id="kategoriSaran" class="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-700 outline-none"><option value="Saran Aplikasi">Saran Aplikasi / Umum</option><option value="Tanya Ustadz">Tanya Ustadz</option></select>
-       <option value="Lapor Fasilitas">Lapor Fasilitas Masjid</option>
-<option value="Kritik/Saran Jamaah">Kritik/Saran Jamaah</option>
-<option value="Tanya Pengurus">Tanya Pengurus</option>
-<option value="Tanya Ustadz">Tanya Ustadz</option>
-        
+          <select id="kategoriSaran" class="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-700 outline-none"><option value="Saran Aplikasi">Saran Aplikasi / Umum</option><option value="Lapor Fasilitas">Lapor Fasilitas Masjid</option><option value="Kritik/Saran Jamaah">Kritik/Saran Jamaah</option><option value="Tanya Pengurus">Tanya Pengurus</option><option value="Tanya Ustadz">Tanya Ustadz</option></select>
         </div>
         <div>
           <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Pesan</label>
@@ -923,7 +930,7 @@
     });
   </script>
 
-<script type="module" src="./app.js?v=tuntas2"></script>
+<script type="module" src="./app.js?v=kaizen3"></script>
   <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => { 
