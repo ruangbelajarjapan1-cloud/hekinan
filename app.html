@@ -168,6 +168,48 @@
     </section>
     </section>
 
+
+    <!-- KAIZEN: PANEL CEPAT JAMAAH -->
+    <section id="jamaahAssistant" class="glass-ultra rounded-[2rem] p-4 border border-emerald-500/10 relative overflow-hidden shadow-[0_12px_35px_rgba(0,0,0,0.25)]">
+      <div class="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-emerald-500/10 blur-2xl pointer-events-none"></div>
+      <div class="relative z-10 flex items-start justify-between gap-3 mb-4">
+        <div>
+          <p class="text-[10px] font-extrabold text-emerald-300 uppercase tracking-[0.22em]">Pusat Bantuan Jamaah</p>
+          <h3 class="text-lg font-black text-white mt-1 leading-tight">Butuh apa hari ini?</h3>
+          <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">Akses cepat untuk hal yang paling sering dibutuhkan jamaah.</p>
+        </div>
+        <div class="w-11 h-11 rounded-2xl bg-emerald-500/20 border border-emerald-400/20 flex items-center justify-center shrink-0">
+          <i data-lucide="sparkles" class="w-5 h-5 text-emerald-300"></i>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 relative z-10">
+        <button type="button" onclick="document.getElementById('modalInfo').classList.replace('hidden','flex')" class="bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 rounded-2xl p-3 text-left active:scale-95 transition-all">
+          <i data-lucide="megaphone" class="w-5 h-5 text-amber-300 mb-2"></i>
+          <p class="text-xs font-extrabold text-white">Info Terbaru</p>
+          <p class="text-[10px] text-slate-400 mt-0.5">Pengumuman masjid</p>
+        </button>
+
+        <button type="button" onclick="document.getElementById('modalSaran').classList.replace('hidden','flex')" class="bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 rounded-2xl p-3 text-left active:scale-95 transition-all">
+          <i data-lucide="message-circle-question" class="w-5 h-5 text-sky-300 mb-2"></i>
+          <p class="text-xs font-extrabold text-white">Tanya Admin</p>
+          <p class="text-[10px] text-slate-400 mt-0.5">Saran / pertanyaan</p>
+        </button>
+
+        <a href="https://www.google.com/maps/search/?api=1&query=愛知県碧南市道場山町１丁目８" target="_blank" rel="noopener noreferrer" class="bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 rounded-2xl p-3 text-left active:scale-95 transition-all">
+          <i data-lucide="navigation" class="w-5 h-5 text-green-300 mb-2"></i>
+          <p class="text-xs font-extrabold text-white">Lokasi Masjid</p>
+          <p class="text-[10px] text-slate-400 mt-0.5">Buka Maps</p>
+        </a>
+
+        <button type="button" onclick="document.getElementById('modalDonasi').classList.replace('hidden','flex')" class="bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 rounded-2xl p-3 text-left active:scale-95 transition-all">
+          <i data-lucide="hand-coins" class="w-5 h-5 text-emerald-300 mb-2"></i>
+          <p class="text-xs font-extrabold text-white">Infaq Cepat</p>
+          <p class="text-[10px] text-slate-400 mt-0.5">Salin rekening / WA</p>
+        </button>
+      </div>
+    </section>
+
 <section class="grid grid-cols-2 gap-3 auto-rows-[106px] items-stretch">
       <!-- 1. KIBLAT -->
       <a href="https://qiblafinder.withgoogle.com/" target="_blank" rel="noopener noreferrer" class="glass-ultra h-full flex flex-col items-center justify-center px-3 py-4 rounded-3xl text-center active:scale-95 transition-all border-b-2 border-sky-500/30 group">
@@ -229,18 +271,34 @@
     </section>
   </main>
 
-  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-[90]">
-    <nav class="glass-ultra backdrop-blur-3xl border border-white/10 rounded-full px-2 py-2 flex justify-between items-center shadow-[0_20px_40px_rgba(0,0,0,0.8)] w-full">
-      <a href="app.html" class="flex-1 flex justify-center text-emerald-400 p-2 hover:scale-110 transition-transform"><i data-lucide="home" class="w-6 h-6"></i></a>
-      <a href="index.html" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="flex-1 flex justify-center text-slate-400 hover:text-white p-2 hover:scale-110 transition-transform"><i data-lucide="globe" class="w-6 h-6"></i></a>
+  <div class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-sm z-[90]">
+    <nav class="glass-ultra backdrop-blur-3xl border border-white/10 rounded-[2rem] px-2 py-2 flex justify-between items-center shadow-[0_20px_40px_rgba(0,0,0,0.8)] w-full">
+      <a href="app.html" class="flex-1 flex flex-col items-center justify-center gap-1 text-emerald-400 py-1.5 hover:scale-105 transition-transform">
+        <i data-lucide="home" class="w-5 h-5"></i>
+        <span class="text-[9px] font-extrabold tracking-wide">Home</span>
+      </a>
+
+      <a href="index.html" onclick="sessionStorage.setItem('modeWebAktif', 'true')" class="flex-1 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-white py-1.5 hover:scale-105 transition-transform">
+        <i data-lucide="globe" class="w-5 h-5"></i>
+        <span class="text-[9px] font-extrabold tracking-wide">Web</span>
+      </a>
       
       <div class="flex-1 flex justify-center relative">
-        <button onclick="document.getElementById('modalDonasi').classList.replace('hidden','flex')" class="absolute -top-10 h-14 w-14 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center shadow-[0_10px_20px_rgba(16,185,129,0.4)] border-4 border-[#050B14] transform active:scale-95 transition-all"><i data-lucide="heart" class="w-6 h-6 text-white fill-current"></i></button>
+        <button onclick="document.getElementById('modalDonasi').classList.replace('hidden','flex')" class="absolute -top-11 h-16 w-16 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center shadow-[0_12px_25px_rgba(16,185,129,0.45)] border-4 border-[#050B14] transform active:scale-95 transition-all">
+          <i data-lucide="heart" class="w-7 h-7 text-white fill-current"></i>
+        </button>
+        <span class="pt-9 text-[9px] font-extrabold tracking-wide text-emerald-300">Infaq</span>
       </div>
       
-      <button onclick="document.getElementById('modalInfo').classList.replace('hidden','flex')" class="flex-1 flex justify-center text-slate-400 hover:text-white p-2 relative hover:scale-110 transition-transform"><i data-lucide="newspaper" class="w-6 h-6"></i></button>
+      <button onclick="document.getElementById('modalInfo').classList.replace('hidden','flex')" class="flex-1 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-white py-1.5 relative hover:scale-105 transition-transform">
+        <i data-lucide="newspaper" class="w-5 h-5"></i>
+        <span class="text-[9px] font-extrabold tracking-wide">Papan</span>
+      </button>
       
-      <button onclick="document.getElementById('modalSaran').classList.replace('hidden','flex')" class="flex-1 flex justify-center text-slate-400 hover:text-white p-2 hover:scale-110 transition-transform"><i data-lucide="message-circle" class="w-6 h-6"></i></button>
+      <button onclick="document.getElementById('modalSaran').classList.replace('hidden','flex')" class="flex-1 flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-white py-1.5 hover:scale-105 transition-transform">
+        <i data-lucide="message-circle" class="w-5 h-5"></i>
+        <span class="text-[9px] font-extrabold tracking-wide">Saran</span>
+      </button>
     </nav>
   </div>
 <div id="popupPromo" class="fixed inset-0 z-[200] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
