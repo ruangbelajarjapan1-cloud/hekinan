@@ -254,6 +254,25 @@ async function asSunnahPost(action, payload = {}) {
   return result;
 }
 
+
+async function getIqomahMapFromBackend() {
+  try {
+    const result = await asSunnahPost("get_iqamah");
+    return result?.data || {};
+  } catch (error) {
+    console.error("Gagal mengambil iqomah dari backend:", error);
+    return {};
+  }
+}
+
+function pickIqomah(map, ...keys) {
+  for (const key of keys) {
+    const value = map?.[key];
+    if (value && value !== "--:--") return value;
+  }
+  return "-";
+}
+
 function setButtonLoading(btn, isLoading, text = "Memproses...") {
   if (!btn) return;
 
@@ -717,19 +736,20 @@ async function renderSholat() { 
         const d = await fetch(`https://api.aladhan.com/v1/timings?latitude=${HEK_LAT}&longitude=${HEK_LON}&method=3&school=0&tune=0,2,0,1,1,0,2,1`).then(r => r.json()); 
         if (d.data && d.data.date && d.data.date.hijri) renderHijri(d.data.date.hijri); 
         
-        let iqomahData = [];
-        try { iqomahData = await loadCsv(DEFAULT_IQOMAH_CSV); } catch(e) { console.error(e); }
+        const iqomahMap = await getIqomahMapFromBackend();
 
         const now = new Date();
         const dayOfWeek = now.getDay(); 
 
         const getIqomah = (namaSholat) => {
-            if (iqomahData.length === 0) return "-";
-            let key = namaSholat;
-            if (namaSholat === "Isya") key = (dayOfWeek === 0 || dayOfWeek === 6) ? "Isya_Weekend" : "Isya_Weekday";
-            if (namaSholat === "Dzuhur" && dayOfWeek === 5) key = "Jumat";
-            const row = iqomahData.find(x => x.sholat && x.sholat.toLowerCase() === key.toLowerCase());
-            return row ? row.jam : "-";
+            if (namaSholat === "Syuruq") return "-";
+            if (namaSholat === "Dzuhur" && dayOfWeek === 5) return pickIqomah(iqomahMap, "Jumat", "Dzuhur");
+            if (namaSholat === "Isya") {
+                return (dayOfWeek === 0 || dayOfWeek === 6)
+                    ? pickIqomah(iqomahMap, "Isya_Weekend", "Isya_Biasa", "Isya_Weekday", "Isya")
+                    : pickIqomah(iqomahMap, "Isya_Weekday", "Isya_Biasa", "Isya_Weekend", "Isya");
+            }
+            return pickIqomah(iqomahMap, namaSholat);
         };
 
         const m = { Fajr: ["Subuh", "sunrise"], Sunrise: ["Syuruq", "sun"], Dhuhr: ["Dzuhur", "sun"], Asr: ["Ashar", "cloud-sun"], Maghrib: ["Maghrib", "moon"], Isha: ["Isya", "star"] }; 
@@ -939,18 +959,26 @@ window.bukaPopupJamaah = async () => {
     if(window.lucide) window.lucide.createIcons();
 
     try {
-        const d = await loadCsv(DEFAULT_IQOMAH_CSV);
-        if (d.length === 0) { container.innerHTML = `<p class="text-center text-xs text-red-500">Data jadwal belum tersedia di Spreadsheet.</p>`; return; }
-        container.innerHTML = "";
-        d.forEach(item => {
-            if(!item.sholat || !item.jam) return;
-            let nama = item.sholat.replace(/_/g, ' ').toUpperCase();
-            container.innerHTML += `
+        const d = await getIqomahMapFromBackend();
+        const list = [
+            ["Subuh", pickIqomah(d, "Subuh")],
+            ["Dzuhur", pickIqomah(d, "Dzuhur")],
+            ["Ashar", pickIqomah(d, "Ashar")],
+            ["Maghrib", pickIqomah(d, "Maghrib")],
+            ["Isya", pickIqomah(d, "Isya_Weekday", "Isya_Biasa", "Isya")],
+            ["Jumat", pickIqomah(d, "Jumat")]
+        ];
+
+        if (Object.keys(d).length === 0) {
+            container.innerHTML = `<p class="text-center text-xs text-red-500">Data jadwal belum tersedia di backend.</p>`;
+            return;
+        }
+
+        container.innerHTML = list.map(([nama, jam]) => `
             <div class="flex justify-between items-center bg-slate-50 border border-slate-100 p-3 rounded-xl hover:bg-emerald-50 hover:border-emerald-100 transition-colors">
-                <span class="text-xs font-bold text-slate-600">${nama}</span>
-                <span class="text-sm font-extrabold text-emerald-700 bg-white border border-emerald-200 px-3 py-1 rounded-lg shadow-sm">${item.jam}</span>
-            </div>`;
-        });
+                <span class="text-xs font-bold text-slate-600">${nama.toUpperCase()}</span>
+                <span class="text-sm font-extrabold text-emerald-700 bg-white border border-emerald-200 px-3 py-1 rounded-lg shadow-sm">${jam}</span>
+            </div>`).join("");
     } catch (e) { container.innerHTML = `<p class="text-center text-xs text-red-500">Gagal mengambil data.</p>`; }
 };
 window.tutupPopupJamaah = () => { const m = $("#modalJamaah"); if(m){ m.classList.add("hidden"); m.classList.remove("flex"); } };
@@ -1362,43 +1390,5 @@ window.konfirmasiDaurohWA = (jenis) => {
     
     window.open(`https://wa.me/819061432121?text=${encodeURIComponent(msg)}`, "_blank");
 };
-// ==========================================
-// FUNGSI TARIK JADWAL IQAMAH DARI BACKEND
-// ==========================================
-async function tarikJadwalIqamah() {
-    // ⚠️ PENTING: Ganti URL ini dengan URL Web App dari Backend Aplikasi Anda yang baru di-deploy
-    const API_URL = "https://script.google.com/macros/s/AKfycbzZ7VngoyvmLTWdfSTTjLKQ0G2kguCSkx8z-L6Vku1TgPQBOCUyoWVbjhZQhptj_mIkww/exec"; 
 
-    try {
-        const response = await fetch(API_URL);
-        const result = await response.json();
-
-        // Cek apakah data berhasil ditarik
-        if (result.status === "success" && result.data && result.data.iqamah) {
-            const iqamah = result.data.iqamah;
-            
-            // Injeksi data ke elemen HTML aplikasi (Pastikan ID ini sama dengan di index.html Anda)
-            const elSubuh = document.getElementById('iqamah-subuh');
-            const elDzuhur = document.getElementById('iqamah-dzuhur');
-            const elAshar = document.getElementById('iqamah-ashar');
-            const elMaghrib = document.getElementById('iqamah-maghrib');
-            const elIsya = document.getElementById('iqamah-isya');
-            const elJumat = document.getElementById('iqamah-jumat');
-
-            if (elSubuh) elSubuh.innerText = iqamah.Subuh;
-            if (elDzuhur) elDzuhur.innerText = iqamah.Dzuhur;
-            if (elAshar) elAshar.innerText = iqamah.Ashar;
-            if (elMaghrib) elMaghrib.innerText = iqamah.Maghrib;
-            if (elIsya) elIsya.innerText = iqamah.Isya_Biasa;
-            if (elJumat) elJumat.innerText = iqamah.Jumat;
-        }
-    } catch (error) {
-        console.error("Gagal menarik data Iqamah untuk Aplikasi:", error);
-    }
-}
-
-// Panggil fungsi secara otomatis saat aplikasi (HTML) selesai dimuat
-document.addEventListener("DOMContentLoaded", () => {
-    tarikJadwalIqamah();
-});
 
