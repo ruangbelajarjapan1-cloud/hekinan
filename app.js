@@ -1362,5 +1362,43 @@ window.konfirmasiDaurohWA = (jenis) => {
     
     window.open(`https://wa.me/819061432121?text=${encodeURIComponent(msg)}`, "_blank");
 };
+// ==========================================
+// FUNGSI TARIK JADWAL IQAMAH DARI BACKEND
+// ==========================================
+async function tarikJadwalIqamah() {
+    // ⚠️ PENTING: Ganti URL ini dengan URL Web App dari Backend Aplikasi Anda yang baru di-deploy
+    const API_URL = "https://script.google.com/macros/s/AKfycbzZ7VngoyvmLTWdfSTTjLKQ0G2kguCSkx8z-L6Vku1TgPQBOCUyoWVbjhZQhptj_mIkww/exec"; 
 
+    try {
+        const response = await fetch(API_URL);
+        const result = await response.json();
+
+        // Cek apakah data berhasil ditarik
+        if (result.status === "success" && result.data && result.data.iqamah) {
+            const iqamah = result.data.iqamah;
+            
+            // Injeksi data ke elemen HTML aplikasi (Pastikan ID ini sama dengan di index.html Anda)
+            const elSubuh = document.getElementById('iqamah-subuh');
+            const elDzuhur = document.getElementById('iqamah-dzuhur');
+            const elAshar = document.getElementById('iqamah-ashar');
+            const elMaghrib = document.getElementById('iqamah-maghrib');
+            const elIsya = document.getElementById('iqamah-isya');
+            const elJumat = document.getElementById('iqamah-jumat');
+
+            if (elSubuh) elSubuh.innerText = iqamah.Subuh;
+            if (elDzuhur) elDzuhur.innerText = iqamah.Dzuhur;
+            if (elAshar) elAshar.innerText = iqamah.Ashar;
+            if (elMaghrib) elMaghrib.innerText = iqamah.Maghrib;
+            if (elIsya) elIsya.innerText = iqamah.Isya_Biasa;
+            if (elJumat) elJumat.innerText = iqamah.Jumat;
+        }
+    } catch (error) {
+        console.error("Gagal menarik data Iqamah untuk Aplikasi:", error);
+    }
+}
+
+// Panggil fungsi secara otomatis saat aplikasi (HTML) selesai dimuat
+document.addEventListener("DOMContentLoaded", () => {
+    tarikJadwalIqamah();
+});
 
