@@ -712,27 +712,45 @@
     }
 
     let dbIqomah = {};
+    const IQOMAH_BACKEND_URL = "https://script.google.com/macros/s/AKfycbzZ7VngoyvmLTWdfSTTjLKQ0G2kguCSkx8z-L6Vku1TgPQBOCUyoWVbjhZQhptj_mIkww/exec";
+
     async function fetchIqomah() {
         try {
-            const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=420244150&single=true&output=csv";
-            const res = await fetch(url + "&t=" + Date.now());
-            const text = await res.text();
-            text.split('\n').forEach(row => {
-                const cols = row.split(',');
-                if (cols.length >= 2) { dbIqomah[cols[0].trim()] = cols[1].trim(); }
-            });
-        } catch(e) {}
+            // Ambil dari backend Apps Script, bukan CSV langsung.
+            // Backend sudah memilih otomatis: bulan sekarang + periode 1-10 / 11-20 / 21-31.
+            const res = await fetch(IQOMAH_BACKEND_URL + "?t=" + Date.now(), { cache: "no-store" });
+            const json = await res.json();
+            dbIqomah = json?.data?.iqamah || json?.data || {};
+            console.log("Iqomah dari backend:", dbIqomah);
+        } catch(e) {
+            console.error("Gagal mengambil iqomah dari backend:", e);
+            dbIqomah = {};
+        }
+    }
+
+    function ambilJamIqomah(...keys) {
+        for (const key of keys) {
+            const value = dbIqomah[key];
+            if (value && value !== "--:--") return value;
+        }
+        return null;
     }
 
     function getIqomahTime(type) {
         if(Object.keys(dbIqomah).length === 0) return null;
         if(type === 'pr_syuruq') return null;
-        if(type === 'pr_subuh') return dbIqomah['Subuh'];
-        if(type === 'pr_ashar') return dbIqomah['Ashar'];
-        if(type === 'pr_maghrib') return dbIqomah['Maghrib'];
-        const day = new Date().getDay(); 
-        if(type === 'pr_dzuhur') return (day === 5 && dbIqomah['Jumat']) ? dbIqomah['Jumat'] : dbIqomah['Dzuhur'];
-        if(type === 'pr_isya') return (day === 0 || day === 6) ? dbIqomah['Isya_Weekend'] : dbIqomah['Isya_Weekday'];
+
+        const day = new Date().getDay(); // 0 Ahad, 5 Jumat, 6 Sabtu
+
+        if(type === 'pr_subuh') return ambilJamIqomah('Subuh');
+        if(type === 'pr_ashar') return ambilJamIqomah('Ashar');
+        if(type === 'pr_maghrib') return ambilJamIqomah('Maghrib');
+        if(type === 'pr_dzuhur') return (day === 5) ? ambilJamIqomah('Jumat', 'Dzuhur') : ambilJamIqomah('Dzuhur');
+        if(type === 'pr_isya') {
+            return (day === 0 || day === 6)
+                ? ambilJamIqomah('Isya_Weekend', 'Isya_Biasa', 'Isya_Weekday', 'Isya')
+                : ambilJamIqomah('Isya_Weekday', 'Isya_Biasa', 'Isya_Weekend', 'Isya');
+        }
         return null;
     }
 
