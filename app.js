@@ -38,8 +38,8 @@ const POPUP_SLIDES_DATA = [
         text: "Read Announcement" 
     },
     { 
-        src: "assets/foto/w3.jpeg", 
-        link: "https://wa.me/818013909425", 
+        src: "assets/foto/arab.png", 
+        link: "https://wa.me/628895941864", 
         text: "Hubungi Admin" 
     }
 ];
