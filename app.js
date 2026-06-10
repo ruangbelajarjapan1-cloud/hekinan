@@ -1081,19 +1081,31 @@ async function initJadwalJumat() {
             .filter(item => item.date && item.date >= today)
             .sort((a, b) => a.date - b.date);
 
-        const selected = kandidat.length > 0 ? kandidat[0] : null;
+       const selected = kandidat.length > 0 ? kandidat[0] : null;
 
         if (!selected) {
             setText("jjTanggal", "Belum diperbarui");
             setText("jjKhatib", "-");
             setText("jjImam", "-");
+            setText("jjWaktu", "-");
             container.classList.remove("hidden");
             return;
+        }
+
+        // KAIZEN: Ambil fallback waktu Jumat dari Backend Apps Script (Iqomah)
+        let waktuJumat = "-";
+        try {
+            const iqomahMap = await getIqomahMapFromBackend();
+            waktuJumat = pickIqomah(iqomahMap, "Jumat", "Dzuhur") || "-";
+        } catch (error) {
+            console.error("Gagal ambil waktu Jumat:", error);
         }
 
         setText("jjTanggal", formatTanggalID(selected.date));
         setText("jjKhatib", selected.row.khatib || "-");
         setText("jjImam", selected.row.imam || "-");
+        // Prioritaskan kolom 'waktu'/'jam' di CSV. Jika kosong, pakai data dari Backend Iqomah
+        setText("jjWaktu", selected.row.waktu || selected.row.jam || waktuJumat);
 
         container.classList.remove("hidden");
 
