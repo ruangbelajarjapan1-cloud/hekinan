@@ -1402,5 +1402,106 @@ window.konfirmasiDaurohWA = (jenis) => {
     
     window.open(`https://wa.me/819061432121?text=${encodeURIComponent(msg)}`, "_blank");
 };
+// ==========================================
+// FORM PENDAFTARAN DAUROH INDEPENDEN
+// ==========================================
 
+window.bukaFormDauroh = () => {
+    const modal = document.getElementById("modalFormDauroh");
+    if (modal) {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        if (window.lucide) window.lucide.createIcons();
+    }
+};
+
+window.tutupFormDauroh = () => {
+    const modal = document.getElementById("modalFormDauroh");
+    if (modal) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+    }
+};
+
+// Helper internal untuk mengambil nilai radio button
+function dapatkanNilaiRadio(name) {
+    const terpilh = document.querySelector(`input[name="${name}"]:checked`);
+    return terpilh ? terpilh.value : "";
+}
+
+window.kirimFormDauroh = async () => {
+    const btn = document.getElementById("btnSubmitDauroh");
+    
+    // 1. Ambil nilai dari setiap form
+    const nama = document.getElementById("fd_nama")?.value.trim();
+    const nowa = document.getElementById("fd_wa")?.value.trim();
+    const jk = dapatkanNilaiRadio("fd_jk");
+    const status_peserta = dapatkanNilaiRadio("fd_status");
+    const pernah_ikut = dapatkanNilaiRadio("fd_pernah");
+    const lama_hari = dapatkanNilaiRadio("fd_hari");
+    const menginap = dapatkanNilaiRadio("fd_menginap");
+    const bawa_keluarga = dapatkanNilaiRadio("fd_keluarga");
+    const transportasi = dapatkanNilaiRadio("fd_trans");
+    const pesan_buku = dapatkanNilaiRadio("fd_buku");
+    const catatan = document.getElementById("fd_catatan")?.value.trim();
+
+    // 2. Validasi Kolom Wajib (*)
+    if (!nama || !nowa || !jk || !status_peserta || !pernah_ikut || !lama_hari || !menginap || !bawa_keluarga || !transportasi || !pesan_buku) {
+        alert("Mohon maaf, semua pertanyaan wajib (*) harus diisi.");
+        return;
+    }
+
+    // 3. Masukkan URL Apps Script Baru Anda (dari Langkah 2 nomor 4)
+    const URL_APPS_SCRIPT_DAUROH = "https://script.google.com/macros/s/AKfycbxFv8buCpBDncRGcFj-CpBgKOAHildHqzq5DBbk0v7SK-bP2B-Ua7YMr4-H0mC74byMDg/exec";
+
+    try {
+        setButtonLoading(btn, true, "Mengirim Pendaftaran...");
+
+        // Mengirim data murni ke spreadsheet independen
+        const response = await fetch(URL_APPS_SCRIPT_DAUROH, {
+            method: "POST",
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify({
+                nama: nama,
+                nowa: nowa,
+                jk: jk,
+                status_peserta: status_peserta,
+                pernah_ikut: pernah_ikut,
+                lama_hari: lama_hari,
+                menginap: menginap,
+                bawa_keluarga: bawa_keluarga,
+                transportasi: transportasi,
+                pesan_buku: pesan_buku,
+                catatan: catatan
+            })
+        });
+
+        const hasil = await response.json();
+
+        if (hasil.status === "success") {
+            alert("Alhamdulillah! " + hasil.message);
+            
+            // Reset isian form setelah sukses
+            document.getElementById("fd_nama").value = "";
+            document.getElementById("fd_wa").value = "";
+            document.getElementById("fd_catatan").value = "";
+            
+            // Uncheck semua radio button
+            const radios = document.querySelectorAll('#modalFormDauroh input[type="radio"]');
+            radios.forEach(radio => radio.checked = false);
+
+            window.tutupFormDauroh();
+        } else {
+            alert("Gagal menyimpan data: " + hasil.message);
+        }
+
+    } catch (error) {
+        console.error("Error Pendaftaran:", error);
+        alert("Terjadi masalah jaringan. Silakan coba beberapa saat lagi.");
+    } finally {
+        setButtonLoading(btn, false);
+    }
+};
 
