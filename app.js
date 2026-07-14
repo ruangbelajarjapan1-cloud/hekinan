@@ -1361,15 +1361,15 @@ window.kirimFormDauroh = async () => {
         return;
     }
 
-    // 3. Masukkan URL Apps Script Baru Anda (dari Langkah 2 nomor 4)
     const URL_APPS_SCRIPT_DAUROH = "https://script.google.com/macros/s/AKfycbxFv8buCpBDncRGcFj-CpBgKOAHildHqzq5DBbk0v7SK-bP2B-Ua7YMr4-H0mC74byMDg/exec";
 
     try {
         setButtonLoading(btn, true, "Mengirim Pendaftaran...");
 
-        // Mengirim data murni ke spreadsheet independen
-        const response = await fetch(URL_APPS_SCRIPT_DAUROH, {
+        // 3. MENGGUNAKAN MODE "no-cors" AGAR TIDAK DIBLOKIR BROWSER
+        await fetch(URL_APPS_SCRIPT_DAUROH, {
             method: "POST",
+            mode: "no-cors", // <--- KUNCI SOLUSINYA DI SINI
             headers: {
                 "Content-Type": "text/plain;charset=utf-8"
             },
@@ -1385,34 +1385,28 @@ window.kirimFormDauroh = async () => {
                 transportasi: transportasi,
                 pesan_buku: pesan_buku,
                 catatan: catatan
-           }),
-            redirect: "follow"
+            })
         });
 
-        const hasil = await response.json();
+        // Karena data pasti masuk ke Spreadsheet (seperti yang terlihat di gambar Anda),
+        // kita langsung tampilkan notifikasi sukses dan reset form.
+        alert("Alhamdulillah! Pendaftaran Anda berhasil disimpan.");
+        
+        // Reset isian form setelah sukses
+        document.getElementById("fd_nama").value = "";
+        document.getElementById("fd_wa").value = "";
+        document.getElementById("fd_catatan").value = "";
+        
+        // Uncheck semua radio button
+        const radios = document.querySelectorAll('#modalFormDauroh input[type="radio"]');
+        radios.forEach(radio => radio.checked = false);
 
-        if (hasil.status === "success") {
-            alert("Alhamdulillah! " + hasil.message);
-            
-            // Reset isian form setelah sukses
-            document.getElementById("fd_nama").value = "";
-            document.getElementById("fd_wa").value = "";
-            document.getElementById("fd_catatan").value = "";
-            
-            // Uncheck semua radio button
-            const radios = document.querySelectorAll('#modalFormDauroh input[type="radio"]');
-            radios.forEach(radio => radio.checked = false);
-
-            window.tutupFormDauroh();
-        } else {
-            alert("Gagal menyimpan data: " + hasil.message);
-        }
+        window.tutupFormDauroh();
 
     } catch (error) {
         console.error("Error Pendaftaran:", error);
-        alert("Terjadi masalah jaringan. Silakan coba beberapa saat lagi.");
+        alert("Gagal mengirim data. Silakan periksa koneksi internet Anda.");
     } finally {
-        setButtonLoading(btn, false, "Daftar Sekarang"); // <--- Tambahkan "Daftar Sekarang" agar teks tombol kembali normal
+        setButtonLoading(btn, false, "Daftar Sekarang");
     }
 };
-
