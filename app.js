@@ -28,9 +28,9 @@ const HEK_LON = 136.993;
 
 const POPUP_SLIDES_DATA = [
     { 
-        src: "wakaf-tutup-id.jpeg",
-        link: "pengumuman-wakaf",
-        text: "Baca Pengumuman" 
+        src: "natsu.jpeg",
+        link: "#", 
+        text: "Daftar Dauroh" 
     },
     { 
         src: "wakaf-tutup-en.jpeg",
