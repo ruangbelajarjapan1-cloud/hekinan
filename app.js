@@ -1476,6 +1476,7 @@ window.kirimFormDauroh = async () => {
                 pesan_buku: pesan_buku,
                 catatan: catatan
             })
+            redirect: "follow"
         });
 
         const hasil = await response.json();
