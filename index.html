@@ -1301,35 +1301,46 @@
         <label class="block text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2">Catatan Tambahan</label>
         <textarea id="fd_catatan" rows="3" placeholder="Tulis catatan jika ada..." class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all resize-none"></textarea>
       </div>
-<!-- PUSAT BANTUAN & MEDSOS (Desain ala Chatbot) -->
+<!-- PUSAT BANTUAN & MEDSOS (Desain ala Chatbot dengan Efek Tombol 3D Tactile) -->
       <div class="mt-8 bg-emerald-50 border border-emerald-100 p-5 rounded-2xl relative shadow-sm">
         <!-- Ekor Balon Chat -->
         <div class="absolute -top-2 left-8 w-4 h-4 bg-emerald-50 border-t border-l border-emerald-100 transform rotate-45"></div>
         
         <div class="flex items-start gap-4 relative z-10">
-          <!-- Ikon CS (Tanpa gambar makhluk bernyawa) -->
-          <div class="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center shrink-0 shadow-md border-2 border-white">
-            <i data-lucide="headset" class="w-5 h-5 text-white"></i>
+          <!-- Ikon CS 3D -->
+          <div class="w-10 h-10 rounded-full bg-gradient-to-b from-emerald-400 to-emerald-600 flex items-center justify-center shrink-0 shadow-[0_4px_0_#065f46,0_5px_15px_rgba(5,150,105,0.4)] border border-emerald-300">
+            <i data-lucide="headset" class="w-5 h-5 text-white drop-shadow-md"></i>
           </div>
           
           <div class="flex-1">
             <p class="text-[11px] font-bold text-emerald-800 uppercase tracking-wider mb-1">Admin Jepang Mengaji</p>
             <p class="text-xs text-slate-600 leading-relaxed mb-4">Afwan, apakah ada kendala saat mendaftar? Silakan hubungi kami atau ikuti update kajian di media sosial.</p>
             
-            <div class="flex flex-col gap-2.5">
-              <!-- Tombol WA -->
-              <a href="https://wa.me/628895941864" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center sm:justify-start gap-2 bg-white border border-emerald-200 hover:border-emerald-500 hover:bg-emerald-50 text-emerald-700 py-2.5 px-4 rounded-xl text-xs font-bold transition-all shadow-sm w-full sm:w-fit active:scale-95">
-                <i data-lucide="message-circle" class="w-4 h-4"></i> Chat via WhatsApp
+            <div class="flex flex-col gap-3">
+              <!-- Tombol WA 3D Elegan -->
+              <a href="https://wa.me/628895941864?text=Assalamu%27alaikum%20Admin%20Jepang%20Mengaji%2C%20saya%20ada%20kendala%2Fpertanyaan%20terkait%20pendaftaran%20Dauroh." target="_blank" rel="noopener noreferrer" class="relative flex items-center justify-center sm:justify-start gap-3 bg-gradient-to-b from-[#25D366] to-[#1DA851] text-white py-2.5 px-4 rounded-xl text-xs font-extrabold transition-all active:top-[4px] active:shadow-none shadow-[0_4px_0_#128C7E,0_8px_15px_rgba(37,211,102,0.3)] border-t border-white/30 w-full sm:w-fit">
+                <div class="bg-white/20 p-1.5 rounded-full shadow-inner">
+                  <i data-lucide="message-circle" class="w-4 h-4 text-white drop-shadow-md"></i>
+                </div>
+                Chat via WhatsApp
               </a>
               
-              <!-- Tombol Medsos -->
-              <div class="flex items-center gap-2 mt-1">
-                <a href="https://www.youtube.com/@jepangmengaji1390" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-[10px] font-bold text-slate-500 hover:text-red-600 transition-colors bg-white px-2.5 py-1.5 rounded-lg border border-slate-200 shadow-sm">
-                  <i data-lucide="youtube" class="w-3 h-3"></i> YouTube
+              <!-- Tombol Medsos 3D Elegan -->
+              <div class="flex items-center gap-3 mt-1">
+                <!-- YouTube 3D -->
+                <a href="https://www.youtube.com/@jepangmengaji1390" target="_blank" rel="noopener noreferrer" class="relative flex items-center gap-2 bg-gradient-to-b from-white to-slate-100 text-slate-700 py-2 px-3 rounded-lg text-[10px] font-bold transition-all active:top-[3px] active:shadow-none shadow-[0_3px_0_#cbd5e1,0_5px_10px_rgba(0,0,0,0.05)] border border-white">
+                  <div class="bg-red-50 p-1 rounded-md shadow-inner border border-red-100">
+                    <i data-lucide="youtube" class="w-3 h-3 text-red-600 drop-shadow-sm"></i>
+                  </div>
+                  YouTube
                 </a>
-                <!-- Ganti link instagram di bawah ini jika Jepang Mengaji punya akun IG sendiri -->
-                <a href="https://www.instagram.com/masjidhekinan" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-[10px] font-bold text-slate-500 hover:text-pink-600 transition-colors bg-white px-2.5 py-1.5 rounded-lg border border-slate-200 shadow-sm">
-                  <i data-lucide="instagram" class="w-3 h-3"></i> Instagram
+                
+                <!-- Instagram 3D -->
+                <a href="https://www.instagram.com/masjidhekinan" target="_blank" rel="noopener noreferrer" class="relative flex items-center gap-2 bg-gradient-to-b from-white to-slate-100 text-slate-700 py-2 px-3 rounded-lg text-[10px] font-bold transition-all active:top-[3px] active:shadow-none shadow-[0_3px_0_#cbd5e1,0_5px_10px_rgba(0,0,0,0.05)] border border-white">
+                  <div class="bg-pink-50 p-1 rounded-md shadow-inner border border-pink-100">
+                    <i data-lucide="instagram" class="w-3 h-3 text-pink-600 drop-shadow-sm"></i>
+                  </div>
+                  Instagram
                 </a>
               </div>
             </div>
