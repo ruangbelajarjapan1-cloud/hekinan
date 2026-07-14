@@ -1404,9 +1404,10 @@ window.kirimFormDauroh = async () => {
 
         window.tutupFormDauroh();
 
-    } catch (error) {
+   } catch (error) {
         console.error("Error Pendaftaran:", error);
         alert("Gagal mengirim data. Silakan periksa koneksi internet Anda.");
     } finally {
         setButtonLoading(btn, false, "Daftar Sekarang");
     }
+};
