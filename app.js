@@ -391,13 +391,15 @@ async function renderContent() {
         </div>`;
     }
 
-    let actionButton = "";
-    if (x.link_daftar && x.link_daftar.length > 5) {
-        actionButton = `<a href="${x.link_daftar}" target="_blank" rel="noopener noreferrer" class="relative z-10 mt-3 w-full block text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2"><i data-lucide="edit" class="w-4 h-4"></i> Daftar Sekarang</a>`;
+ let actionButton = "";
+    // LOGIKA BARU: Jika link_daftar diisi "DAUROH", tombol akan membuka form internal
+    if (x.link_daftar && x.link_daftar.trim().toUpperCase() === "DAUROH") {
+        actionButton = `<button onclick="window.bukaFormDauroh()" class="relative z-10 mt-3 w-full block text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2"><i data-lucide="edit" class="w-4 h-4"></i> Daftar Dauroh</button>`;
+    } else if (x.link_daftar && x.link_daftar.length > 5) {
+        actionButton = `<a href="${x.link_daftar}" target="_blank" rel="noopener noreferrer" class="relative z-10 mt-3 w-full block text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2"><i data-lucide="external-link" class="w-4 h-4"></i> Daftar Sekarang</a>`;
     } else {
         actionButton = `<button onclick="window.openArticleModal(${index})" class="relative z-10 mt-3 w-full block text-center bg-slate-50 hover:bg-slate-100 text-slate-600 font-bold py-2 rounded-xl text-sm transition-all border border-slate-200">Selengkapnya</button>`;
     }
-
     const safeTitle = sanitizeHTML(x.title || "(Tanpa Judul)");
     const rawDesc = (type === 'artikel' ? x.excerpt : x.desc) || "";
     const safeDesc = sanitizeHTML(rawDesc).replace(/<br\s*[\/]?>/gi, ' ').replace(/<[^>]*>?/gm, '');
@@ -1363,13 +1365,13 @@ window.kirimFormDauroh = async () => {
 
     const URL_APPS_SCRIPT_DAUROH = "https://script.google.com/macros/s/AKfycbxFv8buCpBDncRGcFj-CpBgKOAHildHqzq5DBbk0v7SK-bP2B-Ua7YMr4-H0mC74byMDg/exec";
 
-    try {
+   try {
         setButtonLoading(btn, true, "Mengirim Pendaftaran...");
 
-        // 3. MENGGUNAKAN MODE "no-cors" AGAR TIDAK DIBLOKIR BROWSER
+        // Mengirim data murni menggunakan mode no-cors
         await fetch(URL_APPS_SCRIPT_DAUROH, {
             method: "POST",
-            mode: "no-cors", // <--- KUNCI SOLUSINYA DI SINI
+            mode: "no-cors",
             headers: {
                 "Content-Type": "text/plain;charset=utf-8"
             },
@@ -1388,8 +1390,7 @@ window.kirimFormDauroh = async () => {
             })
         });
 
-        // Karena data pasti masuk ke Spreadsheet (seperti yang terlihat di gambar Anda),
-        // kita langsung tampilkan notifikasi sukses dan reset form.
+        // Karena menggunakan no-cors, kita anggap sukses jika tidak ada error jaringan
         alert("Alhamdulillah! Pendaftaran Anda berhasil disimpan.");
         
         // Reset isian form setelah sukses
@@ -1409,4 +1410,3 @@ window.kirimFormDauroh = async () => {
     } finally {
         setButtonLoading(btn, false, "Daftar Sekarang");
     }
-};
