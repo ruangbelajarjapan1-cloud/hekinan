@@ -1475,7 +1475,7 @@ window.kirimFormDauroh = async () => {
                 transportasi: transportasi,
                 pesan_buku: pesan_buku,
                 catatan: catatan
-            })
+           }),
             redirect: "follow"
         });
 
@@ -1502,7 +1502,7 @@ window.kirimFormDauroh = async () => {
         console.error("Error Pendaftaran:", error);
         alert("Terjadi masalah jaringan. Silakan coba beberapa saat lagi.");
     } finally {
-        setButtonLoading(btn, false);
+        setButtonLoading(btn, false, "Daftar Sekarang"); // <--- Tambahkan "Daftar Sekarang" agar teks tombol kembali normal
     }
 };
 
