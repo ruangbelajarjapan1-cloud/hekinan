@@ -558,147 +558,57 @@ function initLiveStream() {
 setInterval(cekLiveDariSheet, 120000);
 
 // ==========================================
-// FITUR POPUP (SELALU MUNCUL & PROGRESS BAR)
+// FITUR POPUP (EDISI POSTER TUNGGAL ELEGAN)
 // ==========================================
 function initPopup() {
-    const popup = $("#popupPromo");
-    const track = $("#popupTrack");
-    if (!popup || !track) return;
+    const popup = $("#popupPromo");
+    const track = $("#popupTrack");
+    if (!popup || !track) return;
 
-    track.innerHTML = ""; 
+    track.innerHTML = ""; 
 
-    if (!POPUP_SLIDES_DATA || POPUP_SLIDES_DATA.length === 0) return;
-
-      // Ambil tombol kosong/tersembunyi di sebelah tombol "Share Info"
-    const actionContainer = track.nextElementSibling;
-    const dynamicBtn = actionContainer ? actionContainer.querySelector("a") : null;
+    if (!POPUP_SLIDES_DATA || POPUP_SLIDES_DATA.length === 0) return;
 
     const closePopup = () => {
         popup.classList.add("hidden");
         popup.classList.remove("flex");
     };
 
-    const bukaTujuanPopup = (data) => {
-        if (!data) return;
-
-        // Khusus untuk pengumuman wakaf
-        if (data.link === "pengumuman-wakaf") {
-            closePopup();
-
-            // Kalau sedang di app.html, buka modal Papan Info
-            const modalInfo = document.getElementById("modalInfo");
-            if (modalInfo) {
-                modalInfo.classList.remove("hidden");
-                modalInfo.classList.add("flex");
-                return;
-            }
-
-            // Kalau sedang di index.html, scroll ke bagian donasi/pengumuman
-            const donasiSection = document.getElementById("donasi");
-            if (donasiSection) {
-                donasiSection.scrollIntoView({ behavior: "smooth" });
-                return;
-            }
-
-            // Cadangan kalau halaman tidak punya modalInfo/donasi
-            window.location.href = "index.html#donasi";
-            return;
-        }
-
-        // Untuk link eksternal seperti WhatsApp
-        if (data.link && data.link.startsWith("http")) {
-            window.open(data.link, "_blank", "noopener,noreferrer");
-            return;
-        }
-
-        // Untuk anchor biasa
-        if (data.link && data.link.startsWith("#")) {
-            closePopup();
-            document.querySelector(data.link)?.scrollIntoView({ behavior: "smooth" });
-        }
+    // Bersihkan slider lama, render poster tunggal secara statis & aman
+    const dataUtama = POPUP_SLIDES_DATA[0];
+    const slide = document.createElement("div");
+    slide.className = "absolute inset-0 w-full h-full cursor-pointer";
+    slide.innerHTML = `<img src="${dataUtama.src}" class="w-full h-full object-contain" alt="${dataUtama.text}">`;
+    
+    // Jika gambar diklik, otomatis memicu form pendaftaran muncul
+    slide.onclick = (e) => {
+        e.preventDefault();
+        window.bukaFormDauroh();
     };
+    track.appendChild(slide);
 
-    // Fungsi untuk mengubah teks dan link tombol hijau di bawah gambar
-    const updateDynamicButton = (index) => {
-        if (!dynamicBtn) return;
-        const data = POPUP_SLIDES_DATA[index];
+    // Sinkronisasi tombol aksi hijau di bawah gambar
+    const actionContainer = popup.querySelector(".grid-cols-2");
+    if (actionContainer) {
+        const dynamicBtn = actionContainer.querySelector("button");
+        if (dynamicBtn) {
+            dynamicBtn.onclick = (e) => {
+                e.preventDefault();
+                window.bukaFormDauroh();
+            };
+        }
+    }
 
-        dynamicBtn.href = "#";
-        dynamicBtn.onclick = (e) => {
-            e.preventDefault();
-            bukaTujuanPopup(data);
-        };
+    const closeBtn = $("#closePopupBtn");
+    const backdropBtn = $("#closePopupBackdrop");
 
-        dynamicBtn.className = "flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm shadow-md transition-all";
-        dynamicBtn.innerHTML = `${data.text} <i data-lucide="external-link" class="w-4 h-4"></i>`;
-        if (window.lucide) window.lucide.createIcons();
-    };
-
-    let currentIndex = 0;
-    const slides = [];
-
-    POPUP_SLIDES_DATA.forEach((data, index) => {
-            const slide = document.createElement("a");
-        slide.href = "#";
-        slide.onclick = (e) => {
-            e.preventDefault();
-            bukaTujuanPopup(data);
-        };
-        slide.className = "absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out cursor-pointer";
-        slide.style.opacity = index === 0 ? "1" : "0";
-        slide.style.pointerEvents = index === 0 ? "auto" : "none";
-        
-        // HAPUS teks mengambang, sekarang murni hanya gambar!
-       slide.innerHTML = `<img src="${data.src}" class="w-full h-full object-contain" alt="${data.text}">`;
-        track.appendChild(slide);
-        slides.push(slide);
-    });
-
-    // Set tombol hijau pertama kali
-    updateDynamicButton(0);
-
-    if (slides.length > 1) {
-        const createBtn = (icon, posClass) => {
-            const btn = document.createElement("button");
-            btn.className = `absolute top-1/2 -translate-y-1/2 ${posClass} bg-black/30 hover:bg-black/60 text-white p-2 rounded-full z-20 transition-all border border-white/20`;
-            btn.innerHTML = `<i data-lucide="${icon}" class="w-5 h-5"></i>`;
-            return btn;
-        };
-
-        const btnPrev = createBtn("chevron-left", "left-2");
-        const btnNext = createBtn("chevron-right", "right-2");
-
-        const move = (dir) => {
-            slides[currentIndex].style.opacity = "0";
-            slides[currentIndex].style.pointerEvents = "none";
-            currentIndex = (currentIndex + dir + slides.length) % slides.length;
-            slides[currentIndex].style.opacity = "1";
-            slides[currentIndex].style.pointerEvents = "auto";
-            
-            // Ubah teks dan link tombol hijau setiap kali gambar bergeser
-            updateDynamicButton(currentIndex);
-        };
-
-        btnPrev.onclick = (e) => { e.preventDefault(); e.stopPropagation(); move(-1); };
-        btnNext.onclick = (e) => { e.preventDefault(); e.stopPropagation(); move(1); };
-        
-        track.appendChild(btnPrev);
-        track.appendChild(btnNext);
-        
-        let autoSlide = setInterval(() => move(1), 5000);
-        track.onmouseenter = () => clearInterval(autoSlide);
-        track.onmouseleave = () => { autoSlide = setInterval(() => move(1), 5000); };
-    }
-
-    const close = () => { popup.classList.add("hidden"); popup.classList.remove("flex"); };
-    $("#closePopupBtn")?.addEventListener("click", close);
-    $("#closePopupBackdrop")?.addEventListener("click", close);
-    
-    popup.classList.remove("hidden");
-    popup.classList.add("flex");
-    if(window.lucide) window.lucide.createIcons();
+    closeBtn?.addEventListener("click", closePopup);
+    backdropBtn?.addEventListener("click", closePopup);
+    
+    popup.classList.remove("hidden");
+    popup.classList.add("flex");
+    if(window.lucide) window.lucide.createIcons();
 }
-
 function initVideoAjakan() { 
     const container = $("#videoAjakanContainer"); if (!container || !VIDEO_DONASI_LIST.length) return; 
     container.innerHTML = ""; 
