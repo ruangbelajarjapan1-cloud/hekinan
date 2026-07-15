@@ -667,6 +667,19 @@ function initPopup() {
     const slideEls = () => track.querySelectorAll(":scope > div.absolute.inset-0");
     const dotEls = () => dotsWrap ? dotsWrap.querySelectorAll("button") : [];
 
+    // KAIZEN: tombol hijau di bawah gambar ikut berubah sesuai slide yang aktif
+    const actionContainer = popup.querySelector(".grid-cols-2");
+    const dynamicBtn = actionContainer ? actionContainer.querySelector("button") : null;
+
+    function updateActionButton(data) {
+        if (!dynamicBtn) return;
+        const isExternal = data.link && data.link.startsWith("http");
+        const icon = isExternal ? "external-link" : "edit";
+        dynamicBtn.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4"></i> ${data.text || "Selengkapnya"}`;
+        dynamicBtn.onclick = handleSlideClick(data);
+        if (window.lucide) window.lucide.createIcons();
+    }
+
     function goTo(idx) {
         const slides = slideEls();
         slides[current]?.classList.add("opacity-0", "pointer-events-none");
@@ -678,6 +691,8 @@ function initPopup() {
         dotEls().forEach((d, i) => {
             d.className = `h-2 rounded-full transition-all ${i === current ? "bg-white w-4" : "bg-white/50 w-2"}`;
         });
+
+        updateActionButton(POPUP_SLIDES_DATA[current]);
     }
 
     function nextSlide() { goTo((current + 1) % POPUP_SLIDES_DATA.length); }
@@ -687,18 +702,7 @@ function initPopup() {
         if (POPUP_SLIDES_DATA.length > 1) autoTimer = setInterval(nextSlide, 4000);
     }
     resetAutoTimer();
-
-    // Sinkronisasi tombol aksi hijau di bawah gambar (tetap arah ke form dauroh)
-    const actionContainer = popup.querySelector(".grid-cols-2");
-    if (actionContainer) {
-        const dynamicBtn = actionContainer.querySelector("button");
-        if (dynamicBtn) {
-            dynamicBtn.onclick = (e) => {
-                e.preventDefault();
-                window.bukaFormDauroh();
-            };
-        }
-    }
+    updateActionButton(POPUP_SLIDES_DATA[0]); // set tombol sesuai slide pertama saat popup dibuka
 
     const closeBtn = $("#closePopupBtn");
     const backdropBtn = $("#closePopupBackdrop");
