@@ -41,6 +41,11 @@ const POPUP_SLIDES_DATA = [
         src: "assets/foto/arab.png", 
         link: "https://wa.me/628895941864", 
         text: "Hubungi Admin" 
+    },
+    { 
+        src: "PATH_KE_GAMBAR_PROMO_UMROH.jpeg", 
+        link: "https://umrohjepang.vercel.app/", 
+        text: "Umroh dari Jepang" 
     }
 ];
 
@@ -598,36 +603,85 @@ function initLiveStream() {
 setInterval(cekLiveDariSheet, 120000);
 
 // ==========================================
-// FITUR POPUP (EDISI POSTER TUNGGAL ELEGAN)
+// FITUR POPUP (SLIDER MULTI-PROMO, AUTO-GESER)
 // ==========================================
 function initPopup() {
     const popup = $("#popupPromo");
     const track = $("#popupTrack");
     if (!popup || !track) return;
 
-    track.innerHTML = ""; 
-
+    track.innerHTML = "";
     if (!POPUP_SLIDES_DATA || POPUP_SLIDES_DATA.length === 0) return;
 
     const closePopup = () => {
         popup.classList.add("hidden");
         popup.classList.remove("flex");
+        if (autoTimer) clearInterval(autoTimer);
     };
 
-    // Bersihkan slider lama, render poster tunggal secara statis & aman
-    const dataUtama = POPUP_SLIDES_DATA[0];
-    const slide = document.createElement("div");
-    slide.className = "absolute inset-0 w-full h-full cursor-pointer";
-    slide.innerHTML = `<img src="${dataUtama.src}" class="w-full h-full object-contain" alt="${dataUtama.text}">`;
-    
-    // Jika gambar diklik, otomatis memicu form pendaftaran muncul
-    slide.onclick = (e) => {
+    let current = 0;
+    let autoTimer = null;
+
+    const handleSlideClick = (data) => (e) => {
         e.preventDefault();
-        window.bukaFormDauroh();
+        if (data.link && data.link.startsWith("http")) {
+            window.open(data.link, "_blank", "noopener");
+        } else if (data.link && data.link.startsWith("#") && data.link.length > 1 && document.querySelector(data.link)) {
+            closePopup();
+            document.querySelector(data.link).scrollIntoView({ behavior: "smooth" });
+        } else {
+            window.bukaFormDauroh();
+        }
     };
-    track.appendChild(slide);
 
-    // Sinkronisasi tombol aksi hijau di bawah gambar
+    // Render semua slide, ditumpuk. Hanya slide aktif yang terlihat.
+    POPUP_SLIDES_DATA.forEach((data, i) => {
+        const slide = document.createElement("div");
+        slide.className = `absolute inset-0 w-full h-full cursor-pointer transition-opacity duration-500 ${i === 0 ? "opacity-100" : "opacity-0 pointer-events-none"}`;
+        slide.innerHTML = `<img src="${data.src}" class="w-full h-full object-contain" alt="${data.text || ''}">`;
+        slide.onclick = handleSlideClick(data);
+        track.appendChild(slide);
+    });
+
+    // Titik navigasi (cuma muncul kalau slide lebih dari 1)
+    let dotsWrap = null;
+    if (POPUP_SLIDES_DATA.length > 1) {
+        dotsWrap = document.createElement("div");
+        dotsWrap.className = "absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10";
+        POPUP_SLIDES_DATA.forEach((_, i) => {
+            const dot = document.createElement("button");
+            dot.className = `h-2 rounded-full transition-all ${i === 0 ? "bg-white w-4" : "bg-white/50 w-2"}`;
+            dot.onclick = (e) => { e.stopPropagation(); goTo(i); resetAutoTimer(); };
+            dotsWrap.appendChild(dot);
+        });
+        track.appendChild(dotsWrap);
+    }
+
+    const slideEls = () => track.querySelectorAll(":scope > div.absolute.inset-0");
+    const dotEls = () => dotsWrap ? dotsWrap.querySelectorAll("button") : [];
+
+    function goTo(idx) {
+        const slides = slideEls();
+        slides[current]?.classList.add("opacity-0", "pointer-events-none");
+        slides[current]?.classList.remove("opacity-100");
+        current = idx;
+        slides[current]?.classList.add("opacity-100");
+        slides[current]?.classList.remove("opacity-0", "pointer-events-none");
+
+        dotEls().forEach((d, i) => {
+            d.className = `h-2 rounded-full transition-all ${i === current ? "bg-white w-4" : "bg-white/50 w-2"}`;
+        });
+    }
+
+    function nextSlide() { goTo((current + 1) % POPUP_SLIDES_DATA.length); }
+
+    function resetAutoTimer() {
+        if (autoTimer) clearInterval(autoTimer);
+        if (POPUP_SLIDES_DATA.length > 1) autoTimer = setInterval(nextSlide, 4000);
+    }
+    resetAutoTimer();
+
+    // Sinkronisasi tombol aksi hijau di bawah gambar (tetap arah ke form dauroh)
     const actionContainer = popup.querySelector(".grid-cols-2");
     if (actionContainer) {
         const dynamicBtn = actionContainer.querySelector("button");
@@ -641,13 +695,12 @@ function initPopup() {
 
     const closeBtn = $("#closePopupBtn");
     const backdropBtn = $("#closePopupBackdrop");
-
     closeBtn?.addEventListener("click", closePopup);
     backdropBtn?.addEventListener("click", closePopup);
-    
+
     popup.classList.remove("hidden");
     popup.classList.add("flex");
-    if(window.lucide) window.lucide.createIcons();
+    if (window.lucide) window.lucide.createIcons();
 }
 function initVideoAjakan() { 
     const container = $("#videoAjakanContainer"); if (!container || !VIDEO_DONASI_LIST.length) return; 
