@@ -43,7 +43,7 @@ const POPUP_SLIDES_DATA = [
         text: "Hubungi Admin" 
     },
     { 
-        src: "PATH_KE_GAMBAR_PROMO_UMROH.jpeg", 
+        src: "umroh.png", 
         link: "https://umrohjepang.vercel.app/", 
         text: "Umroh dari Jepang" 
     }
@@ -199,40 +199,47 @@ function sanitizeHTML(str) {
 }
 
 async function loadCsv(url) {
-  const cacheKey = "cache_data_" + url;
-  const cacheTimeKey = "cache_time_" + url;
-  const CACHE_DURATION = 1 * 60 * 1000; 
-  const cachedData = localStorage.getItem(cacheKey);
-  const cachedTime = localStorage.getItem(cacheTimeKey);
-  const now = new Date().getTime();
+  const cacheKey = "cache_data_" + url;
+  const cacheTimeKey = "cache_time_" + url;
+  const CACHE_DURATION = 1 * 60 * 1000; 
+  const cachedData = localStorage.getItem(cacheKey);
+  const cachedTime = localStorage.getItem(cacheTimeKey);
+  const now = new Date().getTime();
 
-  if (cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
-      return JSON.parse(cachedData);
-  }
+  if (cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
+      return JSON.parse(cachedData);
+  }
 
-  try {
-    const t = await fetch(url, { cache: "no-store" }).then(r => r.text());
-    const r = []; let i = 0, c = "", row = [], q = false;
-    while (i < t.length) {
-      let char = t[i];
-      if (char === '"') { if (q && t[i + 1] === '"') { c += '"'; i += 2; continue; } q = !q; i++; continue; }
-      if (!q && char === ',') { row.push(c); c = ""; i++; continue; }
-      if (!q && (char === '\n' || char === '\r')) { if (c || row.length) { row.push(c); r.push(row); row = []; c = ""; } if (char === '\r' && t[i + 1] === '\n') i++; i++; continue; }
-      c += char; i++;
-    }
-    if (c || row.length) { row.push(c); r.push(row); }
-    if (r.length === 0 || !r[0]) return [];
+  try {
+    const response = await fetch(url, { cache: "no-store" });
+    if (!response.ok) throw new Error("HTTP " + response.status); // KAIZEN: deteksi gagal (400/404/dst)
+    const t = await response.text();
+    const r = []; let i = 0, c = "", row = [], q = false;
+    while (i < t.length) {
+      let char = t[i];
+      if (char === '"') { if (q && t[i + 1] === '"') { c += '"'; i += 2; continue; } q = !q; i++; continue; }
+      if (!q && char === ',') { row.push(c); c = ""; i++; continue; }
+      if (!q && (char === '\n' || char === '\r')) { if (c || row.length) { row.push(c); r.push(row); row = []; c = ""; } if (char === '\r' && t[i + 1] === '\n') i++; i++; continue; }
+      c += char; i++;
+    }
+    if (c || row.length) { row.push(c); r.push(row); }
+    if (r.length === 0 || !r[0]) return [];
 
-    const h = r[0].map(x => x.trim().toLowerCase());
-    const finalData = r.slice(1).map(v => { const o = {}; h.forEach((k, x) => o[k] = v[x]?.trim() || ""); return o; });
-    
-    localStorage.setItem(cacheKey, JSON.stringify(finalData));
-    localStorage.setItem(cacheTimeKey, now.toString());
-    return finalData;
-  } catch { 
-    if (cachedData) return JSON.parse(cachedData);
-    return []; 
-  }
+    const h = r[0].map(x => x.trim().toLowerCase());
+    const finalData = r.slice(1).map(v => { const o = {}; h.forEach((k, x) => o[k] = v[x]?.trim() || ""); return o; });
+
+    // KAIZEN: jangan simpan ke cache kalau datanya rusak/kosong semua,
+    // supaya sekali gagal tidak "mengunci" tampilan kosong selama 1 menit.
+    const isMostlyEmpty = finalData.length > 0 && finalData.every(item => !item.title);
+    if (!isMostlyEmpty) {
+        localStorage.setItem(cacheKey, JSON.stringify(finalData));
+        localStorage.setItem(cacheTimeKey, now.toString());
+    }
+    return finalData;
+  } catch { 
+    if (cachedData) return JSON.parse(cachedData);
+    return []; 
+  }
 }
 
 
