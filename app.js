@@ -496,35 +496,52 @@ function initHeroSlider() {
 // =======================================================
 let currentWebLiveId = "";
 
-async function cekLiveDariSheet() {
-    const CSV_SETELAN = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1608872178&single=true&output=csv"; 
-    try {
-        const response = await fetch(CSV_SETELAN + "&t=" + new Date().getTime());
-        const text = await response.text();
-        const rows = text.split('\n');
-        let foundId = "";
-        
-        for (let row of rows) {
-            const cols = row.split(',');
-            if (cols[0] && cols[1]) {
-                const key = cols[0].trim().toLowerCase();
-                const val = cols[1].trim().replace(/['"\r]/g, '');
-
-                if (key === "live_id") foundId = val;
-                if (key === "target_donasi" && !isNaN(val) && val !== "") TARGET_DONASI = Number(val);
-                if (key === "terkumpul_donasi" && !isNaN(val) && val !== "") TERKUMPUL_SAAT_INI = Number(val);
-            }
-        }
-        
-        YOUTUBE_LIVE_ID = foundId;
-        initLiveStream(); 
-        if (typeof initProgressWakaf === 'function') initProgressWakaf();
-        
-    } catch (error) { 
-        console.error("Gagal cek Setelan dari Sheet", error); 
-    }
+// Menerima link YouTube dalam format apapun (link biasa, youtu.be,
+// link live, link embed) ATAU id video polos, lalu mengembalikan ID-nya saja.
+// Ini membuat kolom "live_id" di Sheet lebih tahan salah-paste oleh operator.
+function extractYoutubeId(input) {
+    if (!input) return "";
+    const str = input.trim();
+    const patterns = [
+        /(?:youtube\.com\/(?:watch\?v=|live\/|embed\/|shorts\/))([a-zA-Z0-9_-]{6,})/,
+        /youtu\.be\/([a-zA-Z0-9_-]{6,})/
+    ];
+    for (const p of patterns) {
+        const m = str.match(p);
+        if (m && m[1]) return m[1].split(/[?&]/)[0];
+    }
+    // Bukan URL yang dikenali, anggap sudah berupa ID video langsung
+    return str;
 }
 
+async function cekLiveDariSheet() {
+    const CSV_SETELAN = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSlE8S0iOWE3ssrAkrsm1UE_qMfFZAHLXD057zfZslsu1VCdiIDI2jdHc_gjGBOKqQFFo-iLYouGwm9/pub?gid=1608872178&single=true&output=csv"; 
+    try {
+        const response = await fetch(CSV_SETELAN + "&t=" + new Date().getTime());
+        const text = await response.text();
+        const rows = text.split('\n');
+        let foundId = "";
+        
+        for (let row of rows) {
+            const cols = row.split(',');
+            if (cols[0] && cols[1]) {
+                const key = cols[0].trim().toLowerCase();
+                const val = cols[1].trim().replace(/['"\r]/g, '');
+
+                if (key === "live_id") foundId = val;
+                if (key === "target_donasi" && !isNaN(val) && val !== "") TARGET_DONASI = Number(val);
+                if (key === "terkumpul_donasi" && !isNaN(val) && val !== "") TERKUMPUL_SAAT_INI = Number(val);
+            }
+        }
+        
+        YOUTUBE_LIVE_ID = extractYoutubeId(foundId);
+        initLiveStream(); 
+        if (typeof initProgressWakaf === 'function') initProgressWakaf();
+        
+    } catch (error) { 
+        console.error("Gagal cek Setelan dari Sheet", error); 
+    }
+}
 function initLiveStream() {
     const container = $("#liveStreamContainer");
     const wrapper = $("#liveStreamWrapper");
