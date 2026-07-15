@@ -57,27 +57,8 @@
 <link rel="apple-touch-icon" href="logohekinan.jpeg">
 <link rel="icon" href="logohekinan.jpeg" type="image/jpeg">
 <link rel="stylesheet" href="style.css">
-<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="style-tailwind.css">
 <script src="https://unpkg.com/lucide@0.577.0"></script>
-
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          fig: { primary: "#0EA5E9", primaryDark: "#0284C7", accent: "#D97706", success: "#059669", surface: "#FFFFFF", text: "#0F172A", soft: "#F0F9FF" }
-        },
-        borderRadius: { fig: "20px" },
-        boxShadow: { soft: "0 10px 40px -10px rgba(14, 165, 233, 0.15)", card: "0 4px 6px -1px rgba(0, 0, 0, 0.05)" },
-        animation: { 'fade-up': 'fadeUp 0.8s ease-out forwards', 'shimmer': 'shimmer 2s infinite' },
-        keyframes: {
-          fadeUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-          shimmer: { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(100%)' } }
-        }
-      }
-    }
-  }
-</script>
 </head>
 
 <body class="font-sans text-fig-text pb-32 md:pb-0">
