@@ -435,7 +435,7 @@ async function renderContent() {
       }
   }
 
-  const aL = document.getElementById("artikelList");
+const aL = document.getElementById("artikelList");
   if (aL) {
       const urlArtikel = getCsvUrl("artikel");
       const d = await loadCsv(urlArtikel);
@@ -451,6 +451,27 @@ async function renderContent() {
       };
       filter("");
       document.getElementById("searchArtikel")?.addEventListener("input", e => filter(e.target.value.toLowerCase()));
+  }
+
+  // KAIZEN: Galeri Foto - ambil semua item yang punya poster dari Pengumuman & Artikel
+  const galeriGrid = document.getElementById("galeriFotoGrid");
+  if (galeriGrid) {
+      const fotoItems = window.globalContentData
+          .map((item, idx) => ({ item, idx }))
+          .filter(o => o.item.poster && o.item.poster.length > 5);
+
+      if (fotoItems.length > 0) {
+          galeriGrid.innerHTML = fotoItems.map(o => `
+            <div onclick="window.openArticleModal(${o.idx})" class="aspect-square rounded-xl overflow-hidden bg-slate-100 border border-slate-200 cursor-pointer group relative shadow-sm">
+              <img src="${sanitizeHTML(o.item.poster)}" alt="${sanitizeHTML(o.item.title || 'Foto kegiatan')}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy">
+              <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/30 transition-colors"></div>
+            </div>
+          `).join("");
+          document.getElementById("galeriFotoEmpty")?.classList.add("hidden");
+      } else {
+          document.getElementById("galeriFotoEmpty")?.classList.remove("hidden");
+      }
+      if (window.lucide) window.lucide.createIcons();
   }
 }
 function initTabs() {
