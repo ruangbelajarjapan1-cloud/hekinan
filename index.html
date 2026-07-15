@@ -675,6 +675,15 @@
       <script src="https://elfsightcdn.com/platform.js" async></script>
       <div class="elfsight-app-27681024-43cb-4dfa-a940-d88825dd9154" data-elfsight-app-lazy></div>
     </div>
+
+    <!-- KAIZEN: Galeri Foto - otomatis dari poster Pengumuman & Artikel -->
+    <div class="mt-12 reveal">
+      <h3 class="text-lg font-extrabold text-slate-800 mb-4 flex items-center gap-2">
+        <i data-lucide="image" class="w-5 h-5 text-fig-primary"></i> Galeri Foto Kegiatan
+      </h3>
+      <div id="galeriFotoGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+      <p id="galeriFotoEmpty" class="hidden text-center text-sm text-slate-400 py-6">Belum ada foto kegiatan untuk ditampilkan.</p>
+    </div>
   </div>
 </section>
 
@@ -822,7 +831,114 @@
     </div>
   </div>
 </section>
+<!-- KAIZEN: FAQ - Pertanyaan yang Sering Ditanyakan -->
+<section id="faq" class="py-16 bg-slate-50 border-t border-slate-200">
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-10 reveal">
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 text-sky-700 text-[10px] font-extrabold uppercase tracking-widest border border-sky-100">
+          <i data-lucide="message-circle-question" class="w-3 h-3"></i> FAQ
+        </span>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-3">Pertanyaan yang Sering Ditanyakan</h2>
+        <p class="text-slate-500 mt-2">Jawaban cepat sebelum menghubungi pengurus.</p>
+      </div>
 
+      <div class="space-y-3 reveal">
+
+        <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 p-5 cursor-pointer font-bold text-slate-800 list-none">
+            Di mana lokasi Masjid As-Sunnah Hekinan?
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 shrink-0 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed">
+            Alamat masjid: 1 Chome-8 Dojoyamamachi, Hekinan, Aichi 447-0864. Anda bisa langsung buka rute lewat <a href="https://www.google.com/maps/search/?api=1&query=Masjid+As-Sunnah+Hekinan" target="_blank" rel="noopener noreferrer" class="text-fig-primary font-semibold hover:underline">Google Maps di sini</a>.
+          </div>
+        </details>
+
+        <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 p-5 cursor-pointer font-bold text-slate-800 list-none">
+            Bagaimana cara tahu jadwal sholat dan iqomah harian?
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 shrink-0 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed">
+            Cek langsung di bagian <a href="#sholat" class="text-fig-primary font-semibold hover:underline">Jadwal Sholat</a> pada halaman ini, atau buka <a href="app.html" class="text-fig-primary font-semibold hover:underline">App Jamaah</a> untuk akses lebih cepat dari HP, lengkap dengan info iqomah dan kajian harian.
+          </div>
+        </details>
+
+        <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 p-5 cursor-pointer font-bold text-slate-800 list-none">
+            Kapan sholat Jumat dan siapa khatib/imamnya?
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 shrink-0 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed">
+            Info Jumat pekan berjalan (khatib, imam, dan waktu) selalu diperbarui setiap pekan di bagian <a href="#sholat" class="text-fig-primary font-semibold hover:underline">Jumat di Masjid As-Sunnah Hekinan</a>.
+          </div>
+        </details>
+
+        <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 p-5 cursor-pointer font-bold text-slate-800 list-none">
+            Bagaimana cara ikut kajian, live atau rekaman?
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 shrink-0 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed">
+            Saat kajian sedang live, video streaming otomatis muncul di bagian <a href="#video-kajian" class="text-fig-primary font-semibold hover:underline">Video Kajian</a> pada halaman ini. Rekaman kajian sebelumnya bisa ditonton di channel YouTube <a href="https://www.youtube.com/@jepangmengaji1390" target="_blank" rel="noopener noreferrer" class="text-fig-primary font-semibold hover:underline">@jepangmengaji1390</a>.
+          </div>
+        </details>
+
+        <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 p-5 cursor-pointer font-bold text-slate-800 list-none">
+            Bagaimana cara berinfaq atau donasi?
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 shrink-0 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed">
+            Bisa transfer ke rekening Yucho Bank (Jepang) atau BSI (Indonesia), maupun via Dana/GoPay/OVO. Detail rekening dan tombol konfirmasi transfer via WhatsApp ada di bagian <a href="#donasi" class="text-fig-primary font-semibold hover:underline">Infaq &amp; Donasi</a>.
+          </div>
+        </details>
+
+        <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 p-5 cursor-pointer font-bold text-slate-800 list-none">
+            Apakah wakaf pembangunan masjid masih dibuka?
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 shrink-0 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed">
+            Alhamdulillah, wakaf pembebasan lahan dan bangunan sudah lunas 100% dan resmi ditutup. Donasi yang masuk sekarang dialihkan sepenuhnya untuk Infaq Operasional Masjid (listrik, air, kebersihan, dan kegiatan dakwah).
+          </div>
+        </details>
+
+        <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 p-5 cursor-pointer font-bold text-slate-800 list-none">
+            Saya baru pindah ke Hekinan, mulai dari mana?
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 shrink-0 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed">
+            Kunjungi bagian <a href="#panduan-muslim" class="text-fig-primary font-semibold hover:underline">Panduan Muslim Hekinan</a> — berisi info kuliner halal, aturan sampah, jadwal kereta, dan kamus dakwah Jepang-Islam untuk memudahkan kehidupan sehari-hari.
+          </div>
+        </details>
+
+        <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 p-5 cursor-pointer font-bold text-slate-800 list-none">
+            Bagaimana cara mendaftar kegiatan seperti dauroh?
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 shrink-0 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed">
+            Pantau bagian Pengumuman di halaman ini. Kegiatan yang membuka pendaftaran akan menampilkan tombol "Daftar Dauroh" atau "Daftar Sekarang" — tinggal klik dan isi form yang muncul.
+          </div>
+        </details>
+
+        <details class="group bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 p-5 cursor-pointer font-bold text-slate-800 list-none">
+            Bagaimana cara menghubungi pengurus masjid?
+            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 shrink-0 transition-transform group-open:rotate-180"></i>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed">
+            Bisa lewat WhatsApp (Harry atau Tisna, ada di bagian Hubungi Kami pada footer), Instagram <a href="https://www.instagram.com/masjidhekinan" target="_blank" rel="noopener noreferrer" class="text-fig-primary font-semibold hover:underline">@masjidhekinan</a>, atau tombol "Tanya / Saran" yang muncul di halaman ini.
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </div>
+</section>
 <footer class="bg-white border-t border-slate-200 pb-28 md:pb-24">
   <div class="container mx-auto px-4 py-12">
  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 items-start">
