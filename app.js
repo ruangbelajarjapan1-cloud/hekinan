@@ -33,9 +33,9 @@ const POPUP_SLIDES_DATA = [
         text: "Daftar Dauroh" 
     },
     { 
-       src: "umroh.png", 
-        link: "https://umrohjepang.vercel.app/", 
-        text: "Umroh dari Jepang" 
+        src: "natsu1.jpeg",
+        link: "#", 
+        text: "Daftar Dauroh" 
     },
     { 
         src: "assets/foto/arab.png", 
