@@ -28,12 +28,12 @@ const HEK_LON = 136.993;
 
 const POPUP_SLIDES_DATA = [
     { 
-        src: "natsu.jpeg",
+        src: "natsu1.jpeg",
         link: "#", 
         text: "Daftar Dauroh" 
     },
     { 
-        src: "natsu1.jpeg",
+        src: "natsu.jpeg",
         link: "#", 
         text: "Daftar Dauroh" 
     },
