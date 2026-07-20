@@ -38,6 +38,11 @@ const POPUP_SLIDES_DATA = [
         text: "Donasi Dauroh" 
     },
     { 
+    src: "renov.jpeg",   // ganti dengan nama file banner Anda
+    link: "https://wa.me/6287879993838?text=Assalamu%27alaikum%20Kak%20Maru%2C%20saya%20ingin%20melakukan%20donasi%20untuk%20Renovasi%20Masjid%20As-Sunnah%20Hekinan.%20Mohon%20informasinya.%20Jazakumullahu%20khayran.",
+    text: "Donasi Renovasi Masjid" 
+},
+    { 
         src: "natsu.jpeg",
         link: "#", 
         text: "Daftar Dauroh" 
@@ -407,12 +412,10 @@ async function renderContent() {
 let actionButton = "";
     // LOGIKA BARU: Jika link_daftar diisi "DAUROH", tombol akan membuka form internal
     if (x.link_daftar && x.link_daftar.trim().toUpperCase() === "DAUROH") {
-        const waDonasiDauroh = "https://wa.me/628895941864?text=Assalamu%27alaikum%20Admin%20Jepang%20Mengaji%2C%20saya%20ingin%20berinfaq%2Fdonasi%20untuk%20kegiatan%20Dauroh.%20Mohon%20info%20rekening%20dan%20tata%20caranya.%20Jazakumullahu%20khayran.";
-        actionButton = `
-          <div class="grid grid-cols-2 gap-2 mt-3">
-            <button onclick="window.bukaFormDauroh()" class="relative z-10 w-full text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-1.5"><i data-lucide="edit" class="w-4 h-4"></i> Daftar</button>
-            <a href="${waDonasiDauroh}" target="_blank" rel="noopener noreferrer" class="relative z-10 w-full text-center bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-xl text-xs sm:text-sm transition-all shadow-md flex items-center justify-center gap-1.5"><i data-lucide="hand-coins" class="w-4 h-4"></i> Donasi</a>
-          </div>`;
+        actionButton = `<button onclick="window.bukaFormDauroh()" class="relative z-10 mt-3 w-full block text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2"><i data-lucide="edit" class="w-4 h-4"></i> Daftar Dauroh</button>`;
+    } else if (x.link_daftar && x.link_daftar.includes("wa.me")) {
+        // KAIZEN: kalau link_daftar berisi link WhatsApp, tombolnya otomatis bergaya WA (hijau)
+        actionButton = `<a href="${x.link_daftar}" target="_blank" rel="noopener noreferrer" class="relative z-10 mt-3 w-full block text-center bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2"><i data-lucide="message-circle" class="w-4 h-4"></i> Chat via WhatsApp</a>`;
     } else if (x.link_daftar && x.link_daftar.length > 5) {
         actionButton = `<a href="${x.link_daftar}" target="_blank" rel="noopener noreferrer" class="relative z-10 mt-3 w-full block text-center bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2"><i data-lucide="external-link" class="w-4 h-4"></i> Daftar Sekarang</a>`;
     } else {
