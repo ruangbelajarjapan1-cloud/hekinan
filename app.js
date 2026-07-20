@@ -634,8 +634,10 @@ function initPopup() {
 
     let current = 0;
     let autoTimer = null;
+    let suppressClick = false;
 
     const handleSlideClick = (data) => (e) => {
+        if (suppressClick) { suppressClick = false; return; }
         e.preventDefault();
         if (data.link && data.link.startsWith("http")) {
             window.open(data.link, "_blank", "noopener");
@@ -651,7 +653,7 @@ function initPopup() {
     POPUP_SLIDES_DATA.forEach((data, i) => {
         const slide = document.createElement("div");
         slide.className = `absolute inset-0 w-full h-full cursor-pointer transition-opacity duration-500 ${i === 0 ? "opacity-100" : "opacity-0 pointer-events-none"}`;
-        slide.innerHTML = `<img src="${data.src}" class="w-full h-full object-contain" alt="${data.text || ''}">`;
+        slide.innerHTML = `<img src="${data.src}" class="w-full h-full object-contain pointer-events-none select-none" alt="${data.text || ''}" draggable="false">`;
         slide.onclick = handleSlideClick(data);
         track.appendChild(slide);
     });
@@ -673,7 +675,6 @@ function initPopup() {
     const slideEls = () => track.querySelectorAll(":scope > div.absolute.inset-0");
     const dotEls = () => dotsWrap ? dotsWrap.querySelectorAll("button") : [];
 
-    // Tombol hijau "Daftar/Donasi/dst" di bawah gambar - ikut berubah sesuai slide aktif
     const actionContainer = popup.querySelector(".grid-cols-2");
     const dynamicBtn = actionContainer ? actionContainer.querySelector("button") : null;
 
@@ -686,7 +687,6 @@ function initPopup() {
         if (window.lucide) window.lucide.createIcons();
     }
 
-    // KAIZEN: tombol "Share Info" - sekarang benar-benar berfungsi, ikut isi slide aktif
     const shareBtn = $("#popupShareBtn");
     function updateShareButton(data) {
         if (!shareBtn) return;
@@ -695,9 +695,7 @@ function initPopup() {
             const shareTitle = data.text || "Masjid As-Sunnah Hekinan";
             const shareText = `${shareTitle} - Masjid As-Sunnah Hekinan`;
             if (navigator.share) {
-                try {
-                    await navigator.share({ title: shareTitle, text: shareText, url: shareUrl });
-                } catch (e) { /* dibatalkan oleh pengguna, tidak apa-apa */ }
+                try { await navigator.share({ title: shareTitle, text: shareText, url: shareUrl }); } catch (e) {}
             } else {
                 window.open("https://wa.me/?text=" + encodeURIComponent(shareText + " " + shareUrl), "_blank", "noopener");
             }
@@ -721,6 +719,7 @@ function initPopup() {
     }
 
     function nextSlide() { goTo((current + 1) % POPUP_SLIDES_DATA.length); }
+    function prevSlide() { goTo((current - 1 + POPUP_SLIDES_DATA.length) % POPUP_SLIDES_DATA.length); }
 
     function resetAutoTimer() {
         if (autoTimer) clearInterval(autoTimer);
@@ -729,6 +728,36 @@ function initPopup() {
     resetAutoTimer();
     updateActionButton(POPUP_SLIDES_DATA[0]);
     updateShareButton(POPUP_SLIDES_DATA[0]);
+
+    // KAIZEN: geser manual pakai jari (HP) atau drag mouse (desktop)
+    if (POPUP_SLIDES_DATA.length > 1) {
+        let startX = 0, dragDistance = 0, isDragging = false;
+        track.style.touchAction = "pan-y";
+
+        track.addEventListener("pointerdown", (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            dragDistance = 0;
+            track.setPointerCapture(e.pointerId);
+        });
+        track.addEventListener("pointermove", (e) => {
+            if (!isDragging) return;
+            dragDistance = e.clientX - startX;
+        });
+        const endDrag = () => {
+            if (!isDragging) return;
+            isDragging = false;
+            const threshold = 40;
+            if (Math.abs(dragDistance) > threshold) {
+                suppressClick = true;
+                if (dragDistance > 0) prevSlide(); else nextSlide();
+                resetAutoTimer();
+            }
+            dragDistance = 0;
+        };
+        track.addEventListener("pointerup", endDrag);
+        track.addEventListener("pointercancel", endDrag);
+    }
 
     const closeBtn = $("#closePopupBtn");
     const backdropBtn = $("#closePopupBackdrop");
