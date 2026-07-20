@@ -327,17 +327,23 @@ window.openArticleModal = (index) => {
   const oldBtn = document.getElementById("dynamicActionBtn");
   if(oldBtn) oldBtn.remove();
 
-  if (data.link_daftar && data.link_daftar.length > 5) {
-      const btn = document.createElement("a");
-      btn.id = "dynamicActionBtn";
-      btn.href = data.link_daftar;
-      btn.target = "_blank";
-      btn.rel = "noopener noreferrer";
-      btn.className = "flex items-center gap-2 text-xs font-bold text-white bg-sky-600 hover:bg-sky-700 px-4 py-2 rounded-lg transition-colors shadow-sm ml-auto mr-2";
-      btn.innerHTML = `<i data-lucide="edit" class="w-3 h-3"></i> Daftar Kegiatan`;
-      const closeBtn = document.getElementById("closeArticleBtnBottom");
-      if(closeBtn && modalFooter) modalFooter.insertBefore(btn, closeBtn);
-  } else if (data.link) {
+if (data.link_daftar && data.link_daftar.length > 5) {
+      const btn = document.createElement("a");
+      btn.id = "dynamicActionBtn";
+      btn.href = data.link_daftar;
+      btn.target = "_blank";
+      btn.rel = "noopener noreferrer";
+      // KAIZEN: kalau link_daftar berisi link WhatsApp, tombolnya otomatis bergaya WA (hijau)
+      const isWA = data.link_daftar.includes("wa.me");
+      btn.className = isWA
+        ? "flex items-center gap-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-lg transition-colors shadow-sm ml-auto mr-2"
+        : "flex items-center gap-2 text-xs font-bold text-white bg-sky-600 hover:bg-sky-700 px-4 py-2 rounded-lg transition-colors shadow-sm ml-auto mr-2";
+      btn.innerHTML = isWA
+        ? `<i data-lucide="message-circle" class="w-3 h-3"></i> Chat via WhatsApp`
+        : `<i data-lucide="edit" class="w-3 h-3"></i> Daftar Kegiatan`;
+      const closeBtn = document.getElementById("closeArticleBtnBottom");
+      if(closeBtn && modalFooter) modalFooter.insertBefore(btn, closeBtn);
+  } else if (data.link) {
       const extBtn = document.getElementById("modalExternalLink");
       if(extBtn) {
          extBtn.href = data.link;
