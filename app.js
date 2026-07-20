@@ -672,7 +672,7 @@ function initPopup() {
     const slideEls = () => track.querySelectorAll(":scope > div.absolute.inset-0");
     const dotEls = () => dotsWrap ? dotsWrap.querySelectorAll("button") : [];
 
-    // KAIZEN: tombol hijau di bawah gambar ikut berubah sesuai slide yang aktif
+    // Tombol hijau "Daftar/Donasi/dst" di bawah gambar - ikut berubah sesuai slide aktif
     const actionContainer = popup.querySelector(".grid-cols-2");
     const dynamicBtn = actionContainer ? actionContainer.querySelector("button") : null;
 
@@ -683,6 +683,24 @@ function initPopup() {
         dynamicBtn.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4"></i> ${data.text || "Selengkapnya"}`;
         dynamicBtn.onclick = handleSlideClick(data);
         if (window.lucide) window.lucide.createIcons();
+    }
+
+    // KAIZEN: tombol "Share Info" - sekarang benar-benar berfungsi, ikut isi slide aktif
+    const shareBtn = $("#popupShareBtn");
+    function updateShareButton(data) {
+        if (!shareBtn) return;
+        shareBtn.onclick = async () => {
+            const shareUrl = (data.link && data.link.startsWith("http")) ? data.link : "https://assunnahhekinan.org/";
+            const shareTitle = data.text || "Masjid As-Sunnah Hekinan";
+            const shareText = `${shareTitle} - Masjid As-Sunnah Hekinan`;
+            if (navigator.share) {
+                try {
+                    await navigator.share({ title: shareTitle, text: shareText, url: shareUrl });
+                } catch (e) { /* dibatalkan oleh pengguna, tidak apa-apa */ }
+            } else {
+                window.open("https://wa.me/?text=" + encodeURIComponent(shareText + " " + shareUrl), "_blank", "noopener");
+            }
+        };
     }
 
     function goTo(idx) {
@@ -698,6 +716,7 @@ function initPopup() {
         });
 
         updateActionButton(POPUP_SLIDES_DATA[current]);
+        updateShareButton(POPUP_SLIDES_DATA[current]);
     }
 
     function nextSlide() { goTo((current + 1) % POPUP_SLIDES_DATA.length); }
@@ -707,7 +726,8 @@ function initPopup() {
         if (POPUP_SLIDES_DATA.length > 1) autoTimer = setInterval(nextSlide, 4000);
     }
     resetAutoTimer();
-    updateActionButton(POPUP_SLIDES_DATA[0]); // set tombol sesuai slide pertama saat popup dibuka
+    updateActionButton(POPUP_SLIDES_DATA[0]);
+    updateShareButton(POPUP_SLIDES_DATA[0]);
 
     const closeBtn = $("#closePopupBtn");
     const backdropBtn = $("#closePopupBackdrop");
