@@ -38,7 +38,7 @@ const POPUP_SLIDES_DATA = [
         text: "Donasi Dauroh" 
     },
     { 
-    src: "PATH_KE_GAMBAR_DONATUR_TETAP.jpeg",
+    src: "don.png",
     link: "#donasi",
     text: "Jadi Donatur Tetap" 
 },
