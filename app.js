@@ -1506,7 +1506,97 @@ function dapatkanNilaiRadio(name) {
     const terpilh = document.querySelector(`input[name="${name}"]:checked`);
     return terpilh ? terpilh.value : "";
 }
+window.bukaFormDonatur = () => {
+    const modal = document.getElementById("modalFormDonatur");
+    if (modal) {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        if (window.lucide) window.lucide.createIcons();
+    }
+};
 
+window.tutupFormDonatur = () => {
+    const modal = document.getElementById("modalFormDonatur");
+    if (modal) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+    }
+};
+
+window.kirimFormDonatur = async () => {
+    const btn = document.getElementById("btnSubmitDonatur");
+
+    const nama = document.getElementById("fdt_nama")?.value.trim();
+    const wa = document.getElementById("fdt_wa")?.value.trim();
+    const email = document.getElementById("fdt_email")?.value.trim();
+    const domisili = document.getElementById("fdt_domisili")?.value.trim();
+    let nominal = dapatkanNilaiRadio("fdt_nominal");
+    const nominalLainnya = document.getElementById("fdt_nominal_lainnya")?.value.trim();
+    if (nominal === "Lainnya" && nominalLainnya) nominal = `Lainnya: ¥${nominalLainnya}`;
+    const metode = dapatkanNilaiRadio("fdt_metode");
+    const tanggal = document.getElementById("fdt_tanggal")?.value;
+    const infoKegiatan = dapatkanNilaiRadio("fdt_info");
+    const cantumkanNama = dapatkanNilaiRadio("fdt_cantumkan");
+    const doa = document.getElementById("fdt_doa")?.value.trim();
+    const setuju = document.getElementById("fdt_setuju")?.checked;
+
+    if (!nama || !wa || !nominal || !metode || !tanggal || !infoKegiatan || !cantumkanNama) {
+        alert("Mohon maaf, semua pertanyaan wajib (*) harus diisi.");
+        return;
+    }
+    if (nominal === "Lainnya" && !nominalLainnya) {
+        alert("Mohon isi nominal donasi Anda pada kolom 'Lainnya'.");
+        return;
+    }
+    if (!setuju) {
+        alert("Mohon centang persetujuan sebelum mengirim formulir.");
+        return;
+    }
+
+    const URL_APPS_SCRIPT_DONATUR = "https://script.google.com/macros/s/AKfycbyKdezhuoeAKv2m0n1hfYy4qbYlxc4lZ49sY3fashGfRxgg7GWVMq71LIMgXKtt70C2OQ/exec";
+
+    try {
+        setButtonLoading(btn, true, "Mengirim Pendaftaran...");
+
+        await fetch(URL_APPS_SCRIPT_DONATUR, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({
+                nama: nama,
+                wa: wa,
+                email: email,
+                domisili: domisili,
+                nominal: nominal,
+                metode: metode,
+                tanggal: tanggal,
+                info_kegiatan: infoKegiatan,
+                cantumkan_nama: cantumkanNama,
+                doa: doa
+            })
+        });
+
+        alert("Jazakumullahu khairan. Terima kasih telah mendaftar sebagai Donatur Tetap Masjid As-Sunnah Hekinan. Semoga Allah ﷻ menerima amal Anda, melipatgandakan pahalanya, dan memberikan keberkahan kepada Anda dan keluarga. Pengurus akan menghubungi Anda apabila diperlukan untuk informasi lebih lanjut.");
+
+        document.getElementById("fdt_nama").value = "";
+        document.getElementById("fdt_wa").value = "";
+        document.getElementById("fdt_email").value = "";
+        document.getElementById("fdt_domisili").value = "";
+        document.getElementById("fdt_nominal_lainnya").value = "";
+        document.getElementById("fdt_tanggal").value = "";
+        document.getElementById("fdt_doa").value = "";
+        document.getElementById("fdt_setuju").checked = false;
+        document.querySelectorAll('#modalFormDonatur input[type="radio"]').forEach(r => r.checked = false);
+
+        window.tutupFormDonatur();
+
+    } catch (error) {
+        console.error("Error Pendaftaran Donatur:", error);
+        alert("Gagal mengirim data. Silakan periksa koneksi internet Anda.");
+    } finally {
+        setButtonLoading(btn, false, "Daftar Sebagai Donatur Tetap");
+    }
+};
 window.kirimFormDauroh = async () => {
     const btn = document.getElementById("btnSubmitDauroh");
     
