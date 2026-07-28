@@ -517,10 +517,27 @@
                <div class="flex items-center gap-3"><div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-xl">🇯🇵</div><div><p class="font-bold text-slate-800">Yucho Bank (Jepang)</p><p class="text-xs text-slate-500">a.n. Yoshimine Adelfa</p></div></div>
                <div class="flex items-center justify-between bg-slate-50 rounded-lg p-3 border border-slate-200 mt-1"><span id="rekYucho" class="font-mono font-bold text-slate-800 text-lg tracking-wide">12160-00457031</span><button data-copy="#rekYucho" class="text-xs font-bold text-fig-primary hover:underline flex items-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i> Salin</button></div>
              </div>
-             <div class="p-4 rounded-2xl border border-slate-200 bg-white flex flex-col gap-3 relative overflow-hidden">
+            <div class="p-4 rounded-2xl border border-slate-200 bg-white flex flex-col gap-3 relative overflow-hidden">
                <div class="flex items-center gap-3"><div class="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center text-xl">🇮🇩</div><div><p class="font-bold text-slate-800">BSI (Indonesia)</p><p class="text-xs text-slate-500">a.n. Hidayah Cinta Hekinan</p></div></div>
                <div class="flex items-center justify-between bg-slate-50 rounded-lg p-3 border border-slate-200 mt-1"><span id="rekBsi" class="font-mono font-bold text-slate-800 text-lg tracking-wide">7329283768</span><button data-copy="#rekBsi" class="text-xs font-bold text-fig-primary hover:underline flex items-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i> Salin</button></div>
                <div class="flex items-center gap-2 mt-1"><span class="text-[10px] font-bold bg-slate-100 px-2 py-1 rounded text-slate-500">Bisa Transfer via:</span><div class="flex gap-1"><span class="text-[10px] px-1.5 py-0.5 rounded border bg-white border-slate-200 text-blue-600 font-bold">Dana</span><span class="text-[10px] px-1.5 py-0.5 rounded border bg-white border-slate-200 text-green-600 font-bold">GoPay</span><span class="text-[10px] px-1.5 py-0.5 rounded border bg-white border-slate-200 text-purple-600 font-bold">OVO</span></div></div>
+             </div>
+
+             <!-- KAIZEN: Ajakan Donatur Tetap -->
+             <div class="p-5 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white relative overflow-hidden">
+               <div class="flex items-start gap-3">
+                 <div class="w-11 h-11 rounded-full bg-gradient-to-b from-amber-400 to-amber-600 flex items-center justify-center shrink-0 shadow-md">
+                   <i data-lucide="heart-handshake" class="w-5 h-5 text-white"></i>
+                 </div>
+                 <div class="flex-1">
+                   <p class="font-extrabold text-amber-900 text-sm">Ingin Pahala yang Terus Mengalir?</p>
+                   <p class="text-xs text-slate-600 leading-relaxed mt-1">Jadilah bagian dari kebaikan yang berkelanjutan. Mulai dari ¥1.000/bulan, insyaAllah menjadi amal jariyah yang pahalanya terus mengalir selama masjid ini dimanfaatkan untuk ibadah, kajian, dan dakwah.</p>
+                   <p class="text-[10px] text-amber-700 font-semibold mt-2 flex items-center gap-1"><i data-lucide="check-circle" class="w-3 h-3"></i> Bisa diubah atau dihentikan kapan saja, tanpa syarat rumit.</p>
+                   <button onclick="window.bukaFormDonatur()" class="mt-3 w-full sm:w-auto bg-amber-700 hover:bg-amber-800 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2">
+                     <i data-lucide="hand-coins" class="w-4 h-4"></i> Daftar Jadi Donatur Tetap
+                   </button>
+                 </div>
+               </div>
              </div>
           </div>
         </div>
@@ -1326,6 +1343,7 @@
 
   </div>
 </div>
+  <div id="modalFormDauroh" class="fixed inset-0 z-[200] hidden items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm transition-all text-slate-800">
   <div id="modalFormDauroh" class="fixed inset-0 z-[200] hidden items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm transition-all text-slate-800">
   <div class="bg-[#FAF8F5] w-full h-full sm:h-auto sm:max-h-[85vh] sm:max-w-xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden animate-[fadeUp_0.3s_ease-out]">
     
