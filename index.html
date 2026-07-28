@@ -1343,7 +1343,152 @@
 
   </div>
 </div>
-  <div id="modalFormDauroh" class="fixed inset-0 z-[200] hidden items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm transition-all text-slate-800">
+ <div id="modalFormDonatur" class="fixed inset-0 z-[200] hidden items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm transition-all text-slate-800">
+  <div class="bg-[#FAF8F5] w-full h-full sm:h-auto sm:max-h-[85vh] sm:max-w-xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden animate-[fadeUp_0.3s_ease-out]">
+
+    <div class="bg-amber-900 px-6 py-6 text-center relative shrink-0 border-b border-amber-500/20">
+      <button onclick="window.tutupFormDonatur()" class="absolute top-4 right-4 p-1.5 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <p class="text-amber-300 text-[10px] font-bold uppercase tracking-[0.2em] mb-1">AMAL JARIYAH BERKELANJUTAN</p>
+      <h3 class="text-lg md:text-xl font-extrabold text-white leading-snug">
+        Pendaftaran Donatur Tetap
+      </h3>
+      <p class="text-amber-100/80 text-[11px] mt-1">Masjid As-Sunnah Hekinan</p>
+    </div>
+
+    <div class="px-6 py-6 overflow-y-auto flex-1 space-y-6">
+
+      <p class="text-xs text-slate-600 leading-relaxed bg-amber-50 border border-amber-100 rounded-xl p-4">
+        Assalamu'alaikum warahmatullahi wabarakatuh. Jazakumullahu khairan atas niat Anda untuk menjadi donatur tetap Masjid As-Sunnah Hekinan. Semoga Allah ﷻ menerima amal ibadah Anda, melapangkan rezeki, dan menjadikannya sebagai amal jariyah yang terus mengalir pahalanya. Silakan isi formulir berikut dengan data yang benar.
+      </p>
+
+      <!-- Bagian 1: Data Diri -->
+      <div>
+        <p class="text-[11px] font-extrabold text-amber-800 uppercase tracking-widest mb-3">Bagian 1 — Data Diri</p>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
+            <input type="text" id="fdt_nama" placeholder="Masukkan nama lengkap Anda" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600 transition-all">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2">Nomor WhatsApp / Telepon <span class="text-red-500">*</span></label>
+            <input type="tel" id="fdt_wa" placeholder="Contoh: 0812xxxx atau 070xxxx" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600 transition-all">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2">Email <span class="text-slate-400 normal-case font-medium">(opsional)</span></label>
+            <input type="email" id="fdt_email" placeholder="nama@email.com" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600 transition-all">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2">Alamat Domisili (Kota/Prefektur)</label>
+            <input type="text" id="fdt_domisili" placeholder="Contoh: Hekinan, Aichi" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600 transition-all">
+          </div>
+        </div>
+      </div>
+
+      <!-- Bagian 2: Komitmen Donasi -->
+      <div>
+        <p class="text-[11px] font-extrabold text-amber-800 uppercase tracking-widest mb-3">Bagian 2 — Komitmen Donasi</p>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2">Nominal donasi per bulan <span class="text-red-500">*</span></label>
+            <div class="grid grid-cols-3 gap-2">
+              <label class="flex items-center justify-center gap-2 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-amber-500 transition-all"><input type="radio" name="fdt_nominal" value="¥1.000" class="w-4 h-4 accent-amber-600"><span class="text-xs font-semibold">¥1.000</span></label>
+              <label class="flex items-center justify-center gap-2 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-amber-500 transition-all"><input type="radio" name="fdt_nominal" value="¥3.000" class="w-4 h-4 accent-amber-600"><span class="text-xs font-semibold">¥3.000</span></label>
+              <label class="flex items-center justify-center gap-2 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-amber-500 transition-all"><input type="radio" name="fdt_nominal" value="¥5.000" class="w-4 h-4 accent-amber-600"><span class="text-xs font-semibold">¥5.000</span></label>
+              <label class="flex items-center justify-center gap-2 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-amber-500 transition-all"><input type="radio" name="fdt_nominal" value="¥10.000" class="w-4 h-4 accent-amber-600"><span class="text-xs font-semibold">¥10.000</span></label>
+              <label class="flex items-center justify-center gap-2 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-amber-500 transition-all"><input type="radio" name="fdt_nominal" value="¥20.000" class="w-4 h-4 accent-amber-600"><span class="text-xs font-semibold">¥20.000</span></label>
+              <label class="flex items-center justify-center gap-2 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-amber-500 transition-all"><input type="radio" name="fdt_nominal" value="Lainnya" class="w-4 h-4 accent-amber-600"><span class="text-xs font-semibold">Lainnya</span></label>
+            </div>
+            <input type="number" id="fdt_nominal_lainnya" placeholder="Isi nominal sendiri (¥) jika pilih 'Lainnya'" class="w-full mt-2 bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600 transition-all">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2">Metode pembayaran yang diinginkan <span class="text-red-500">*</span></label>
+            <div class="grid grid-cols-3 gap-2">
+              <label class="flex items-center justify-center gap-2 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-amber-500 transition-all"><input type="radio" name="fdt_metode" value="Transfer Bank" class="w-4 h-4 accent-amber-600"><span class="text-xs font-semibold">Transfer Bank</span></label>
+              <label class="flex items-center justify-center gap-2 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-amber-500 transition-all"><input type="radio" name="fdt_metode" value="Tunai" class="w-4 h-4 accent-amber-600"><span class="text-xs font-semibold">Tunai</span></label>
+              <label class="flex items-center justify-center gap-2 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-amber-500 transition-all"><input type="radio" name="fdt_metode" value="Metode lainnya" class="w-4 h-4 accent-amber-600"><span class="text-xs font-semibold">Lainnya</span></label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2">Tanggal pembayaran setiap bulan (perkiraan) <span class="text-red-500">*</span></label>
+            <select id="fdt_tanggal" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600 transition-all">
+              <option value="">Pilih rentang tanggal</option>
+              <option value="Tanggal 1-5">Tanggal 1–5</option>
+              <option value="Tanggal 6-10">Tanggal 6–10</option>
+              <option value="Tanggal 11-15">Tanggal 11–15</option>
+              <option value="Tanggal 16-20">Tanggal 16–20</option>
+              <option value="Tanggal 21-25">Tanggal 21–25</option>
+              <option value="Tanggal 26-Akhir Bulan">Tanggal 26–Akhir Bulan</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bagian 3: Komunikasi -->
+      <div>
+        <p class="text-[11px] font-extrabold text-amber-800 uppercase tracking-widest mb-3">Bagian 3 — Komunikasi</p>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2">Bersedia menerima info kegiatan masjid? <span class="text-red-500">*</span></label>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-amber-500 transition-all"><input type="radio" name="fdt_info" value="Ya" class="w-4 h-4 accent-amber-600"> <span class="text-sm font-semibold">Ya</span></label>
+              <label class="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-amber-500 transition-all"><input type="radio" name="fdt_info" value="Tidak" class="w-4 h-4 accent-amber-600"> <span class="text-sm font-semibold">Tidak</span></label>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2">Nama boleh dicantumkan sebagai donatur? <span class="text-red-500">*</span></label>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-amber-500 transition-all"><input type="radio" name="fdt_cantumkan" value="Ya" class="w-4 h-4 accent-amber-600"> <span class="text-sm font-semibold">Ya</span></label>
+              <label class="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-amber-500 transition-all"><input type="radio" name="fdt_cantumkan" value="Tidak" class="w-4 h-4 accent-amber-600"> <span class="text-sm font-semibold">Tidak</span></label>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2">Doa atau pesan untuk Masjid As-Sunnah Hekinan</label>
+            <textarea id="fdt_doa" rows="3" placeholder="Tulis doa/pesan Anda (opsional)..." class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600 transition-all resize-none"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Persetujuan -->
+      <label class="flex items-start gap-3 p-4 bg-emerald-50 border border-emerald-100 rounded-xl cursor-pointer">
+        <input type="checkbox" id="fdt_setuju" class="w-4 h-4 mt-0.5 accent-emerald-600">
+        <span class="text-xs text-slate-600 leading-relaxed">Saya memahami bahwa donasi ini bersifat sukarela dan dapat diubah atau dihentikan kapan saja dengan menghubungi pengurus Masjid As-Sunnah Hekinan. <b class="text-emerald-800">Saya menyetujui.</b></span>
+      </label>
+
+      <!-- Pusat bantuan -->
+      <div class="mt-2 bg-amber-50 border border-amber-100 p-5 rounded-2xl relative shadow-sm">
+        <div class="absolute -top-2 left-8 w-4 h-4 bg-amber-50 border-t border-l border-amber-100 transform rotate-45"></div>
+        <div class="flex items-start gap-4 relative z-10">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-b from-amber-400 to-amber-600 flex items-center justify-center shrink-0 shadow-[0_4px_0_#b45309,0_5px_15px_rgba(217,119,6,0.4)] border border-amber-300">
+            <i data-lucide="headset" class="w-5 h-5 text-white drop-shadow-md"></i>
+          </div>
+          <div class="flex-1">
+            <p class="text-[11px] font-bold text-amber-800 uppercase tracking-wider mb-1">Pengurus Masjid</p>
+            <p class="text-xs text-slate-600 leading-relaxed mb-4">Ada pertanyaan seputar Donatur Tetap? Silakan hubungi kami langsung.</p>
+            <a href="https://wa.me/819032244020?text=Assalamu%27alaikum%2C%20saya%20ada%20pertanyaan%20terkait%20pendaftaran%20Donatur%20Tetap%20Masjid%20As-Sunnah%20Hekinan." target="_blank" rel="noopener noreferrer" class="relative flex items-center justify-center sm:justify-start gap-3 bg-gradient-to-b from-[#25D366] to-[#1DA851] text-white py-2.5 px-4 rounded-xl text-xs font-extrabold transition-all active:top-[4px] active:shadow-none shadow-[0_4px_0_#128C7E,0_8px_15px_rgba(37,211,102,0.3)] border-t border-white/30 w-full sm:w-fit">
+              <div class="bg-white/20 p-1.5 rounded-full shadow-inner">
+                <i data-lucide="message-circle" class="w-4 h-4 text-white drop-shadow-md"></i>
+              </div>
+              Chat via WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="px-6 py-4 border-t border-slate-200 bg-white shrink-0">
+      <button id="btnSubmitDonatur" onclick="window.kirimFormDonatur()" class="w-full bg-amber-700 hover:bg-amber-800 text-white font-bold py-3.5 rounded-xl shadow-lg transition-transform active:scale-95 flex items-center justify-center gap-2">
+        <span>Daftar Sebagai Donatur Tetap</span>
+      </button>
+      <p class="text-center text-[10px] text-slate-400 mt-2">Data akan digunakan hanya untuk keperluan program Donatur Tetap masjid.</p>
+    </div>
+
+  </div>
+</div>
   <div id="modalFormDauroh" class="fixed inset-0 z-[200] hidden items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm transition-all text-slate-800">
   <div class="bg-[#FAF8F5] w-full h-full sm:h-auto sm:max-h-[85vh] sm:max-w-xl sm:rounded-3xl flex flex-col shadow-2xl overflow-hidden animate-[fadeUp_0.3s_ease-out]">
     
