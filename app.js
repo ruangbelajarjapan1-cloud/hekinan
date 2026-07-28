@@ -38,6 +38,11 @@ const POPUP_SLIDES_DATA = [
         text: "Donasi Dauroh" 
     },
     { 
+    src: "PATH_KE_GAMBAR_DONATUR_TETAP.jpeg",
+    link: "#donasi",
+    text: "Jadi Donatur Tetap" 
+},
+    { 
     src: "renov.jpeg",   // ganti dengan nama file banner Anda
     link: "https://wa.me/6287879993838?text=Assalamu%27alaikum%20Kak%20Maru%2C%20saya%20ingin%20melakukan%20donasi%20untuk%20Renovasi%20Masjid%20As-Sunnah%20Hekinan.%20Mohon%20informasinya.%20Jazakumullahu%20khayran.",
     text: "Donasi Renovasi Masjid" 
