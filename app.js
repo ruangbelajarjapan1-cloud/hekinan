@@ -718,7 +718,15 @@ function initPopup() {
     function updateShareButton(data) {
         if (!shareBtn) return;
         shareBtn.onclick = async () => {
-            const shareUrl = (data.link && data.link.startsWith("http")) ? data.link : "https://assunnahhekinan.org/";
+            // KAIZEN: link anchor internal (#donaturtetap, #donasi, dst) sekarang ikut disertakan,
+            // bukan cuma fallback ke alamat utama tanpa anchor-nya.
+            const SITE_URL = "https://assunnahhekinan.org/";
+            let shareUrl = SITE_URL;
+            if (data.link && data.link.startsWith("http")) {
+                shareUrl = data.link;
+            } else if (data.link && data.link.startsWith("#") && data.link.length > 1) {
+                shareUrl = SITE_URL + data.link;
+            }
             const shareTitle = data.text || "Masjid As-Sunnah Hekinan";
             const shareText = `${shareTitle} - Masjid As-Sunnah Hekinan`;
             if (navigator.share) {
