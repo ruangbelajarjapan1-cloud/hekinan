@@ -640,10 +640,18 @@ function initPopup() {
     track.innerHTML = "";
     if (!POPUP_SLIDES_DATA || POPUP_SLIDES_DATA.length === 0) return;
 
+    // KAIZEN: jangan tampilkan popup kalau baru saja dilihat/ditutup dalam 12 jam terakhir
+    const POPUP_COOLDOWN_MS = 12 * 60 * 60 * 1000;
+    const lastShownPopup = Number(localStorage.getItem("popupPromo_lastShown") || 0);
+    const isOnCooldownPopup = (Date.now() - lastShownPopup) < POPUP_COOLDOWN_MS;
+    const alreadyVisiblePopup = !popup.classList.contains("hidden");
+    if (isOnCooldownPopup && !alreadyVisiblePopup) return;
+
     const closePopup = () => {
         popup.classList.add("hidden");
         popup.classList.remove("flex");
         if (autoTimer) clearInterval(autoTimer);
+        localStorage.setItem("popupPromo_lastShown", Date.now().toString());
     };
 
     let current = 0;
@@ -780,6 +788,7 @@ function initPopup() {
 
     popup.classList.remove("hidden");
     popup.classList.add("flex");
+    localStorage.setItem("popupPromo_lastShown", Date.now().toString());
     if (window.lucide) window.lucide.createIcons();
 }
 function initVideoAjakan() { 
@@ -1545,6 +1554,9 @@ window.kirimFormDonatur = async () => {
     const doa = document.getElementById("fdt_doa")?.value.trim();
     const setuju = document.getElementById("fdt_setuju")?.checked;
 
+    // Catatan: checklist kesediaan donatur tetap ini OPSIONAL (tidak wajib dicentang)
+    const kesediaanTetap = document.getElementById("fdt_kesediaan")?.checked ? "Ya" : "Belum tentu";
+
     if (!nama || !wa || !nominal || !metode || !tanggal || !infoKegiatan || !cantumkanNama) {
         alert("Mohon maaf, semua pertanyaan wajib (*) harus diisi.");
         return;
@@ -1577,7 +1589,8 @@ window.kirimFormDonatur = async () => {
                 tanggal: tanggal,
                 info_kegiatan: infoKegiatan,
                 cantumkan_nama: cantumkanNama,
-                doa: doa
+                doa: doa,
+                kesediaan_tetap: kesediaanTetap
             })
         });
 
@@ -1591,6 +1604,7 @@ window.kirimFormDonatur = async () => {
         document.getElementById("fdt_tanggal").value = "";
         document.getElementById("fdt_doa").value = "";
         document.getElementById("fdt_setuju").checked = false;
+        document.getElementById("fdt_kesediaan").checked = false;
         document.querySelectorAll('#modalFormDonatur input[type="radio"]').forEach(r => r.checked = false);
 
         window.tutupFormDonatur();
