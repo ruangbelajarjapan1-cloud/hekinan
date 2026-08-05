@@ -39,7 +39,7 @@ const POPUP_SLIDES_DATA = [
     },
     { 
     src: "don.png",
-    link: "#donasi",
+    link: "#donaturtetap",
     text: "Jadi Donatur Tetap" 
 },
     { 
@@ -661,6 +661,11 @@ function initPopup() {
     const handleSlideClick = (data) => (e) => {
         if (suppressClick) { suppressClick = false; return; }
         e.preventDefault();
+        if (data.link === "#donaturtetap") {
+            closePopup();
+            if (window.bukaFormDonatur) window.bukaFormDonatur();
+            return;
+        }
         if (data.link && data.link.startsWith("http")) {
             window.open(data.link, "_blank", "noopener");
         } else if (data.link && data.link.startsWith("#") && data.link.length > 1 && document.querySelector(data.link)) {
