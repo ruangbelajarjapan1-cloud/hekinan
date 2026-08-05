@@ -524,13 +524,13 @@
              </div>
 
              <!-- KAIZEN: Ajakan Donatur Tetap -->
-            <div class="p-5 rounded-2xl border border-sky-200 bg-gradient-to-br from-sky-50 to-white relative overflow-hidden">
+            <div id="donaturtetap" class="p-5 rounded-2xl border border-sky-200 bg-gradient-to-br from-sky-50 to-white relative overflow-hidden scroll-mt-24">
   <div class="flex items-start gap-3">
     <div class="w-11 h-11 rounded-full bg-gradient-to-b from-sky-400 to-sky-600 flex items-center justify-center shrink-0 shadow-md">
                    <i data-lucide="heart-handshake" class="w-5 h-5 text-white"></i>
                  </div>
                  <div class="flex-1">
-                   <<p class="font-extrabold text-sky-900 text-sm">Ingin Pahala yang Terus Mengalir?</p>
+                   <p class="font-extrabold text-sky-900 text-sm">Ingin Pahala yang Terus Mengalir?</p>
                    <p class="text-xs text-slate-600 leading-relaxed mt-1">Jadilah bagian dari kebaikan yang berkelanjutan. Mulai dari ¥1.000/bulan, insyaAllah menjadi amal jariyah yang pahalanya terus mengalir selama masjid ini dimanfaatkan untuk ibadah, kajian, dan dakwah.</p>
                    <p class="text-[10px] text-sky-700 font-semibold mt-2 flex items-center gap-1"><i data-lucide="check-circle" class="w-3 h-3"></i> Bisa diubah atau dihentikan kapan saja, tanpa syarat rumit.</p>
                   <button onclick="window.bukaFormDonatur()" class="mt-3 w-full sm:w-auto bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2">
@@ -1363,6 +1363,20 @@
         Assalamu'alaikum warahmatullahi wabarakatuh. Jazakumullahu khairan atas niat Anda untuk menjadi donatur tetap Masjid As-Sunnah Hekinan. Semoga Allah ﷻ menerima amal ibadah Anda, melapangkan rezeki, dan menjadikannya sebagai amal jariyah yang terus mengalir pahalanya. Silakan isi formulir berikut dengan data yang benar.
       </p>
 
+      <!-- Konteks musyawarah shukyo hojin + checklist kesediaan (opsional, tidak wajib) -->
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-3">
+        <p class="text-xs text-slate-700 leading-relaxed">
+          Menindaklanjuti musyawarah sebelumnya terkait diperlukannya adanya pemasukan tetap masjid untuk syarat pengajuan <i>shukyo hojin</i> (宗教法人), maka diperlukan adanya daftar donatur tetap yang bersedia donasi setiap bulannya.
+        </p>
+        <label class="flex items-start gap-3 cursor-pointer">
+          <input type="checkbox" id="fdt_kesediaan" class="w-4 h-4 mt-0.5 accent-amber-600">
+          <span class="text-xs">
+            <span class="font-bold text-amber-900">Bersedia menjadi donatur tetap bulanan</span>
+            <span class="block text-slate-500 font-normal mt-0.5">(Opsional — tidak wajib, namun sangat diharapkan)</span>
+          </span>
+        </label>
+      </div>
+
       <!-- Bagian 1: Data Diri -->
       <div>
         <p class="text-[11px] font-extrabold text-sky-800 uppercase tracking-widest mb-3">Bagian 1 — Data Diri</p>
@@ -1675,6 +1689,16 @@
       navigator.serviceWorker.register('./sw.js').catch(err => console.log('PWA Error:', err)); 
     });
   }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hash === '#donaturtetap') {
+      setTimeout(() => {
+        document.getElementById('donaturtetap')?.scrollIntoView({ behavior: 'smooth' });
+        if (window.bukaFormDonatur) window.bukaFormDonatur();
+      }, 600);
+    }
+  });
 </script>
 </body>
 </html>
