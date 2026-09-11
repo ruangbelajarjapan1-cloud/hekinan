@@ -28,14 +28,9 @@ const HEK_LON = 136.993;
 
 const POPUP_SLIDES_DATA = [
     { 
-        src: "natsu1.jpeg",
-        link: "#", 
-        text: "Daftar Dauroh" 
-    },
-     { 
-        src: "natsu1.jpeg", 
-        link: "https://wa.me/628895941864?text=Assalamu%27alaikum%20Admin%20Jepang%20Mengaji%2C%20saya%20ingin%20berinfaq%2Fdonasi%20untuk%20kegiatan%20Dauroh.%20Mohon%20info%20rekening%20dan%20tata%20caranya.%20Jazakumullahu%20khayran.",
-        text: "Donasi Dauroh" 
+        src: "dsw-silverweek.jpeg",
+        link: "https://bit.ly/DSWHekinan2026", 
+        text: "Daftar Dauroh Silver Week" 
     },
     { 
     src: "don.png",
@@ -47,12 +42,6 @@ const POPUP_SLIDES_DATA = [
     link: "https://wa.me/6287879993838?text=Assalamu%27alaikum%20Kak%20Maru%2C%20saya%20ingin%20melakukan%20donasi%20untuk%20Renovasi%20Masjid%20As-Sunnah%20Hekinan.%20Mohon%20informasinya.%20Jazakumullahu%20khayran.",
     text: "Donasi Renovasi Masjid" 
 },
-    { 
-        src: "natsu.jpeg",
-        link: "#", 
-        text: "Daftar Dauroh" 
-    },
-    
     { 
         src: "umroh.png", 
         link: "https://umrohjepang.vercel.app/", 
